@@ -1,0 +1,17 @@
+schema {
+   query: Query
+}
+
+type Query {
+   allMentions: [Mention]
+}
+
+type Person {
+   name: String !
+}
+
+type Mention {
+   name: String !
+   source: String !
+   mention: String !
+}
