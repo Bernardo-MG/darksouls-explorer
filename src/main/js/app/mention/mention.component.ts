@@ -9,7 +9,7 @@ import { Mention } from '../mention';
 })
 export class MentionComponent implements OnInit {
 
-  columnsToDisplay = ['name', 'source', 'mention'];
+  columnsToDisplay = ['mentioned', 'mentioner', 'mention'];
 
   mentions: Mention[];
 

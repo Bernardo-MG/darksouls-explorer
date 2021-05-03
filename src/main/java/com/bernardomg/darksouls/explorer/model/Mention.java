@@ -18,10 +18,10 @@ package com.bernardomg.darksouls.explorer.model;
 
 public interface Mention {
 
-    public String getName();
-
-    public String getSource();
-
     public String getMention();
+
+    public String getMentioned();
+
+    public String getMentioner();
 
 }

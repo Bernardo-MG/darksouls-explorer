@@ -4,14 +4,14 @@
           The actual rendered columns are set as a property on the row definition" -->
 
     <!-- Position Column -->
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    <ng-container matColumnDef="mentioned">
+        <th mat-header-cell *matHeaderCellDef>Mentioned</th>
+        <td mat-cell *matCellDef="let element"> {{element.mentioned}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="source">
-        <th mat-header-cell *matHeaderCellDef>Source</th>
-        <td mat-cell *matCellDef="let element"> {{element.source}} </td>
+    <ng-container matColumnDef="mentioner">
+        <th mat-header-cell *matHeaderCellDef>Mentioner</th>
+        <td mat-cell *matCellDef="let element"> {{element.mentioner}} </td>
     </ng-container>
 
     <ng-container matColumnDef="mention">

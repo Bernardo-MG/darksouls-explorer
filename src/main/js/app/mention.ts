@@ -1,6 +1,6 @@
 
 export interface Mention {
-    name: string;
-    source: string;
+    mentioned: string;
+    mentioner: string;
     mention: string;
 }

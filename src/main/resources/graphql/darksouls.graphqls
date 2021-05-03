@@ -11,7 +11,7 @@ type Person {
 }
 
 type Mention {
-   name: String !
-   source: String !
+   mentioned: String !
+   mentioner: String !
    mention: String !
 }

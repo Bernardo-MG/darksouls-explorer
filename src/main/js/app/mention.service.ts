@@ -21,8 +21,8 @@ export class MentionService {
         query: gql`
           {
             allMentions {
-              name,
-              source,
+              mentioned,
+              mentioner,
               mention
             }
           }

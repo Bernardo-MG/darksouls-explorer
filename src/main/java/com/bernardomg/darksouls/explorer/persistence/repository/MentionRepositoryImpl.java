@@ -66,9 +66,9 @@ public class MentionRepositoryImpl implements MentionRepository {
         final MentionResult mention;
 
         mention = new MentionResult();
-        mention.setName(String.valueOf(row.get("name")));
+        mention.setMentioned(String.valueOf(row.get("name")));
         mention.setMention(String.valueOf(row.get("mention")));
-        mention.setSource(String.valueOf(row.get("source")));
+        mention.setMentioner(String.valueOf(row.get("source")));
 
         return mention;
     }

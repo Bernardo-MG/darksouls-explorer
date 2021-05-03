@@ -20,9 +20,9 @@ public final class MentionResult implements Mention {
 
     private String mention;
 
-    private String name;
+    private String mentioned;
 
-    private String source;
+    private String mentioner;
 
     public MentionResult() {
         super();
@@ -34,25 +34,25 @@ public final class MentionResult implements Mention {
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getMentioned() {
+        return mentioned;
     }
 
     @Override
-    public String getSource() {
-        return source;
+    public String getMentioner() {
+        return mentioner;
     }
 
     public void setMention(final String mention) {
         this.mention = mention;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setMentioned(final String name) {
+        this.mentioned = name;
     }
 
-    public void setSource(final String source) {
-        this.source = source;
+    public void setMentioner(final String source) {
+        this.mentioner = source;
     }
 
 }
