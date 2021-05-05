@@ -12,6 +12,8 @@ type Person {
 
 type Mention {
    mentioned: String !
+   mentionedId: Int !
    mentioner: String !
+   mentionerId: Int !
    mention: String !
 }

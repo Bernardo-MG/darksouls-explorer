@@ -22,7 +22,11 @@ public final class MentionResult implements Mention {
 
     private String mentioned;
 
+    private Long   mentionedId;
+
     private String mentioner;
+
+    private Long   mentionerId;
 
     public MentionResult() {
         super();
@@ -39,8 +43,18 @@ public final class MentionResult implements Mention {
     }
 
     @Override
+    public Long getMentionedId() {
+        return mentionedId;
+    }
+
+    @Override
     public String getMentioner() {
         return mentioner;
+    }
+
+    @Override
+    public Long getMentionerId() {
+        return mentionerId;
     }
 
     public void setMention(final String mention) {
@@ -48,11 +62,19 @@ public final class MentionResult implements Mention {
     }
 
     public void setMentioned(final String name) {
-        this.mentioned = name;
+        mentioned = name;
+    }
+
+    public void setMentionedId(final Long mentionedId) {
+        this.mentionedId = mentionedId;
     }
 
     public void setMentioner(final String source) {
-        this.mentioner = source;
+        mentioner = source;
+    }
+
+    public void setMentionerId(final Long mentionId) {
+        this.mentionerId = mentionId;
     }
 
 }

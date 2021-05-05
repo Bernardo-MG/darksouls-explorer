@@ -22,7 +22,9 @@ export class MentionService {
           {
             allMentions {
               mentioned,
+              mentionedId,
               mentioner,
+              mentionerId,
               mention
             }
           }

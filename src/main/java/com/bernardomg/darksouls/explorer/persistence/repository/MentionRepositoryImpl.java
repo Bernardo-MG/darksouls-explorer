@@ -54,7 +54,7 @@ public class MentionRepositoryImpl implements MentionRepository {
 
         try (Session session = driver.session()) {
             rows = session.run(
-                    "MATCH (m)-[:MENTIONS]->(p:Person) RETURN p.name AS name, m.name AS source, m.description AS mention");
+                    "MATCH (m)-[:MENTIONS]->(p:Person) RETURN p.name AS mentioned, ID(p) AS mentionedId, m.name AS mentioner, ID(m) AS mentionerId, m.description AS mention");
             result = rows.stream().map(this::toMention)
                     .collect(Collectors.toList());
         }
@@ -66,9 +66,13 @@ public class MentionRepositoryImpl implements MentionRepository {
         final MentionResult mention;
 
         mention = new MentionResult();
-        mention.setMentioned(String.valueOf(row.get("name")));
+        mention.setMentioned(String.valueOf(row.get("mentioned")));
+        mention.setMentionedId(
+                Long.valueOf(String.valueOf(row.get("mentionedId"))));
+        mention.setMentioner(String.valueOf(row.get("mentioner")));
+        mention.setMentionerId(
+                Long.valueOf(String.valueOf(row.get("mentionerId"))));
         mention.setMention(String.valueOf(row.get("mention")));
-        mention.setMentioner(String.valueOf(row.get("source")));
 
         return mention;
     }

@@ -15,7 +15,11 @@ export class GraphDisplayComponent implements OnInit {
   }
 
   private displayGraph() {
-    const data = { "nodes": [{ "id": "Structural basis of PROTAC cooperative recognition for selective protein degradation.", "group": "Cited Works", "radius": 2, "citing_patents_count": 2 }, { "id": "The influence of rough lipopolysaccharide structure on molecular interactions with mammalian antimicrobial peptides", "group": "Cited Works", "radius": 1, "citing_patents_count": 1 }], "links": [{ "source": "Structural basis of PROTAC cooperative recognition for selective protein degradation.", "target": "The influence of rough lipopolysaccharide structure on molecular interactions with mammalian antimicrobial peptides", "value": 2 }] };
+    const data = { "nodes": [
+      { "id": "Structural basis of PROTAC cooperative recognition for selective protein degradation.", "group": "Cited Works", "radius": 2, "citing_patents_count": 2 },
+      { "id": "The influence of rough lipopolysaccharide structure on molecular interactions with mammalian antimicrobial peptides", "group": "Cited Works", "radius": 1, "citing_patents_count": 1 }],
+      "links": [
+        { "source": "Structural basis of PROTAC cooperative recognition for selective protein degradation.", "target": "The influence of rough lipopolysaccharide structure on molecular interactions with mammalian antimicrobial peptides", "value": 2 }] };
 
     const links = data.links.map(d => Object.create(d));
     const nodes = data.nodes.map(d => Object.create(d));

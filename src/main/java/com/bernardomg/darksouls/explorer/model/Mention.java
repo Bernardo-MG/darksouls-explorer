@@ -22,6 +22,10 @@ public interface Mention {
 
     public String getMentioned();
 
+    public Long getMentionedId();
+
     public String getMentioner();
+
+    public Long getMentionerId();
 
 }
