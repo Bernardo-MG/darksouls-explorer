@@ -18,7 +18,7 @@ export class MentionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.mentionService.getMentions().subscribe(data => this.mentions = data);
+    // this.mentionService.getMentions().subscribe(data => this.mentions = data);
   }
 
 }

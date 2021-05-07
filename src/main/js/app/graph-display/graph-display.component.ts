@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Graph } from 'app/graph';
 import * as d3 from 'd3';
+import { MentionService } from '../mention.service';
 
 @Component({
   selector: 'app-graph-display',
@@ -8,21 +10,17 @@ import * as d3 from 'd3';
 })
 export class GraphDisplayComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private mentionService: MentionService
+  ) { }
 
   ngOnInit(): void {
-    this.displayGraph();
+    this.mentionService.getMentions().subscribe(this.displayGraph);
   }
 
-  private displayGraph() {
-    const data = { "nodes": [
-      { "id": "Structural basis of PROTAC cooperative recognition for selective protein degradation.", "group": "Cited Works", "radius": 2, "citing_patents_count": 2 },
-      { "id": "The influence of rough lipopolysaccharide structure on molecular interactions with mammalian antimicrobial peptides", "group": "Cited Works", "radius": 1, "citing_patents_count": 1 }],
-      "links": [
-        { "source": "Structural basis of PROTAC cooperative recognition for selective protein degradation.", "target": "The influence of rough lipopolysaccharide structure on molecular interactions with mammalian antimicrobial peptides", "value": 2 }] };
-
-    const links = data.links.map(d => Object.create(d));
-    const nodes = data.nodes.map(d => Object.create(d));
+  private displayGraph(data: Graph) {
+    const links : any[] = data.links;
+    const nodes = data.nodes;
 
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id((d: any) => d.id))
@@ -44,7 +42,7 @@ export class GraphDisplayComponent implements OnInit {
       .selectAll("line")
       .data(links)
       .join("line")
-      .attr("stroke-width", d => Math.sqrt(d.value))
+      .attr("stroke-width", d => Math.sqrt(2))
       .attr("transform", "translate(" + [(width / 2), (height / 2)] + ")");
 
     const node = mainView.append("g")
@@ -54,11 +52,11 @@ export class GraphDisplayComponent implements OnInit {
       .data(nodes)
       .join("circle")
       .attr("r", 5)
-      .attr("transform", "translate(" + [(width / 2), (height / 2)] + ")")
-      .call(this.drag(simulation));
+      .attr("transform", "translate(" + [(width / 2), (height / 2)] + ")");
+      //.call(this.drag(simulation));
 
     node.append("title")
-      .text(d => d.id);
+      .text(d => d.name as string);
 
     simulation.on("tick", () => {
       link
