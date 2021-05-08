@@ -1,25 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { Graph } from 'app/graph';
 import * as d3 from 'd3';
-import { MentionService } from '../mention.service';
 
 @Component({
   selector: 'app-graph-display',
   templateUrl: './graph-display.component.html',
   styleUrls: ['./graph-display.component.sass']
 })
-export class GraphDisplayComponent implements OnInit {
+export class GraphDisplayComponent implements OnInit, OnChanges {
 
-  constructor(
-    private mentionService: MentionService
-  ) { }
+  @Input() graph: Graph;
+
+  constructor() { }
 
   ngOnInit(): void {
-    this.mentionService.getMentions().subscribe(this.displayGraph);
+    this.cleanGraph();
+    if (this.graph) {
+      this.displayGraph(this.graph);
+    }
+  }
+
+  ngOnChanges(): void {
+    this.cleanGraph();
+    if (this.graph) {
+      this.displayGraph(this.graph);
+    }
+  }
+  
+  private cleanGraph() {
+    d3.select("figure#graph_view").select("svg").remove();
   }
 
   private displayGraph(data: Graph) {
-    const links : any[] = data.links;
+    const links: any[] = data.links;
     const nodes = data.nodes;
 
     const simulation = d3.forceSimulation(nodes)
@@ -53,7 +66,7 @@ export class GraphDisplayComponent implements OnInit {
       .join("circle")
       .attr("r", 5)
       .attr("transform", "translate(" + [(width / 2), (height / 2)] + ")");
-      //.call(this.drag(simulation));
+    //.call(this.drag(simulation));
 
     node.append("title")
       .text(d => d.name as string);
