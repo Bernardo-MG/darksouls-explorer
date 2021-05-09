@@ -1,9 +1,10 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ViewEncapsulation } from '@angular/core';
 import { Graph } from 'app/graph';
 import * as d3 from 'd3';
 
 @Component({
   selector: 'app-graph-display',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './graph-display.component.html',
   styleUrls: ['./graph-display.component.sass']
 })
@@ -26,7 +27,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       this.displayGraph(this.graph);
     }
   }
-  
+
   private cleanGraph() {
     d3.select("figure#graph_view").select("svg").remove();
   }
@@ -50,8 +51,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     var height = (viewNode as SVGGElement).clientHeight;
 
     const link = mainView.append("g")
-      .attr("stroke", "#999")
-      .attr("stroke-opacity", 0.6)
+      .attr("class", "graph_link")
       .selectAll("line")
       .data(links)
       .join("line")
@@ -59,8 +59,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .attr("transform", "translate(" + [(width / 2), (height / 2)] + ")");
 
     const node = mainView.append("g")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
+      .attr("class", "graph_node")
       .selectAll("circle")
       .data(nodes)
       .join("circle")
