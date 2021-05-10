@@ -42,8 +42,8 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .force("x", d3.forceX())
       .force("y", d3.forceY());
 
-    var width = 800;
-    var height = 600;
+    var width = 1280;
+    var height = 1024;
     var mainView = d3.select("figure#graph_view")
       .append("svg")
       .attr("id", "graph")
