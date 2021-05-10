@@ -47,6 +47,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     var mainView = d3.select("figure#graph_view")
       .append("svg")
       .attr("id", "graph")
+      .attr("preserveAspectRatio", "xMidYMid meet")
       .attr("viewBox", "0 0 " + width + " " + height + "");
 
     const link = mainView.append("g")
