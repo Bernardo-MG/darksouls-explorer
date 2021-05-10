@@ -55,12 +55,32 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .join("line")
       .attr("class", "graph_link");
 
+    function dragstarted(event) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
+    }
+
+    function dragged(event) {
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    }
+
+    function dragended(event) {
+      if (!event.active) simulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    }
+
     const node = mainView.append("g")
       .selectAll("circle")
       .data(nodes)
       .join("circle")
       .attr("class", "graph_node")
-      .call(this.drag);
+      .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended) as any);
 
     node.append("title")
       .text(d => d.name as string);
@@ -76,25 +96,6 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
         .attr("cx", d => d.x)
         .attr("cy", d => d.y);
     });
-  }
-
-  private drag() {
-    function dragstarted(event, d) {
-      d3.select(this).raise().attr("stroke", "black");
-    }
-
-    function dragged(event, d) {
-      d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y);
-    }
-
-    function dragended(event, d) {
-      d3.select(this).attr("stroke", null);
-    }
-
-    return d3.drag()
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended);
   }
 
 }
