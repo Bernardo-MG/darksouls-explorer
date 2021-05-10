@@ -36,36 +36,31 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     const links: any[] = data.links;
     const nodes = data.nodes;
 
+    var width = 800;
+    var height = 600;
+
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id((d: any) => d.id))
       .force("charge", d3.forceManyBody())
-      .force("x", d3.forceX())
-      .force("y", d3.forceY());
+      .force("center", d3.forceCenter(width / 2, height / 2));
 
-    var width = 1280;
-    var height = 1024;
     var mainView = d3.select("figure#graph_view")
       .append("svg")
       .attr("id", "graph")
-      .attr("preserveAspectRatio", "xMidYMid meet")
       .attr("viewBox", "0 0 " + width + " " + height + "");
 
     const link = mainView.append("g")
-      .attr("class", "graph_link")
       .selectAll("line")
       .data(links)
       .join("line")
-      .attr("stroke-width", d => Math.sqrt(2))
-      .attr("transform", "translate(" + [(width / 2), (height / 2)] + ")");
+      .attr("class", "graph_link");
 
     const node = mainView.append("g")
-      .attr("class", "graph_node")
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-      .attr("r", 5)
-      .attr("transform", "translate(" + [(width / 2), (height / 2)] + ")");
-    //.call(this.drag(simulation));
+      .attr("class", "graph_node")
+      .call(this.drag);
 
     node.append("title")
       .text(d => d.name as string);
@@ -83,22 +78,17 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     });
   }
 
-  private drag(simulation) {
+  private drag() {
     function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
+      d3.select(this).raise().attr("stroke", "black");
     }
 
     function dragged(event, d) {
-      d.fx = event.x;
-      d.fy = event.y;
+      d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y);
     }
 
     function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
+      d3.select(this).attr("stroke", null);
     }
 
     return d3.drag()
