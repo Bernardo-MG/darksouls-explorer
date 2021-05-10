@@ -42,13 +42,12 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .force("x", d3.forceX())
       .force("y", d3.forceY());
 
+    var width = 800;
+    var height = 600;
     var mainView = d3.select("figure#graph_view")
       .append("svg")
       .attr("id", "graph")
-      .attr("class", "full_size");
-    var viewNode = mainView.node();
-    var width = (viewNode as SVGGElement).clientWidth;
-    var height = (viewNode as SVGGElement).clientHeight;
+      .attr("viewBox", "0 0 " + width + " " + height + "");
 
     const link = mainView.append("g")
       .attr("class", "graph_link")
