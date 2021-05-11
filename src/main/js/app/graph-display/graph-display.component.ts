@@ -51,7 +51,15 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .attr("id", "graph")
       .attr("viewBox", [0, 0, width, height] as any);
 
+    // Builds links
+    const link = mainView.append("g")
+      .selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("class", "graph_link");
+
     // Builds nodes
+    // Added after the links so they are drawn over them
     const node = mainView.append("g")
       .selectAll("circle")
       .data(nodes)
@@ -60,13 +68,6 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .call(this.drag(simulation) as any);
     node.append("title")
       .text(d => d.name as string);
-
-    // Builds links
-    const link = mainView.append("g")
-      .selectAll("line")
-      .data(links)
-      .join("line")
-      .attr("class", "graph_link");
 
     // Adds zoom
     mainView.call(d3.zoom()
