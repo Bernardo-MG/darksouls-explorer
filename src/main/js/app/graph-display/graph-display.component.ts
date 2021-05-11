@@ -39,29 +39,36 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     var width = 800;
     var height = 600;
 
+    // Graph simulation
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id((d: any) => d.id))
       .force("charge", d3.forceManyBody())
       .force("center", d3.forceCenter(width / 2, height / 2));
 
+    // Main view container
     var mainView = d3.select("figure#graph_view")
       .append("svg")
       .attr("id", "graph")
       .attr("viewBox", [0, 0, width, height] as any);
 
-    const link = mainView.append("g")
-      .selectAll("line")
-      .data(links)
-      .join("line")
-      .attr("class", "graph_link");
-
+    // Builds nodes
     const node = mainView.append("g")
       .selectAll("circle")
       .data(nodes)
       .join("circle")
       .attr("class", "graph_node")
       .call(this.drag(simulation) as any);
+    node.append("title")
+      .text(d => d.name as string);
 
+    // Builds links
+    const link = mainView.append("g")
+      .selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("class", "graph_link");
+
+    // Adds zoom
     mainView.call(d3.zoom()
       .extent([[0, 0], [width, height]])
       .scaleExtent([0.5, 5])
@@ -71,9 +78,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       })
     );
 
-    node.append("title")
-      .text(d => d.name as string);
-
+    // Runs simulation
     simulation.on("tick", () => {
       link
         .attr("x1", d => d.source.x)
