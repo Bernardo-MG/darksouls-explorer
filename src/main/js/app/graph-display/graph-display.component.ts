@@ -64,7 +64,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
 
     mainView.call(d3.zoom()
       .extent([[0, 0], [width, height]])
-      .scaleExtent([1, 20])
+      .scaleExtent([0.5, 5])
       .on("zoom", (event) => {
         link.attr('transform', event.transform);
         node.attr('transform', event.transform);
