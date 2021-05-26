@@ -26,8 +26,8 @@ import org.neo4j.driver.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bernardomg.darksouls.explorer.model.Mention;
-import com.bernardomg.darksouls.explorer.model.MentionResult;
+import com.bernardomg.darksouls.explorer.model.Relationship;
+import com.bernardomg.darksouls.explorer.model.RelationshipResult;
 
 /**
  * People repository.
@@ -48,9 +48,9 @@ public class MentionRepositoryImpl implements MentionRepository {
     }
 
     @Override
-    public final List<Mention> findAllMentions() {
+    public final List<Relationship> findAllMentions() {
         final Result rows;
-        final List<Mention> result;
+        final List<Relationship> result;
 
         try (Session session = driver.session()) {
             rows = session.run(
@@ -62,17 +62,17 @@ public class MentionRepositoryImpl implements MentionRepository {
         return result;
     }
 
-    private final Mention toMention(final Record row) {
-        final MentionResult mention;
+    private final Relationship toMention(final Record row) {
+        final Relationship mention;
 
-        mention = new MentionResult();
-        mention.setMentioned(String.valueOf(row.get("mentioned")));
-        mention.setMentionedId(
-                Long.valueOf(String.valueOf(row.get("mentionedId"))));
-        mention.setMentioner(String.valueOf(row.get("mentioner")));
-        mention.setMentionerId(
+        mention = new RelationshipResult();
+        mention.setTarget(String.valueOf(row.get("mentioned")));
+        mention.setTargetId(Long.valueOf(String.valueOf(row.get("mentionedId"))));
+        mention.setSource(String.valueOf(row.get("mentioner")));
+        mention.setSourceId(
                 Long.valueOf(String.valueOf(row.get("mentionerId"))));
-        mention.setMention(String.valueOf(row.get("mention")));
+        mention.setType("mention");
+        // mention.setMention(String.valueOf(row.get("mention")));
 
         return mention;
     }

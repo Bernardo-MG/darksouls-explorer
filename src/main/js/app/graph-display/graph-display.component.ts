@@ -65,7 +65,8 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .data(nodes)
       .join("circle")
       .attr("class", "graph_node")
-      .call(this.drag(simulation) as any);
+      .call(this.drag(simulation) as any)
+      .on("mouseover", (event, d) => event.target.select("circle").transition().duration(750).attr("r", 16));
     node.append("title")
       .text(d => d.name as string);
 

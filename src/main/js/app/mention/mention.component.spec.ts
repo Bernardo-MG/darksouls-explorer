@@ -5,11 +5,11 @@ import { Observable, of } from 'rxjs';
 
 import { MentionService } from '../mention.service';
 import { MentionComponent } from './mention.component';
-import { Mention } from '../mention';
+import { Relationship } from '../relationship';
 
 class MockedMentionService {
 
-  getMentions(): Observable<Mention[]> {
+  getMentions(): Observable<Relationship[]> {
     return of([]);
   }
 

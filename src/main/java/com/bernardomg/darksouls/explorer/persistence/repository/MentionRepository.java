@@ -16,7 +16,7 @@
 
 package com.bernardomg.darksouls.explorer.persistence.repository;
 
-import com.bernardomg.darksouls.explorer.model.Mention;
+import com.bernardomg.darksouls.explorer.model.Relationship;
 
 /**
  * People repository.
@@ -26,6 +26,6 @@ import com.bernardomg.darksouls.explorer.model.Mention;
  */
 public interface MentionRepository {
 
-    public Iterable<Mention> findAllMentions();
+    public Iterable<Relationship> findAllMentions();
 
 }

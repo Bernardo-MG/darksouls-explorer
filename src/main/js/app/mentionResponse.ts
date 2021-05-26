@@ -1,5 +1,5 @@
-import { Mention } from './mention';
+import { Relationship } from './relationship';
 
 export interface MentionResponse {
-    allMentions: Array<Mention>;
+    allMentions: Array<Relationship>;
 }
