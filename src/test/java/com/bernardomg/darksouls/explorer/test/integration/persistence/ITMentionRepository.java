@@ -63,6 +63,10 @@ public class ITMentionRepository {
     static void initializeNeo4j() {
         embeddedDatabaseServer = Neo4jBuilders.newInProcessBuilder()
                 .withDisabledServer()// disable http server
+                .withFixture("CREATE ({name: 'Source'});")
+                .withFixture("CREATE ({name: 'Target'});")
+                .withFixture(
+                        "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:MENTIONS]->(m);")
                 .build();
     }
 
@@ -86,13 +90,13 @@ public class ITMentionRepository {
     }
 
     @Test
-    @DisplayName("Querying without data")
-    public void testFindAllMentions_NoData() {
+    @DisplayName("Querying data")
+    public void testFindAllMentions() {
         final Iterable<Relationship> data;
 
         data = repository.findAllMentions();
 
-        Assertions.assertEquals(0, Iterables.size(data));
+        Assertions.assertEquals(1, Iterables.size(data));
     }
 
 }
