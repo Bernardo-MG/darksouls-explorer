@@ -54,10 +54,7 @@ import com.google.common.collect.Iterables;
 @SpringBootTest(classes = Application.class)
 public class ITMentionRepository {
 
-    @Autowired
-    private MentionRepository repository;
-
-    private static Neo4j      embeddedDatabaseServer;
+    private static Neo4j embeddedDatabaseServer;
 
     @BeforeAll
     static void initializeNeo4j() {
@@ -82,6 +79,9 @@ public class ITMentionRepository {
         embeddedDatabaseServer.close();
     }
 
+    @Autowired
+    private MentionRepository repository;
+
     /**
      * Default constructor.
      */
@@ -90,13 +90,25 @@ public class ITMentionRepository {
     }
 
     @Test
-    @DisplayName("Querying data")
-    public void testFindAllMentions() {
+    @DisplayName("Returns all the data")
+    public void testFindAllMentions_Count() {
         final Iterable<Relationship> data;
 
         data = repository.findAllMentions();
 
         Assertions.assertEquals(1, Iterables.size(data));
+    }
+
+    @Test
+    @DisplayName("Returns the correct data")
+    public void testFindAllMentions_Data() {
+        final Relationship data;
+
+        data = repository.findAllMentions().iterator().next();
+
+        Assertions.assertEquals("Source", data.getSource());
+        Assertions.assertEquals("Target", data.getTarget());
+        Assertions.assertEquals("mention", data.getType());
     }
 
 }

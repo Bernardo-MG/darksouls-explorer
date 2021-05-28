@@ -66,12 +66,10 @@ public class MentionRepositoryImpl implements MentionRepository {
         final Relationship mention;
 
         mention = new RelationshipResult();
-        mention.setTarget(String.valueOf(row.get("mentioned")));
-        mention.setTargetId(
-                Long.valueOf(String.valueOf(row.get("mentionedId"))));
-        mention.setSource(String.valueOf(row.get("mentioner")));
-        mention.setSourceId(
-                Long.valueOf(String.valueOf(row.get("mentionerId"))));
+        mention.setTarget(row.get("mentioned", ""));
+        mention.setTargetId(row.get("mentionedId", 0l));
+        mention.setSource(row.get("mentioner", ""));
+        mention.setSourceId(row.get("mentionerId", 0l));
         mention.setType("mention");
         // mention.setMention(String.valueOf(row.get("mention")));
 
