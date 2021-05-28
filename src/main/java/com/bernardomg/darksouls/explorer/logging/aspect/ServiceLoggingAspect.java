@@ -54,8 +54,7 @@ public class ServiceLoggingAspect {
      * @param returnValue
      *            returned value
      */
-    @AfterReturning(
-            value = "execution(* com.bernardomg.example.solar..*Service*.*(..))",
+    @AfterReturning(value = "execution(* com.bernardomg..*Service*.*(..))",
             returning = "returnValue")
     public void afterCall(final JoinPoint joinPoint, final Object returnValue) {
         LOGGER.debug("Called {} and returning {}",
@@ -68,7 +67,7 @@ public class ServiceLoggingAspect {
      * @param joinPoint
      *            point where the aspect is applied
      */
-    @Before(value = "execution(* com.bernardomg.example.solar..*Service*.*(..))",
+    @Before(value = "execution(* com.bernardomg..*Service*.*(..))",
             argNames = "joinPoint")
     public void beforeCall(final JoinPoint joinPoint) {
         LOGGER.debug("Calling {} with arguments {}",
