@@ -60,14 +60,14 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
 
     // Builds nodes
     // Added after the links so they are drawn over them
-    const node = mainView.append("g")
-      .selectAll("circle")
+    const nodeRoot = mainView.append("g")
+      .selectAll("g")
       .data(nodes)
-      .join("circle")
-      .attr("class", "graph_node")
-      .call(this.drag(simulation) as any)
-      .on("mouseover", (event, d) => event.target.select("circle").transition().duration(750).attr("r", 16));
-    node.append("title")
+      .join("g")
+      .call(this.drag(simulation) as any);
+    const node = nodeRoot.append("circle")
+      .attr("class", "graph_node");
+    const nodeLabel = nodeRoot.append("text")
       .text(d => d.name as string);
 
     // Adds zoom
@@ -76,7 +76,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .scaleExtent([0.5, 5])
       .on("zoom", (event) => {
         link.attr('transform', event.transform);
-        node.attr('transform', event.transform);
+        nodeRoot.attr('transform', event.transform);
       })
     );
 
@@ -91,6 +91,10 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       node
         .attr("cx", d => d.x)
         .attr("cy", d => d.y);
+
+      nodeLabel
+        .attr("x", d => d.x)
+        .attr("y", d => d.y);
     });
   }
 
