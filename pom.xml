@@ -309,7 +309,9 @@
       <junit.jupiter.version>5.7.1</junit.jupiter.version>
       <log4j.version>2.14.1</log4j.version>
       <mockito.version>3.9.0</mockito.version>
+      <neo4j.test.version>4.1.1</neo4j.test.version>
       <reactiveStreams.version>1.0.3</reactiveStreams.version>
+      <reactor.version>3.4.6</reactor.version>
       <servlet.version>4.0.1</servlet.version>
       <slf4j.version>1.7.30</slf4j.version>
       <spring.boot.graphql.version>11.0.0</spring.boot.graphql.version>
@@ -673,6 +675,26 @@
                <artifactId>junit-vintage-engine</artifactId>
             </exclusion>
          </exclusions>
+      </dependency>
+      <dependency>
+         <!-- Neo4j Test Harness -->
+         <groupId>org.neo4j.test</groupId>
+         <artifactId>neo4j-harness</artifactId>
+         <version>${neo4j.test.version}</version>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>org.slf4j</groupId>
+               <artifactId>slf4j-nop</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <!-- Reactor core -->
+         <groupId>io.projectreactor</groupId>
+         <artifactId>reactor-core</artifactId>
+         <version>${reactor.version}</version>
+         <scope>test</scope>
       </dependency>
    </dependencies>
 
