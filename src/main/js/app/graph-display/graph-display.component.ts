@@ -35,7 +35,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
   private displayGraph(data: Graph) {
     const links: any[] = data.links;
     const nodes = data.nodes;
-    const types = data.types;
+    const types: String[] = data.types;
 
     var width = 800;
     var height = 600;
@@ -71,11 +71,12 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
 
     // Builds links
     const link = mainView.append("g")
-      .selectAll("line")
+      .attr("fill", "none")
+      .attr("stroke-width", 1.5)
+      .selectAll("path")
       .data(links)
-      .join("line")
-      .attr("class", "graph_link")
       .join("path")
+      .attr("class", "graph_link")
       .attr("stroke", d => color(d.type))
       .attr("marker-end", d => `url(${new URL(`#arrow-${d.type}`)})`);
 
@@ -103,11 +104,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
 
     // Runs simulation
     simulation.on("tick", () => {
-      link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+      link.attr("d", this.linkArc);
 
       node
         .attr("cx", d => d.x)
@@ -117,6 +114,14 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
         .attr("x", d => d.x)
         .attr("y", d => d.y);
     });
+  }
+
+  private linkArc(d) {
+    const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
+    return `
+      M${d.source.x},${d.source.y}
+      A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
+    `;
   }
 
   private drag(simulation) {

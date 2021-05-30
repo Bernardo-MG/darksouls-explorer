@@ -40,7 +40,7 @@ export class MentionService {
   toGraph(mentions: Relationship[]): Graph {
     const mentioned = mentions.map((mention: Relationship) => { return { id: mention.targetId, name: mention.target } });
     const mentioners = mentions.map((mention: Relationship) => { return { id: mention.sourceId, name: mention.source } });
-    const allTypes = mentions.map((mention: Relationship) => { return { type: mention.type } });
+    const allTypes = mentions.map((mention: Relationship) => { return mention.type});
 
     const nodeIds = new Set();
     const removeDuplicatedNodes = (data: Node[], item: Node) => {
