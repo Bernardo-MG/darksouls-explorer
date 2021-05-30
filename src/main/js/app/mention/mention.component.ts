@@ -9,7 +9,7 @@ import { Graph } from 'app/graph';
 })
 export class MentionComponent implements OnInit {
 
-  graph: Graph = { nodes: [], links: [] };
+  graph: Graph = { nodes: [], links: [], types: [] };
 
   constructor(
     private mentionService: MentionService

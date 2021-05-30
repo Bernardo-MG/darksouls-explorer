@@ -40,25 +40,40 @@ export class MentionService {
   toGraph(mentions: Relationship[]): Graph {
     const mentioned = mentions.map((mention: Relationship) => { return { id: mention.targetId, name: mention.target } });
     const mentioners = mentions.map((mention: Relationship) => { return { id: mention.sourceId, name: mention.source } });
+    const allTypes = mentions.map((mention: Relationship) => { return { type: mention.type } });
 
-    const ids = new Set();
-    const removeDuplicates = (data: Node[], item: Node) => {
+    const nodeIds = new Set();
+    const removeDuplicatedNodes = (data: Node[], item: Node) => {
       let result;
 
-      if(ids.has(item.id)){
+      if(nodeIds.has(item.id)){
         result = data;
       } else {
-        ids.add(item.id);
+        nodeIds.add(item.id);
         result = [...data, item];
       }
 
       return result;
     }
-    const nodes = mentioned.concat(mentioners).reduce(removeDuplicates, []);
+    const typeIds = new Set();
+    const removeDuplicatedTypes = (data: any[], item: any) => {
+      let result;
 
+      if(typeIds.has(item)){
+        result = data;
+      } else {
+        typeIds.add(item);
+        result = [...data, item];
+      }
+
+      return result;
+    }
+
+    const nodes = mentioned.concat(mentioners).reduce(removeDuplicatedNodes, []);
     const links = mentions.map((mention: Relationship) => { return { source: mention.sourceId, target: mention.targetId, type: mention.type } });
+    const types = allTypes.reduce(removeDuplicatedTypes, []);
 
-    return { nodes, links }
+    return { nodes, links, types }
   }
   
 

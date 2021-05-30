@@ -35,9 +35,12 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
   private displayGraph(data: Graph) {
     const links: any[] = data.links;
     const nodes = data.nodes;
+    const types = data.types;
 
     var width = 800;
     var height = 600;
+
+    const color = d3.scaleOrdinal(types, d3.schemeCategory10)
 
     // Graph simulation
     const simulation = d3.forceSimulation(nodes)
@@ -51,12 +54,30 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .attr("id", "graph")
       .attr("viewBox", [0, 0, width, height] as any);
 
+    // Per-type markers, as they don't inherit styles.
+    mainView.append("defs").selectAll("marker")
+      .data(types)
+      .join("marker")
+      .attr("id", d => `arrow-${d}`)
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 15)
+      .attr("refY", -0.5)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("fill", color)
+      .attr("d", "M0,-5L10,0L0,5");
+
     // Builds links
     const link = mainView.append("g")
       .selectAll("line")
       .data(links)
       .join("line")
-      .attr("class", "graph_link");
+      .attr("class", "graph_link")
+      .join("path")
+      .attr("stroke", d => color(d.type))
+      .attr("marker-end", d => `url(${new URL(`#arrow-${d.type}`)})`);
 
     // Builds nodes
     // Added after the links so they are drawn over them

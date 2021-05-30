@@ -3,5 +3,6 @@ import { Node } from './node';
 
 export interface Graph {
     nodes: Node[],
-    links: Link[]
+    links: Link[],
+    types: String[]
 }
