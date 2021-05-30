@@ -78,7 +78,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .join("path")
       .attr("class", "graph_link")
       .attr("stroke", d => color(d.type))
-      .attr("marker-end", d => `url(${new URL(`#arrow-${d.type}`)})`);
+      .attr("marker-end", d => `url(#arrow-${d.type})`);
 
     // Builds nodes
     // Added after the links so they are drawn over them
