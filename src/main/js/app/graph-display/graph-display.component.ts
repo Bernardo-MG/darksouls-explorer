@@ -37,8 +37,8 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     const nodes = data.nodes;
     const types: String[] = data.types;
 
-    var width = 800;
-    var height = 600;
+    const width = 800;
+    const height = 600;
 
     const color = d3.scaleOrdinal(types, d3.schemeCategory10)
 
@@ -88,7 +88,9 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .join("g")
       .call(this.drag(simulation) as any);
     const node = nodeRoot.append("circle")
-      .attr("class", "graph_node");
+      .attr("class", "graph_node")
+      .on("mouseover", this.mouseover)
+      .on("mouseout", this.mouseout);
     const nodeLabel = nodeRoot.append("text")
       .text(d => d.name as string);
 
@@ -146,6 +148,18 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .on("start", dragstarted)
       .on("drag", dragged)
       .on("end", dragended)
+  }
+
+  private mouseover(d, i) {
+    d3.select(this as any)
+      .style("cursor", "pointer")
+      .classed("graph_node_selected", true);
+  }
+
+  private mouseout(d, i) {
+    d3.select(this as any)
+      .style("cursor", "default")
+      .classed("graph_node_selected", false);
   }
 
 }
