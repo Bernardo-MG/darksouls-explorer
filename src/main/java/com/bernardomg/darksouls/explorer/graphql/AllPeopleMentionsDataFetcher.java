@@ -19,7 +19,7 @@ package com.bernardomg.darksouls.explorer.graphql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.model.Mention;
+import com.bernardomg.darksouls.explorer.model.Relationship;
 import com.bernardomg.darksouls.explorer.persistence.repository.MentionRepository;
 
 import graphql.schema.DataFetcher;
@@ -33,7 +33,7 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @Component
 public final class AllPeopleMentionsDataFetcher
-        implements DataFetcher<Iterable<Mention>> {
+        implements DataFetcher<Iterable<Relationship>> {
 
     /**
      * Planets repository.
@@ -49,7 +49,7 @@ public final class AllPeopleMentionsDataFetcher
     }
 
     @Override
-    public Iterable<Mention> get(final DataFetchingEnvironment environment)
+    public Iterable<Relationship> get(final DataFetchingEnvironment environment)
             throws Exception {
         return mentionRepository.findAllMentions();
     }

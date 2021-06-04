@@ -26,8 +26,8 @@ import org.neo4j.driver.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bernardomg.darksouls.explorer.model.Mention;
-import com.bernardomg.darksouls.explorer.model.MentionResult;
+import com.bernardomg.darksouls.explorer.model.Relationship;
+import com.bernardomg.darksouls.explorer.model.RelationshipResult;
 
 /**
  * People repository.
@@ -48,13 +48,13 @@ public class MentionRepositoryImpl implements MentionRepository {
     }
 
     @Override
-    public final List<Mention> findAllMentions() {
+    public final List<Relationship> findAllMentions() {
         final Result rows;
-        final List<Mention> result;
+        final List<Relationship> result;
 
         try (Session session = driver.session()) {
             rows = session.run(
-                    "MATCH (m)-[:MENTIONS]->(p:Person) RETURN p.name AS name, m.name AS source, m.description AS mention");
+                    "MATCH (m)-[:MENTIONS]->(p) RETURN p.name AS mentioned, ID(p) AS mentionedId, m.name AS mentioner, ID(m) AS mentionerId, m.description AS mention");
             result = rows.stream().map(this::toMention)
                     .collect(Collectors.toList());
         }
@@ -62,13 +62,16 @@ public class MentionRepositoryImpl implements MentionRepository {
         return result;
     }
 
-    private final Mention toMention(final Record row) {
-        final MentionResult mention;
+    private final Relationship toMention(final Record row) {
+        final Relationship mention;
 
-        mention = new MentionResult();
-        mention.setName(String.valueOf(row.get("name")));
-        mention.setMention(String.valueOf(row.get("mention")));
-        mention.setSource(String.valueOf(row.get("source")));
+        mention = new RelationshipResult();
+        mention.setTarget(row.get("mentioned", ""));
+        mention.setTargetId(row.get("mentionedId", 0l));
+        mention.setSource(row.get("mentioner", ""));
+        mention.setSourceId(row.get("mentionerId", 0l));
+        mention.setType("mention");
+        // mention.setMention(String.valueOf(row.get("mention")));
 
         return mention;
     }

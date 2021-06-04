@@ -50,7 +50,7 @@ public class PersistentPerson implements Person {
      *            the name
      */
     public void setName(final String value) {
-        this.name = value;
+        name = value;
     }
 
 }

@@ -18,11 +18,13 @@ import { APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { MentionComponent } from './mention/mention.component';
+import { GraphDisplayComponent } from './graph-display/graph-display.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MentionComponent
+    MentionComponent,
+    GraphDisplayComponent
   ],
   imports: [
     AppRoutingModule,

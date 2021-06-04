@@ -3,15 +3,13 @@ schema {
 }
 
 type Query {
-   allMentions: [Mention]
+   allMentions: [Relationship]
 }
 
-type Person {
-   name: String !
-}
-
-type Mention {
-   name: String !
+type Relationship {
    source: String !
-   mention: String !
+   sourceId: Int !
+   target: String !
+   targetId: Int !
+   type: String !
 }

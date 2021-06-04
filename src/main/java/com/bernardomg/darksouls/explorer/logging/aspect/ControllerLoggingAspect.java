@@ -54,8 +54,7 @@ public class ControllerLoggingAspect {
      * @param returnValue
      *            returned value
      */
-    @AfterReturning(
-            value = "execution(* com.bernardomg.example.solar..*Controller*.*(..))",
+    @AfterReturning(value = "execution(* com.bernardomg..*Controller*.*(..))",
             returning = "returnValue")
     public void afterCall(final JoinPoint joinPoint, final Object returnValue) {
         LOGGER.debug("Called {} and returning {}",
@@ -68,7 +67,7 @@ public class ControllerLoggingAspect {
      * @param joinPoint
      *            point where the aspect is applied
      */
-    @Before(value = "execution(* com.bernardomg.example.solar..*Controller*.*(..))",
+    @Before(value = "execution(* com.bernardomg..*Controller*.*(..))",
             argNames = "joinPoint")
     public void beforeCall(final JoinPoint joinPoint) {
         LOGGER.debug("Calling {} with arguments {}",

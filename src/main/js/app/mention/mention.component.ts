@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MentionService } from '../mention.service';
-import { Mention } from '../mention';
+import { Graph } from 'app/graph';
 
 @Component({
   selector: 'app-mention',
@@ -9,16 +9,14 @@ import { Mention } from '../mention';
 })
 export class MentionComponent implements OnInit {
 
-  columnsToDisplay = ['name', 'source', 'mention'];
-
-  mentions: Mention[];
+  graph: Graph = { nodes: [], links: [], types: [] };
 
   constructor(
     private mentionService: MentionService
   ) { }
 
   ngOnInit(): void {
-    this.mentionService.getMentions().subscribe(data => this.mentions = data);
+    this.mentionService.getMentions().subscribe(data => this.graph = data);
   }
 
 }
