@@ -89,8 +89,8 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .call(this.drag(simulation) as any);
     const node = nodeRoot.append("circle")
       .attr("class", "graph_node")
-      .on("mouseover", this.mouseover)
-      .on("mouseout", this.mouseout);
+      .on("mouseover", this.mouseoverButton)
+      .on("mouseout", this.mouseoutButton);
     const nodeLabel = nodeRoot.append("text")
       .text(d => d.name as string);
 
@@ -150,14 +150,14 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
       .on("end", dragended)
   }
 
-  private mouseover(d, i) {
-    d3.select(this as any)
+  private mouseoverButton(event, i) {
+    d3.select(event.target)
       .style("cursor", "pointer")
       .classed("graph_node_selected", true);
   }
 
-  private mouseout(d, i) {
-    d3.select(this as any)
+  private mouseoutButton(event, i) {
+    d3.select(event.target)
       .style("cursor", "default")
       .classed("graph_node_selected", false);
   }
