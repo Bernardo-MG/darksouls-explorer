@@ -3,12 +3,12 @@ import { Graph } from 'app/graph';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'app-graph-display',
+  selector: 'graph-view',
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './graph-display.component.html',
-  styleUrls: ['./graph-display.component.sass']
+  templateUrl: './graph-view.component.html',
+  styleUrls: ['./graph-view.component.sass']
 })
-export class GraphDisplayComponent implements OnInit, OnChanges {
+export class GraphViewComponent implements OnInit, OnChanges {
 
   @Input() graph: Graph;
 
