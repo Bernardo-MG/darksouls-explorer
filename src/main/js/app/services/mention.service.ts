@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { Apollo, gql } from 'apollo-angular';
 import { map } from 'rxjs/operators';
-import { Relationship } from './models/relationship';
-import { Graph } from './models/graph';
-import { Node } from './models/node';
-import { MentionResponse } from './models/mentionResponse';
+import { Relationship } from '../models/relationship';
+import { Graph } from '../models/graph';
+import { Node } from '../models/node';
+import { MentionResponse } from '../models/mentionResponse';
 import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({

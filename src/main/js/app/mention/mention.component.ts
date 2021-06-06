@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MentionService } from 'app/mention.service';
+import { MentionService } from 'app/services/mention.service';
 import { Graph } from 'app/models/graph';
 
 @Component({
