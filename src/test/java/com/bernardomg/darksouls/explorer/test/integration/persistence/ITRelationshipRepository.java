@@ -42,17 +42,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.model.Relationship;
-import com.bernardomg.darksouls.explorer.persistence.repository.MentionRepository;
+import com.bernardomg.darksouls.explorer.persistence.repository.RelationshipRepository;
 import com.google.common.collect.Iterables;
 
 /**
- * Integration tests for the {@link MentionRepository}.
+ * Integration tests for the {@link RelationshipRepository}.
  */
 @SpringJUnitConfig
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-public class ITMentionRepository {
+public class ITRelationshipRepository {
 
     private static Neo4j embeddedDatabaseServer;
 
@@ -80,12 +80,12 @@ public class ITMentionRepository {
     }
 
     @Autowired
-    private MentionRepository repository;
+    private RelationshipRepository repository;
 
     /**
      * Default constructor.
      */
-    public ITMentionRepository() {
+    public ITRelationshipRepository() {
         super();
     }
 
@@ -94,7 +94,7 @@ public class ITMentionRepository {
     public void testFindAllMentions_Count() {
         final Iterable<Relationship> data;
 
-        data = repository.findAllMentions();
+        data = repository.findAll("MENTIONS");
 
         Assertions.assertEquals(1, Iterables.size(data));
     }
@@ -104,7 +104,7 @@ public class ITMentionRepository {
     public void testFindAllMentions_Data() {
         final Relationship data;
 
-        data = repository.findAllMentions().iterator().next();
+        data = repository.findAll("MENTIONS").iterator().next();
 
         Assertions.assertEquals("Source", data.getSource());
         Assertions.assertEquals("Target", data.getTarget());

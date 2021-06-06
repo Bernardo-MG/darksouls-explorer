@@ -19,13 +19,13 @@ package com.bernardomg.darksouls.explorer.persistence.repository;
 import com.bernardomg.darksouls.explorer.model.Relationship;
 
 /**
- * People repository.
+ * Relationship repository.
  * 
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface MentionRepository {
+public interface RelationshipRepository {
 
-    public Iterable<Relationship> findAllMentions();
+    public Iterable<Relationship> findAll(final String type);
 
 }

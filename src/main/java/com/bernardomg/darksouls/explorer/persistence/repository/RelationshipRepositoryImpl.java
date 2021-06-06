@@ -36,25 +36,29 @@ import com.bernardomg.darksouls.explorer.model.RelationshipResult;
  *
  */
 @Repository
-public class MentionRepositoryImpl implements MentionRepository {
+public class RelationshipRepositoryImpl implements RelationshipRepository {
 
     private final Driver driver;
 
     @Autowired
-    protected MentionRepositoryImpl(final Driver drv) {
+    protected RelationshipRepositoryImpl(final Driver drv) {
         super();
 
         driver = drv;
     }
 
     @Override
-    public final List<Relationship> findAllMentions() {
+    public final List<Relationship> findAll(final String type) {
         final Result rows;
         final List<Relationship> result;
+        final String queryTemplate;
+        final String query;
+
+        queryTemplate = "MATCH (m)-[:%s]->(p) RETURN p.name AS mentioned, ID(p) AS mentionedId, m.name AS mentioner, ID(m) AS mentionerId, m.description AS mention";
+        query = String.format(queryTemplate, type);
 
         try (Session session = driver.session()) {
-            rows = session.run(
-                    "MATCH (m)-[:MENTIONS]->(p) RETURN p.name AS mentioned, ID(p) AS mentionedId, m.name AS mentioner, ID(m) AS mentionerId, m.description AS mention");
+            rows = session.run(query);
             result = rows.stream().map(this::toMention)
                     .collect(Collectors.toList());
         }

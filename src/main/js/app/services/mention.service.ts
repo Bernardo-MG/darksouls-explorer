@@ -22,7 +22,7 @@ export class MentionService {
       .watchQuery({
         query: gql`
           {
-            relationships {
+            relationships(type: "MENTIONS") {
               source,
               sourceId,
               target,

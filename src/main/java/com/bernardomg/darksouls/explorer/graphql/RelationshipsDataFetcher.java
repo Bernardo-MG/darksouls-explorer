@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.model.Relationship;
-import com.bernardomg.darksouls.explorer.persistence.repository.MentionRepository;
+import com.bernardomg.darksouls.explorer.persistence.repository.RelationshipRepository;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -40,7 +40,7 @@ public final class RelationshipsDataFetcher
      * Planets repository.
      */
     @Autowired
-    private MentionRepository mentionRepository;
+    private RelationshipRepository mentionRepository;
 
     /**
      * Default constructor.
@@ -52,7 +52,8 @@ public final class RelationshipsDataFetcher
     @Override
     public Iterable<Relationship> get(final DataFetchingEnvironment environment)
             throws Exception {
-        return mentionRepository.findAllMentions();
+        // TODO: Handle when the argument is missing
+        return mentionRepository.findAll(environment.getArgument("type"));
     }
 
 }
