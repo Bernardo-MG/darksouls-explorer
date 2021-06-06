@@ -108,7 +108,7 @@ public class ITRelationshipRepository {
 
         Assertions.assertEquals("Source", data.getSource());
         Assertions.assertEquals("Target", data.getTarget());
-        Assertions.assertEquals("mention", data.getType());
+        Assertions.assertEquals("MENTIONS", data.getType());
     }
 
 }
