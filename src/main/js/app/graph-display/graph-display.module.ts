@@ -8,11 +8,13 @@ import { MatCardModule } from '@angular/material/card';
 
 import { GraphViewComponent } from './graph-view/graph-view.component';
 import { GraphStatusComponent } from './graph-status/graph-status.component';
+import { GraphDiagramComponent } from './graph-diagram/graph-diagram.component';
 
 @NgModule({
   declarations: [
     GraphViewComponent,
-    GraphStatusComponent
+    GraphStatusComponent,
+    GraphDiagramComponent
   ],
   imports: [
     CommonModule,

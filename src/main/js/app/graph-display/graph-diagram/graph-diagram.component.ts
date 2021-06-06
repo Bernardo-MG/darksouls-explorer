@@ -1,13 +1,14 @@
-import { Component, OnInit, OnChanges, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { Graph } from 'app/graph';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'graph-view',
-  templateUrl: './graph-view.component.html',
-  styleUrls: ['./graph-view.component.sass']
+  selector: 'graph-diagram',
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './graph-diagram.component.html',
+  styleUrls: ['./graph-diagram.component.sass']
 })
-export class GraphViewComponent implements OnInit, OnChanges {
+export class GraphDiagramComponent implements OnInit, OnChanges {
 
   @Input() graph: Graph;
 
