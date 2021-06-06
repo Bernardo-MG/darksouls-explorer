@@ -3,35 +3,35 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { Observable, of } from 'rxjs';
 
-import { MentionService } from 'app/services/mention.service';
-import { MentionComponent } from './mention.component';
+import { RelationshipService } from 'app/services/relationship.service';
+import { RelationshipComponent } from './relationship.component';
 import { Relationship } from 'app/models/relationship';
 
-class MockedMentionService {
+class MockedRelationshipService {
 
-  getMentions(): Observable<Relationship[]> {
+  getRelationships(): Observable<Relationship[]> {
     return of([]);
   }
 
 }
 
-describe('MentionComponent', () => {
-  let component: MentionComponent;
-  let fixture: ComponentFixture<MentionComponent>;
+describe('RelationshipComponent', () => {
+  let component: RelationshipComponent;
+  let fixture: ComponentFixture<RelationshipComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MentionComponent ],
+      declarations: [ RelationshipComponent ],
       imports: [RouterTestingModule, ApolloTestingModule],
       providers: [
-        { provides: MentionService, useClass: MockedMentionService }
+        { provides: RelationshipService, useClass: MockedRelationshipService }
       ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MentionComponent);
+    fixture = TestBed.createComponent(RelationshipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

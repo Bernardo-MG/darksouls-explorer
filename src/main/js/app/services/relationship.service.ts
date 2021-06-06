@@ -5,20 +5,20 @@ import { map } from 'rxjs/operators';
 import { Relationship } from '../models/relationship';
 import { Graph } from '../models/graph';
 import { Node } from '../models/node';
-import { MentionResponse } from '../models/mentionResponse';
+import { RelationshipResponse } from '../models/relationshipResponse';
 import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MentionService {
+export class RelationshipService {
 
   constructor(
     private apollo: Apollo
   ) { }
 
-  getMentions(): Observable<Graph> {
-    const mentions = this.apollo
+  getRelationships(): Observable<Graph> {
+    const relationships = this.apollo
       .watchQuery({
         query: gql`
           {
@@ -32,9 +32,9 @@ export class MentionService {
           }
         `,
       })
-      .valueChanges.pipe(map((response: ApolloQueryResult<MentionResponse>) => { return response.data.relationships }));
+      .valueChanges.pipe(map((response: ApolloQueryResult<RelationshipResponse>) => { return response.data.relationships }));
 
-    return mentions.pipe(map(this.toGraph));
+    return relationships.pipe(map(this.toGraph));
   }
 
   toGraph(relationships: Relationship[]): Graph {
