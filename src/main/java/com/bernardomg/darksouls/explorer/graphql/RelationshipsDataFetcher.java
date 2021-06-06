@@ -26,13 +26,14 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Fetcher for the all people query.
+ * Fetcher for relationships. It will return all the nodes connected by a
+ * relationship, along said relationship.
  * 
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Component
-public final class AllPeopleMentionsDataFetcher
+public final class RelationshipsDataFetcher
         implements DataFetcher<Iterable<Relationship>> {
 
     /**
@@ -44,7 +45,7 @@ public final class AllPeopleMentionsDataFetcher
     /**
      * Default constructor.
      */
-    public AllPeopleMentionsDataFetcher() {
+    public RelationshipsDataFetcher() {
         super();
     }
 

@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-import com.bernardomg.darksouls.explorer.graphql.AllPeopleMentionsDataFetcher;
+import com.bernardomg.darksouls.explorer.graphql.RelationshipsDataFetcher;
 
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -44,16 +44,16 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 public class GraphqlConfig {
 
     /**
-     * All planets fetcher.
+     * Relationships fetcher.
      */
     @Autowired
-    private AllPeopleMentionsDataFetcher allPeopleDataFetcher;
+    private RelationshipsDataFetcher relationshipsDataFetcher;
 
     /**
      * GraphQL definitions.
      */
     @Value("classpath:graphql/darksouls.graphqls")
-    private Resource                     definitions;
+    private Resource                 definitions;
 
     public GraphqlConfig() {
         super();
@@ -71,13 +71,14 @@ public class GraphqlConfig {
         runtimeWiring = buildRuntimeWiring();
         graphQLSchema = new SchemaGenerator()
                 .makeExecutableSchema(typeDefinitionRegistry, runtimeWiring);
+
         return GraphQL.newGraphQL(graphQLSchema).build();
     }
 
     private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allMentions", allPeopleDataFetcher))
+                        .dataFetcher("relationships", relationshipsDataFetcher))
                 .build();
     }
 

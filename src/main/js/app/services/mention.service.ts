@@ -22,7 +22,7 @@ export class MentionService {
       .watchQuery({
         query: gql`
           {
-            allMentions {
+            relationships {
               source,
               sourceId,
               target,
@@ -32,7 +32,7 @@ export class MentionService {
           }
         `,
       })
-      .valueChanges.pipe(map((response: ApolloQueryResult<MentionResponse>) => { return response.data.allMentions }));
+      .valueChanges.pipe(map((response: ApolloQueryResult<MentionResponse>) => { return response.data.relationships }));
 
     return mentions.pipe(map(this.toGraph));
   }

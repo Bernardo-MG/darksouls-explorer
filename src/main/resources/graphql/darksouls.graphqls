@@ -3,7 +3,7 @@ schema {
 }
 
 type Query {
-   allMentions: [Relationship]
+   relationships: [Relationship]
 }
 
 type Relationship {
