@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
-import { Graph } from 'app/graph';
+import { Graph } from 'app/models/graph';
 import * as d3 from 'd3';
 
 @Component({

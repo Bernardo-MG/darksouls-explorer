@@ -3,9 +3,9 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { Observable, of } from 'rxjs';
 
-import { MentionService } from '../mention.service';
+import { MentionService } from 'app/mention.service';
 import { MentionComponent } from './mention.component';
-import { Relationship } from '../relationship';
+import { Relationship } from 'app/models/relationship';
 
 class MockedMentionService {
 

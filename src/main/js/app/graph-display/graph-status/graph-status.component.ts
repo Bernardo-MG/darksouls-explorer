@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Graph } from 'app/graph';
+import { Graph } from 'app/models/graph';
 
 @Component({
   selector: 'graph-status',

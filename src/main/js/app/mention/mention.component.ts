@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MentionService } from '../mention.service';
-import { Graph } from 'app/graph';
+import { MentionService } from 'app/mention.service';
+import { Graph } from 'app/models/graph';
 
 @Component({
   selector: 'app-mention',
