@@ -37,16 +37,16 @@ export class MentionService {
     return mentions.pipe(map(this.toGraph));
   }
 
-  toGraph(mentions: Relationship[]): Graph {
-    const mentioned = mentions.map((mention: Relationship) => { return { id: mention.targetId, name: mention.target } });
-    const mentioners = mentions.map((mention: Relationship) => { return { id: mention.sourceId, name: mention.source } });
-    const allTypes = mentions.map((mention: Relationship) => { return mention.type});
+  toGraph(relationships: Relationship[]): Graph {
+    const targets = relationships.map((relationship: Relationship) => { return { id: relationship.targetId, name: relationship.target } });
+    const sources = relationships.map((relationship: Relationship) => { return { id: relationship.sourceId, name: relationship.source } });
+    const allTypes = relationships.map((relationship: Relationship) => { return relationship.type });
 
     const nodeIds = new Set();
     const removeDuplicatedNodes = (data: Node[], item: Node) => {
       let result;
 
-      if(nodeIds.has(item.id)){
+      if (nodeIds.has(item.id)) {
         result = data;
       } else {
         nodeIds.add(item.id);
@@ -59,7 +59,7 @@ export class MentionService {
     const removeDuplicatedTypes = (data: any[], item: any) => {
       let result;
 
-      if(typeIds.has(item)){
+      if (typeIds.has(item)) {
         result = data;
       } else {
         typeIds.add(item);
@@ -69,12 +69,12 @@ export class MentionService {
       return result;
     }
 
-    const nodes = mentioned.concat(mentioners).reduce(removeDuplicatedNodes, []);
-    const links = mentions.map((mention: Relationship) => { return { source: mention.sourceId, target: mention.targetId, type: mention.type } });
+    const nodes = targets.concat(sources).reduce(removeDuplicatedNodes, []);
+    const links = relationships.map((relationship: Relationship) => { return { source: relationship.sourceId, target: relationship.targetId, type: relationship.type } });
     const types = allTypes.reduce(removeDuplicatedTypes, []);
 
     return { nodes, links, types }
   }
-  
+
 
 }
