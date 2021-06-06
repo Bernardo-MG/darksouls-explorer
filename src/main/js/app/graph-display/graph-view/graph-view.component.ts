@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Graph } from 'app/models/graph';
-import * as d3 from 'd3';
 
 @Component({
   selector: 'graph-view',
@@ -11,6 +10,12 @@ export class GraphViewComponent {
 
   @Input() graph: Graph;
 
+  @Input() nodeName: string;
+
   constructor() { }
+
+  onSelectNode(newItem: string) {
+    this.nodeName = newItem;
+  }
 
 }

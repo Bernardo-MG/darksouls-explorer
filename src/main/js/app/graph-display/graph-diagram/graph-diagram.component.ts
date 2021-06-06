@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Graph } from 'app/models/graph';
 import * as d3 from 'd3';
 
@@ -11,6 +11,8 @@ import * as d3 from 'd3';
 export class GraphDiagramComponent implements OnInit, OnChanges {
 
   @Input() graph: Graph;
+
+  @Output() selectNode = new EventEmitter<string>();
 
   constructor() { }
 
@@ -90,7 +92,8 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
     const node = nodeRoot.append("circle")
       .attr("class", "graph_node")
       .on("mouseover", this.mouseoverButton)
-      .on("mouseout", this.mouseoutButton);
+      .on("mouseout", this.mouseoutButton)
+      .on("click", (event, item) => this.selectNode.emit(item.name as string));
     const nodeLabel = nodeRoot.append("text")
       .text(d => d.name as string);
 
