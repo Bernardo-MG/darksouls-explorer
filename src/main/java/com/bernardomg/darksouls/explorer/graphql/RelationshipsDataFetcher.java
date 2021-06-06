@@ -40,7 +40,7 @@ public final class RelationshipsDataFetcher
      * Planets repository.
      */
     @Autowired
-    private RelationshipRepository mentionRepository;
+    private RelationshipRepository relationshipRepository;
 
     /**
      * Default constructor.
@@ -53,7 +53,7 @@ public final class RelationshipsDataFetcher
     public Iterable<Relationship> get(final DataFetchingEnvironment environment)
             throws Exception {
         // TODO: Handle when the argument is missing
-        return mentionRepository.findAll(environment.getArgument("type"));
+        return relationshipRepository.findAll(environment.getArgument("type"));
     }
 
 }

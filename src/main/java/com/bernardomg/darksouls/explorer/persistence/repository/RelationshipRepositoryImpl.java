@@ -54,30 +54,29 @@ public class RelationshipRepositoryImpl implements RelationshipRepository {
         final String queryTemplate;
         final String query;
 
-        queryTemplate = "MATCH (m)-[:%s]->(p) RETURN p.name AS mentioned, ID(p) AS mentionedId, m.name AS mentioner, ID(m) AS mentionerId, m.description AS mention";
+        queryTemplate = "MATCH (s)-[:%s]->(t) RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId";
         query = String.format(queryTemplate, type);
 
         try (Session session = driver.session()) {
             rows = session.run(query);
-            result = rows.stream().map(this::toMention)
+            result = rows.stream().map(this::toRelationship)
                     .collect(Collectors.toList());
         }
 
         return result;
     }
 
-    private final Relationship toMention(final Record row) {
-        final Relationship mention;
+    private final Relationship toRelationship(final Record row) {
+        final Relationship relationship;
 
-        mention = new RelationshipResult();
-        mention.setTarget(row.get("mentioned", ""));
-        mention.setTargetId(row.get("mentionedId", 0l));
-        mention.setSource(row.get("mentioner", ""));
-        mention.setSourceId(row.get("mentionerId", 0l));
-        mention.setType("mention");
-        // mention.setMention(String.valueOf(row.get("mention")));
+        relationship = new RelationshipResult();
+        relationship.setSource(row.get("source", ""));
+        relationship.setSourceId(row.get("sourceId", 0l));
+        relationship.setTarget(row.get("target", ""));
+        relationship.setTargetId(row.get("targetId", 0l));
+        relationship.setType("MENTIONS");
 
-        return mention;
+        return relationship;
     }
 
 }
