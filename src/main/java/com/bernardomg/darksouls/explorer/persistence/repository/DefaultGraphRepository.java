@@ -74,14 +74,12 @@ public class DefaultGraphRepository implements GraphRepository {
 
         // TODO: Build only if they are requested
 
-        // TODO: Remove duplicates
         nodes = new HashSet<>();
         nodes.addAll(links.stream().map(this::toSourceNode)
                 .collect(Collectors.toList()));
         nodes.addAll(links.stream().map(this::toTargetNode)
                 .collect(Collectors.toList()));
 
-        // TODO: Remove duplicates
         types = new HashSet<>();
         types.addAll(
                 links.stream().map(Link::getType).collect(Collectors.toList()));
