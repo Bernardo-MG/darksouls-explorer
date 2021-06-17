@@ -5,8 +5,6 @@ import { map } from 'rxjs/operators';
 import { GraphResponse } from '../models/graphResponse';
 import { Graph } from '../models/graph';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { Link } from 'app/models/link';
-import { Node } from 'app/models/node';
 
 @Injectable({
   providedIn: 'root'
