@@ -1,0 +1,54 @@
+import { Injectable } from '@angular/core';
+import { Observable, of, Subscription } from 'rxjs';
+import { Apollo, gql } from 'apollo-angular';
+import { map } from 'rxjs/operators';
+import { GraphResponse } from '../models/graphResponse';
+import { Graph } from '../models/graph';
+import { ApolloQueryResult } from '@apollo/client/core';
+import { Link } from 'app/models/link';
+import { Node } from 'app/models/node';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GraphService {
+
+  constructor(
+    private apollo: Apollo
+  ) { }
+
+  getGraph(): Observable<Graph> {
+    const graph = this.apollo
+      .watchQuery({
+        query: gql`
+          {
+            graph(type: "MENTIONS") {
+              nodes {
+                id,
+                name
+              },
+              links {
+                source,
+                sourceId,
+                target,
+                targetId,
+                type
+              },
+              types
+            }
+          }
+        `,
+      })
+      .valueChanges.pipe(map((response: ApolloQueryResult<GraphResponse>) => { return response.data.graph }));
+
+    return graph.pipe(map(this.toEditable));
+  }
+
+  toEditable(graph: Graph) {
+    const links = graph.links.map(((link: Link) => { return { source: link.source, sourceId: link.sourceId, target: link.target, targetId: link.targetId, type: link.type } }));
+    const nodes = graph.nodes.map((node: Node) => { return { id: node.id, name: node.name } });
+
+    return { nodes, links, types: graph.types }
+  }
+
+}

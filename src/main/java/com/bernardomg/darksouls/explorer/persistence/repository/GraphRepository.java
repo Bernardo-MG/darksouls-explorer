@@ -14,43 +14,18 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.model;
+package com.bernardomg.darksouls.explorer.persistence.repository;
 
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
+import com.bernardomg.darksouls.explorer.model.Graph;
 
 /**
- * Persistent planet. Prepared for Neo4j.
+ * Graph repository.
  * 
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Node("Person")
-public class PersistentPerson implements Person {
+public interface GraphRepository {
 
-    /**
-     * Planet name.
-     */
-    @Id
-    private String name;
-
-    public PersistentPerson() {
-        super();
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the name.
-     * 
-     * @param value
-     *            the name
-     */
-    public void setName(final String value) {
-        name = value;
-    }
+    public Graph findAll(final String type);
 
 }

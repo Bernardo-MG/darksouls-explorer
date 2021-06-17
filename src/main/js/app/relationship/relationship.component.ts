@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RelationshipService } from 'app/services/relationship.service';
+import { GraphService } from 'app/services/graph.service';
 import { Graph } from 'app/models/graph';
 
 @Component({
@@ -12,11 +12,11 @@ export class RelationshipComponent implements OnInit {
   graph: Graph = { nodes: [], links: [], types: [] };
 
   constructor(
-    private relationshipService: RelationshipService
+    private graphService: GraphService
   ) { }
 
   ngOnInit(): void {
-    this.relationshipService.getRelationships().subscribe(data => this.graph = data);
+    this.graphService.getGraph().subscribe(data => this.graph = data);
   }
 
 }

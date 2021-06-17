@@ -1,7 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.model;
 
-public interface Relationship {
+public interface Link {
 
     public String getSource();
 

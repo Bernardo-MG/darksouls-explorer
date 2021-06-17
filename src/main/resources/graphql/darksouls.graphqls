@@ -3,10 +3,21 @@ schema {
 }
 
 type Query {
-   relationships(type: String): [Relationship]
+   graph(type: String): Graph
 }
 
-type Relationship {
+type Graph {
+   nodes: [Node]
+   links: [Link]
+   types: [String]
+}
+
+type Node {
+   id: Int !
+   name: String !
+}
+
+type Link {
    source: String !
    sourceId: Int !
    target: String !

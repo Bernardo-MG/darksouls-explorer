@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Graph } from 'app/models/graph';
+import { Link } from 'app/models/link';
 import * as d3 from 'd3';
 
 @Component({
@@ -35,9 +36,9 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
   }
 
   private displayGraph(data: Graph) {
-    const links: any[] = data.links;
+    const links = data.links.map((link) => { return { source: link.sourceId, target: link.targetId, type: link.type } });
     const nodes = data.nodes;
-    const types: String[] = data.types;
+    const types = data.types;
 
     const width = 800;
     const height = 600;

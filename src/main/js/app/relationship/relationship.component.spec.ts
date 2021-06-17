@@ -3,31 +3,31 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { Observable, of } from 'rxjs';
 
-import { RelationshipService } from 'app/services/relationship.service';
+import { GraphService } from 'app/services/graph.service';
 import { RelationshipComponent } from './relationship.component';
-import { Relationship } from 'app/models/relationship';
+import { Graph } from 'app/models/graph';
 
-class MockedRelationshipService {
+class MockedGraphService {
 
-  getRelationships(): Observable<Relationship[]> {
-    return of([]);
+  getGraph(): Observable<Graph> {
+    return of({ nodes: [], links: [], types: [] });
   }
 
 }
 
-describe('RelationshipComponent', () => {
+describe('GraphComponent', () => {
   let component: RelationshipComponent;
   let fixture: ComponentFixture<RelationshipComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RelationshipComponent ],
+      declarations: [RelationshipComponent],
       imports: [RouterTestingModule, ApolloTestingModule],
       providers: [
-        { provides: RelationshipService, useClass: MockedRelationshipService }
+        { provides: GraphService, useClass: MockedGraphService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

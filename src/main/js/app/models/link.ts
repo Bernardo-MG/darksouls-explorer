@@ -1,9 +1,9 @@
-import { Node } from './node';
-
 export interface Link {
     source: Object,
+    sourceId: number,
     target: Object,
-    type: Object,
+    targetId: number,
+    type: String,
     x?: number,
     y?: number
 }

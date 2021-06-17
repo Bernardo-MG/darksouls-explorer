@@ -42,7 +42,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.model.Graph;
-import com.bernardomg.darksouls.explorer.model.Link;
 import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
 import com.google.common.collect.Iterables;
 
@@ -53,7 +52,7 @@ import com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-public class ITRelationshipRepository {
+public class ITRelationshipRepositoryMultiple {
 
     private static Neo4j embeddedDatabaseServer;
 
@@ -63,8 +62,11 @@ public class ITRelationshipRepository {
                 .withDisabledServer()// disable http server
                 .withFixture("CREATE ({name: 'Source'});")
                 .withFixture("CREATE ({name: 'Target'});")
+                .withFixture("CREATE ({name: 'Another'});")
                 .withFixture(
                         "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:RELATIONSHIP]->(m);")
+                .withFixture(
+                        "MATCH (n {name: 'Source'}), (m {name: 'Another'}) MERGE (n)-[:RELATIONSHIP]->(m);")
                 .build();
     }
 
@@ -86,7 +88,7 @@ public class ITRelationshipRepository {
     /**
      * Default constructor.
      */
-    public ITRelationshipRepository() {
+    public ITRelationshipRepositoryMultiple() {
         super();
     }
 
@@ -97,21 +99,9 @@ public class ITRelationshipRepository {
 
         data = repository.findAll("RELATIONSHIP");
 
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(2, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(3, Iterables.size(data.getNodes()));
         Assertions.assertEquals(1, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Returns the correct data")
-    public void testFindAllMentions_Data() {
-        final Link data;
-
-        data = repository.findAll("RELATIONSHIP").getLinks().iterator().next();
-
-        Assertions.assertEquals("Source", data.getSource());
-        Assertions.assertEquals("Target", data.getTarget());
-        Assertions.assertEquals("RELATIONSHIP", data.getType());
     }
 
 }

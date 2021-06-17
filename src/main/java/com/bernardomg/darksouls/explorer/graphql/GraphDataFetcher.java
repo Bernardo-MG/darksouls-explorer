@@ -19,41 +19,39 @@ package com.bernardomg.darksouls.explorer.graphql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.model.Relationship;
-import com.bernardomg.darksouls.explorer.persistence.repository.RelationshipRepository;
+import com.bernardomg.darksouls.explorer.model.Graph;
+import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Fetcher for relationships. It will return all the nodes connected by a
- * relationship, along said relationship.
+ * Fetcher for graphs. It will return all the nodes and their relationships.
  * 
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Component
-public final class RelationshipsDataFetcher
-        implements DataFetcher<Iterable<Relationship>> {
+public final class GraphDataFetcher implements DataFetcher<Graph> {
 
     /**
-     * Planets repository.
+     * Graph repository.
      */
     @Autowired
-    private RelationshipRepository relationshipRepository;
+    private GraphRepository graphRepository;
 
     /**
      * Default constructor.
      */
-    public RelationshipsDataFetcher() {
+    public GraphDataFetcher() {
         super();
     }
 
     @Override
-    public Iterable<Relationship> get(final DataFetchingEnvironment environment)
+    public Graph get(final DataFetchingEnvironment environment)
             throws Exception {
         // TODO: Handle when the argument is missing
-        return relationshipRepository.findAll(environment.getArgument("type"));
+        return graphRepository.findAll(environment.getArgument("type"));
     }
 
 }
