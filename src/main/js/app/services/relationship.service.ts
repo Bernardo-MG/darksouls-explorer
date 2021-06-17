@@ -34,44 +34,38 @@ export class RelationshipService {
       })
       .valueChanges.pipe(map((response: ApolloQueryResult<RelationshipResponse>) => { return response.data.relationships }));
 
-    return relationships.pipe(map(this.toGraph));
+    return relationships.pipe(map((v) => this.toGraph(v, this.removeDuplicates)));
   }
 
-  toGraph(relationships: Relationship[]): Graph {
-    const targets = relationships.map((relationship: Relationship) => { return { id: relationship.targetId, name: relationship.target } });
+  removeDuplicates<T>(data: T[], mapper: Function): T[] {
+    const ids = new Set();
+    const removeDuplicated = (data: T[], item: T) => {
+      let result: T[];
+
+      if (ids.has(mapper(item))) {
+        result = data;
+      } else {
+        ids.add(mapper(item));
+        result = [...data, item];
+      }
+
+      return result;
+    }
+
+    return data.reduce(removeDuplicated, []);
+  }
+
+  toGraph(relationships: Relationship[], removeDuplicates: Function): Graph {
+    // Which nodes the relationships point from
     const sources = relationships.map((relationship: Relationship) => { return { id: relationship.sourceId, name: relationship.source } });
+    // Which nodes the relationships point to
+    const targets = relationships.map((relationship: Relationship) => { return { id: relationship.targetId, name: relationship.target } });
+    // All the relationship types
     const allTypes = relationships.map((relationship: Relationship) => { return relationship.type });
 
-    const nodeIds = new Set();
-    const removeDuplicatedNodes = (data: Node[], item: Node) => {
-      let result;
-
-      if (nodeIds.has(item.id)) {
-        result = data;
-      } else {
-        nodeIds.add(item.id);
-        result = [...data, item];
-      }
-
-      return result;
-    }
-    const typeIds = new Set();
-    const removeDuplicatedTypes = (data: any[], item: any) => {
-      let result;
-
-      if (typeIds.has(item)) {
-        result = data;
-      } else {
-        typeIds.add(item);
-        result = [...data, item];
-      }
-
-      return result;
-    }
-
-    const nodes = targets.concat(sources).reduce(removeDuplicatedNodes, []);
+    const nodes = removeDuplicates(targets.concat(sources), (value: Node) => value.id);
     const links = relationships.map((relationship: Relationship) => { return { source: relationship.sourceId, target: relationship.targetId, type: relationship.type } });
-    const types = allTypes.reduce(removeDuplicatedTypes, []);
+    const types = removeDuplicates(allTypes, (value: String) => value);
 
     return { nodes, links, types }
   }
