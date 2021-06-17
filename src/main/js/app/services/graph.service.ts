@@ -41,14 +41,7 @@ export class GraphService {
       })
       .valueChanges.pipe(map((response: ApolloQueryResult<GraphResponse>) => { return response.data.graph }));
 
-    return graph.pipe(map(this.toEditable));
-  }
-
-  toEditable(graph: Graph) {
-    const links = graph.links.map(((link: Link) => { return { source: link.source, sourceId: link.sourceId, target: link.target, targetId: link.targetId, type: link.type } }));
-    const nodes = graph.nodes.map((node: Node) => { return { id: node.id, name: node.name } });
-
-    return { nodes, links, types: graph.types }
+    return graph;
   }
 
 }

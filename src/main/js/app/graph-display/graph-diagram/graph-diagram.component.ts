@@ -37,7 +37,7 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
 
   private displayGraph(data: Graph) {
     const links = data.links.map((link) => { return { source: link.sourceId, target: link.targetId, type: link.type } });
-    const nodes = data.nodes;
+    const nodes = data.nodes.map((node) => { return { id: node.id, name: node.name, x: 0, y: 0 } });
     const types = data.types;
 
     const width = 800;
