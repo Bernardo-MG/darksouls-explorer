@@ -53,7 +53,7 @@ import com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-public class ITRelationshipRepository {
+public class ITGraphRepository {
 
     private static Neo4j embeddedDatabaseServer;
 
@@ -86,13 +86,13 @@ public class ITRelationshipRepository {
     /**
      * Default constructor.
      */
-    public ITRelationshipRepository() {
+    public ITGraphRepository() {
         super();
     }
 
     @Test
     @DisplayName("Returns all the data")
-    public void testFindAllMentions_Count() {
+    public void testFindAll_Count() {
         final Graph data;
 
         data = repository.findAll("RELATIONSHIP");
@@ -104,7 +104,7 @@ public class ITRelationshipRepository {
 
     @Test
     @DisplayName("Returns the correct data")
-    public void testFindAllMentions_Data() {
+    public void testFindAll_Data() {
         final Link data;
 
         data = repository.findAll("RELATIONSHIP").getLinks().iterator().next();

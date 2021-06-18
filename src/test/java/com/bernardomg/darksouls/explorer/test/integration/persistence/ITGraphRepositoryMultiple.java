@@ -52,7 +52,7 @@ import com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-public class ITRelationshipRepositoryMultiple {
+public class ITGraphRepositoryMultiple {
 
     private static Neo4j embeddedDatabaseServer;
 
@@ -88,13 +88,13 @@ public class ITRelationshipRepositoryMultiple {
     /**
      * Default constructor.
      */
-    public ITRelationshipRepositoryMultiple() {
+    public ITGraphRepositoryMultiple() {
         super();
     }
 
     @Test
     @DisplayName("Returns all the data")
-    public void testFindAllMentions_Count() {
+    public void testFindAll_Count() {
         final Graph data;
 
         data = repository.findAll("RELATIONSHIP");
