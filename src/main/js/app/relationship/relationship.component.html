@@ -1,1 +1,10 @@
-<graph-view [graph]="graph"></graph-view>
+<mat-card>
+    <mat-card-title>
+        <h1>Graph</h1>
+    </mat-card-title>
+    <mat-card-content>
+        <h1>{{nodeName}}</h1>
+        <graph-status [graph]="graph"></graph-status>
+        <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
+    </mat-card-content>
+</mat-card>
