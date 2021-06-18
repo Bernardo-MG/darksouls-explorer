@@ -63,7 +63,7 @@ public class DefaultGraphRepository implements GraphRepository {
         final String query;
         final Graph result;
 
-        queryTemplate = "MATCH (s)-[:%s]->(t) RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId";
+        queryTemplate = "MATCH (s)-[r:%s]->(t) RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId, type(r) AS relationship";
         query = String.format(queryTemplate, type);
 
         try (Session session = driver.session()) {
@@ -100,7 +100,7 @@ public class DefaultGraphRepository implements GraphRepository {
         relationship.setSourceId(row.get("sourceId", 0l));
         relationship.setTarget(row.get("target", ""));
         relationship.setTargetId(row.get("targetId", 0l));
-        relationship.setType("MENTIONS");
+        relationship.setType(row.get("relationship", ""));
 
         return relationship;
     }
