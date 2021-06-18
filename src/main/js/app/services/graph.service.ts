@@ -15,12 +15,12 @@ export class GraphService {
     private apollo: Apollo
   ) { }
 
-  getGraph(): Observable<Graph> {
+  getGraph(relationship: String): Observable<Graph> {
     const graph = this.apollo
       .watchQuery({
         query: gql`
           {
-            graph(type: "MENTIONS") {
+            graph(type: "${relationship}") {
               nodes {
                 id,
                 name

@@ -9,7 +9,7 @@ import { Graph } from 'app/models/graph';
 
 class MockedGraphService {
 
-  getGraph(): Observable<Graph> {
+  getGraph(relationship: String): Observable<Graph> {
     return of({ nodes: [], links: [], types: [] });
   }
 

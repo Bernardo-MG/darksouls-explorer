@@ -16,7 +16,7 @@ export class RelationshipComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.graphService.getGraph().subscribe(data => this.graph = data);
+    this.graphService.getGraph('MENTIONS').subscribe(data => this.graph = data);
   }
 
 }
