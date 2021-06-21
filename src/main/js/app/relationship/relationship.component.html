@@ -4,6 +4,7 @@
     </mat-card-title>
     <mat-card-content>
         <h1>{{nodeName}}</h1>
+        <div><button mat-raised-button (click)="onSelectRelationship()" >Load</button></div>
         <graph-status [graph]="graph"></graph-status>
         <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
     </mat-card-content>
