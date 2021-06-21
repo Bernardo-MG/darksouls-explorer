@@ -26,6 +26,8 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +47,13 @@ import com.bernardomg.darksouls.explorer.model.Node;
 @Repository
 public class DefaultGraphRepository implements GraphRepository {
 
-    private final Driver driver;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(DefaultGraphRepository.class);
+
+    private final Driver        driver;
 
     @Autowired
     protected DefaultGraphRepository(final Driver drv) {
@@ -71,6 +79,7 @@ public class DefaultGraphRepository implements GraphRepository {
 
         queryTemplate = "MATCH (s)-[r]->(t) WHERE type(r) IN %s RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId, type(r) AS relationship";
         query = String.format(queryTemplate, validTypes);
+        LOGGER.debug("Query: {}", query);
 
         try (Session session = driver.session()) {
             rows = session.run(query);
