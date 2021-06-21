@@ -16,6 +16,9 @@
 
 package com.bernardomg.darksouls.explorer.graphql;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,8 +53,12 @@ public final class GraphDataFetcher implements DataFetcher<Graph> {
     @Override
     public Graph get(final DataFetchingEnvironment environment)
             throws Exception {
+        final List<String> type;
+
         // TODO: Handle when the argument is missing
-        return graphRepository.findAll(environment.getArgument("type"));
+        type = environment.getArgumentOrDefault("type",
+                Collections.emptyList());
+        return graphRepository.findAll(type);
     }
 
 }

@@ -72,6 +72,7 @@ public class DefaultGraphRepository implements GraphRepository {
         final String query;
         final Graph result;
         final Iterable<String> validTypes;
+        LOGGER.debug("types: {}", types);
 
         validTypes = StreamSupport.stream(types.spliterator(), false)
                 .map((string) -> "'" + string + "'")

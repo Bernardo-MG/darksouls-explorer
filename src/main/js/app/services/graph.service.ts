@@ -16,11 +16,12 @@ export class GraphService {
   ) { }
 
   getGraph(relationships: String[]): Observable<Graph> {
+    const relArg = relationships.map((v) => '"' + v + '"').join(',');
     const graph = this.apollo
       .watchQuery({
         query: gql`
           {
-            graph(type: ["${relationships}"]) {
+            graph(type: [${relArg}]) {
               nodes {
                 id,
                 name

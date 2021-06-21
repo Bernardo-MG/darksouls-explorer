@@ -93,11 +93,23 @@ public class ITGraphRepository {
     }
 
     @Test
-    @DisplayName("Returns all the data")
-    public void testFindAll_Count() {
+    @DisplayName("Returns all the data for a single relationship")
+    public void testFindAll_Single_Count() {
         final Graph data;
 
         data = repository.findAll(Arrays.asList("RELATIONSHIP"));
+
+        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+    }
+
+    @Test
+    @DisplayName("Returns all the data for multiple relationships, one of them not existing")
+    public void testFindAll_Multiple_NotExisting_Count() {
+        final Graph data;
+
+        data = repository.findAll(Arrays.asList("RELATIONSHIP", "ABC"));
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
