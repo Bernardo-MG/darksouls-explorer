@@ -4,7 +4,12 @@
     </mat-card-title>
     <mat-card-content>
         <h1>{{nodeName}}</h1>
-        <div><button mat-raised-button (click)="onSelectRelationship()" >Load</button></div>
+        <div *ngFor="let option of relationshipOptions">
+            <mat-checkbox [checked]="option.selected" (change)="onSelectRelationship(relationshipOptions, option, $event)">
+                {{option.name}}
+            </mat-checkbox>
+        </div>
+        <div><button mat-raised-button (click)="onQueryRelationship()">Load</button></div>
         <graph-status [graph]="graph"></graph-status>
         <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
     </mat-card-content>

@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
@@ -54,17 +55,22 @@ public class DefaultGraphRepository implements GraphRepository {
     }
 
     @Override
-    public final Graph findAll(final String type) {
+    public final Graph findAll(final Iterable<String> types) {
         final Result rows;
         final List<Link> links;
         final Set<Node> nodes;
-        final Set<String> types;
+        final Set<String> resultTypes;
         final String queryTemplate;
         final String query;
         final Graph result;
+        final Iterable<String> validTypes;
 
-        queryTemplate = "MATCH (s)-[r:%s]->(t) RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId, type(r) AS relationship";
-        query = String.format(queryTemplate, type);
+        validTypes = StreamSupport.stream(types.spliterator(), false)
+                .map((string) -> "'" + string + "'")
+                .collect(Collectors.toList());
+
+        queryTemplate = "MATCH (s)-[r]->(t) WHERE type(r) IN %s RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId, type(r) AS relationship";
+        query = String.format(queryTemplate, validTypes);
 
         try (Session session = driver.session()) {
             rows = session.run(query);
@@ -80,14 +86,14 @@ public class DefaultGraphRepository implements GraphRepository {
         nodes.addAll(links.stream().map(this::toTargetNode)
                 .collect(Collectors.toList()));
 
-        types = new HashSet<>();
-        types.addAll(
+        resultTypes = new HashSet<>();
+        resultTypes.addAll(
                 links.stream().map(Link::getType).collect(Collectors.toList()));
 
         result = new DefaultGraph();
         result.setLinks(links);
         result.setNodes(nodes);
-        result.setTypes(types);
+        result.setTypes(resultTypes);
 
         return result;
     }

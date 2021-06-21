@@ -24,6 +24,8 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -95,7 +97,7 @@ public class ITGraphRepository {
     public void testFindAll_Count() {
         final Graph data;
 
-        data = repository.findAll("RELATIONSHIP");
+        data = repository.findAll(Arrays.asList("RELATIONSHIP"));
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -107,7 +109,8 @@ public class ITGraphRepository {
     public void testFindAll_Data() {
         final Link data;
 
-        data = repository.findAll("RELATIONSHIP").getLinks().iterator().next();
+        data = repository.findAll(Arrays.asList("RELATIONSHIP")).getLinks()
+                .iterator().next();
 
         Assertions.assertEquals("Source", data.getSource());
         Assertions.assertEquals("Target", data.getTarget());

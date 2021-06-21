@@ -26,6 +26,6 @@ import com.bernardomg.darksouls.explorer.model.Graph;
  */
 public interface GraphRepository {
 
-    public Graph findAll(final String type);
+    public Graph findAll(final Iterable<String> types);
 
 }

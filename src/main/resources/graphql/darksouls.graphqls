@@ -3,7 +3,7 @@ schema {
 }
 
 type Query {
-   graph(type: String): Graph
+   graph(type: [String]): Graph
 }
 
 type Graph {
