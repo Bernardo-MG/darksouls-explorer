@@ -49,7 +49,8 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id((d: any) => d.id))
       .force("charge", d3.forceManyBody())
-      .force("center", d3.forceCenter(width / 2, height / 2));
+      .force("center", d3.forceRadial(width/2, height/2));
+      //.force("center", d3.forceCenter(width / 2, height / 2));
 
     // Main view container
     var mainView = d3.select("figure#graph_view")
