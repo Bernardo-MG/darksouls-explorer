@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
+import { NamedValue } from 'app/models/namedValue';
 
 @Component({
   selector: 'filter',
@@ -10,18 +11,23 @@ export class FilterComponent {
 
   @Output() applyFilter = new EventEmitter<any>();
 
-  @Input() options: any;
+  @Input() options: NamedValue[];
 
-  selection = [];
+  selections = [];
 
   constructor() { }
 
-  onSelectOption(event: MatSelectChange) {
-    this.selection.push(event.value);
+  onSelectOption(event: MatSelectChange, index: number) {
+    this.selections[index].value = event.value;
+  }
+
+  onAddSelection() {
+    this.selections.push({ value: "" });
   }
 
   onApplyFilter() {
-    this.applyFilter.emit(this.selection)
+    const values = this.selections.map((s) => s.value);
+    this.applyFilter.emit(values)
   }
 
 }

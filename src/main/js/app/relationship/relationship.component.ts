@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { GraphService } from 'app/services/graph.service';
 import { Graph } from 'app/models/graph';
+import { NamedValue } from 'app/models/namedValue';
 
 @Component({
   selector: 'app-relationship',
@@ -9,7 +10,7 @@ import { Graph } from 'app/models/graph';
 })
 export class RelationshipComponent {
 
-  filterOptions = [{ name: 'Mentions', value: 'MENTIONS', selected: false }, { name: 'From', value: 'FROM', selected: false }];
+  filterOptions: NamedValue[] = [{ name: 'Mentions', value: 'MENTIONS' }, { name: 'From', value: 'FROM' }];
 
   graph: Graph = { nodes: [], links: [], types: [] };
 
