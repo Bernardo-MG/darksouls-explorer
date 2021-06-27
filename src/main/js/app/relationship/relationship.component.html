@@ -4,7 +4,7 @@
     </mat-card-title>
     <mat-card-content>
         <h1>{{nodeName}}</h1>
-        <filter (applyFilter)="onApplyFilter($event)"></filter>
+        <filter [options]="filterOptions" (applyFilter)="onApplyFilter($event)"></filter>
         <graph-status [graph]="graph"></graph-status>
         <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
     </mat-card-content>

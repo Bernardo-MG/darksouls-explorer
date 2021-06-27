@@ -9,6 +9,8 @@ import { Graph } from 'app/models/graph';
 })
 export class RelationshipComponent {
 
+  filterOptions = [{ name: 'Mentions', value: 'MENTIONS', selected: false }, { name: 'From', value: 'FROM', selected: false }];
+
   graph: Graph = { nodes: [], links: [], types: [] };
 
   @Input() nodeName: string;
@@ -19,7 +21,7 @@ export class RelationshipComponent {
 
   runQuery(options) {
     const rels: String[] = options.filter(value => value.selected).map(rel => rel.value);
-    if(rels.length > 0){
+    if (rels.length > 0) {
       this.graphService.getGraph(rels).subscribe(data => this.graph = data);
     }
   }
