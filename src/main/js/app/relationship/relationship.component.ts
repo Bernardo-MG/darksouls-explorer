@@ -13,16 +13,12 @@ export class RelationshipComponent {
 
   @Input() nodeName: string;
 
-  relationshipOptions = [{ name: 'Mentions', value: 'MENTIONS', selected: false }, { name: 'From', value: 'FROM', selected: false }];
-
-  selectedRels = [];
-
   constructor(
     private graphService: GraphService
   ) { }
 
-  onQueryRelationship() {
-    const rels: String[] = this.relationshipOptions.filter(value => value.selected).map(rel => rel.value);
+  runQuery(options) {
+    const rels: String[] = options.filter(value => value.selected).map(rel => rel.value);
     if(rels.length > 0){
       this.graphService.getGraph(rels).subscribe(data => this.graph = data);
     }
@@ -32,8 +28,8 @@ export class RelationshipComponent {
     this.nodeName = newItem;
   }
 
-  onSelectRelationship(relationshipOptions, option, event) {
-    option.selected = event.checked;
+  onApplyFilter(options) {
+    this.runQuery(options);
   }
 
 }

@@ -21,11 +21,13 @@ import { InMemoryCache } from '@apollo/client/core';
 
 import { RelationshipComponent } from './relationship/relationship.component';
 import { GraphDisplayModule } from './graph-display/graph-display.module';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RelationshipComponent
+    RelationshipComponent,
+    FilterComponent
   ],
   imports: [
     AppRoutingModule,
