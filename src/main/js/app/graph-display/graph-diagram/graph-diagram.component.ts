@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Graph } from 'app/models/graph';
 import { GraphLink } from '../models/graphLink';
-import { GraphNode } from '../models/GraphNode';
+import { GraphNode } from '../models/graphNode';
 import * as d3 from 'd3';
 import { Link } from 'app/models/link';
 import { Node } from 'app/models/node';
