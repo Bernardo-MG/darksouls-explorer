@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence;
+package com.bernardomg.darksouls.explorer.test.integration.graphql;
 
 import java.util.Arrays;
 
@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.neo4j.harness.Neo4j;
 import org.neo4j.harness.Neo4jBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bernardomg.darksouls.explorer.Application;
+import com.bernardomg.darksouls.explorer.graphql.GraphDataFetcher;
 import com.bernardomg.darksouls.explorer.model.Graph;
 import com.bernardomg.darksouls.explorer.model.Link;
 import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
 import com.google.common.collect.Iterables;
+
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Integration tests for the {@link GraphRepository}.
@@ -55,7 +59,7 @@ import com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-public class ITGraphRepository {
+public class ITGraphDataFetcher {
 
     private static Neo4j embeddedDatabaseServer;
 
@@ -83,21 +87,29 @@ public class ITGraphRepository {
     }
 
     @Autowired
-    private GraphRepository repository;
+    private GraphDataFetcher fetcher;
 
     /**
      * Default constructor.
      */
-    public ITGraphRepository() {
+    public ITGraphDataFetcher() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data for a single relationship")
-    public void testFindAll_Single_Count() {
+    @DisplayName("Returns all the data for a single type")
+    public void testGet_SingleType_Count() throws Exception {
         final Graph data;
+        final DataFetchingEnvironment environment;
+        final Iterable<String> types;
 
-        data = repository.findAll(Arrays.asList("RELATIONSHIP"));
+        types = Arrays.asList("RELATIONSHIP");
+
+        environment = Mockito.mock(DataFetchingEnvironment.class);
+        Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
+                Mockito.any())).thenReturn(types);
+
+        data = fetcher.get(environment);
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -105,11 +117,19 @@ public class ITGraphRepository {
     }
 
     @Test
-    @DisplayName("Returns all the data for multiple relationships, one of them not existing")
-    public void testFindAll_Multiple_NotExisting_Count() {
+    @DisplayName("Returns all the data for multiple types, one of them not existing")
+    public void testGet_MultipleTypes_NotExisting_Count() throws Exception {
         final Graph data;
+        final DataFetchingEnvironment environment;
+        final Iterable<String> types;
 
-        data = repository.findAll(Arrays.asList("RELATIONSHIP", "ABC"));
+        types = Arrays.asList("RELATIONSHIP", "ABC");
+
+        environment = Mockito.mock(DataFetchingEnvironment.class);
+        Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
+                Mockito.any())).thenReturn(types);
+
+        data = fetcher.get(environment);
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -117,16 +137,25 @@ public class ITGraphRepository {
     }
 
     @Test
-    @DisplayName("Returns the correct data a single relationship")
-    public void testFindAll_Single_Data() {
-        final Link data;
+    @DisplayName("Returns the correct data for a single type")
+    public void testGet_SingleType_Data() throws Exception {
+        final Graph data;
+        final Link link;
+        final DataFetchingEnvironment environment;
+        final Iterable<String> types;
 
-        data = repository.findAll(Arrays.asList("RELATIONSHIP")).getLinks()
-                .iterator().next();
+        types = Arrays.asList("RELATIONSHIP");
 
-        Assertions.assertEquals("Source", data.getSource());
-        Assertions.assertEquals("Target", data.getTarget());
-        Assertions.assertEquals("RELATIONSHIP", data.getType());
+        environment = Mockito.mock(DataFetchingEnvironment.class);
+        Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
+                Mockito.any())).thenReturn(types);
+
+        data = fetcher.get(environment);
+        link = data.getLinks().iterator().next();
+
+        Assertions.assertEquals("Source", link.getSource());
+        Assertions.assertEquals("Target", link.getTarget());
+        Assertions.assertEquals("RELATIONSHIP", link.getType());
     }
 
 }
