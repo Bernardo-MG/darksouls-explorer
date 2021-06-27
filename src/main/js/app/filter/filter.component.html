@@ -1,9 +1,12 @@
-<div *ngFor="let selection of selections; let i = index">
-    <mat-select (selectionChange)="onSelectOption($event, i)">
-        <mat-option *ngFor="let option of options" [value]="option.value">
-            {{option.name}}
-        </mat-option>
-    </mat-select>
+<div class="form-element" *ngFor="let selection of selections; let i = index">
+    <button mat-raised-button (click)="onRemoveSelection(i)">-</button>
+    <mat-form-field>
+        <mat-select (selectionChange)="onSelectOption($event, i)">
+            <mat-option *ngFor="let option of options" [value]="option.value">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 </div>
 <button mat-raised-button (click)="onAddSelection()">+</button>
 <button mat-raised-button (click)="onApplyFilter()">Apply</button>

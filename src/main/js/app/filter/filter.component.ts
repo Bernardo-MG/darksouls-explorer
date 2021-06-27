@@ -25,6 +25,10 @@ export class FilterComponent {
     this.selections.push({ value: "" });
   }
 
+  onRemoveSelection(index: number) {
+    this.selections.splice(index, 1);
+  }
+
   onApplyFilter() {
     const values = this.selections.map((s) => s.value);
     this.applyFilter.emit(values)
