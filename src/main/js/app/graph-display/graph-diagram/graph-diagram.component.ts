@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Graph } from 'app/models/graph';
-import { Link } from 'app/models/link';
+import { GraphLink } from 'app/graph-display/models/graphLink';
+import { GraphNode } from 'app/graph-display/models/GraphNode';
 import * as d3 from 'd3';
+import { Link } from 'app/models/link';
+import { Node } from 'app/models/node';
 
 @Component({
   selector: 'graph-diagram',
@@ -15,42 +18,54 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
 
   @Output() selectNode = new EventEmitter<string>();
 
+  width = 800;
+
+  height = 600;
+
   constructor() { }
 
   ngOnInit(): void {
     this.cleanGraph();
     if (this.graph) {
-      this.displayGraph(this.graph);
+      const links = this.graph.links.map(this.toGraphLink);
+      const nodes = this.graph.nodes.map(this.toGraphNode);
+      const types = this.graph.types;
+
+      this.displayGraph(links, nodes, types, this.width, this.height);
     }
   }
 
   ngOnChanges(): void {
     this.cleanGraph();
     if (this.graph) {
-      this.displayGraph(this.graph);
+      const links = this.graph.links.map(this.toGraphLink);
+      const nodes = this.graph.nodes.map(this.toGraphNode);
+      const types = this.graph.types;
+
+      this.displayGraph(links, nodes, types, this.width, this.height);
     }
+  }
+
+  private toGraphLink(data: Link): GraphLink {
+    return { source: data.sourceId, target: data.targetId, type: data.type };
+  }
+
+  private toGraphNode(data: Node): GraphNode {
+    return { id: data.id, name: data.name, x: 0, y: 0 };
   }
 
   private cleanGraph() {
     d3.select("figure#graph_view").select("svg").remove();
   }
 
-  private displayGraph(data: Graph) {
-    const links = data.links.map((link) => { return { source: link.sourceId, target: link.targetId, type: link.type } });
-    const nodes = data.nodes.map((node) => { return { id: node.id, name: node.name, x: 0, y: 0 } });
-    const types = data.types;
-
-    const width = 800;
-    const height = 600;
-
+  private displayGraph(links: GraphLink[], nodes: GraphNode[], types: String[], width: number, height: number) {
     const color = d3.scaleOrdinal(types, d3.schemeCategory10)
 
     // Graph simulation
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id((d: any) => d.id))
       .force("charge", d3.forceManyBody())
-      .force("center", d3.forceRadial(width/2, height/2));
-      //.force("center", d3.forceCenter(width / 2, height / 2));
+      .force("center", d3.forceRadial(width / 2, height / 2));
 
     // Main view container
     var mainView = d3.select("figure#graph_view")
