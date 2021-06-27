@@ -51,14 +51,20 @@ public final class GraphDataFetcher implements DataFetcher<Graph> {
     }
 
     @Override
-    public Graph get(final DataFetchingEnvironment environment)
+    public final Graph get(final DataFetchingEnvironment environment)
             throws Exception {
-        final List<String> type;
+        final List<String> types;
+        final Graph result;
 
-        // TODO: Handle when the argument is missing
-        type = environment.getArgumentOrDefault("type",
+        types = environment.getArgumentOrDefault("type",
                 Collections.emptyList());
-        return graphRepository.findAll(type);
+        if (types.isEmpty()) {
+            result = graphRepository.findAll();
+        } else {
+            result = graphRepository.findAllByLinkType(types);
+        }
+
+        return result;
     }
 
 }

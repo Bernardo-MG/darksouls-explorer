@@ -25,7 +25,9 @@
 package com.bernardomg.darksouls.explorer.test.integration.graphql;
 
 import java.util.Arrays;
+import java.util.Collections;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -97,13 +99,13 @@ public class ITGraphDataFetcher {
     }
 
     @Test
-    @DisplayName("Returns all the data for a single type")
-    public void testGet_SingleType_Count() throws Exception {
+    @DisplayName("Returns all the data for an empty type list")
+    public void testGet_EmptyType_Count() throws Exception {
         final Graph data;
         final DataFetchingEnvironment environment;
         final Iterable<String> types;
 
-        types = Arrays.asList("RELATIONSHIP");
+        types = Collections.emptyList();
 
         environment = Mockito.mock(DataFetchingEnvironment.class);
         Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
@@ -124,6 +126,42 @@ public class ITGraphDataFetcher {
         final Iterable<String> types;
 
         types = Arrays.asList("RELATIONSHIP", "ABC");
+
+        environment = Mockito.mock(DataFetchingEnvironment.class);
+        Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
+                Mockito.any())).thenReturn(types);
+
+        data = fetcher.get(environment);
+
+        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+    }
+
+    @Test
+    @Ignore("Handled by the environment implementation")
+    @DisplayName("Returns all the data when there is no type")
+    public void testGet_NoType_Count() throws Exception {
+        final Graph data;
+        final DataFetchingEnvironment environment;
+
+        environment = Mockito.mock(DataFetchingEnvironment.class);
+
+        data = fetcher.get(environment);
+
+        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+    }
+
+    @Test
+    @DisplayName("Returns all the data for a single type")
+    public void testGet_SingleType_Count() throws Exception {
+        final Graph data;
+        final DataFetchingEnvironment environment;
+        final Iterable<String> types;
+
+        types = Arrays.asList("RELATIONSHIP");
 
         environment = Mockito.mock(DataFetchingEnvironment.class);
         Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),

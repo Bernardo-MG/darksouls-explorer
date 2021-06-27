@@ -99,7 +99,7 @@ public class ITGraphRepositoryMultiple {
     public void testFindAll_Count() {
         final Graph data;
 
-        data = repository.findAll(Arrays.asList("RELATIONSHIP"));
+        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
 
         Assertions.assertEquals(2, Iterables.size(data.getLinks()));
         Assertions.assertEquals(3, Iterables.size(data.getNodes()));

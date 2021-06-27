@@ -25,6 +25,7 @@
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -93,11 +94,30 @@ public class ITGraphRepository {
     }
 
     @Test
-    @DisplayName("Returns all the data for a single relationship")
+    @DisplayName("Rejects a null value")
+    public void testFindAll_Null() {
+        Assertions.assertThrows(NullPointerException.class,
+                () -> repository.findAllByLinkType(null));
+    }
+
+    @Test
+    @DisplayName("Returns no data for an empty type list")
+    public void testFindAll_Empty_Count() {
+        final Graph data;
+
+        data = repository.findAllByLinkType(Collections.emptyList());
+
+        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+    }
+
+    @Test
+    @DisplayName("Returns all the data for a single type")
     public void testFindAll_Single_Count() {
         final Graph data;
 
-        data = repository.findAll(Arrays.asList("RELATIONSHIP"));
+        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -105,11 +125,11 @@ public class ITGraphRepository {
     }
 
     @Test
-    @DisplayName("Returns all the data for multiple relationships, one of them not existing")
+    @DisplayName("Returns all the data for multiple types, one of them not existing")
     public void testFindAll_Multiple_NotExisting_Count() {
         final Graph data;
 
-        data = repository.findAll(Arrays.asList("RELATIONSHIP", "ABC"));
+        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -117,11 +137,11 @@ public class ITGraphRepository {
     }
 
     @Test
-    @DisplayName("Returns the correct data a single relationship")
+    @DisplayName("Returns the correct data a single type")
     public void testFindAll_Single_Data() {
         final Link data;
 
-        data = repository.findAll(Arrays.asList("RELATIONSHIP")).getLinks()
+        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP")).getLinks()
                 .iterator().next();
 
         Assertions.assertEquals("Source", data.getSource());
