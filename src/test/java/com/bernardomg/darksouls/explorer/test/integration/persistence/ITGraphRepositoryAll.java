@@ -24,9 +24,6 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -56,7 +53,8 @@ import com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-public class ITGraphRepository {
+@DisplayName("Tests the query for all the graph data")
+public class ITGraphRepositoryAll {
 
     private static Neo4j embeddedDatabaseServer;
 
@@ -89,35 +87,16 @@ public class ITGraphRepository {
     /**
      * Default constructor.
      */
-    public ITGraphRepository() {
+    public ITGraphRepositoryAll() {
         super();
     }
 
     @Test
-    @DisplayName("Rejects a null value")
-    public void testFindAll_Null() {
-        Assertions.assertThrows(NullPointerException.class,
-                () -> repository.findAllByLinkType(null));
-    }
-
-    @Test
-    @DisplayName("Returns no data for an empty type list")
-    public void testFindAll_Empty_Count() {
-        final Graph data;
-
-        data = repository.findAllByLinkType(Collections.emptyList());
-
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Returns all the data for a single type")
+    @DisplayName("Returns all the data")
     public void testFindAll_Single_Count() {
         final Graph data;
 
-        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
+        data = repository.findAll();
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -125,24 +104,11 @@ public class ITGraphRepository {
     }
 
     @Test
-    @DisplayName("Returns all the data for multiple types, one of them not existing")
-    public void testFindAll_Multiple_NotExisting_Count() {
-        final Graph data;
-
-        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
-
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Returns the correct data a single type")
+    @DisplayName("Returns the correct data")
     public void testFindAll_Single_Data() {
         final Link data;
 
-        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP")).getLinks()
-                .iterator().next();
+        data = repository.findAll().getLinks().iterator().next();
 
         Assertions.assertEquals("Source", data.getSource());
         Assertions.assertEquals("Target", data.getTarget());

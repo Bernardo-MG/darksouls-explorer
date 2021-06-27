@@ -54,7 +54,8 @@ import com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-public class ITGraphRepositoryMultiple {
+@DisplayName("Tests the query filtering by type for multiple data")
+public class ITGraphRepositoryByTypeMultiple {
 
     private static Neo4j embeddedDatabaseServer;
 
@@ -90,7 +91,7 @@ public class ITGraphRepositoryMultiple {
     /**
      * Default constructor.
      */
-    public ITGraphRepositoryMultiple() {
+    public ITGraphRepositoryByTypeMultiple() {
         super();
     }
 
