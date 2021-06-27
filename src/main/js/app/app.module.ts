@@ -6,8 +6,8 @@ import { LayoutModule } from '@angular/cdk/layout';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -38,8 +38,8 @@ import { FilterComponent } from './filter/filter.component';
     LayoutModule,
     MatButtonModule,
     MatCardModule,
-    MatCheckboxModule,
     MatIconModule,
+    MatSelectModule,
     MatSidenavModule,
     MatTableModule,
     MatToolbarModule,

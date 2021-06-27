@@ -1,6 +1,6 @@
-<div *ngFor="let option of options">
-    <mat-checkbox [checked]="option.selected" (change)="onSelectOption(relationshipOptions, option, $event)">
+<mat-select (selectionChange)="onSelectOption($event)">
+    <mat-option *ngFor="let option of options" [value]="option.value">
         {{option.name}}
-    </mat-checkbox>
-</div>
+    </mat-option>
+</mat-select>
 <div><button mat-raised-button (click)="onApplyFilter()">Apply</button></div>

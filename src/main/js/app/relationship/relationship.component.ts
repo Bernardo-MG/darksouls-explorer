@@ -19,10 +19,9 @@ export class RelationshipComponent {
     private graphService: GraphService
   ) { }
 
-  runQuery(options) {
-    const rels: String[] = options.filter(value => value.selected).map(rel => rel.value);
-    if (rels.length > 0) {
-      this.graphService.getGraph(rels).subscribe(data => this.graph = data);
+  runQuery(options: String[]) {
+    if (options.length > 0) {
+      this.graphService.getGraph(options).subscribe(data => this.graph = data);
     }
   }
 
@@ -30,7 +29,7 @@ export class RelationshipComponent {
     this.nodeName = newItem;
   }
 
-  onApplyFilter(options) {
+  onApplyFilter(options: String[]) {
     this.runQuery(options);
   }
 

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'filter',
@@ -11,14 +12,16 @@ export class FilterComponent {
 
   @Input() options: any;
 
+  selection = [];
+
   constructor() { }
 
-  onSelectOption(options, option, event) {
-    option.selected = event.checked;
+  onSelectOption(event: MatSelectChange) {
+    this.selection.push(event.value);
   }
 
   onApplyFilter() {
-    this.applyFilter.emit(this.options)
+    this.applyFilter.emit(this.selection)
   }
 
 }
