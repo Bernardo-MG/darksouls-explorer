@@ -27,10 +27,10 @@ package com.bernardomg.darksouls.explorer.test.integration.graphql;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -139,7 +139,7 @@ public class ITGraphDataFetcher {
     }
 
     @Test
-    @Ignore("Handled by the environment implementation")
+    @Disabled("Handled by the environment implementation")
     @DisplayName("Returns all the data when there is no type")
     public void testGet_NoType_Count() throws Exception {
         final Graph data;
