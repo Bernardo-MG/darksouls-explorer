@@ -17,7 +17,7 @@ export class GraphService {
 
   getGraph(relationships: String[]): Observable<Graph> {
     const relArg = relationships.map((v) => '"' + v + '"').join(',');
-    const graph = this.apollo
+    return this.apollo
       .watchQuery({
         query: gql`
           {
@@ -39,8 +39,20 @@ export class GraphService {
         `,
       })
       .valueChanges.pipe(map((response: ApolloQueryResult<GraphResponse>) => { return response.data.graph }));
+  }
 
-    return graph;
+  getAllTypes(): Observable<String[]> {
+    return this.apollo
+      .watchQuery({
+        query: gql`
+          {
+            graph {
+              types
+            }
+          }
+        `,
+      })
+      .valueChanges.pipe(map((response: ApolloQueryResult<GraphResponse>) => { return response.data.graph.types }));
   }
 
 }

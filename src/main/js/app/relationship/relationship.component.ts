@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { GraphService } from 'app/services/graph.service';
 import { Graph } from 'app/models/graph';
 import { NamedValue } from 'app/models/namedValue';
@@ -8,9 +8,9 @@ import { NamedValue } from 'app/models/namedValue';
   templateUrl: './relationship.component.html',
   styleUrls: ['./relationship.component.sass']
 })
-export class RelationshipComponent {
+export class RelationshipComponent implements OnInit {
 
-  filterOptions: NamedValue[] = [{ name: 'Mentions', value: 'MENTIONS' }, { name: 'From', value: 'FROM' }];
+  filterOptions: NamedValue[] = [];
 
   graph: Graph = { nodes: [], links: [], types: [] };
 
@@ -19,6 +19,10 @@ export class RelationshipComponent {
   constructor(
     private graphService: GraphService
   ) { }
+
+  ngOnInit(): void {
+    this.graphService.getAllTypes().subscribe(types => this.filterOptions = types.map((type) => { return { name: type, value: type } }));
+  }
 
   runQuery(options: String[]) {
     if (options.length > 0) {
