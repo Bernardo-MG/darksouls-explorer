@@ -60,10 +60,48 @@ public class DefaultGraphRepository implements GraphRepository {
     private final Driver        driver;
 
     @Autowired
-    protected DefaultGraphRepository(final Driver drv) {
+    public DefaultGraphRepository(final Driver drv) {
         super();
 
         driver = drv;
+    }
+
+    @Override
+    public final Graph findAll() {
+        final Result rows;
+        final List<Link> links;
+        final Set<Node> nodes;
+        final Set<String> resultTypes;
+        final String query;
+        final Graph result;
+
+        query = "MATCH (s)-[r]->(t) RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId, type(r) AS relationship";
+        LOGGER.debug("Query: {}", query);
+
+        try (final Session session = driver.session()) {
+            rows = session.run(query);
+            links = rows.stream().map(this::toLink)
+                    .collect(Collectors.toList());
+        }
+
+        // TODO: Build only if they are requested
+
+        nodes = new HashSet<>();
+        nodes.addAll(links.stream().map(this::toSourceNode)
+                .collect(Collectors.toList()));
+        nodes.addAll(links.stream().map(this::toTargetNode)
+                .collect(Collectors.toList()));
+
+        resultTypes = new HashSet<>();
+        resultTypes.addAll(
+                links.stream().map(Link::getType).collect(Collectors.toList()));
+
+        result = new DefaultGraph();
+        result.setLinks(links);
+        result.setNodes(nodes);
+        result.setTypes(resultTypes);
+
+        return result;
     }
 
     @Override
@@ -79,7 +117,7 @@ public class DefaultGraphRepository implements GraphRepository {
 
         Preconditions.checkNotNull(types);
 
-        LOGGER.debug("types: {}", types);
+        LOGGER.debug("Types: {}", types);
 
         if (Iterables.isEmpty(types)) {
             links = Collections.emptyList();
@@ -92,7 +130,7 @@ public class DefaultGraphRepository implements GraphRepository {
             query = String.format(queryTemplate, validTypes);
             LOGGER.debug("Query: {}", query);
 
-            try (Session session = driver.session()) {
+            try (final Session session = driver.session()) {
                 rows = session.run(query);
                 links = rows.stream().map(this::toLink)
                         .collect(Collectors.toList());
@@ -120,39 +158,33 @@ public class DefaultGraphRepository implements GraphRepository {
     }
 
     @Override
-    public final Graph findAll() {
+    public final Node findById(final Integer id) {
         final Result rows;
-        final List<Link> links;
-        final Set<Node> nodes;
-        final Set<String> resultTypes;
+        final Record row;
+        final String queryTemplate;
         final String query;
-        final Graph result;
+        final Node result;
 
-        query = "MATCH (s)-[r]->(t) RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId, type(r) AS relationship";
+        Preconditions.checkNotNull(id);
+
+        LOGGER.debug("Id: {}", id);
+
+        queryTemplate = "MATCH (node) WHERE ID(node) = %s RETURN node.name AS name, ID(node) AS id";
+        query = String.format(queryTemplate, id);
         LOGGER.debug("Query: {}", query);
 
-        try (Session session = driver.session()) {
+        result = new DefaultNode();
+        try (final Session session = driver.session()) {
             rows = session.run(query);
-            links = rows.stream().map(this::toLink)
-                    .collect(Collectors.toList());
+
+            if (rows.hasNext()) {
+                row = rows.single();
+                result.setId(row.get("id", 0l));
+                result.setName(row.get("name", ""));
+            }
         }
 
-        // TODO: Build only if they are requested
-
-        nodes = new HashSet<>();
-        nodes.addAll(links.stream().map(this::toSourceNode)
-                .collect(Collectors.toList()));
-        nodes.addAll(links.stream().map(this::toTargetNode)
-                .collect(Collectors.toList()));
-
-        resultTypes = new HashSet<>();
-        resultTypes.addAll(
-                links.stream().map(Link::getType).collect(Collectors.toList()));
-
-        result = new DefaultGraph();
-        result.setLinks(links);
-        result.setNodes(nodes);
-        result.setTypes(resultTypes);
+        LOGGER.debug("Result: {}", result);
 
         return result;
     }
@@ -170,7 +202,7 @@ public class DefaultGraphRepository implements GraphRepository {
         return relationship;
     }
 
-    private Node toSourceNode(final Link link) {
+    private final Node toSourceNode(final Link link) {
         final Node result;
 
         result = new DefaultNode();
@@ -180,7 +212,7 @@ public class DefaultGraphRepository implements GraphRepository {
         return result;
     }
 
-    private Node toTargetNode(final Link link) {
+    private final Node toTargetNode(final Link link) {
         final Node result;
 
         result = new DefaultNode();

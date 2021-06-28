@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { Apollo, gql } from 'apollo-angular';
 import { map } from 'rxjs/operators';
-import { GraphResponse } from '../models/graphResponse';
-import { Graph } from '../models/graph';
+import { GraphResponse } from 'app/models/graphResponse';
+import { InfoResponse } from 'app/models/infoResponse';
+import { Graph } from 'app/models/graph';
+import { Node } from 'app/models/node';
 import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
@@ -53,6 +55,21 @@ export class GraphService {
         `,
       })
       .valueChanges.pipe(map((response: ApolloQueryResult<GraphResponse>) => { return response.data.graph.types }));
+  }
+
+  getOne(id: Number): Observable<Node> {
+    return this.apollo
+      .watchQuery({
+        query: gql`
+          {
+            info(id: ${id}) {
+              id
+              name
+            }
+          }
+        `,
+      })
+      .valueChanges.pipe(map((response: ApolloQueryResult<InfoResponse>) => { return response.data.info }));
   }
 
 }

@@ -4,6 +4,7 @@ schema {
 
 type Query {
    graph(type: [String]): Graph
+   info(id: Int): Node
 }
 
 type Graph {

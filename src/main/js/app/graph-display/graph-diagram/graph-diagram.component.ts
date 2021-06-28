@@ -16,7 +16,7 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
 
   @Input() graph: Graph;
 
-  @Output() selectNode = new EventEmitter<string>();
+  @Output() selectNode = new EventEmitter<Number>();
 
   width = 800;
 
@@ -110,7 +110,7 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
       .attr("class", "graph_node")
       .on("mouseover", this.mouseoverButton)
       .on("mouseout", this.mouseoutButton)
-      .on("click", (event, item) => this.selectNode.emit(item.name as string));
+      .on("click", (event, item) => this.selectNode.emit(item.id));
     const nodeLabel = nodeRoot.append("text")
       .text(d => d.name as string);
 

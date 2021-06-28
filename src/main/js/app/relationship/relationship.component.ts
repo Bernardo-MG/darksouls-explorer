@@ -14,7 +14,7 @@ export class RelationshipComponent implements OnInit {
 
   graph: Graph = { nodes: [], links: [], types: [] };
 
-  @Input() nodeName: string;
+  @Input() nodeName: String;
 
   constructor(
     private graphService: GraphService
@@ -30,8 +30,8 @@ export class RelationshipComponent implements OnInit {
     }
   }
 
-  onSelectNode(newItem: string) {
-    this.nodeName = newItem;
+  onSelectNode(id: Number) {
+    this.graphService.getOne(id).subscribe(data => this.nodeName = data.name);
   }
 
   onApplyFilter(options: String[]) {
