@@ -100,4 +100,15 @@ public class ITGraphRepositoryFindById {
         Assertions.assertEquals("Target", data.getName());
     }
 
+    @Test
+    @DisplayName("Returns no data for a not existing id")
+    public void testFindAll_NotExisting() {
+        final Node data;
+
+        data = repository.findById(12345);
+
+        Assertions.assertNull(data.getId());
+        Assertions.assertNull(data.getName());
+    }
+
 }
