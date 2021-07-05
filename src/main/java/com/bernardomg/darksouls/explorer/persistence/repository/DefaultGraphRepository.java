@@ -19,6 +19,7 @@ package com.bernardomg.darksouls.explorer.persistence.repository;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -158,12 +159,13 @@ public class DefaultGraphRepository implements GraphRepository {
     }
 
     @Override
-    public final Node findById(final Integer id) {
+    public final Optional<Node> findById(final Integer id) {
         final Result rows;
         final Record row;
         final String queryTemplate;
         final String query;
-        final Node result;
+        final Node node;
+        final Optional<Node> result;
 
         Preconditions.checkNotNull(id);
 
@@ -173,18 +175,28 @@ public class DefaultGraphRepository implements GraphRepository {
         query = String.format(queryTemplate, id);
         LOGGER.debug("Query: {}", query);
 
-        result = new DefaultNode();
-        try (final Session session = driver.session()) {
-            rows = session.run(query);
+        final Session session;
 
-            if (rows.hasNext()) {
-                row = rows.single();
-                result.setId(row.get("id", 0l));
-                result.setName(row.get("name", ""));
-            }
+        session = driver.session();
+
+        rows = session.run(query);
+
+        if (rows.hasNext()) {
+            node = new DefaultNode();
+            row = rows.single();
+            node.setId(row.get("id", 0l));
+            node.setName(row.get("name", ""));
+
+            result = Optional.of(node);
+
+            LOGGER.debug("Result: {}", node);
+        } else {
+            result = Optional.empty();
+
+            LOGGER.debug("No data found");
         }
 
-        LOGGER.debug("Result: {}", result);
+        session.close();
 
         return result;
     }

@@ -24,6 +24,8 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -92,23 +94,22 @@ public class ITGraphRepositoryFindById {
     @Test
     @DisplayName("Returns the correct data")
     public void testFindAll_Single_Data() {
-        final Node data;
+        final Optional<Node> data;
 
         data = repository.findById(1);
 
-        Assertions.assertEquals(1l, data.getId());
-        Assertions.assertEquals("Target", data.getName());
+        Assertions.assertEquals(1l, data.get().getId());
+        Assertions.assertEquals("Target", data.get().getName());
     }
 
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testFindAll_NotExisting() {
-        final Node data;
+        final Optional<Node> data;
 
         data = repository.findById(12345);
 
-        Assertions.assertNull(data.getId());
-        Assertions.assertNull(data.getName());
+        Assertions.assertTrue(data.isEmpty());
     }
 
 }

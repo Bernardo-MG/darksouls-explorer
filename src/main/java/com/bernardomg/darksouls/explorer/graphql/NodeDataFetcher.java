@@ -16,6 +16,8 @@
 
 package com.bernardomg.darksouls.explorer.graphql;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,9 +53,19 @@ public final class NodeDataFetcher implements DataFetcher<Node> {
     public final Node get(final DataFetchingEnvironment environment)
             throws Exception {
         final Integer id;
+        final Optional<Node> read;
+        final Node result;
 
         id = environment.getArgumentOrDefault("id", 0);
-        return graphRepository.findById(id);
+        read = graphRepository.findById(id);
+
+        if (read.isEmpty()) {
+            result = null;
+        } else {
+            result = read.get();
+        }
+
+        return result;
     }
 
 }

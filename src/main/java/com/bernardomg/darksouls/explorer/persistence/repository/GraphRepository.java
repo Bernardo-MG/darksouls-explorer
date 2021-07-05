@@ -16,6 +16,8 @@
 
 package com.bernardomg.darksouls.explorer.persistence.repository;
 
+import java.util.Optional;
+
 import com.bernardomg.darksouls.explorer.model.Graph;
 import com.bernardomg.darksouls.explorer.model.Node;
 
@@ -31,6 +33,6 @@ public interface GraphRepository {
 
     public Graph findAll();
 
-    public Node findById(final Integer id);
+    public Optional<Node> findById(final Integer id);
 
 }
