@@ -92,6 +92,16 @@ public class ITGraphRepositoryFindById {
     }
 
     @Test
+    @DisplayName("Returns no data for a not existing id")
+    public void testFindAll_NotExisting() {
+        final Optional<Node> data;
+
+        data = repository.findById(12345);
+
+        Assertions.assertTrue(data.isEmpty());
+    }
+
+    @Test
     @DisplayName("Returns the correct data")
     public void testFindAll_Single_Data() {
         final Optional<Node> data;
@@ -100,16 +110,6 @@ public class ITGraphRepositoryFindById {
 
         Assertions.assertEquals(1l, data.get().getId());
         Assertions.assertEquals("Target", data.get().getName());
-    }
-
-    @Test
-    @DisplayName("Returns no data for a not existing id")
-    public void testFindAll_NotExisting() {
-        final Optional<Node> data;
-
-        data = repository.findById(12345);
-
-        Assertions.assertTrue(data.isEmpty());
     }
 
 }

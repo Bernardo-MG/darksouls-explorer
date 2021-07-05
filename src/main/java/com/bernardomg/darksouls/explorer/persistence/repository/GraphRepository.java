@@ -29,9 +29,9 @@ import com.bernardomg.darksouls.explorer.model.Node;
  */
 public interface GraphRepository {
 
-    public Graph findAllByLinkType(final Iterable<String> types);
-
     public Graph findAll();
+
+    public Graph findAllByLinkType(final Iterable<String> types);
 
     public Optional<Node> findById(final Integer id);
 

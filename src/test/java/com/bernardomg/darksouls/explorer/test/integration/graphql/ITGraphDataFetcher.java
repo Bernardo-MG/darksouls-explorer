@@ -33,6 +33,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.neo4j.harness.Neo4j;
 import org.neo4j.harness.Neo4jBuilders;
@@ -108,8 +109,9 @@ public class ITGraphDataFetcher {
         types = Collections.emptyList();
 
         environment = Mockito.mock(DataFetchingEnvironment.class);
-        Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
-                Mockito.any())).thenReturn(types);
+        Mockito.when(environment.getArgumentOrDefault(
+                ArgumentMatchers.matches("type"), ArgumentMatchers.any()))
+                .thenReturn(types);
 
         data = fetcher.get(environment);
 
@@ -128,8 +130,9 @@ public class ITGraphDataFetcher {
         types = Arrays.asList("RELATIONSHIP", "ABC");
 
         environment = Mockito.mock(DataFetchingEnvironment.class);
-        Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
-                Mockito.any())).thenReturn(types);
+        Mockito.when(environment.getArgumentOrDefault(
+                ArgumentMatchers.matches("type"), ArgumentMatchers.any()))
+                .thenReturn(types);
 
         data = fetcher.get(environment);
 
@@ -164,8 +167,9 @@ public class ITGraphDataFetcher {
         types = Arrays.asList("RELATIONSHIP");
 
         environment = Mockito.mock(DataFetchingEnvironment.class);
-        Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
-                Mockito.any())).thenReturn(types);
+        Mockito.when(environment.getArgumentOrDefault(
+                ArgumentMatchers.matches("type"), ArgumentMatchers.any()))
+                .thenReturn(types);
 
         data = fetcher.get(environment);
 
@@ -185,8 +189,9 @@ public class ITGraphDataFetcher {
         types = Arrays.asList("RELATIONSHIP");
 
         environment = Mockito.mock(DataFetchingEnvironment.class);
-        Mockito.when(environment.getArgumentOrDefault(Mockito.matches("type"),
-                Mockito.any())).thenReturn(types);
+        Mockito.when(environment.getArgumentOrDefault(
+                ArgumentMatchers.matches("type"), ArgumentMatchers.any()))
+                .thenReturn(types);
 
         data = fetcher.get(environment);
         link = data.getLinks().iterator().next();
