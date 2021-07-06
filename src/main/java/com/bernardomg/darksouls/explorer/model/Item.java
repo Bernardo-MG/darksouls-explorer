@@ -1,6 +1,10 @@
+
 package com.bernardomg.darksouls.explorer.model;
 
+public interface Item extends Node {
 
-public interface Item {
+    public String getDescription();
+
+    public void setDescription(final String value);
 
 }

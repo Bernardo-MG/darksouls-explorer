@@ -34,9 +34,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bernardomg.darksouls.explorer.model.DefaultGraph;
+import com.bernardomg.darksouls.explorer.model.DefaultItem;
 import com.bernardomg.darksouls.explorer.model.DefaultLink;
+import com.bernardomg.darksouls.explorer.model.DefaultNamedItem;
 import com.bernardomg.darksouls.explorer.model.DefaultNode;
 import com.bernardomg.darksouls.explorer.model.Graph;
+import com.bernardomg.darksouls.explorer.model.Item;
 import com.bernardomg.darksouls.explorer.model.Link;
 import com.bernardomg.darksouls.explorer.model.Node;
 
@@ -182,10 +185,17 @@ public class DefaultGraphRepository implements GraphRepository {
         rows = session.run(query);
 
         if (rows.hasNext()) {
-            node = new DefaultNode();
             row = rows.single();
-            node.setId(row.get("id", 0l));
-            node.setName(row.get("name", ""));
+            if (row.containsKey("description")) {
+                node = new DefaultItem();
+                node.setId(row.get("id", 0l));
+                node.setName(row.get("name", ""));
+                ((Item) node).setDescription(row.get("description", ""));
+            } else {
+                node = new DefaultNamedItem();
+                node.setId(row.get("id", 0l));
+                node.setName(row.get("name", ""));
+            }
 
             result = Optional.of(node);
 
