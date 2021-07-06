@@ -36,7 +36,6 @@ import org.springframework.stereotype.Repository;
 import com.bernardomg.darksouls.explorer.model.DefaultGraph;
 import com.bernardomg.darksouls.explorer.model.DefaultItem;
 import com.bernardomg.darksouls.explorer.model.DefaultLink;
-import com.bernardomg.darksouls.explorer.model.DefaultNamedItem;
 import com.bernardomg.darksouls.explorer.model.DefaultNode;
 import com.bernardomg.darksouls.explorer.model.Graph;
 import com.bernardomg.darksouls.explorer.model.Item;
@@ -167,7 +166,7 @@ public class DefaultGraphRepository implements GraphRepository {
         final Record row;
         final String queryTemplate;
         final String query;
-        final Node node;
+        final Item node;
         final Optional<Node> result;
 
         Preconditions.checkNotNull(id);
@@ -186,16 +185,10 @@ public class DefaultGraphRepository implements GraphRepository {
 
         if (rows.hasNext()) {
             row = rows.single();
-            if (row.containsKey("description")) {
-                node = new DefaultItem();
-                node.setId(row.get("id", 0l));
-                node.setName(row.get("name", ""));
-                ((Item) node).setDescription(row.get("description", ""));
-            } else {
-                node = new DefaultNamedItem();
-                node.setId(row.get("id", 0l));
-                node.setName(row.get("name", ""));
-            }
+            node = new DefaultItem();
+            node.setId(row.get("id", 0l));
+            node.setName(row.get("name", ""));
+            node.setDescription(row.get("description", ""));
 
             result = Optional.of(node);
 

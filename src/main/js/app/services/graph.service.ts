@@ -65,6 +65,7 @@ export class GraphService {
             info(id: ${id}) {
               id
               name
+              description
             }
           }
         `,

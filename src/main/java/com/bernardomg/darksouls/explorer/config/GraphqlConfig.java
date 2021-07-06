@@ -27,7 +27,6 @@ import org.springframework.core.io.Resource;
 
 import com.bernardomg.darksouls.explorer.graphql.GraphDataFetcher;
 import com.bernardomg.darksouls.explorer.graphql.NodeDataFetcher;
-import com.bernardomg.darksouls.explorer.resolver.NodeDataTypeResolver;
 
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -35,7 +34,6 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import graphql.schema.idl.TypeRuntimeWiring;
 
 /**
  * GraphQL configuration.
@@ -79,13 +77,12 @@ public class GraphqlConfig {
     }
 
     private RuntimeWiring buildRuntimeWiring() {
-        return RuntimeWiring.newRuntimeWiring().type("Query",
-                typeWiring -> typeWiring.dataFetcher("graph", graphDataFetcher))
+        return RuntimeWiring.newRuntimeWiring()
                 .type("Query",
-                        typeWiring -> typeWiring.dataFetcher("info",
-                                nodeDataFetcher))
-                .type(TypeRuntimeWiring.newTypeWiring("Name")
-                        .typeResolver(new NodeDataTypeResolver()).build())
+                        typeWiring -> typeWiring.dataFetcher("graph",
+                                graphDataFetcher))
+                .type("Query", typeWiring -> typeWiring.dataFetcher("info",
+                        nodeDataFetcher))
                 .build();
     }
 
