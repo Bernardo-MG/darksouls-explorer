@@ -174,7 +174,7 @@ public class DefaultGraphRepository implements GraphRepository {
 
         LOGGER.debug("Id: {}", id);
 
-        queryTemplate = "MATCH (node) WHERE ID(node) = %s RETURN node.name AS name, ID(node) AS id";
+        queryTemplate = "MATCH (node) WHERE ID(node) = %s RETURN node.name AS name, node.description AS description, ID(node) AS id";
         query = String.format(queryTemplate, id);
         LOGGER.debug("Query: {}", query);
 
