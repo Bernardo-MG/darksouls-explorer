@@ -4,7 +4,7 @@ schema {
 
 type Query {
    graph(type: [String]): Graph
-   info(id: Int): Node
+   info(id: Int): Name
 }
 
 type Graph {
@@ -24,4 +24,20 @@ type Link {
    target: String !
    targetId: Int !
    type: String !
+}
+
+interface Name {
+   id: Int !
+   name: String !
+}
+
+type NamedItem implements Name {
+   id: Int !
+   name: String !
+}
+
+type Item implements Name {
+   id: Int !
+   name: String !
+   description: String !
 }
