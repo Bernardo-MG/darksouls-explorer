@@ -56,7 +56,7 @@ public final class NodeDataFetcher implements DataFetcher<Node> {
         final Optional<Node> read;
         final Node result;
 
-        id = environment.getArgumentOrDefault("id", 0);
+        id = environment.getArgumentOrDefault("id", -1);
         read = graphRepository.findById(id);
 
         if (read.isEmpty()) {
