@@ -1,11 +1,14 @@
-<mat-card>
-    <mat-card-title>
-        <h1>Graph</h1>
-    </mat-card-title>
-    <mat-card-content>
-        <h1>{{nodeName}}</h1>
+<mat-grid-list cols="2" rowHeight="100">
+    <mat-grid-tile>
         <filter [options]="filterOptions" (applyFilter)="onApplyFilter($event)"></filter>
+    </mat-grid-tile>
+    <mat-grid-tile>
         <graph-status [graph]="graph"></graph-status>
+    </mat-grid-tile>
+    <mat-grid-tile rowspan="8">
         <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
-    </mat-card-content>
-</mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile rowspan="8">
+        <h1>{{nodeName}}</h1>
+    </mat-grid-tile>
+</mat-grid-list>
