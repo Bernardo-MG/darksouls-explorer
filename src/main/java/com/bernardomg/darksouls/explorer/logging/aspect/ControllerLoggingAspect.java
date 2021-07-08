@@ -22,14 +22,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  * Logging aspect for controllers. Will log arguments and returned values.
  * 
  * @author Bernardo Mart&iacute;nez Garrido
  */
-@Component
 @Aspect
 public class ControllerLoggingAspect {
 
