@@ -56,7 +56,7 @@ import com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-@DisplayName("Tests the query filtering by type")
+@DisplayName("Querying the repository filtering by type")
 public class ITGraphRepositoryByType {
 
     private static Neo4j embeddedDatabaseServer;

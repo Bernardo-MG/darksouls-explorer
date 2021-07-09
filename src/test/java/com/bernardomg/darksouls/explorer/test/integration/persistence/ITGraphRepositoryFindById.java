@@ -53,7 +53,7 @@ import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-@DisplayName("Tests the query for all the graph data")
+@DisplayName("Querying the repository by id")
 public class ITGraphRepositoryFindById {
 
     private static Neo4j embeddedDatabaseServer;

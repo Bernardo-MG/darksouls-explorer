@@ -52,7 +52,7 @@ import com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-@DisplayName("Tests the query for all the graph data with multiple data")
+@DisplayName("Querying all the data from the repository with multiple data")
 public class ITGraphRepositoryAllMultiple {
 
     private static Neo4j embeddedDatabaseServer;

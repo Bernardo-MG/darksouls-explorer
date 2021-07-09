@@ -62,6 +62,7 @@ import graphql.schema.DataFetchingEnvironment;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
+@DisplayName("Fetching all the graph data")
 public class ITGraphDataFetcher {
 
     private static Neo4j embeddedDatabaseServer;
