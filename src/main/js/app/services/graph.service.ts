@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { GraphResponse } from 'app/models/graphResponse';
 import { InfoResponse } from 'app/models/infoResponse';
 import { Graph } from 'app/models/graph';
-import { Item } from 'app/models/Item';
+import { Item } from 'app/models/item';
 import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
