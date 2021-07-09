@@ -5,8 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -17,24 +18,28 @@ import { AppComponent } from './app.component';
 import { APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
-import { MentionComponent } from './mention/mention.component';
-import { GraphDisplayComponent } from './graph-display/graph-display.component';
+
+import { RelationshipComponent } from './relationship/relationship.component';
+import { GraphDisplayModule } from './graph-display/graph-display.module';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MentionComponent,
-    GraphDisplayComponent
+    RelationshipComponent,
+    FilterComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    GraphDisplayModule,
     LayoutModule,
     MatButtonModule,
-    MatCardModule,
+    MatGridListModule,
     MatIconModule,
+    MatSelectModule,
     MatSidenavModule,
     MatTableModule,
     MatToolbarModule,

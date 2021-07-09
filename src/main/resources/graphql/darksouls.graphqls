@@ -3,13 +3,31 @@ schema {
 }
 
 type Query {
-   allMentions: [Relationship]
+   graph(type: [String]): Graph
+   info(id: Int): Item
 }
 
-type Relationship {
+type Graph {
+   nodes: [Node]
+   links: [Link]
+   types: [String]
+}
+
+type Node {
+   id: Int !
+   name: String !
+}
+
+type Link {
    source: String !
    sourceId: Int !
    target: String !
    targetId: Int !
    type: String !
+}
+
+type Item {
+   id: Int !
+   name: String !
+   description: [String] !
 }

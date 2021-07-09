@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MentionComponent } from './mention/mention.component';
-import { GraphDisplayComponent } from './graph-display/graph-display.component';
+import { RelationshipComponent } from './relationship/relationship.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/mentions', pathMatch: 'full' },
-  { path: 'mentions', component: MentionComponent },
-  { path: 'graph', component: GraphDisplayComponent }
+  { path: '', redirectTo: '/relationships', pathMatch: 'full' },
+  { path: 'relationships', component: RelationshipComponent }
 ];
 
 @NgModule({
