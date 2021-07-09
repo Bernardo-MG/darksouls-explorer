@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { GraphService } from 'app/services/graph.service';
 import { Graph } from 'app/models/graph';
 import { NamedValue } from 'app/models/namedValue';
+import { Item } from 'app/models/item';
 
 @Component({
   selector: 'app-relationship',
@@ -14,7 +15,7 @@ export class RelationshipComponent implements OnInit {
 
   graph: Graph = { nodes: [], links: [], types: [] };
 
-  @Input() nodeName: String;
+  @Input() info: Item;
 
   constructor(
     private graphService: GraphService
@@ -31,7 +32,7 @@ export class RelationshipComponent implements OnInit {
   }
 
   onSelectNode(id: Number) {
-    this.graphService.getOne(id).subscribe(data => this.nodeName = data.name);
+    this.graphService.getOne(id).subscribe(data => this.info = data);
   }
 
   onApplyFilter(options: String[]) {

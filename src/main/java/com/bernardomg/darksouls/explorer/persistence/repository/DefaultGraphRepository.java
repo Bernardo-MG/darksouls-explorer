@@ -161,13 +161,13 @@ public class DefaultGraphRepository implements GraphRepository {
     }
 
     @Override
-    public final Optional<Node> findById(final Integer id) {
+    public final Optional<Item> findById(final Integer id) {
         final Result rows;
         final Record row;
         final String queryTemplate;
         final String query;
         final Item node;
-        final Optional<Node> result;
+        final Optional<Item> result;
 
         Preconditions.checkNotNull(id);
 

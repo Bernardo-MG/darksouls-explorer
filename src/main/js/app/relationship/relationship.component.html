@@ -9,6 +9,9 @@
         <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
     </mat-grid-tile>
     <mat-grid-tile rowspan="8">
-        <h1>{{nodeName}}</h1>
+        <div>
+            <h1>{{info?.name}}</h1>
+            <p>{{info?.description}}</p>
+        </div>
     </mat-grid-tile>
 </mat-grid-list>

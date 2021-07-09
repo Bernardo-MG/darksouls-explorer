@@ -21,6 +21,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.bernardomg.darksouls.explorer.model.Item;
 import com.bernardomg.darksouls.explorer.model.Node;
 import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
 
@@ -53,19 +54,12 @@ public final class NodeDataFetcher implements DataFetcher<Node> {
     public final Node get(final DataFetchingEnvironment environment)
             throws Exception {
         final Integer id;
-        final Optional<Node> read;
-        final Node result;
+        final Optional<Item> read;
 
         id = environment.getArgumentOrDefault("id", -1);
         read = graphRepository.findById(id);
 
-        if (read.isEmpty()) {
-            result = null;
-        } else {
-            result = read.get();
-        }
-
-        return result;
+        return read.orElse(null);
     }
 
 }

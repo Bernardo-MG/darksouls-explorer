@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { GraphResponse } from 'app/models/graphResponse';
 import { InfoResponse } from 'app/models/infoResponse';
 import { Graph } from 'app/models/graph';
-import { Node } from 'app/models/node';
+import { Item } from 'app/models/Item';
 import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
@@ -57,7 +57,7 @@ export class GraphService {
       .valueChanges.pipe(map((response: ApolloQueryResult<GraphResponse>) => { return response.data.graph.types }));
   }
 
-  getOne(id: Number): Observable<Node> {
+  getOne(id: Number): Observable<Item> {
     return this.apollo
       .watchQuery({
         query: gql`
