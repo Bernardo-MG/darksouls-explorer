@@ -110,6 +110,7 @@ public class ITGraphRepositoryFindById {
 
         Assertions.assertEquals(1l, data.get().getId());
         Assertions.assertEquals("Target", data.get().getName());
+        Assertions.assertEquals("", data.get().getDescription());
     }
 
 }
