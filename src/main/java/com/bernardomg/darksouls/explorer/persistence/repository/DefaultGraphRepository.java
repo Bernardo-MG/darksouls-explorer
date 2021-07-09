@@ -169,6 +169,7 @@ public class DefaultGraphRepository implements GraphRepository {
         final String query;
         final Item node;
         final Optional<Item> result;
+        final String description;
 
         Preconditions.checkNotNull(id);
 
@@ -189,8 +190,14 @@ public class DefaultGraphRepository implements GraphRepository {
             node = new DefaultItem();
             node.setId(row.get("id", 0l));
             node.setName(row.get("name", ""));
-            node.setDescription(
-                    Arrays.asList(row.get("description", "").split("\\|")));
+
+            description = row.get("description", "");
+            if (!description.isBlank()) {
+                node.setDescription(
+                        Arrays.asList(row.get("description", "").split("\\|")));
+            } else {
+                node.setDescription(Collections.emptyList());
+            }
 
             result = Optional.of(node);
 
