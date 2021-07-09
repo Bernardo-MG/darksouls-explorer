@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.common;
+package com.bernardomg.darksouls.explorer.test.common;
 
 import org.neo4j.harness.Neo4j;
 import org.neo4j.harness.Neo4jBuilders;

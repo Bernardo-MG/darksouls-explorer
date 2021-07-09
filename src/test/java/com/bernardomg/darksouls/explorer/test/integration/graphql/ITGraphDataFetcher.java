@@ -42,7 +42,7 @@ import com.bernardomg.darksouls.explorer.graphql.GraphDataFetcher;
 import com.bernardomg.darksouls.explorer.model.Graph;
 import com.bernardomg.darksouls.explorer.model.Link;
 import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
-import com.bernardomg.darksouls.explorer.test.integration.common.Neo4jTestData;
+import com.bernardomg.darksouls.explorer.test.common.Neo4jTestData;
 import com.google.common.collect.Iterables;
 
 import graphql.schema.DataFetchingEnvironment;
