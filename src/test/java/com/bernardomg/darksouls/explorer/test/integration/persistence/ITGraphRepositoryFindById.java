@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bernardomg.darksouls.explorer.Application;
-import com.bernardomg.darksouls.explorer.model.Node;
+import com.bernardomg.darksouls.explorer.model.Item;
 import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
 
 /**
@@ -94,7 +94,7 @@ public class ITGraphRepositoryFindById {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testFindAll_NotExisting() {
-        final Optional<Node> data;
+        final Optional<Item> data;
 
         data = repository.findById(12345);
 
@@ -104,7 +104,7 @@ public class ITGraphRepositoryFindById {
     @Test
     @DisplayName("Returns the correct data")
     public void testFindAll_Single_Data() {
-        final Optional<Node> data;
+        final Optional<Item> data;
 
         data = repository.findById(1);
 
