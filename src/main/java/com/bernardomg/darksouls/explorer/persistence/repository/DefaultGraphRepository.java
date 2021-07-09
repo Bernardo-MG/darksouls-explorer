@@ -16,6 +16,7 @@
 
 package com.bernardomg.darksouls.explorer.persistence.repository;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -188,7 +189,8 @@ public class DefaultGraphRepository implements GraphRepository {
             node = new DefaultItem();
             node.setId(row.get("id", 0l));
             node.setName(row.get("name", ""));
-            node.setDescription(row.get("description", ""));
+            node.setDescription(
+                    Arrays.asList(row.get("description", "").split("\\|")));
 
             result = Optional.of(node);
 

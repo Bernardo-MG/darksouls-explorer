@@ -24,6 +24,7 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
@@ -55,8 +56,8 @@ import graphql.com.google.common.collect.Iterables;
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying the repository by id")
-public class ITGraphRepositoryFindById {
+@DisplayName("Querying the repository by id with a description")
+public class ITGraphRepositoryFindByIdDescription {
 
     private static Neo4j embeddedDatabaseServer;
 
@@ -65,7 +66,8 @@ public class ITGraphRepositoryFindById {
         embeddedDatabaseServer = Neo4jBuilders.newInProcessBuilder()
                 .withDisabledServer()// disable http server
                 .withFixture("CREATE ({name: 'Source'});")
-                .withFixture("CREATE ({name: 'Target'});")
+                .withFixture(
+                        "CREATE ({name: 'Target', description: 'line1|line2'});")
                 .withFixture(
                         "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:RELATIONSHIP]->(m);")
                 .build();
@@ -89,7 +91,7 @@ public class ITGraphRepositoryFindById {
     /**
      * Default constructor.
      */
-    public ITGraphRepositoryFindById() {
+    public ITGraphRepositoryFindByIdDescription() {
         super();
     }
 
@@ -107,12 +109,17 @@ public class ITGraphRepositoryFindById {
     @DisplayName("Returns the correct data")
     public void testFindAll_Single_Data() {
         final Optional<Item> data;
+        final Iterator<String> itr;
 
         data = repository.findById(1);
 
         Assertions.assertEquals(1l, data.get().getId());
         Assertions.assertEquals("Target", data.get().getName());
-        Assertions.assertEquals(0, Iterables.size(data.get().getDescription()));
+        Assertions.assertEquals(2, Iterables.size(data.get().getDescription()));
+
+        itr = data.get().getDescription().iterator();
+        Assertions.assertEquals("line1", itr.next());
+        Assertions.assertEquals("line2", itr.next());
     }
 
 }

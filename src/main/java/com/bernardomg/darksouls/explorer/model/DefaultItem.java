@@ -7,11 +7,11 @@ import com.google.common.base.MoreObjects;
 
 public final class DefaultItem implements Item {
 
-    private String description;
+    private Iterable<String> description;
 
-    private Long   id;
+    private Long             id;
 
-    private String name;
+    private String           name;
 
     public DefaultItem() {
         super();
@@ -32,7 +32,7 @@ public final class DefaultItem implements Item {
     }
 
     @Override
-    public final String getDescription() {
+    public final Iterable<String> getDescription() {
         return description;
     }
 
@@ -52,7 +52,7 @@ public final class DefaultItem implements Item {
     }
 
     @Override
-    public final void setDescription(final String description) {
+    public final void setDescription(final Iterable<String> description) {
         this.description = description;
     }
 

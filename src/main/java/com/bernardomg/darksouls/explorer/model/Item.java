@@ -3,8 +3,8 @@ package com.bernardomg.darksouls.explorer.model;
 
 public interface Item extends Node {
 
-    public String getDescription();
+    public Iterable<String> getDescription();
 
-    public void setDescription(final String value);
+    public void setDescription(final Iterable<String> value);
 
 }

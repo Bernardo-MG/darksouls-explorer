@@ -29,5 +29,5 @@ type Link {
 type Item {
    id: Int !
    name: String !
-   description: String !
+   description: [String] !
 }

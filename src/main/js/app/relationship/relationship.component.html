@@ -11,7 +11,7 @@
     <mat-grid-tile rowspan="8">
         <div>
             <h1>{{info?.name}}</h1>
-            <p>{{info?.description}}</p>
+            <p *ngFor="let desc of info?.description">{{desc}}</p>
         </div>
     </mat-grid-tile>
 </mat-grid-list>
