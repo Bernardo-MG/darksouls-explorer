@@ -1,17 +1,19 @@
-<mat-grid-list cols="2" rowHeight="100">
-    <mat-grid-tile>
+<div fxLayout="column" fxLayoutAlign="space-evenly center">
+    <div>
         <filter [options]="filterOptions" (applyFilter)="onApplyFilter($event)"></filter>
-    </mat-grid-tile>
-    <mat-grid-tile>
-        <graph-status [graph]="graph"></graph-status>
-    </mat-grid-tile>
-    <mat-grid-tile rowspan="8">
-        <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
-    </mat-grid-tile>
-    <mat-grid-tile rowspan="8">
+    </div>
+    <div fxLayout="column" fxLayoutAlign="space-evenly center">
         <div>
-            <h1>{{info?.name}}</h1>
-            <p *ngFor="let desc of info?.description">{{desc}}</p>
+            <div>
+                <graph-status [graph]="graph"></graph-status>
+                <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
+            </div>
         </div>
-    </mat-grid-tile>
-</mat-grid-list>
+        <div>
+            <div>
+                <h1>{{info?.name}}</h1>
+                <p *ngFor="let desc of info?.description">{{desc}}</p>
+            </div>
+        </div>
+    </div>
+</div>

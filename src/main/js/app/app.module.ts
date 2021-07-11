@@ -12,6 +12,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -31,9 +33,10 @@ import { FilterComponent } from './filter/filter.component';
   ],
   imports: [
     AppRoutingModule,
+    BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    FlexLayoutModule,
     GraphDisplayModule,
     LayoutModule,
     MatButtonModule,
