@@ -18,7 +18,7 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
 
   @Output() selectNode = new EventEmitter<Number>();
 
-  height = 300;
+  height = 400;
 
   width = 400;
 
