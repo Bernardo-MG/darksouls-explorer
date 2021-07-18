@@ -18,9 +18,9 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
 
   @Output() selectNode = new EventEmitter<Number>();
 
-  width = 800;
+  height = 300;
 
-  height = 600;
+  width = 400;
 
   constructor() { }
 
@@ -30,6 +30,10 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
       const links = this.graph.links.map(this.toGraphLink);
       const nodes = this.graph.nodes.map(this.toGraphNode);
       const types = this.graph.types;
+
+      // const rect: DOMRect = (d3.select("figure#graph_view").node() as Element).getBoundingClientRect();
+      // this.height = rect.height
+      // this.width = rect.width
 
       this.displayGraph(links, nodes, types, this.width, this.height);
     }
@@ -55,7 +59,7 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
   }
 
   private cleanGraph() {
-    d3.select("figure#graph_view").select("svg").remove();
+    d3.select("figure#graph_view").select("#graph").remove();
   }
 
   private displayGraph(links: GraphLink[], nodes: GraphNode[], types: String[], width: number, height: number) {
@@ -69,9 +73,12 @@ export class GraphDiagramComponent implements OnInit, OnChanges {
 
     // Main view container
     var mainView = d3.select("figure#graph_view")
-      .append("svg")
+      .append("div")
       .attr("id", "graph")
-      .attr("viewBox", [0, 0, width, height] as any);
+      .classed("svg-container", true)
+      .append("svg")
+      .attr("viewBox", `0, 0, ${width}, ${height}`)
+      .classed("svg-content-responsive", true);
 
     // Per-type markers, as they don't inherit styles.
     mainView.append("defs").selectAll("marker")
