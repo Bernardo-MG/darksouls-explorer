@@ -1,15 +1,27 @@
-<div fxLayout="column" fxLayoutAlign="center center">
-    <div>
+<div fxLayout="column">
+    <div fxFlex="100">
         <filter [options]="filterOptions" (applyFilter)="onApplyFilter($event)"></filter>
     </div>
-    <div fxLayout="row" fxFlexFill>
-        <div>
-            <graph-status [graph]="graph"></graph-status>
-            <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
+    <div fxLayout="row">
+        <div fxFlex="50">
+            <mat-card>
+                <mat-card-header>
+                    <graph-status [graph]="graph"></graph-status>
+                </mat-card-header>
+                <mat-card-content>
+                    <graph-diagram [graph]="graph" (selectNode)="onSelectNode($event)"></graph-diagram>
+                </mat-card-content>
+            </mat-card>
         </div>
-        <div>
-            <h1>{{info?.name}}</h1>
-            <p *ngFor="let desc of info?.description">{{desc}}</p>
+        <div fxFlex="50">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>{{info?.name}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p *ngFor="let desc of info?.description">{{desc}}</p>
+                </mat-card-content>
+            </mat-card>
         </div>
     </div>
 </div>
