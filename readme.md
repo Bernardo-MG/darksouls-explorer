@@ -19,7 +19,6 @@ Several technologies are combined to make this work:
 - [GraphQL](https://graphql.org/) endpoint
 - [Angular](https://angular.io/)
 - [Apollo GraphQL](https://www.apollographql.com/)
-- [d3](https://d3js.org/)
 
 ## Documentation
 

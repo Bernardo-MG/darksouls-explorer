@@ -232,15 +232,6 @@
       <site.url>https://application.com</site.url>
       <social.twitter>@BernardoMartG</social.twitter>
       <!-- ============================================== -->
-      <!-- ============= NODE ENVIRONMENT =============== -->
-      <!-- ============================================== -->
-      <node.env.api>http://localhost:8080</node.env.api>
-      <node.env.appVersion>v${project.version}</node.env.appVersion>
-      <node.env.repoUrl>${project.scm.url}</node.env.repoUrl>
-      <node.env.inputPath>./src/main/js/</node.env.inputPath>
-      <node.env.outputPath>./target/classes/static/</node.env.outputPath>
-      <node.env.modules>./node_modules</node.env.modules>
-      <!-- ============================================== -->
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->
       <aspectj.version>1.9.6</aspectj.version>
@@ -641,28 +632,6 @@
          </resource>
       </resources>
       <plugins>
-         <plugin>
-            <!-- Build helper -->
-            <!-- Adds the generated files to the Maven classpath -->
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>add-source</id>
-                  <goals>
-                     <goal>add-source</goal>
-                  </goals>
-                  <configuration>
-                     <sources>
-                        <!-- JS sources -->
-                        <source>${project.basedir}/src/main/js</source>
-                        <!-- JS tests -->
-                        <source>${project.basedir}/src/test/js</source>
-                     </sources>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
          <plugin>
             <!-- Changes -->
             <!-- Takes care of the changes log -->
