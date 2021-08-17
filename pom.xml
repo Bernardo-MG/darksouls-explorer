@@ -236,27 +236,27 @@
       <!-- ============================================== -->
       <aspectj.version>1.9.6</aspectj.version>
       <caffeine.version>2.6.2</caffeine.version>
-      <classgraph.version>4.8.104</classgraph.version>
-      <commons.lang.version>3.10</commons.lang.version>
+      <classgraph.version>4.8.115</classgraph.version>
+      <commons.lang.version>3.12.0</commons.lang.version>
       <glassfish.el.version>2.2</glassfish.el.version>
-      <graphql.version>11.0.0</graphql.version>
+      <graphql.version>11.0.1</graphql.version>
       <guava.version>30.1.1-jre</guava.version>
       <hamcrest.version>2.2</hamcrest.version>
-      <jackson.version>2.12.2</jackson.version>
-      <javassist.version>3.25.0-GA</javassist.version>
-      <jsonpath.version>2.5.0</jsonpath.version>
+      <jackson.version>2.12.4</jackson.version>
+      <javassist.version>3.28.0-GA</javassist.version>
+      <jsonpath.version>2.6.0</jsonpath.version>
       <junit.jupiter.version>5.7.1</junit.jupiter.version>
       <log4j.version>2.14.1</log4j.version>
-      <mockito.version>3.9.0</mockito.version>
-      <neo4j.test.version>4.1.1</neo4j.test.version>
+      <mockito.version>3.11.2</mockito.version>
+      <neo4j.test.version>4.3.3</neo4j.test.version>
       <reactiveStreams.version>1.0.3</reactiveStreams.version>
-      <reactor.version>3.4.6</reactor.version>
+      <reactor.version>3.4.9</reactor.version>
       <servlet.version>4.0.1</servlet.version>
       <slf4j.version>1.7.30</slf4j.version>
-      <spring.boot.graphql.version>11.0.0</spring.boot.graphql.version>
-      <spring.boot.version>2.4.4</spring.boot.version>
-      <spring.data.train.version>2020.0.7</spring.data.train.version>
-      <spring.version>5.3.5</spring.version>
+      <spring.boot.graphql.version>11.1.0</spring.boot.graphql.version>
+      <spring.boot.version>2.5.3</spring.boot.version>
+      <spring.data.train.version>2021.0.4</spring.data.train.version>
+      <spring.version>5.3.9</spring.version>
       <webappRunner.version>8.5.30.0</webappRunner.version>
       <!-- ============================================== -->
       <!-- ============== PLUGINS VERSIONS ============== -->
@@ -265,7 +265,7 @@
       <!-- ============================================== -->
       <!-- ================= MAVEN SITE ================= -->
       <!-- ============================================== -->
-      <site.skin.version>2.1.0</site.skin.version>
+      <site.skin.version>2.2.4</site.skin.version>
    </properties>
 
    <!-- ********************************************** -->
