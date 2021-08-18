@@ -1,4 +1,4 @@
-# Dark Souls Explorer
+# Dark Souls Explorer Backend
 
 No-SQL experiment using Dark Souls data taken from the wiki.
 
