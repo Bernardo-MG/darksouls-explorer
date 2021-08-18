@@ -98,10 +98,10 @@ If you wish to fork or modify the code, visit the [GitHub project page][scm], wh
 
 The project has been released under the [MIT License][license].
 
-[issues]: https://github.com/bernardo-mg/darksouls-explorer/issues
-[javadoc-develop]: https://docs.bernardomg.com/development/maven/darksouls-explorer/apidocs
-[javadoc-release]: https://docs.bernardomg.com/maven/darksouls-explorer/apidocs
+[issues]: https://github.com/bernardo-mg/darksouls-explorer-backend/issues
+[javadoc-develop]: https://docs.bernardomg.com/development/maven/darksouls-explorer-backend/apidocs
+[javadoc-release]: https://docs.bernardomg.com/maven/darksouls-explorer-backend/apidocs
 [license]: https://www.opensource.org/licenses/mit-license.php
-[scm]: https://github.com/bernardo-mg/darksouls-explorer
-[site-develop]: https://docs.bernardomg.com/development/maven/darksouls-explorer
-[site-release]: https://docs.bernardomg.com/maven/darksouls-explorer
+[scm]: https://github.com/bernardo-mg/darksouls-explorer-backend
+[site-develop]: https://docs.bernardomg.com/development/maven/darksouls-explorer-backend
+[site-release]: https://docs.bernardomg.com/maven/darksouls-explorer-backend

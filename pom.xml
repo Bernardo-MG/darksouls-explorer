@@ -25,7 +25,7 @@
 
    <name>Dark Souls Explorer Backend</name>
    <description>No-SQL experiment using Dark Souls data taken from the wiki.</description>
-   <url>https://github.com/bernardo-mg/darksouls-explorer</url>
+   <url>https://github.com/bernardo-mg/darksouls-explorer-backend</url>
    <inceptionYear>2021</inceptionYear>
 
    <licenses>
@@ -41,20 +41,20 @@
    <!-- ********************************************** -->
 
    <scm>
-      <connection>scm:git:https://github.com/bernardo-mg/darksouls-explorer.git</connection>
-      <developerConnection>scm:git:https://github.com/bernardo-mg/darksouls-explorer.git</developerConnection>
+      <connection>scm:git:https://github.com/bernardo-mg/darksouls-explorer-backend.git</connection>
+      <developerConnection>scm:git:https://github.com/bernardo-mg/darksouls-explorer-backend.git</developerConnection>
       <tag>head</tag>
-      <url>https://www.github.com/bernardo-mg/darksouls-explorer</url>
+      <url>https://www.github.com/bernardo-mg/darksouls-explorer-backend</url>
    </scm>
 
    <issueManagement>
       <system>GitHub</system>
-      <url>https://www.github.com/bernardo-mg/darksouls-explorer/issues</url>
+      <url>https://www.github.com/bernardo-mg/darksouls-explorer-backend/issues</url>
    </issueManagement>
 
    <ciManagement>
       <system>Github</system>
-      <url>https://www.github.com/bernardo-mg/darksouls-explorer/actions</url>
+      <url>https://www.github.com/bernardo-mg/darksouls-explorer-backend/actions</url>
       <notifiers />
    </ciManagement>
 
@@ -63,7 +63,7 @@
          <uniqueVersion>false</uniqueVersion>
          <id>releases</id>
          <name>Releases Repository</name>
-         <url>https://api.bintray.com/maven/bernardo-mg/maven/darksouls-explorer</url>
+         <url>https://api.bintray.com/maven/bernardo-mg/maven/darksouls-explorer-backend</url>
       </repository>
       <snapshotRepository>
          <uniqueVersion>false</uniqueVersion>
