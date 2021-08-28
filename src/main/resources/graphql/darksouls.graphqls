@@ -1,0 +1,33 @@
+schema {
+   query: Query
+}
+
+type Query {
+   graph(type: [String]): Graph
+   info(id: Int): Item
+}
+
+type Graph {
+   nodes: [Node]
+   links: [Link]
+   types: [String]
+}
+
+type Node {
+   id: Int !
+   name: String !
+}
+
+type Link {
+   source: String !
+   sourceId: Int !
+   target: String !
+   targetId: Int !
+   type: String !
+}
+
+type Item {
+   id: Int !
+   name: String !
+   description: [String] !
+}
