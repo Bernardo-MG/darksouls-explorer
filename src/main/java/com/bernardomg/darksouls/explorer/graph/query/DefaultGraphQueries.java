@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.persistence.query;
+package com.bernardomg.darksouls.explorer.graph.query;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,14 +34,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bernardomg.darksouls.explorer.model.DefaultGraph;
-import com.bernardomg.darksouls.explorer.model.DefaultItem;
-import com.bernardomg.darksouls.explorer.model.DefaultLink;
-import com.bernardomg.darksouls.explorer.model.DefaultNode;
-import com.bernardomg.darksouls.explorer.model.Graph;
-import com.bernardomg.darksouls.explorer.model.Item;
-import com.bernardomg.darksouls.explorer.model.Link;
-import com.bernardomg.darksouls.explorer.model.Node;
+import com.bernardomg.darksouls.explorer.graph.model.DefaultGraph;
+import com.bernardomg.darksouls.explorer.graph.model.DefaultItem;
+import com.bernardomg.darksouls.explorer.graph.model.DefaultLink;
+import com.bernardomg.darksouls.explorer.graph.model.DefaultNode;
+import com.bernardomg.darksouls.explorer.graph.model.Graph;
+import com.bernardomg.darksouls.explorer.graph.model.Item;
+import com.bernardomg.darksouls.explorer.graph.model.Link;
+import com.bernardomg.darksouls.explorer.graph.model.Node;
 
 import graphql.com.google.common.base.Preconditions;
 import graphql.com.google.common.collect.Iterables;

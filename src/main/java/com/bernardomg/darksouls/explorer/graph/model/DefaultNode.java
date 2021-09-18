@@ -1,19 +1,17 @@
 
-package com.bernardomg.darksouls.explorer.model;
+package com.bernardomg.darksouls.explorer.graph.model;
 
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 
-public final class DefaultItem implements Item {
+public final class DefaultNode implements Node {
 
-    private Iterable<String> description;
+    private Long   id;
 
-    private Long             id;
+    private String name;
 
-    private String           name;
-
-    public DefaultItem() {
+    public DefaultNode() {
         super();
     }
 
@@ -27,13 +25,8 @@ public final class DefaultItem implements Item {
             return false;
         }
 
-        final DefaultItem other = (DefaultItem) obj;
+        final DefaultNode other = (DefaultNode) obj;
         return Objects.equals(id, other.id);
-    }
-
-    @Override
-    public final Iterable<String> getDescription() {
-        return description;
     }
 
     @Override
@@ -52,11 +45,6 @@ public final class DefaultItem implements Item {
     }
 
     @Override
-    public final void setDescription(final Iterable<String> description) {
-        this.description = description;
-    }
-
-    @Override
     public final void setId(final Long value) {
         id = value;
     }
@@ -68,8 +56,8 @@ public final class DefaultItem implements Item {
 
     @Override
     public final String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("name", name)
-                .add("description", description).toString();
+        return MoreObjects.toStringHelper(this).add("name", name).add("id", id)
+                .toString();
     }
 
 }

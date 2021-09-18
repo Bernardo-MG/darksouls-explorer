@@ -35,8 +35,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bernardomg.darksouls.explorer.Application;
-import com.bernardomg.darksouls.explorer.model.Item;
-import com.bernardomg.darksouls.explorer.persistence.query.GraphQueries;
+import com.bernardomg.darksouls.explorer.graph.model.Item;
+import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.common.Neo4jTestData;
 
 import graphql.com.google.common.collect.Iterables;

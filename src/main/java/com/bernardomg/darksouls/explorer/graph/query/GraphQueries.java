@@ -13,10 +13,26 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-/**
- * Model classes.
- * <p>
- * These represent the main sets of data which the application works with.
- */
 
-package com.bernardomg.darksouls.explorer.model;
+package com.bernardomg.darksouls.explorer.graph.query;
+
+import java.util.Optional;
+
+import com.bernardomg.darksouls.explorer.graph.model.Graph;
+import com.bernardomg.darksouls.explorer.graph.model.Item;
+
+/**
+ * Graph repository.
+ * 
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public interface GraphQueries {
+
+    public Graph findAll();
+
+    public Graph findAllByLinkType(final Iterable<String> types);
+
+    public Optional<Item> findById(final Integer id);
+
+}

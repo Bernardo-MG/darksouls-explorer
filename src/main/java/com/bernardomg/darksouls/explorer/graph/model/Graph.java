@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.model;
+package com.bernardomg.darksouls.explorer.graph.model;
 
 public interface Graph {
 

@@ -21,9 +21,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.model.Item;
-import com.bernardomg.darksouls.explorer.model.Node;
-import com.bernardomg.darksouls.explorer.persistence.query.GraphQueries;
+import com.bernardomg.darksouls.explorer.graph.model.Item;
+import com.bernardomg.darksouls.explorer.graph.model.Node;
+import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;

@@ -13,26 +13,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
-package com.bernardomg.darksouls.explorer.persistence.query;
-
-import java.util.Optional;
-
-import com.bernardomg.darksouls.explorer.model.Graph;
-import com.bernardomg.darksouls.explorer.model.Item;
-
 /**
- * Graph repository.
- * 
- * @author Bernardo Mart&iacute;nez Garrido
- *
+ * Repositories.
  */
-public interface GraphQueries {
 
-    public Graph findAll();
-
-    public Graph findAllByLinkType(final Iterable<String> types);
-
-    public Optional<Item> findById(final Integer id);
-
-}
+package com.bernardomg.darksouls.explorer.graph.query;
