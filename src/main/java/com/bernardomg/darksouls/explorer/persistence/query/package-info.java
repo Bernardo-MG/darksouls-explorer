@@ -17,4 +17,4 @@
  * Repositories.
  */
 
-package com.bernardomg.darksouls.explorer.persistence.repository;
+package com.bernardomg.darksouls.explorer.persistence.query;

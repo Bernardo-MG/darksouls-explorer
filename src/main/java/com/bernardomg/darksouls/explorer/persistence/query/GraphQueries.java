@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.persistence.repository;
+package com.bernardomg.darksouls.explorer.persistence.query;
 
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ import com.bernardomg.darksouls.explorer.model.Item;
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface GraphRepository {
+public interface GraphQueries {
 
     public Graph findAll();
 

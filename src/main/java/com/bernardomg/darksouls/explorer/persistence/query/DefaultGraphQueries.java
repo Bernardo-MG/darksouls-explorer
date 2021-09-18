@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.persistence.repository;
+package com.bernardomg.darksouls.explorer.persistence.query;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,18 +53,18 @@ import graphql.com.google.common.collect.Iterables;
  *
  */
 @Repository
-public class DefaultGraphRepository implements GraphRepository {
+public class DefaultGraphQueries implements GraphQueries {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(DefaultGraphRepository.class);
+            .getLogger(DefaultGraphQueries.class);
 
     private final Driver        driver;
 
     @Autowired
-    public DefaultGraphRepository(final Driver drv) {
+    public DefaultGraphQueries(final Driver drv) {
         super();
 
         driver = drv;

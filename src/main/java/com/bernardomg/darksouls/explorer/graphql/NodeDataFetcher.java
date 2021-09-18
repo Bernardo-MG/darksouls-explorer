@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.model.Item;
 import com.bernardomg.darksouls.explorer.model.Node;
-import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
+import com.bernardomg.darksouls.explorer.persistence.query.GraphQueries;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -41,7 +41,7 @@ public final class NodeDataFetcher implements DataFetcher<Node> {
      * Graph repository.
      */
     @Autowired
-    private GraphRepository graphRepository;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
@@ -57,7 +57,7 @@ public final class NodeDataFetcher implements DataFetcher<Node> {
         final Optional<Item> read;
 
         id = environment.getArgumentOrDefault("id", -1);
-        read = graphRepository.findById(id);
+        read = queries.findById(id);
 
         return read.orElse(null);
     }

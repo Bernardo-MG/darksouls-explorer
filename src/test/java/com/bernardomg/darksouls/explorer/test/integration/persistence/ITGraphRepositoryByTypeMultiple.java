@@ -35,12 +35,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.model.Graph;
-import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
+import com.bernardomg.darksouls.explorer.persistence.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.common.Neo4jTestData;
 import com.google.common.collect.Iterables;
 
 /**
- * Integration tests for the {@link GraphRepository}.
+ * Integration tests for the {@link GraphQueries}.
  */
 @SpringJUnitConfig
 @Transactional(propagation = Propagation.NEVER)
@@ -69,7 +69,7 @@ public class ITGraphRepositoryByTypeMultiple {
     }
 
     @Autowired
-    private GraphRepository repository;
+    private GraphQueries repository;
 
     /**
      * Default constructor.

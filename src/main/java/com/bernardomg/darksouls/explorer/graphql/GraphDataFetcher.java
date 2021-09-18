@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.model.Graph;
-import com.bernardomg.darksouls.explorer.persistence.repository.GraphRepository;
+import com.bernardomg.darksouls.explorer.persistence.query.GraphQueries;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -41,7 +41,7 @@ public final class GraphDataFetcher implements DataFetcher<Graph> {
      * Graph repository.
      */
     @Autowired
-    private GraphRepository graphRepository;
+    private GraphQueries graphRepository;
 
     /**
      * Default constructor.
