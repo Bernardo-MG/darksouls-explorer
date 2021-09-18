@@ -231,14 +231,14 @@
       <jackson.version>2.12.4</jackson.version>
       <javassist.version>3.28.0-GA</javassist.version>
       <jsonpath.version>2.6.0</jsonpath.version>
-      <junit.jupiter.version>5.7.1</junit.jupiter.version>
+      <junit.jupiter.version>5.7.2</junit.jupiter.version>
       <log4j.version>2.14.1</log4j.version>
       <mockito.version>3.11.2</mockito.version>
       <neo4j.test.version>4.3.3</neo4j.test.version>
       <reactiveStreams.version>1.0.3</reactiveStreams.version>
       <reactor.version>3.4.9</reactor.version>
       <servlet.version>4.0.1</servlet.version>
-      <slf4j.version>1.7.30</slf4j.version>
+      <slf4j.version>1.7.31</slf4j.version>
       <spring.boot.graphql.version>11.1.0</spring.boot.graphql.version>
       <spring.boot.version>2.5.3</spring.boot.version>
       <spring.data.train.version>2021.0.4</spring.data.train.version>
