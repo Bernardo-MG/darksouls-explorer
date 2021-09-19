@@ -1,7 +1,13 @@
 
 package com.bernardomg.darksouls.explorer.graph.model;
 
+import java.util.Map;
+
 public interface Link {
+
+    public void addAttribute(final String key, final Object value);
+
+    public Map<String, Object> getAttributes();
 
     public String getSource();
 

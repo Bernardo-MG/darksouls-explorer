@@ -1,11 +1,15 @@
 
 package com.bernardomg.darksouls.explorer.graph.model;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 
 public final class DefaultLink implements Link {
+
+    private Map<String, Object> attributes = new HashMap<>();
 
     private String source   = "";
 
@@ -22,6 +26,11 @@ public final class DefaultLink implements Link {
     }
 
     @Override
+    public final void addAttribute(final String key, final Object value) {
+        attributes.put(key, value);
+    }
+
+    @Override
     public final boolean equals(final Object obj) {
         if (this == obj) {
             return true;
@@ -35,6 +44,11 @@ public final class DefaultLink implements Link {
         return Objects.equals(sourceId, other.sourceId)
                 && Objects.equals(targetId, other.targetId)
                 && Objects.equals(type, other.type);
+    }
+
+    @Override
+    public final Map<String, Object> getAttributes() {
+        return attributes;
     }
 
     @Override

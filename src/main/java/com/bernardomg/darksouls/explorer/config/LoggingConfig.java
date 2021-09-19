@@ -40,17 +40,17 @@ public class LoggingConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "logging.service", matchIfMissing = false,
-            havingValue = "true")
-    public ServiceLoggingAspect serviceLoggingAspect() {
-        return new ServiceLoggingAspect();
-    }
-
-    @Bean
     @ConditionalOnProperty(name = "logging.controller", matchIfMissing = false,
             havingValue = "true")
     public ControllerLoggingAspect controllerLoggingAspect() {
         return new ControllerLoggingAspect();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "logging.service", matchIfMissing = false,
+            havingValue = "true")
+    public ServiceLoggingAspect serviceLoggingAspect() {
+        return new ServiceLoggingAspect();
     }
 
 }

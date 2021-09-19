@@ -18,10 +18,7 @@ package com.bernardomg.darksouls.explorer.graph.query;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -36,12 +33,10 @@ import org.springframework.stereotype.Repository;
 
 import com.bernardomg.darksouls.explorer.graph.model.DefaultGraph;
 import com.bernardomg.darksouls.explorer.graph.model.DefaultItem;
-import com.bernardomg.darksouls.explorer.graph.model.DefaultLink;
-import com.bernardomg.darksouls.explorer.graph.model.DefaultNode;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.model.Item;
-import com.bernardomg.darksouls.explorer.graph.model.Link;
-import com.bernardomg.darksouls.explorer.graph.model.Node;
+import com.bernardomg.darksouls.explorer.graph.query.processor.GraphProcessor;
+import com.bernardomg.darksouls.explorer.graph.query.processor.Processor;
 
 import graphql.com.google.common.base.Preconditions;
 import graphql.com.google.common.collect.Iterables;
@@ -58,10 +53,12 @@ public class DefaultGraphQueries implements GraphQueries {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger    LOGGER         = LoggerFactory
             .getLogger(DefaultGraphQueries.class);
 
-    private final Driver        driver;
+    private final Driver           driver;
+
+    private final Processor<Graph> graphProcessor = new GraphProcessor();
 
     @Autowired
     public DefaultGraphQueries(final Driver drv) {
@@ -73,9 +70,6 @@ public class DefaultGraphQueries implements GraphQueries {
     @Override
     public final Graph findAll() {
         final Result rows;
-        final List<Link> links;
-        final Set<Node> nodes;
-        final Set<String> resultTypes;
         final String query;
         final Graph result;
 
@@ -84,26 +78,8 @@ public class DefaultGraphQueries implements GraphQueries {
 
         try (final Session session = driver.session()) {
             rows = session.run(query);
-            links = rows.stream().map(this::toLink)
-                    .collect(Collectors.toList());
+            result = graphProcessor.process(rows);
         }
-
-        // TODO: Build only if they are requested
-
-        nodes = new HashSet<>();
-        nodes.addAll(links.stream().map(this::toSourceNode)
-                .collect(Collectors.toList()));
-        nodes.addAll(links.stream().map(this::toTargetNode)
-                .collect(Collectors.toList()));
-
-        resultTypes = new HashSet<>();
-        resultTypes.addAll(
-                links.stream().map(Link::getType).collect(Collectors.toList()));
-
-        result = new DefaultGraph();
-        result.setLinks(links);
-        result.setNodes(nodes);
-        result.setTypes(resultTypes);
 
         return result;
     }
@@ -111,9 +87,6 @@ public class DefaultGraphQueries implements GraphQueries {
     @Override
     public final Graph findAllByLinkType(final Iterable<String> types) {
         final Result rows;
-        final List<Link> links;
-        final Set<Node> nodes;
-        final Set<String> resultTypes;
         final String queryTemplate;
         final String query;
         final Graph result;
@@ -124,7 +97,7 @@ public class DefaultGraphQueries implements GraphQueries {
         LOGGER.debug("Types: {}", types);
 
         if (Iterables.isEmpty(types)) {
-            links = Collections.emptyList();
+            result = new DefaultGraph();
         } else {
             validTypes = StreamSupport.stream(types.spliterator(), false)
                     .map((string) -> "'" + string + "'")
@@ -136,27 +109,9 @@ public class DefaultGraphQueries implements GraphQueries {
 
             try (final Session session = driver.session()) {
                 rows = session.run(query);
-                links = rows.stream().map(this::toLink)
-                        .collect(Collectors.toList());
+                result = graphProcessor.process(rows);
             }
         }
-
-        // TODO: Build only if they are requested
-
-        nodes = new HashSet<>();
-        nodes.addAll(links.stream().map(this::toSourceNode)
-                .collect(Collectors.toList()));
-        nodes.addAll(links.stream().map(this::toTargetNode)
-                .collect(Collectors.toList()));
-
-        resultTypes = new HashSet<>();
-        resultTypes.addAll(
-                links.stream().map(Link::getType).collect(Collectors.toList()));
-
-        result = new DefaultGraph();
-        result.setLinks(links);
-        result.setNodes(nodes);
-        result.setTypes(resultTypes);
 
         return result;
     }
@@ -209,39 +164,6 @@ public class DefaultGraphQueries implements GraphQueries {
         }
 
         session.close();
-
-        return result;
-    }
-
-    private final Link toLink(final Record row) {
-        final Link relationship;
-
-        relationship = new DefaultLink();
-        relationship.setSource(row.get("source", ""));
-        relationship.setSourceId(row.get("sourceId", 0l));
-        relationship.setTarget(row.get("target", ""));
-        relationship.setTargetId(row.get("targetId", 0l));
-        relationship.setType(row.get("relationship", ""));
-
-        return relationship;
-    }
-
-    private final Node toSourceNode(final Link link) {
-        final Node result;
-
-        result = new DefaultNode();
-        result.setId(link.getSourceId());
-        result.setName(link.getSource());
-
-        return result;
-    }
-
-    private final Node toTargetNode(final Link link) {
-        final Node result;
-
-        result = new DefaultNode();
-        result.setId(link.getTargetId());
-        result.setName(link.getTarget());
 
         return result;
     }
