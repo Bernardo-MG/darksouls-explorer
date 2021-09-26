@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 
-public final class DefaultItem implements Item {
+public final class DefaultInfo implements Info {
 
     private Iterable<String> description;
 
@@ -13,7 +13,7 @@ public final class DefaultItem implements Item {
 
     private String           name;
 
-    public DefaultItem() {
+    public DefaultInfo() {
         super();
     }
 
@@ -27,7 +27,7 @@ public final class DefaultItem implements Item {
             return false;
         }
 
-        final DefaultItem other = (DefaultItem) obj;
+        final DefaultInfo other = (DefaultInfo) obj;
         return Objects.equals(id, other.id);
     }
 

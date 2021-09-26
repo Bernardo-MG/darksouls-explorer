@@ -1,7 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.graph.model;
 
-public interface Item extends Node {
+public interface Info extends Node {
 
     public Iterable<String> getDescription();
 

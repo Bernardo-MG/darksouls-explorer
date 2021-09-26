@@ -16,50 +16,54 @@
 
 package com.bernardomg.darksouls.explorer.graphql;
 
-import java.util.Optional;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.graph.model.Info;
-import com.bernardomg.darksouls.explorer.graph.model.Node;
-import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
+import com.bernardomg.darksouls.explorer.item.model.Item;
+import com.bernardomg.darksouls.explorer.item.query.ItemQueries;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Fetcher for graphs. It will return all the nodes and their relationships.
+ * Fetcher for items.
  * 
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Component
-public final class NodeDataFetcher implements DataFetcher<Node> {
+public final class ItemDataFetcher implements DataFetcher<Iterable<Item>> {
 
     /**
      * Graph repository.
      */
     @Autowired
-    private GraphQueries queries;
+    private ItemQueries queries;
 
     /**
      * Default constructor.
      */
-    public NodeDataFetcher() {
+    public ItemDataFetcher() {
         super();
     }
 
     @Override
-    public final Node get(final DataFetchingEnvironment environment)
+    public final Iterable<Item> get(final DataFetchingEnvironment environment)
             throws Exception {
-        final Integer id;
-        final Optional<Info> read;
+        final String name;
+        final Iterable<Item> read;
 
-        id = environment.getArgumentOrDefault("id", -1);
-        read = queries.findById(id);
+        name = environment.getArgumentOrDefault("name", "");
 
-        return read.orElse(null);
+        if (name.isBlank()) {
+            read = queries.findAll();
+        } else {
+            read = Arrays.asList(queries.findOneByName(name).orElse(null));
+        }
+
+        return read;
     }
 
 }

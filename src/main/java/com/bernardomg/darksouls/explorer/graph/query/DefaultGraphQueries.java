@@ -29,12 +29,12 @@ import org.neo4j.driver.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.graph.model.DefaultGraph;
-import com.bernardomg.darksouls.explorer.graph.model.DefaultItem;
+import com.bernardomg.darksouls.explorer.graph.model.DefaultInfo;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
-import com.bernardomg.darksouls.explorer.graph.model.Item;
+import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.processor.GraphProcessor;
 import com.bernardomg.darksouls.explorer.graph.query.processor.Processor;
 
@@ -47,7 +47,7 @@ import graphql.com.google.common.collect.Iterables;
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Repository
+@Component
 public class DefaultGraphQueries implements GraphQueries {
 
     /**
@@ -117,13 +117,13 @@ public class DefaultGraphQueries implements GraphQueries {
     }
 
     @Override
-    public final Optional<Item> findById(final Integer id) {
+    public final Optional<Info> findById(final Integer id) {
         final Result rows;
         final Record row;
         final String queryTemplate;
         final String query;
-        final Item node;
-        final Optional<Item> result;
+        final Info node;
+        final Optional<Info> result;
         final String description;
 
         Preconditions.checkNotNull(id);
@@ -142,7 +142,7 @@ public class DefaultGraphQueries implements GraphQueries {
 
         if (rows.hasNext()) {
             row = rows.single();
-            node = new DefaultItem();
+            node = new DefaultInfo();
             node.setId(row.get("id", 0l));
             node.setName(row.get("name", ""));
 

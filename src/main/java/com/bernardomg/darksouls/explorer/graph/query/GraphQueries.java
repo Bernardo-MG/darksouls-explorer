@@ -19,10 +19,10 @@ package com.bernardomg.darksouls.explorer.graph.query;
 import java.util.Optional;
 
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
-import com.bernardomg.darksouls.explorer.graph.model.Item;
+import com.bernardomg.darksouls.explorer.graph.model.Info;
 
 /**
- * Graph repository.
+ * Graph queries.
  * 
  * @author Bernardo Mart&iacute;nez Garrido
  *
@@ -33,6 +33,6 @@ public interface GraphQueries {
 
     public Graph findAllByLinkType(final Iterable<String> types);
 
-    public Optional<Item> findById(final Integer id);
+    public Optional<Info> findById(final Integer id);
 
 }

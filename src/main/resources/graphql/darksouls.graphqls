@@ -4,7 +4,8 @@ schema {
 
 type Query {
    graph(type: [String]): Graph
-   info(id: Int): Item
+   info(id: Int): Info
+   item(name: [String]): [Item]
 }
 
 type Graph {
@@ -26,8 +27,24 @@ type Link {
    type: String !
 }
 
-type Item {
+type Info {
    id: Int !
    name: String !
    description: [String] !
+}
+
+
+type Item {
+   name: String !
+   description: String
+   sellers: [Seller]
+}
+
+type Seller {
+   actor: Actor!
+   price: Int !
+}
+
+type Actor {
+   name: String
 }

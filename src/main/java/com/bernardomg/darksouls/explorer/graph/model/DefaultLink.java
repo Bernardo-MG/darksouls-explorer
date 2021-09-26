@@ -9,17 +9,17 @@ import com.google.common.base.MoreObjects;
 
 public final class DefaultLink implements Link {
 
-    private Map<String, Object> attributes = new HashMap<>();
+    private final Map<String, Object> attributes = new HashMap<>();
 
-    private String source   = "";
+    private String                    source     = "";
 
-    private Long   sourceId = 0l;
+    private Long                      sourceId   = 0l;
 
-    private String target   = "";
+    private String                    target     = "";
 
-    private Long   targetId = 0l;
+    private Long                      targetId   = 0l;
 
-    private String type     = "";
+    private String                    type       = "";
 
     public DefaultLink() {
         super();
