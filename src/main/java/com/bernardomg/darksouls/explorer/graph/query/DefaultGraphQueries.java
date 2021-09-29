@@ -39,9 +39,9 @@ import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.processor.GraphProcessor;
 import com.bernardomg.darksouls.explorer.graph.query.processor.Processor;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 
-import graphql.com.google.common.base.Preconditions;
-import graphql.com.google.common.collect.Iterables;
 
 /**
  * People repository.

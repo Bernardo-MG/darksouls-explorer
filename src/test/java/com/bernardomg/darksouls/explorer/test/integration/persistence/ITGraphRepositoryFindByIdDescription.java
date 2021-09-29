@@ -38,8 +38,7 @@ import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.common.Neo4jTestData;
-
-import graphql.com.google.common.collect.Iterables;
+import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.

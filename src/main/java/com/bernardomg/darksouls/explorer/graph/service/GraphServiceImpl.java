@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
-
-import graphql.com.google.common.collect.Iterables;
+import com.google.common.collect.Iterables;
 
 @Service
 public final class GraphServiceImpl implements GraphService {

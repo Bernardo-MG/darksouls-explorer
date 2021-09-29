@@ -225,7 +225,6 @@
       <classgraph.version>4.8.115</classgraph.version>
       <commons.lang.version>3.12.0</commons.lang.version>
       <glassfish.el.version>2.2</glassfish.el.version>
-      <graphql.version>11.0.1</graphql.version>
       <guava.version>30.1.1-jre</guava.version>
       <hamcrest.version>2.2</hamcrest.version>
       <jackson.version>2.12.4</jackson.version>
@@ -239,7 +238,6 @@
       <reactor.version>3.4.9</reactor.version>
       <servlet.version>4.0.1</servlet.version>
       <slf4j.version>1.7.32</slf4j.version>
-      <spring.boot.graphql.version>11.1.0</spring.boot.graphql.version>
       <spring.boot.version>2.5.4</spring.boot.version>
       <spring.data.train.version>2021.0.4</spring.data.train.version>
       <spring.version>5.3.10</spring.version>
@@ -381,12 +379,6 @@
          <artifactId>spring-boot-starter-log4j2</artifactId>
          <version>${spring.boot.version}</version>
       </dependency>
-      <dependency>
-         <!-- Spring Boot Starter: GraphQL -->
-         <groupId>com.graphql-java-kickstart</groupId>
-         <artifactId>graphql-spring-boot-starter</artifactId>
-         <version>${spring.boot.graphql.version}</version>
-      </dependency>
       <!-- ============================================== -->
       <!-- ================= ASPECTJ ==================== -->
       <!-- ============================================== -->
@@ -402,15 +394,6 @@
          <artifactId>aspectjweaver</artifactId>
          <version>${aspectj.version}</version>
          <scope>runtime</scope>
-      </dependency>
-      <!-- ============================================== -->
-      <!-- ================= GRAPHQL ==================== -->
-      <!-- ============================================== -->
-      <!-- https://mvnrepository.com/artifact/com.graphql-java-kickstart/graphql-java-tools -->
-      <dependency>
-         <groupId>com.graphql-java-kickstart</groupId>
-         <artifactId>graphql-java-tools</artifactId>
-         <version>${graphql.version}</version>
       </dependency>
       <!-- ============================================== -->
       <!-- ================ SERVLET ===================== -->

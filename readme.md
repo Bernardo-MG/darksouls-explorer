@@ -16,9 +16,7 @@ Several technologies are combined to make this work:
 
 - [Spring MVC](https://spring.io/)
 - [Neo4j](https://neo4j.com/)
-- [GraphQL](https://graphql.org/) endpoint
 - [Angular](https://angular.io/)
-- [Apollo GraphQL](https://www.apollographql.com/)
 
 ## Documentation
 
