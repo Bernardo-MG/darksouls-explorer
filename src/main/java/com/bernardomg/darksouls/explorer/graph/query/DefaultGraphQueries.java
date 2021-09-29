@@ -16,7 +16,9 @@
 
 package com.bernardomg.darksouls.explorer.graph.query;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +50,7 @@ import graphql.com.google.common.collect.Iterables;
  *
  */
 @Component
-public class DefaultGraphQueries implements GraphQueries {
+public final class DefaultGraphQueries implements GraphQueries {
 
     /**
      * Logger.
@@ -94,7 +96,7 @@ public class DefaultGraphQueries implements GraphQueries {
 
         Preconditions.checkNotNull(types);
 
-        LOGGER.debug("Types: {}", types);
+        LOGGER.debug("Filtering by links: {}", types);
 
         if (Iterables.isEmpty(types)) {
             result = new DefaultGraph();
@@ -117,7 +119,7 @@ public class DefaultGraphQueries implements GraphQueries {
     }
 
     @Override
-    public final Optional<Info> findById(final Integer id) {
+    public final Optional<Info> findById(final Long id) {
         final Result rows;
         final Record row;
         final String queryTemplate;
@@ -164,6 +166,28 @@ public class DefaultGraphQueries implements GraphQueries {
         }
 
         session.close();
+
+        return result;
+    }
+
+    @Override
+    public final Iterable<String> findAllLinks() {
+        final Result rows;
+        final String query;
+        final Collection<String> result;
+        Record record;
+
+        query = "MATCH (s)-[r]->(t) RETURN DISTINCT type(r) AS relationship ORDER BY relationship";
+        LOGGER.debug("Query: {}", query);
+
+        result = new ArrayList<>();
+        try (final Session session = driver.session()) {
+            rows = session.run(query);
+            while (rows.hasNext()) {
+                record = rows.next();
+                result.add(record.get("relationship", ""));
+            }
+        }
 
         return result;
     }

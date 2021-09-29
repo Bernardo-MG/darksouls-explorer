@@ -85,7 +85,7 @@ public class ITGraphRepositoryFindByIdDescription {
     public void testFindAll_NotExisting() {
         final Optional<Info> data;
 
-        data = repository.findById(12345);
+        data = repository.findById(12345l);
 
         Assertions.assertTrue(data.isEmpty());
     }
@@ -96,7 +96,7 @@ public class ITGraphRepositoryFindByIdDescription {
         final Optional<Info> data;
         final Iterator<String> itr;
 
-        data = repository.findById(1);
+        data = repository.findById(1l);
 
         Assertions.assertEquals(1l, data.get().getId());
         Assertions.assertEquals("Target", data.get().getName());

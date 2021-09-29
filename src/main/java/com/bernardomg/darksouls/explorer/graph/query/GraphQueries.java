@@ -33,6 +33,8 @@ public interface GraphQueries {
 
     public Graph findAllByLinkType(final Iterable<String> types);
 
-    public Optional<Info> findById(final Integer id);
+    public Optional<Info> findById(final Long id);
+
+    public Iterable<String> findAllLinks();
 
 }
