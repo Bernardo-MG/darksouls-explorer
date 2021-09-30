@@ -242,6 +242,7 @@
       <spring.data.train.version>2021.0.4</spring.data.train.version>
       <spring.version>5.3.10</spring.version>
       <springfox.version>3.0.0</springfox.version>
+      <testcontainers.version>1.16.0</testcontainers.version>
       <!-- ============================================== -->
       <!-- ============== PLUGINS VERSIONS ============== -->
       <!-- ============================================== -->
@@ -519,6 +520,27 @@
       <!-- ======= TEST ENVIRONMENT DEPENDENCIES ======== -->
       <!-- ============================================== -->
       <dependency>
+         <!-- Test Containers -->
+         <groupId>org.testcontainers</groupId>
+         <artifactId>testcontainers</artifactId>
+         <version>${testcontainers.version}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- Test Containers Junit 5 -->
+         <groupId>org.testcontainers</groupId>
+         <artifactId>junit-jupiter</artifactId>
+         <version>${testcontainers.version}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- Test Containers Neo4j -->
+         <groupId>org.testcontainers</groupId>
+         <artifactId>neo4j</artifactId>
+         <version>${testcontainers.version}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <!-- Hamcrest -->
          <groupId>org.hamcrest</groupId>
          <artifactId>hamcrest-core</artifactId>
@@ -536,6 +558,12 @@
          <!-- JUnit Jupiter Engine -->
          <groupId>org.junit.jupiter</groupId>
          <artifactId>junit-jupiter-engine</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- JUnit Jupiter Params -->
+         <groupId>org.junit.jupiter</groupId>
+         <artifactId>junit-jupiter-params</artifactId>
          <scope>test</scope>
       </dependency>
       <dependency>

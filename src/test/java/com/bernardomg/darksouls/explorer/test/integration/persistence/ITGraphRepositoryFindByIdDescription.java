@@ -19,30 +19,41 @@ package com.bernardomg.darksouls.explorer.test.integration.persistence;
 import java.util.Iterator;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.neo4j.harness.Neo4j;
+import org.neo4j.driver.AuthToken;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.Neo4jContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
-import com.bernardomg.darksouls.explorer.test.common.Neo4jTestData;
 import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.
  */
+@Testcontainers
+@ContextConfiguration(initializers = {
+        ITGraphRepositoryFindByIdDescription.Initializer.class })
 @SpringJUnitConfig
 @Transactional(propagation = Propagation.NEVER)
 @Rollback
@@ -50,23 +61,43 @@ import com.google.common.collect.Iterables;
 @DisplayName("Querying the repository by id with a description")
 public class ITGraphRepositoryFindByIdDescription {
 
-    private static Neo4j embeddedDatabaseServer;
+    @Container
+    private static final Neo4jContainer neo4jContainer = new Neo4jContainer<>(
+            DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
+
+    static class Initializer implements
+            ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        @Override
+        public void initialize(
+                final ConfigurableApplicationContext configurableApplicationContext) {
+
+            TestPropertyValues
+                    .of("spring.neo4j.uri=" + neo4jContainer.getBoltUrl(),
+                            "spring.neo4j.authentication.username=neo4j",
+                            "spring.neo4j.authentication.password="
+                                    + neo4jContainer.getAdminPassword())
+                    .applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
 
     @BeforeAll
-    public static void initializeNeo4j() {
-        embeddedDatabaseServer = Neo4jTestData.getDescription();
-    }
+    static void prepareTestdata() {
+        final String password = neo4jContainer.getAdminPassword();
 
-    @DynamicPropertySource
-    public static void neo4jProperties(final DynamicPropertyRegistry registry) {
-        registry.add("spring.neo4j.uri", embeddedDatabaseServer::boltURI);
-        registry.add("spring.neo4j.authentication.username", () -> "neo4j");
-        registry.add("spring.neo4j.authentication.password", () -> null);
-    }
+        neo4jContainer.addExposedPorts(7687);
 
-    @AfterAll
-    public static void stopNeo4j() {
-        embeddedDatabaseServer.close();
+        final AuthToken auth = AuthTokens.basic("neo4j", password);
+        try (final Driver driver = GraphDatabase
+                .driver(neo4jContainer.getBoltUrl(), auth);
+                final Session session = driver.session()) {
+            session.<Object> writeTransaction(
+                    work -> work.run("CREATE ({name: 'Source'});"));
+            session.<Object> writeTransaction(work -> work.run(
+                    "CREATE ({name: 'Target', description: 'line1|line2'});"));
+            session.<Object> writeTransaction(work -> work.run(
+                    "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
+        }
     }
 
     @Autowired
@@ -94,10 +125,12 @@ public class ITGraphRepositoryFindByIdDescription {
     public void testFindAll_Single_Data() {
         final Optional<Info> data;
         final Iterator<String> itr;
+        final Long id;
 
-        data = repository.findById(1l);
+        id = repository.findAll().getNodes().iterator().next().getId();
+        data = repository.findById(id);
 
-        Assertions.assertEquals(1l, data.get().getId());
+        Assertions.assertNotNull(data.get().getId());
         Assertions.assertEquals("Target", data.get().getName());
         Assertions.assertEquals(2, Iterables.size(data.get().getDescription()));
 
