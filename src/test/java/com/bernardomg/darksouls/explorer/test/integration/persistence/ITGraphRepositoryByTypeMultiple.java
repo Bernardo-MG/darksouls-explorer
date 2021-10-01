@@ -61,7 +61,7 @@ import com.google.common.collect.Iterables;
 public class ITGraphRepositoryByTypeMultiple {
 
     @Container
-    private static final Neo4jContainer neo4jContainer = new Neo4jContainer<>(
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
             DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     static class Initializer implements
