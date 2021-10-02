@@ -78,7 +78,7 @@ public class ITGraphQueriesFindByIdDescription {
             DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     @BeforeAll
-    static void prepareTestdata() {
+    private static void prepareTestdata() {
         final String password;
         final AuthToken auth;
 
