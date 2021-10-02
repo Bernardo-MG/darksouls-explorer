@@ -32,11 +32,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -45,24 +41,19 @@ import org.testcontainers.utility.DockerImageName;
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
+import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.
  */
+@IntegrationTest
 @Testcontainers
 @ContextConfiguration(
         initializers = { ITGraphRepositoryByTypeMultiple.Initializer.class })
-@SpringJUnitConfig
-@Transactional(propagation = Propagation.NEVER)
-@Rollback
 @SpringBootTest(classes = Application.class)
 @DisplayName("Querying the repository filtering by type with multiple data")
 public class ITGraphRepositoryByTypeMultiple {
-
-    @Container
-    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
-            DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -71,6 +62,7 @@ public class ITGraphRepositoryByTypeMultiple {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
 
+            neo4jContainer.addExposedPorts(7687);
             TestPropertyValues
                     .of("spring.neo4j.uri=" + neo4jContainer.getBoltUrl(),
                             "spring.neo4j.authentication.username=neo4j",
@@ -80,13 +72,17 @@ public class ITGraphRepositoryByTypeMultiple {
         }
     }
 
+    @Container
+    protected static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
+            DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
+
     @BeforeAll
     static void prepareTestdata() {
-        final String password = neo4jContainer.getAdminPassword();
+        final String password;
+        final AuthToken auth;
 
-        neo4jContainer.addExposedPorts(7687);
-
-        final AuthToken auth = AuthTokens.basic("neo4j", password);
+        password = neo4jContainer.getAdminPassword();
+        auth = AuthTokens.basic("neo4j", password);
         try (final Driver driver = GraphDatabase
                 .driver(neo4jContainer.getBoltUrl(), auth);
                 final Session session = driver.session()) {
