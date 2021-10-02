@@ -16,6 +16,8 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +39,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import com.bernardomg.darksouls.explorer.Application;
-import com.bernardomg.darksouls.explorer.graph.model.Graph;
+import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.google.common.collect.Iterables;
@@ -48,12 +50,12 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @Testcontainers
 @ContextConfiguration(
-        initializers = { ITGraphRepositoryAllMultiple.Initializer.class })
+        initializers = { ITGraphQueriesFindById.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying all the data from the repository with multiple data")
-public class ITGraphRepositoryAllMultiple {
+@DisplayName("Querying the repository by id")
+public class ITGraphQueriesFindById {
 
-    static class Initializer implements
+    public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
@@ -71,7 +73,7 @@ public class ITGraphRepositoryAllMultiple {
     }
 
     @Container
-    protected static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
             DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     @BeforeAll
@@ -88,35 +90,43 @@ public class ITGraphRepositoryAllMultiple {
                     work -> work.run("CREATE ({name: 'Source'});"));
             session.<Object> writeTransaction(
                     work -> work.run("CREATE ({name: 'Target'});"));
-            session.<Object> writeTransaction(
-                    work -> work.run("CREATE ({name: 'Another'});"));
             session.<Object> writeTransaction(work -> work.run(
                     "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
-            session.<Object> writeTransaction(work -> work.run(
-                    "MATCH (n {name: 'Source'}), (m {name: 'Another'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
         }
     }
 
     @Autowired
-    private GraphQueries repository;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphRepositoryAllMultiple() {
+    public ITGraphQueriesFindById() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data")
-    public void testFindAll_Count() {
-        final Graph data;
+    @DisplayName("Returns no data for a not existing id")
+    public void testFindAll_NotExisting() {
+        final Optional<Info> data;
 
-        data = repository.findAll();
+        data = queries.findById(12345l);
 
-        Assertions.assertEquals(2, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(3, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+        Assertions.assertTrue(data.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Returns the correct data")
+    public void testFindAll_Single_Data() {
+        final Optional<Info> data;
+        final Long id;
+
+        id = queries.findAll().getNodes().iterator().next().getId();
+        data = queries.findById(id);
+
+        Assertions.assertNotNull(data.get().getId());
+        Assertions.assertEquals("Target", data.get().getName());
+        Assertions.assertEquals(0, Iterables.size(data.get().getDescription()));
     }
 
 }

@@ -16,6 +16,7 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -50,12 +51,12 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @Testcontainers
 @ContextConfiguration(
-        initializers = { ITGraphRepositoryFindById.Initializer.class })
+        initializers = { ITGraphQueriesFindByIdDescription.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying the repository by id")
-public class ITGraphRepositoryFindById {
+@DisplayName("Querying the repository by id with a description")
+public class ITGraphQueriesFindByIdDescription {
 
-    static class Initializer implements
+    public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
@@ -73,7 +74,7 @@ public class ITGraphRepositoryFindById {
     }
 
     @Container
-    protected static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
             DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     @BeforeAll
@@ -88,20 +89,20 @@ public class ITGraphRepositoryFindById {
                 final Session session = driver.session()) {
             session.<Object> writeTransaction(
                     work -> work.run("CREATE ({name: 'Source'});"));
-            session.<Object> writeTransaction(
-                    work -> work.run("CREATE ({name: 'Target'});"));
+            session.<Object> writeTransaction(work -> work.run(
+                    "CREATE ({name: 'Target', description: 'line1|line2'});"));
             session.<Object> writeTransaction(work -> work.run(
                     "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
         }
     }
 
     @Autowired
-    private GraphQueries repository;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphRepositoryFindById() {
+    public ITGraphQueriesFindByIdDescription() {
         super();
     }
 
@@ -110,7 +111,7 @@ public class ITGraphRepositoryFindById {
     public void testFindAll_NotExisting() {
         final Optional<Info> data;
 
-        data = repository.findById(12345l);
+        data = queries.findById(12345l);
 
         Assertions.assertTrue(data.isEmpty());
     }
@@ -119,14 +120,19 @@ public class ITGraphRepositoryFindById {
     @DisplayName("Returns the correct data")
     public void testFindAll_Single_Data() {
         final Optional<Info> data;
+        final Iterator<String> itr;
         final Long id;
 
-        id = repository.findAll().getNodes().iterator().next().getId();
-        data = repository.findById(id);
+        id = queries.findAll().getNodes().iterator().next().getId();
+        data = queries.findById(id);
 
         Assertions.assertNotNull(data.get().getId());
         Assertions.assertEquals("Target", data.get().getName());
-        Assertions.assertEquals(0, Iterables.size(data.get().getDescription()));
+        Assertions.assertEquals(2, Iterables.size(data.get().getDescription()));
+
+        itr = data.get().getDescription().iterator();
+        Assertions.assertEquals("line1", itr.next());
+        Assertions.assertEquals("line2", itr.next());
     }
 
 }

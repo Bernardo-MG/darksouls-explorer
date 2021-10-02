@@ -38,7 +38,6 @@ import org.testcontainers.utility.DockerImageName;
 
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
-import com.bernardomg.darksouls.explorer.graph.model.Link;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.google.common.collect.Iterables;
@@ -48,12 +47,13 @@ import com.google.common.collect.Iterables;
  */
 @IntegrationTest
 @Testcontainers
-@ContextConfiguration(initializers = { ITGraphRepositoryAll.Initializer.class })
+@ContextConfiguration(
+        initializers = { ITGraphQueriesAllMultiple.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying all the data from the repository")
-public class ITGraphRepositoryAll {
+@DisplayName("Querying all the data from the repository with multiple data")
+public class ITGraphQueriesAllMultiple {
 
-    static class Initializer implements
+    public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
@@ -71,7 +71,7 @@ public class ITGraphRepositoryAll {
     }
 
     @Container
-    protected static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
             DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     @BeforeAll
@@ -88,43 +88,35 @@ public class ITGraphRepositoryAll {
                     work -> work.run("CREATE ({name: 'Source'});"));
             session.<Object> writeTransaction(
                     work -> work.run("CREATE ({name: 'Target'});"));
+            session.<Object> writeTransaction(
+                    work -> work.run("CREATE ({name: 'Another'});"));
             session.<Object> writeTransaction(work -> work.run(
                     "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
+            session.<Object> writeTransaction(work -> work.run(
+                    "MATCH (n {name: 'Source'}), (m {name: 'Another'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
         }
     }
 
     @Autowired
-    private GraphQueries repository;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphRepositoryAll() {
+    public ITGraphQueriesAllMultiple() {
         super();
     }
 
     @Test
     @DisplayName("Returns all the data")
-    public void testFindAll_Single_Count() {
+    public void testFindAll_Count() {
         final Graph data;
 
-        data = repository.findAll();
+        data = queries.findAll();
 
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(2, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(3, Iterables.size(data.getNodes()));
         Assertions.assertEquals(1, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Returns the correct data")
-    public void testFindAll_Single_Data() {
-        final Link data;
-
-        data = repository.findAll().getLinks().iterator().next();
-
-        Assertions.assertEquals("Source", data.getSource());
-        Assertions.assertEquals("Target", data.getTarget());
-        Assertions.assertEquals("RELATIONSHIP", data.getType());
     }
 
 }

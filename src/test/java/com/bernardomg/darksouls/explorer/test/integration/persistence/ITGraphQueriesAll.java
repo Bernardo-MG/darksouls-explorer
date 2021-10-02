@@ -16,9 +16,6 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
-import java.util.Iterator;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +37,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import com.bernardomg.darksouls.explorer.Application;
-import com.bernardomg.darksouls.explorer.graph.model.Info;
+import com.bernardomg.darksouls.explorer.graph.model.Graph;
+import com.bernardomg.darksouls.explorer.graph.model.Link;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.google.common.collect.Iterables;
@@ -50,13 +48,12 @@ import com.google.common.collect.Iterables;
  */
 @IntegrationTest
 @Testcontainers
-@ContextConfiguration(initializers = {
-        ITGraphRepositoryFindByIdDescription.Initializer.class })
+@ContextConfiguration(initializers = { ITGraphQueriesAll.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying the repository by id with a description")
-public class ITGraphRepositoryFindByIdDescription {
+@DisplayName("Querying all the data from the repository")
+public class ITGraphQueriesAll {
 
-    static class Initializer implements
+    public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
@@ -74,7 +71,7 @@ public class ITGraphRepositoryFindByIdDescription {
     }
 
     @Container
-    protected static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
             DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     @BeforeAll
@@ -89,50 +86,45 @@ public class ITGraphRepositoryFindByIdDescription {
                 final Session session = driver.session()) {
             session.<Object> writeTransaction(
                     work -> work.run("CREATE ({name: 'Source'});"));
-            session.<Object> writeTransaction(work -> work.run(
-                    "CREATE ({name: 'Target', description: 'line1|line2'});"));
+            session.<Object> writeTransaction(
+                    work -> work.run("CREATE ({name: 'Target'});"));
             session.<Object> writeTransaction(work -> work.run(
                     "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
         }
     }
 
     @Autowired
-    private GraphQueries repository;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphRepositoryFindByIdDescription() {
+    public ITGraphQueriesAll() {
         super();
     }
 
     @Test
-    @DisplayName("Returns no data for a not existing id")
-    public void testFindAll_NotExisting() {
-        final Optional<Info> data;
+    @DisplayName("Returns all the data")
+    public void testFindAll_Single_Count() {
+        final Graph data;
 
-        data = repository.findById(12345l);
+        data = queries.findAll();
 
-        Assertions.assertTrue(data.isEmpty());
+        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
     }
 
     @Test
     @DisplayName("Returns the correct data")
     public void testFindAll_Single_Data() {
-        final Optional<Info> data;
-        final Iterator<String> itr;
-        final Long id;
+        final Link data;
 
-        id = repository.findAll().getNodes().iterator().next().getId();
-        data = repository.findById(id);
+        data = queries.findAll().getLinks().iterator().next();
 
-        Assertions.assertNotNull(data.get().getId());
-        Assertions.assertEquals("Target", data.get().getName());
-        Assertions.assertEquals(2, Iterables.size(data.get().getDescription()));
-
-        itr = data.get().getDescription().iterator();
-        Assertions.assertEquals("line1", itr.next());
-        Assertions.assertEquals("line2", itr.next());
+        Assertions.assertEquals("Source", data.getSource());
+        Assertions.assertEquals("Target", data.getTarget());
+        Assertions.assertEquals("RELATIONSHIP", data.getType());
     }
 
 }

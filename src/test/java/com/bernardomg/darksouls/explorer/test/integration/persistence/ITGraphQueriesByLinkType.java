@@ -52,12 +52,12 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @Testcontainers
 @ContextConfiguration(
-        initializers = { ITGraphRepositoryByType.Initializer.class })
+        initializers = { ITGraphQueriesByLinkType.Initializer.class })
 @SpringBootTest(classes = Application.class)
 @DisplayName("Querying the repository filtering by type")
-public class ITGraphRepositoryByType {
+public class ITGraphQueriesByLinkType {
 
-    static class Initializer implements
+    public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
@@ -75,7 +75,7 @@ public class ITGraphRepositoryByType {
     }
 
     @Container
-    protected static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
             DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     @BeforeAll
@@ -98,12 +98,12 @@ public class ITGraphRepositoryByType {
     }
 
     @Autowired
-    private GraphQueries repository;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphRepositoryByType() {
+    public ITGraphQueriesByLinkType() {
         super();
     }
 
@@ -112,7 +112,7 @@ public class ITGraphRepositoryByType {
     public void testFindAll_Empty_Count() {
         final Graph data;
 
-        data = repository.findAllByLinkType(Collections.emptyList());
+        data = queries.findAllByLinkType(Collections.emptyList());
 
         Assertions.assertEquals(0, Iterables.size(data.getLinks()));
         Assertions.assertEquals(0, Iterables.size(data.getNodes()));
@@ -124,8 +124,7 @@ public class ITGraphRepositoryByType {
     public void testFindAll_Multiple_NotExisting_Count() {
         final Graph data;
 
-        data = repository
-                .findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
+        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -136,7 +135,7 @@ public class ITGraphRepositoryByType {
     @DisplayName("Rejects a null value")
     public void testFindAll_Null() {
         Assertions.assertThrows(NullPointerException.class,
-                () -> repository.findAllByLinkType(null));
+                () -> queries.findAllByLinkType(null));
     }
 
     @Test
@@ -144,7 +143,7 @@ public class ITGraphRepositoryByType {
     public void testFindAll_Single_Count() {
         final Graph data;
 
-        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
+        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -156,7 +155,7 @@ public class ITGraphRepositoryByType {
     public void testFindAll_Single_Data() {
         final Link data;
 
-        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
+        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
                 .getLinks().iterator().next();
 
         Assertions.assertEquals("Source", data.getSource());

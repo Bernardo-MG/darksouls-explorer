@@ -50,12 +50,12 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @Testcontainers
 @ContextConfiguration(
-        initializers = { ITGraphRepositoryByTypeMultiple.Initializer.class })
+        initializers = { ITGraphQueriesByLinkTypeMultiple.Initializer.class })
 @SpringBootTest(classes = Application.class)
 @DisplayName("Querying the repository filtering by type with multiple data")
-public class ITGraphRepositoryByTypeMultiple {
+public class ITGraphQueriesByLinkTypeMultiple {
 
-    static class Initializer implements
+    public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
@@ -73,7 +73,7 @@ public class ITGraphRepositoryByTypeMultiple {
     }
 
     @Container
-    protected static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
             DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
 
     @BeforeAll
@@ -100,12 +100,12 @@ public class ITGraphRepositoryByTypeMultiple {
     }
 
     @Autowired
-    private GraphQueries repository;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphRepositoryByTypeMultiple() {
+    public ITGraphQueriesByLinkTypeMultiple() {
         super();
     }
 
@@ -114,7 +114,7 @@ public class ITGraphRepositoryByTypeMultiple {
     public void testFindAll_Count() {
         final Graph data;
 
-        data = repository.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
+        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
 
         Assertions.assertEquals(2, Iterables.size(data.getLinks()));
         Assertions.assertEquals(3, Iterables.size(data.getNodes()));
