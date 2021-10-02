@@ -16,15 +16,12 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.neo4j.driver.AuthToken;
-import org.neo4j.driver.AuthTokens;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.GraphDatabase;
-import org.neo4j.driver.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -39,6 +36,7 @@ import org.testcontainers.utility.DockerImageName;
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
+import com.bernardomg.darksouls.explorer.test.common.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.google.common.collect.Iterables;
 
@@ -76,25 +74,9 @@ public class ITGraphQueriesAllMultiple {
 
     @BeforeAll
     private static void prepareTestdata() {
-        final String password;
-        final AuthToken auth;
-
-        password = neo4jContainer.getAdminPassword();
-        auth = AuthTokens.basic("neo4j", password);
-        try (final Driver driver = GraphDatabase
-                .driver(neo4jContainer.getBoltUrl(), auth);
-                final Session session = driver.session()) {
-            session.<Object> writeTransaction(
-                    work -> work.run("CREATE ({name: 'Source'});"));
-            session.<Object> writeTransaction(
-                    work -> work.run("CREATE ({name: 'Target'});"));
-            session.<Object> writeTransaction(
-                    work -> work.run("CREATE ({name: 'Another'});"));
-            session.<Object> writeTransaction(work -> work.run(
-                    "MATCH (n {name: 'Source'}), (m {name: 'Target'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
-            session.<Object> writeTransaction(work -> work.run(
-                    "MATCH (n {name: 'Source'}), (m {name: 'Another'}) MERGE (n)-[:RELATIONSHIP]->(m);"));
-        }
+        new Neo4jDatabaseInitalizer().initialize("neo4j",
+                neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
+                Arrays.asList("classpath:db/queries/graph/multiple.cypher"));
     }
 
     @Autowired
