@@ -58,8 +58,10 @@ public final class DefaultItemQueries implements ItemQueries {
         name = m.property("name").as("name");
         statement = Cypher.match(m)
                 .returning(name, m.property("description").as("description"))
-                .orderBy(name.asName().ascending()).skip(page.getPageNumber())
-                .limit(page.getPageSize()).build();
+                // Order by
+                .orderBy(name.asName().ascending())
+                // Pagination
+                .skip(page.getPageNumber()).limit(page.getPageSize()).build();
         query = cypherRenderer.render(statement);
         LOGGER.debug("Query: {}", query);
 
