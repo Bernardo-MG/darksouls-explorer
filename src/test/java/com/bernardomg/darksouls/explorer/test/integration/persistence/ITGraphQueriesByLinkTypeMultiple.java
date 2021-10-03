@@ -91,7 +91,7 @@ public class ITGraphQueriesByLinkTypeMultiple {
 
     @Test
     @DisplayName("Returns all the data")
-    public void testFindAll_Count() {
+    public void testFindAllByLinkType_Count() {
         final Graph data;
 
         data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"));

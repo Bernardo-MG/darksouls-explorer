@@ -92,39 +92,8 @@ public class ITGraphQueriesByLinkType {
     }
 
     @Test
-    @DisplayName("Returns no data for an empty type list")
-    public void testFindAll_Empty_Count() {
-        final Graph data;
-
-        data = queries.findAllByLinkType(Collections.emptyList());
-
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Returns all the data for multiple types, one of them not existing")
-    public void testFindAll_Multiple_NotExisting_Count() {
-        final Graph data;
-
-        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
-
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Rejects a null value")
-    public void testFindAll_Null() {
-        Assertions.assertThrows(NullPointerException.class,
-                () -> queries.findAllByLinkType(null));
-    }
-
-    @Test
     @DisplayName("Returns all the data for a single type")
-    public void testFindAll_Single_Count() {
+    public void testFindAllByLinkType_Count() {
         final Graph data;
 
         data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
@@ -136,7 +105,7 @@ public class ITGraphQueriesByLinkType {
 
     @Test
     @DisplayName("Returns the correct data a single type")
-    public void testFindAll_Single_Data() {
+    public void testFindAllByLinkType_Data() {
         final Link data;
 
         data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
@@ -145,6 +114,49 @@ public class ITGraphQueriesByLinkType {
         Assertions.assertEquals("Source", data.getSource());
         Assertions.assertEquals("Target", data.getTarget());
         Assertions.assertEquals("RELATIONSHIP", data.getType());
+    }
+
+    @Test
+    @DisplayName("Returns no data for an empty type list")
+    public void testFindAllByLinkType_Empty_Count() {
+        final Graph data;
+
+        data = queries.findAllByLinkType(Collections.emptyList());
+
+        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+    }
+
+    @Test
+    @DisplayName("Returns all the data for multiple types, one of them not existing")
+    public void testFindAllByLinkType_IncludesNotExisting_Count() {
+        final Graph data;
+
+        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
+
+        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+    }
+
+    @Test
+    @DisplayName("Returns all the data for a not existing type")
+    public void testFindAllByLinkType_NotExisting_Count() {
+        final Graph data;
+
+        data = queries.findAllByLinkType(Arrays.asList("ABC"));
+
+        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+    }
+
+    @Test
+    @DisplayName("Rejects a null value")
+    public void testFindAllByLinkType_Null() {
+        Assertions.assertThrows(NullPointerException.class,
+                () -> queries.findAllByLinkType(null));
     }
 
 }

@@ -16,11 +16,7 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +30,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.bernardomg.darksouls.explorer.Application;
-import com.bernardomg.darksouls.explorer.graph.model.Info;
+import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.google.common.collect.Iterables;
 
 /**
@@ -47,10 +42,10 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @Testcontainers
 @ContextConfiguration(
-        initializers = { ITGraphQueriesFindById.Initializer.class })
+        initializers = { ITGraphQueriesAllNoData.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying the repository by id")
-public class ITGraphQueriesFindById {
+@DisplayName("Querying all the data from the repository with no data")
+public class ITGraphQueriesAllNoData {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -73,45 +68,26 @@ public class ITGraphQueriesFindById {
     private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
             .getNeo4jContainer();
 
-    @BeforeAll
-    private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-                neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/simple.cypher"));
-    }
-
     @Autowired
-    private GraphQueries queries;
+    private GraphQueries                   queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphQueriesFindById() {
+    public ITGraphQueriesAllNoData() {
         super();
     }
 
     @Test
-    @DisplayName("Returns no data for a not existing id")
-    public void testFindById_NotExisting() {
-        final Optional<Info> data;
+    @DisplayName("Returns no data")
+    public void testFindAll_Count() {
+        final Graph data;
 
-        data = queries.findById(12345l);
+        data = queries.findAll();
 
-        Assertions.assertTrue(data.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Returns the correct data")
-    public void testFindById_Single_Data() {
-        final Optional<Info> data;
-        final Long id;
-
-        id = queries.findAll().getNodes().iterator().next().getId();
-        data = queries.findById(id);
-
-        Assertions.assertNotNull(data.get().getId());
-        Assertions.assertEquals("Target", data.get().getName());
-        Assertions.assertEquals(0, Iterables.size(data.get().getDescription()));
+        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
     }
 
 }

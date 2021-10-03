@@ -93,7 +93,7 @@ public class ITGraphQueriesFindByIdDescription {
 
     @Test
     @DisplayName("Returns no data for a not existing id")
-    public void testFindAll_NotExisting() {
+    public void testFindById_NotExisting() {
         final Optional<Info> data;
 
         data = queries.findById(12345l);
@@ -103,7 +103,7 @@ public class ITGraphQueriesFindByIdDescription {
 
     @Test
     @DisplayName("Returns the correct data")
-    public void testFindAll_Single_Data() {
+    public void testFindById_Single_Data() {
         final Optional<Info> data;
         final Iterator<String> itr;
         final Long id;

@@ -91,7 +91,7 @@ public class ITGraphQueriesAll {
 
     @Test
     @DisplayName("Returns all the data")
-    public void testFindAll_Single_Count() {
+    public void testFindAll_Count() {
         final Graph data;
 
         data = queries.findAll();
@@ -103,7 +103,7 @@ public class ITGraphQueriesAll {
 
     @Test
     @DisplayName("Returns the correct data")
-    public void testFindAll_Single_Data() {
+    public void testFindAll_Data() {
         final Link data;
 
         data = queries.findAll().getLinks().iterator().next();
