@@ -4,6 +4,11 @@ package com.bernardomg.darksouls.explorer.item.query;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.neo4j.cypherdsl.core.AliasedExpression;
+import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Node;
+import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -23,10 +28,13 @@ public final class DefaultItemQueries implements ItemQueries {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger   LOGGER         = LoggerFactory
             .getLogger(DefaultItemQueries.class);
 
-    private final Driver        driver;
+    private final Driver          driver;
+
+    private static final Renderer cypherRenderer = Renderer
+            .getDefaultRenderer();
 
     public DefaultItemQueries(final Driver drv) {
         super();
@@ -39,18 +47,18 @@ public final class DefaultItemQueries implements ItemQueries {
         final Result rows;
         final String query;
         final Collection<Item> items;
+        final Node m;
+        final AliasedExpression name;
+        final ResultStatement statement;
         Record record;
         Item item;
 
-        // @formatter:off
-        query = "MATCH\r\n"
-                + "        (i:Item)\r\n"
-                + "RETURN\r\n"
-                + "        i.name AS name,\r\n"
-                + "        i.description AS description\r\n"
-                + "ORDER BY\r\n"
-                + "        name ASC";
-        // @formatter:on
+        m = Cypher.node("Item").named("i");
+        name = m.property("name").as("name");
+        statement = Cypher.match(m)
+                .returning(name, m.property("description").as("description"))
+                .orderBy(name.asName().ascending()).build();
+        query = cypherRenderer.render(statement);
         LOGGER.debug("Query: {}", query);
 
         items = new ArrayList<>();
