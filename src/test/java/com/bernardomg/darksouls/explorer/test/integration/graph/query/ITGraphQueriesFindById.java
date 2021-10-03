@@ -14,12 +14,13 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence;
+package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.bernardomg.darksouls.explorer.Application;
-import com.bernardomg.darksouls.explorer.graph.model.Graph;
+import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.google.common.collect.Iterables;
 
 /**
@@ -45,10 +47,10 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @Testcontainers
 @ContextConfiguration(
-        initializers = { ITGraphQueriesByLinkTypeNoData.Initializer.class })
+        initializers = { ITGraphQueriesFindById.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying the repository filtering by type with no data")
-public class ITGraphQueriesByLinkTypeNoData {
+@DisplayName("Querying the repository by id")
+public class ITGraphQueriesFindById {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -71,38 +73,45 @@ public class ITGraphQueriesByLinkTypeNoData {
     private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
             .getNeo4jContainer();
 
+    @BeforeAll
+    private static void prepareTestdata() {
+        new Neo4jDatabaseInitalizer().initialize("neo4j",
+                neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
+                Arrays.asList("classpath:db/queries/graph/simple.cypher"));
+    }
+
     @Autowired
-    private GraphQueries                   queries;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphQueriesByLinkTypeNoData() {
+    public ITGraphQueriesFindById() {
         super();
     }
 
     @Test
-    @DisplayName("Returns no data")
-    public void testFindAllByLinkType_Count() {
-        final Graph data;
+    @DisplayName("Returns no data for a not existing id")
+    public void testFindById_NotExisting() {
+        final Optional<Info> data;
 
-        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
+        data = queries.findById(12345l);
 
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+        Assertions.assertTrue(data.isEmpty());
     }
 
     @Test
-    @DisplayName("Returns no data for an empty type list")
-    public void testFindAllByLinkType_Empty_Count() {
-        final Graph data;
+    @DisplayName("Returns the correct data")
+    public void testFindById_Single_Data() {
+        final Optional<Info> data;
+        final Long id;
 
-        data = queries.findAllByLinkType(Collections.emptyList());
+        id = queries.findAll().getNodes().iterator().next().getId();
+        data = queries.findById(id);
 
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+        Assertions.assertNotNull(data.get().getId());
+        Assertions.assertEquals("Target", data.get().getName());
+        Assertions.assertEquals(0, Iterables.size(data.get().getDescription()));
     }
 
 }

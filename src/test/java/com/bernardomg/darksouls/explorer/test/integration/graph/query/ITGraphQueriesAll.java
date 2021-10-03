@@ -14,10 +14,9 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence;
+package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,11 +46,10 @@ import com.google.common.collect.Iterables;
  */
 @IntegrationTest
 @Testcontainers
-@ContextConfiguration(
-        initializers = { ITGraphQueriesByLinkType.Initializer.class })
+@ContextConfiguration(initializers = { ITGraphQueriesAll.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying the repository filtering by type")
-public class ITGraphQueriesByLinkType {
+@DisplayName("Querying all the data from the repository")
+public class ITGraphQueriesAll {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -87,16 +85,16 @@ public class ITGraphQueriesByLinkType {
     /**
      * Default constructor.
      */
-    public ITGraphQueriesByLinkType() {
+    public ITGraphQueriesAll() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data for a single type")
-    public void testFindAllByLinkType_Count() {
+    @DisplayName("Returns all the data")
+    public void testFindAll_Count() {
         final Graph data;
 
-        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
+        data = queries.findAll();
 
         Assertions.assertEquals(1, Iterables.size(data.getLinks()));
         Assertions.assertEquals(2, Iterables.size(data.getNodes()));
@@ -104,59 +102,15 @@ public class ITGraphQueriesByLinkType {
     }
 
     @Test
-    @DisplayName("Returns the correct data a single type")
-    public void testFindAllByLinkType_Data() {
+    @DisplayName("Returns the correct data")
+    public void testFindAll_Data() {
         final Link data;
 
-        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
-                .getLinks().iterator().next();
+        data = queries.findAll().getLinks().iterator().next();
 
         Assertions.assertEquals("Source", data.getSource());
         Assertions.assertEquals("Target", data.getTarget());
         Assertions.assertEquals("RELATIONSHIP", data.getType());
-    }
-
-    @Test
-    @DisplayName("Returns no data for an empty type list")
-    public void testFindAllByLinkType_Empty_Count() {
-        final Graph data;
-
-        data = queries.findAllByLinkType(Collections.emptyList());
-
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Returns all the data for multiple types, one of them not existing")
-    public void testFindAllByLinkType_IncludesNotExisting_Count() {
-        final Graph data;
-
-        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
-
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Returns all the data for a not existing type")
-    public void testFindAllByLinkType_NotExisting_Count() {
-        final Graph data;
-
-        data = queries.findAllByLinkType(Arrays.asList("ABC"));
-
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
-    }
-
-    @Test
-    @DisplayName("Rejects a null value")
-    public void testFindAllByLinkType_Null() {
-        Assertions.assertThrows(NullPointerException.class,
-                () -> queries.findAllByLinkType(null));
     }
 
 }

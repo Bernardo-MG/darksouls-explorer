@@ -14,10 +14,9 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence;
+package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +33,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.bernardomg.darksouls.explorer.Application;
-import com.bernardomg.darksouls.explorer.graph.model.Info;
+import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -47,10 +46,10 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @Testcontainers
 @ContextConfiguration(
-        initializers = { ITGraphQueriesFindById.Initializer.class })
+        initializers = { ITGraphQueriesByLinkTypeMultiple.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying the repository by id")
-public class ITGraphQueriesFindById {
+@DisplayName("Querying the repository filtering by type with multiple data")
+public class ITGraphQueriesByLinkTypeMultiple {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -77,7 +76,7 @@ public class ITGraphQueriesFindById {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
                 neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/simple.cypher"));
+                Arrays.asList("classpath:db/queries/graph/multiple.cypher"));
     }
 
     @Autowired
@@ -86,32 +85,20 @@ public class ITGraphQueriesFindById {
     /**
      * Default constructor.
      */
-    public ITGraphQueriesFindById() {
+    public ITGraphQueriesByLinkTypeMultiple() {
         super();
     }
 
     @Test
-    @DisplayName("Returns no data for a not existing id")
-    public void testFindById_NotExisting() {
-        final Optional<Info> data;
+    @DisplayName("Returns all the data")
+    public void testFindAllByLinkType_Count() {
+        final Graph data;
 
-        data = queries.findById(12345l);
+        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
 
-        Assertions.assertTrue(data.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Returns the correct data")
-    public void testFindById_Single_Data() {
-        final Optional<Info> data;
-        final Long id;
-
-        id = queries.findAll().getNodes().iterator().next().getId();
-        data = queries.findById(id);
-
-        Assertions.assertNotNull(data.get().getId());
-        Assertions.assertEquals("Target", data.get().getName());
-        Assertions.assertEquals(0, Iterables.size(data.get().getDescription()));
+        Assertions.assertEquals(2, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(3, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
     }
 
 }

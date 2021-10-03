@@ -14,9 +14,12 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence;
+package com.bernardomg.darksouls.explorer.test.integration.graph.query;
+
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,7 @@ import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.google.common.collect.Iterables;
 
 /**
@@ -42,10 +46,10 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @Testcontainers
 @ContextConfiguration(
-        initializers = { ITGraphQueriesAllNoData.Initializer.class })
+        initializers = { ITGraphQueriesAllMultiple.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying all the data from the repository with no data")
-public class ITGraphQueriesAllNoData {
+@DisplayName("Querying all the data from the repository with multiple data")
+public class ITGraphQueriesAllMultiple {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -68,26 +72,33 @@ public class ITGraphQueriesAllNoData {
     private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
             .getNeo4jContainer();
 
+    @BeforeAll
+    private static void prepareTestdata() {
+        new Neo4jDatabaseInitalizer().initialize("neo4j",
+                neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
+                Arrays.asList("classpath:db/queries/graph/multiple.cypher"));
+    }
+
     @Autowired
-    private GraphQueries                   queries;
+    private GraphQueries queries;
 
     /**
      * Default constructor.
      */
-    public ITGraphQueriesAllNoData() {
+    public ITGraphQueriesAllMultiple() {
         super();
     }
 
     @Test
-    @DisplayName("Returns no data")
+    @DisplayName("Returns all the data")
     public void testFindAll_Count() {
         final Graph data;
 
         data = queries.findAll();
 
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+        Assertions.assertEquals(2, Iterables.size(data.getLinks()));
+        Assertions.assertEquals(3, Iterables.size(data.getNodes()));
+        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
     }
 
 }

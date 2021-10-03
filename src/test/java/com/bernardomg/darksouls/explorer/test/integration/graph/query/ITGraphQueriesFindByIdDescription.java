@@ -14,9 +14,11 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence;
+package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,8 +35,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.bernardomg.darksouls.explorer.Application;
-import com.bernardomg.darksouls.explorer.graph.model.Graph;
-import com.bernardomg.darksouls.explorer.graph.model.Link;
+import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -46,10 +47,11 @@ import com.google.common.collect.Iterables;
  */
 @IntegrationTest
 @Testcontainers
-@ContextConfiguration(initializers = { ITGraphQueriesAll.Initializer.class })
+@ContextConfiguration(
+        initializers = { ITGraphQueriesFindByIdDescription.Initializer.class })
 @SpringBootTest(classes = Application.class)
-@DisplayName("Querying all the data from the repository")
-public class ITGraphQueriesAll {
+@DisplayName("Querying the repository by id with a description")
+public class ITGraphQueriesFindByIdDescription {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -76,7 +78,7 @@ public class ITGraphQueriesAll {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
                 neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/simple.cypher"));
+                Arrays.asList("classpath:db/queries/graph/description.cypher"));
     }
 
     @Autowired
@@ -85,32 +87,37 @@ public class ITGraphQueriesAll {
     /**
      * Default constructor.
      */
-    public ITGraphQueriesAll() {
+    public ITGraphQueriesFindByIdDescription() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data")
-    public void testFindAll_Count() {
-        final Graph data;
+    @DisplayName("Returns no data for a not existing id")
+    public void testFindById_NotExisting() {
+        final Optional<Info> data;
 
-        data = queries.findAll();
+        data = queries.findById(12345l);
 
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+        Assertions.assertTrue(data.isEmpty());
     }
 
     @Test
     @DisplayName("Returns the correct data")
-    public void testFindAll_Data() {
-        final Link data;
+    public void testFindById_Single_Data() {
+        final Optional<Info> data;
+        final Iterator<String> itr;
+        final Long id;
 
-        data = queries.findAll().getLinks().iterator().next();
+        id = queries.findAll().getNodes().iterator().next().getId();
+        data = queries.findById(id);
 
-        Assertions.assertEquals("Source", data.getSource());
-        Assertions.assertEquals("Target", data.getTarget());
-        Assertions.assertEquals("RELATIONSHIP", data.getType());
+        Assertions.assertNotNull(data.get().getId());
+        Assertions.assertEquals("Target", data.get().getName());
+        Assertions.assertEquals(2, Iterables.size(data.get().getDescription()));
+
+        itr = data.get().getDescription().iterator();
+        Assertions.assertEquals("line1", itr.next());
+        Assertions.assertEquals("line2", itr.next());
     }
 
 }
