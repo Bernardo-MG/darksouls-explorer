@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.test.common;
+package com.bernardomg.darksouls.explorer.test.configuration.db;
 
 import java.io.BufferedReader;
 import java.io.File;

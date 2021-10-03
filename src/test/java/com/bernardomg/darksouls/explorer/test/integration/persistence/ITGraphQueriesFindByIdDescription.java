@@ -33,13 +33,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
-import com.bernardomg.darksouls.explorer.test.common.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
+import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.google.common.collect.Iterables;
 
 /**
@@ -71,8 +71,8 @@ public class ITGraphQueriesFindByIdDescription {
     }
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer<>(
-            DockerImageName.parse("neo4j").withTag("3.5.27")).withReuse(true);
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+            .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
