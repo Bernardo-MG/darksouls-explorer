@@ -1,14 +1,13 @@
 
 package com.bernardomg.darksouls.explorer.item.query;
 
-import java.util.Optional;
-
 import com.bernardomg.darksouls.explorer.item.model.Item;
+import com.bernardomg.darksouls.explorer.item.model.ItemSource;
 
 public interface ItemQueries {
 
     public Iterable<Item> findAll();
 
-    public Optional<Item> findOneByName(final String name);
+    public Iterable<ItemSource> findAllSources();
 
 }
