@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.item.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.item.model.Item;
@@ -21,8 +22,8 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final Iterable<Item> getAll() {
-        return queries.findAll();
+    public final Iterable<Item> getAll(final Pageable page) {
+        return queries.findAll(page);
     }
 
     @Override

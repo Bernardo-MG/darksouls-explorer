@@ -15,6 +15,7 @@ import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.item.model.DefaultItem;
@@ -43,7 +44,7 @@ public final class DefaultItemQueries implements ItemQueries {
     }
 
     @Override
-    public final Iterable<Item> findAll() {
+    public final Iterable<Item> findAll(final Pageable page) {
         final Result rows;
         final String query;
         final Collection<Item> items;
@@ -57,7 +58,8 @@ public final class DefaultItemQueries implements ItemQueries {
         name = m.property("name").as("name");
         statement = Cypher.match(m)
                 .returning(name, m.property("description").as("description"))
-                .orderBy(name.asName().ascending()).build();
+                .orderBy(name.asName().ascending()).skip(page.getPageNumber())
+                .limit(page.getPageSize()).build();
         query = cypherRenderer.render(statement);
         LOGGER.debug("Query: {}", query);
 
