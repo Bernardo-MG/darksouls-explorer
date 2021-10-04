@@ -4,6 +4,7 @@ package com.bernardomg.darksouls.explorer.item.query;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
@@ -11,15 +12,12 @@ import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.ResultStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingMatchAndReturnWithOrder;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.Record;
-import org.neo4j.driver.Result;
-import org.neo4j.driver.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.item.model.DefaultItem;
@@ -39,24 +37,23 @@ public final class DefaultItemQueries implements ItemQueries {
     private static final Renderer cypherRenderer = Renderer
             .getDefaultRenderer();
 
-    private final Driver          driver;
+    private final Neo4jClient          client;
 
-    public DefaultItemQueries(final Driver drv) {
+    public DefaultItemQueries(final Neo4jClient          clnt) {
         super();
 
-        driver = drv;
+        client = clnt;
     }
 
     @Override
     public final Page<Item> findAll(final Pageable page) {
-        final Result rows;
         final String query;
         final List<Item> items;
         final Node m;
         final AliasedExpression name;
         final ResultStatement statement;
         final OngoingMatchAndReturnWithOrder statementBuilder;
-        Record record;
+        final Collection<Map<String, Object>> data;
         Item item;
 
         m = Cypher.node("Item").named("i");
@@ -77,17 +74,12 @@ public final class DefaultItemQueries implements ItemQueries {
         LOGGER.debug("Query: {}", query);
 
         items = new ArrayList<>();
-        try (final Session session = driver.session()) {
-            rows = session.run(query);
-
-            while (rows.hasNext()) {
-                record = rows.next();
-
-                item = new DefaultItem();
-                item.setName(record.get("name", ""));
-                item.setDescription(record.get("description", ""));
-                items.add(item);
-            }
+        data=client.query(query).fetch().all();
+        for(final Map<String, Object> record: data) {
+            item = new DefaultItem();
+            item.setName((String)record.getOrDefault("name", ""));
+            item.setDescription((String)record.getOrDefault("description", ""));
+            items.add(item);
         }
 
         return new PageImpl<>(items);
@@ -95,10 +87,9 @@ public final class DefaultItemQueries implements ItemQueries {
 
     @Override
     public final Iterable<ItemSource> findAllSources() {
-        final Result rows;
         final String query;
         final Collection<ItemSource> sources;
-        Record record;
+        final Collection<Map<String, Object>> data;
         ItemSource source;
 
         // @formatter:off
@@ -118,19 +109,14 @@ public final class DefaultItemQueries implements ItemQueries {
         // @formatter:on
         LOGGER.debug("Query: {}", query);
 
+        data=client.query(query).fetch().all();
         sources = new ArrayList<>();
-        try (final Session session = driver.session()) {
-            rows = session.run(query);
-
-            while (rows.hasNext()) {
-                record = rows.next();
-
-                source = new DefaultItemSource();
-                source.setItem(record.get("item", ""));
-                source.setSource(record.get("source", ""));
-                source.setRelationship(record.get("relationship", ""));
-                sources.add(source);
-            }
+        for(final Map<String, Object> record: data) {
+            source = new DefaultItemSource();
+            source.setItem((String)record.getOrDefault("item", ""));
+            source.setSource((String)record.getOrDefault("source", ""));
+            source.setRelationship((String)record.getOrDefault("relationship", ""));
+            sources.add(source);
         }
 
         return sources;
