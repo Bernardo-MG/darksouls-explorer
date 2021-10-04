@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Logging aspect for controllers. Will log arguments and returned values.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  */
 @Aspect
@@ -46,7 +46,7 @@ public class ControllerLoggingAspect {
 
     /**
      * Logs the returned value after the method is called.
-     * 
+     *
      * @param joinPoint
      *            point where the aspect is applied
      * @param returnValue
@@ -61,7 +61,7 @@ public class ControllerLoggingAspect {
 
     /**
      * Logs the received arguments before the method is called.
-     * 
+     *
      * @param joinPoint
      *            point where the aspect is applied
      */

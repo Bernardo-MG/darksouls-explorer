@@ -42,10 +42,9 @@ import com.bernardomg.darksouls.explorer.graph.query.processor.Processor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-
 /**
  * People repository.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -119,6 +118,28 @@ public final class DefaultGraphQueries implements GraphQueries {
     }
 
     @Override
+    public final Iterable<String> findAllLinks() {
+        final Result rows;
+        final String query;
+        final Collection<String> result;
+        Record record;
+
+        query = "MATCH (s)-[r]->(t) RETURN DISTINCT type(r) AS relationship ORDER BY relationship";
+        LOGGER.debug("Query: {}", query);
+
+        result = new ArrayList<>();
+        try (final Session session = driver.session()) {
+            rows = session.run(query);
+            while (rows.hasNext()) {
+                record = rows.next();
+                result.add(record.get("relationship", ""));
+            }
+        }
+
+        return result;
+    }
+
+    @Override
     public final Optional<Info> findById(final Long id) {
         final Result rows;
         final Record row;
@@ -166,28 +187,6 @@ public final class DefaultGraphQueries implements GraphQueries {
         }
 
         session.close();
-
-        return result;
-    }
-
-    @Override
-    public final Iterable<String> findAllLinks() {
-        final Result rows;
-        final String query;
-        final Collection<String> result;
-        Record record;
-
-        query = "MATCH (s)-[r]->(t) RETURN DISTINCT type(r) AS relationship ORDER BY relationship";
-        LOGGER.debug("Query: {}", query);
-
-        result = new ArrayList<>();
-        try (final Session session = driver.session()) {
-            rows = session.run(query);
-            while (rows.hasNext()) {
-                record = rows.next();
-                result.add(record.get("relationship", ""));
-            }
-        }
 
         return result;
     }

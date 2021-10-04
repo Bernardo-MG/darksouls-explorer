@@ -6,15 +6,15 @@ import org.testcontainers.utility.DockerImageName;
 
 public final class ContainerFactory {
 
-    public ContainerFactory() {
-        super();
-    }
-
     @SuppressWarnings("resource")
     public static final Neo4jContainer<?> getNeo4jContainer() {
         return new Neo4jContainer<>(
                 DockerImageName.parse("neo4j").withTag("3.5.27"))
                         .withReuse(true);
+    }
+
+    public ContainerFactory() {
+        super();
     }
 
 }

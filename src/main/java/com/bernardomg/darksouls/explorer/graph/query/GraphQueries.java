@@ -23,7 +23,7 @@ import com.bernardomg.darksouls.explorer.graph.model.Info;
 
 /**
  * Graph queries.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -33,8 +33,8 @@ public interface GraphQueries {
 
     public Graph findAllByLinkType(final Iterable<String> types);
 
-    public Optional<Info> findById(final Long id);
-
     public Iterable<String> findAllLinks();
+
+    public Optional<Info> findById(final Long id);
 
 }

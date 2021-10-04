@@ -35,7 +35,7 @@ import com.bernardomg.darksouls.explorer.response.ResponseStatus;
 
 /**
  * Captures and handles exceptions for all the controllers.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  */
 @ControllerAdvice

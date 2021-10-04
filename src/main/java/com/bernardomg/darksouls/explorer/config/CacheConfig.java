@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Cache configuration.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */

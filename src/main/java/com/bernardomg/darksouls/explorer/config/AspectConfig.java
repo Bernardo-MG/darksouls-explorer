@@ -21,7 +21,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * Aspect configuration.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */

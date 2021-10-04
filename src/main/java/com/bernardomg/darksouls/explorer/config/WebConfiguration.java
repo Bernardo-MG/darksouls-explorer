@@ -22,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Web configuration.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */

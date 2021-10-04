@@ -1,8 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +15,7 @@ import com.bernardomg.darksouls.explorer.item.service.ItemService;
 @RequestMapping("/items")
 public class ItemController {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(ItemController.class);
-
-    private final ItemService   service;
+    private final ItemService service;
 
     public ItemController(final ItemService service) {
         super();

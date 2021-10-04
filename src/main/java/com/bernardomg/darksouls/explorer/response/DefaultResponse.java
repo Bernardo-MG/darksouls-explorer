@@ -22,7 +22,7 @@ import com.google.common.base.MoreObjects;
 
 /**
  * Default implementation of the response.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  * @param <T>
@@ -49,7 +49,7 @@ public class DefaultResponse<T> implements Response<T> {
 
     /**
      * Constructs a response with the specified content.
-     * 
+     *
      * @param cont
      *            content
      */
@@ -61,7 +61,7 @@ public class DefaultResponse<T> implements Response<T> {
 
     /**
      * Constructs a response with the specified content and status.
-     * 
+     *
      * @param cont
      *            content
      * @param stat
@@ -86,7 +86,7 @@ public class DefaultResponse<T> implements Response<T> {
 
     /**
      * Sets the content.
-     * 
+     *
      * @param value
      *            response content
      */
@@ -96,7 +96,7 @@ public class DefaultResponse<T> implements Response<T> {
 
     /**
      * Sets the status.
-     * 
+     *
      * @param value
      *            response status
      */

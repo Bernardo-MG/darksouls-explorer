@@ -25,7 +25,7 @@ import com.bernardomg.darksouls.explorer.logging.aspect.ServiceLoggingAspect;
 
 /**
  * Logging configuration.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */

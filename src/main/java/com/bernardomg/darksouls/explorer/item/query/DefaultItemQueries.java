@@ -36,10 +36,10 @@ public final class DefaultItemQueries implements ItemQueries {
     private static final Logger   LOGGER         = LoggerFactory
             .getLogger(DefaultItemQueries.class);
 
-    private final Driver          driver;
-
     private static final Renderer cypherRenderer = Renderer
             .getDefaultRenderer();
+
+    private final Driver          driver;
 
     public DefaultItemQueries(final Driver drv) {
         super();
@@ -65,10 +65,13 @@ public final class DefaultItemQueries implements ItemQueries {
                 .returning(name, m.property("description").as("description"))
                 // Order by
                 .orderBy(name.asName().ascending());
-        if(page != Pageable.unpaged()) {
-            // Pagination
-            statementBuilder.skip(page.getPageNumber()).limit(page.getPageSize());
+
+        // Pagination
+        if (page != Pageable.unpaged()) {
+            statementBuilder.skip(page.getPageNumber())
+                    .limit(page.getPageSize());
         }
+
         statement = statementBuilder.build();
         query = cypherRenderer.render(statement);
         LOGGER.debug("Query: {}", query);
@@ -101,20 +104,15 @@ public final class DefaultItemQueries implements ItemQueries {
         // @formatter:off
         query = "MATCH\r\n"
                 + "        (s)-[rel:DROPS|SELLS|STARTS_WITH|REWARDS]->(i:Item)\r\n"
-                + "RETURN\r\n"
-                + "        i.name AS item,\r\n"
-                + "        s.name AS source,\r\n"
-                + "        CASE type(rel)\r\n"
+                + "RETURN\r\n" + "        i.name AS item,\r\n"
+                + "        s.name AS source,\r\n" + "        CASE type(rel)\r\n"
                 + "        WHEN 'DROPS' THEN 'drop'\r\n"
                 + "        WHEN 'SELLS' THEN 'sold'\r\n"
                 + "        WHEN 'STARTS_WITH' THEN 'starting'\r\n"
                 + "        WHEN 'REWARDS' THEN 'covenant_reward'\r\n"
-                + "        END AS relationship\r\n"
-                + "UNION ALL\r\n"
-                + "MATCH\r\n"
-                + "        (i:Item:StartingGift)\r\n"
-                + "RETURN\r\n"
-                + "        i.name AS item,\r\n"
+                + "        END AS relationship\r\n" + "UNION ALL\r\n"
+                + "MATCH\r\n" + "        (i:Item:StartingGift)\r\n"
+                + "RETURN\r\n" + "        i.name AS item,\r\n"
                 + "        \"Starting gift\" AS source,\r\n"
                 + "        \"starting_gift\" AS relationship";
         // @formatter:on
