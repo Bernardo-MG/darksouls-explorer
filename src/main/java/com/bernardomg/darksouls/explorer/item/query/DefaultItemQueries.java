@@ -3,6 +3,7 @@ package com.bernardomg.darksouls.explorer.item.query;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
@@ -15,6 +16,8 @@ import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -44,10 +47,10 @@ public final class DefaultItemQueries implements ItemQueries {
     }
 
     @Override
-    public final Iterable<Item> findAll(final Pageable page) {
+    public final Page<Item> findAll(final Pageable page) {
         final Result rows;
         final String query;
-        final Collection<Item> items;
+        final List<Item> items;
         final Node m;
         final AliasedExpression name;
         final ResultStatement statement;
@@ -79,7 +82,7 @@ public final class DefaultItemQueries implements ItemQueries {
             }
         }
 
-        return items;
+        return new PageImpl<>(items);
     }
 
     @Override
