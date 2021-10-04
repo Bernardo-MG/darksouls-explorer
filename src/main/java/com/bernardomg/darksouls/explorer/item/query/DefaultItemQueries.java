@@ -9,6 +9,7 @@ import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.StatementBuilder.OngoingMatchAndReturnWithOrder;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
@@ -54,17 +55,21 @@ public final class DefaultItemQueries implements ItemQueries {
         final Node m;
         final AliasedExpression name;
         final ResultStatement statement;
+        final OngoingMatchAndReturnWithOrder statementBuilder;
         Record record;
         Item item;
 
         m = Cypher.node("Item").named("i");
         name = m.property("name").as("name");
-        statement = Cypher.match(m)
+        statementBuilder = Cypher.match(m)
                 .returning(name, m.property("description").as("description"))
                 // Order by
-                .orderBy(name.asName().ascending())
-                // Pagination
-                .skip(page.getPageNumber()).limit(page.getPageSize()).build();
+                .orderBy(name.asName().ascending());
+        if(page != Pageable.unpaged()) {
+            // Pagination
+            statementBuilder.skip(page.getPageNumber()).limit(page.getPageSize());
+        }
+        statement = statementBuilder.build();
         query = cypherRenderer.render(statement);
         LOGGER.debug("Query: {}", query);
 
