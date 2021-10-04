@@ -4,6 +4,7 @@ package com.bernardomg.darksouls.explorer.item.query;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
@@ -47,13 +48,9 @@ public final class DefaultItemQueries implements ItemQueries {
 
     @Override
     public final Page<Item> findAll(final Pageable page) {
-        final String query;
-        final List<Item> data;
         final Node m;
         final AliasedExpression name;
-        final ResultStatement statement;
         final OngoingMatchAndReturnWithOrder statementBuilder;
-        final Collection<Map<String, Object>> read;
 
         m = Cypher.node("Item").named("i");
         name = m.property("name").as("name");
@@ -62,21 +59,7 @@ public final class DefaultItemQueries implements ItemQueries {
                 // Order by
                 .orderBy(name.asName().ascending());
 
-        // Pagination
-        if (page != Pageable.unpaged()) {
-            statementBuilder.skip(page.getPageNumber())
-                    .limit(page.getPageSize());
-        }
-
-        statement = statementBuilder.build();
-        query = cypherRenderer.render(statement);
-        LOGGER.debug("Query: {}", query);
-
-        // Data is fetched and mapped
-        read = client.query(query).fetch().all();
-        data = read.stream().map(this::toItem).collect(Collectors.toList());
-
-        return new PageImpl<>(data);
+        return findAll(statementBuilder, this::toItem, page);
     }
 
     @Override
@@ -108,6 +91,31 @@ public final class DefaultItemQueries implements ItemQueries {
                 .collect(Collectors.toList());
 
         return data;
+    }
+
+    private final <T> Page<T> findAll(
+            final OngoingMatchAndReturnWithOrder statementBuilder,
+            Function<Map<String, Object>, T> mapper, final Pageable page) {
+        final String query;
+        final List<T> data;
+        final ResultStatement statement;
+        final Collection<Map<String, Object>> read;
+
+        // Pagination
+        if (page != Pageable.unpaged()) {
+            statementBuilder.skip(page.getPageNumber())
+                    .limit(page.getPageSize());
+        }
+
+        statement = statementBuilder.build();
+        query = cypherRenderer.render(statement);
+        LOGGER.debug("Query: {}", query);
+
+        // Data is fetched and mapped
+        read = client.query(query).fetch().all();
+        data = read.stream().map(mapper).collect(Collectors.toList());
+
+        return new PageImpl<>(data);
     }
 
     private final Item toItem(final Map<String, Object> record) {
