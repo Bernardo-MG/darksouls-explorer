@@ -1,10 +1,10 @@
 
 package com.bernardomg.darksouls.explorer.item.query;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
@@ -37,9 +37,9 @@ public final class DefaultItemQueries implements ItemQueries {
     private static final Renderer cypherRenderer = Renderer
             .getDefaultRenderer();
 
-    private final Neo4jClient          client;
+    private final Neo4jClient     client;
 
-    public DefaultItemQueries(final Neo4jClient          clnt) {
+    public DefaultItemQueries(final Neo4jClient clnt) {
         super();
 
         client = clnt;
@@ -48,13 +48,12 @@ public final class DefaultItemQueries implements ItemQueries {
     @Override
     public final Page<Item> findAll(final Pageable page) {
         final String query;
-        final List<Item> items;
+        final List<Item> data;
         final Node m;
         final AliasedExpression name;
         final ResultStatement statement;
         final OngoingMatchAndReturnWithOrder statementBuilder;
-        final Collection<Map<String, Object>> data;
-        Item item;
+        final Collection<Map<String, Object>> read;
 
         m = Cypher.node("Item").named("i");
         name = m.property("name").as("name");
@@ -73,24 +72,18 @@ public final class DefaultItemQueries implements ItemQueries {
         query = cypherRenderer.render(statement);
         LOGGER.debug("Query: {}", query);
 
-        items = new ArrayList<>();
-        data=client.query(query).fetch().all();
-        for(final Map<String, Object> record: data) {
-            item = new DefaultItem();
-            item.setName((String)record.getOrDefault("name", ""));
-            item.setDescription((String)record.getOrDefault("description", ""));
-            items.add(item);
-        }
+        // Data is fetched and mapped
+        read = client.query(query).fetch().all();
+        data = read.stream().map(this::toItem).collect(Collectors.toList());
 
-        return new PageImpl<>(items);
+        return new PageImpl<>(data);
     }
 
     @Override
     public final Iterable<ItemSource> findAllSources() {
         final String query;
-        final Collection<ItemSource> sources;
-        final Collection<Map<String, Object>> data;
-        ItemSource source;
+        final Collection<ItemSource> data;
+        final Collection<Map<String, Object>> read;
 
         // @formatter:off
         query = "MATCH\r\n"
@@ -109,17 +102,34 @@ public final class DefaultItemQueries implements ItemQueries {
         // @formatter:on
         LOGGER.debug("Query: {}", query);
 
-        data=client.query(query).fetch().all();
-        sources = new ArrayList<>();
-        for(final Map<String, Object> record: data) {
-            source = new DefaultItemSource();
-            source.setItem((String)record.getOrDefault("item", ""));
-            source.setSource((String)record.getOrDefault("source", ""));
-            source.setRelationship((String)record.getOrDefault("relationship", ""));
-            sources.add(source);
-        }
+        // Data is fetched and mapped
+        read = client.query(query).fetch().all();
+        data = read.stream().map(this::toItemSource)
+                .collect(Collectors.toList());
 
-        return sources;
+        return data;
+    }
+
+    private final Item toItem(final Map<String, Object> record) {
+        final Item item;
+
+        item = new DefaultItem();
+        item.setName((String) record.getOrDefault("name", ""));
+        item.setDescription((String) record.getOrDefault("description", ""));
+
+        return item;
+    }
+
+    private final ItemSource toItemSource(final Map<String, Object> record) {
+        final ItemSource source;
+
+        source = new DefaultItemSource();
+        source.setItem((String) record.getOrDefault("item", ""));
+        source.setSource((String) record.getOrDefault("source", ""));
+        source.setRelationship(
+                (String) record.getOrDefault("relationship", ""));
+
+        return source;
     }
 
 }
