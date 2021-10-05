@@ -2,25 +2,17 @@
 package com.bernardomg.darksouls.explorer.item.query;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Node;
-import org.neo4j.cypherdsl.core.ResultStatement;
-import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingMatchAndReturnWithOrder;
-import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesLimit;
-import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesSkip;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
@@ -29,23 +21,22 @@ import com.bernardomg.darksouls.explorer.item.model.DefaultItem;
 import com.bernardomg.darksouls.explorer.item.model.DefaultItemSource;
 import com.bernardomg.darksouls.explorer.item.model.Item;
 import com.bernardomg.darksouls.explorer.item.model.ItemSource;
+import com.bernardomg.darksouls.explorer.persistence.AbstractQueryExecutor;
 
 @Component
-public final class DefaultItemQueries implements ItemQueries {
+public final class DefaultItemQueries extends AbstractQueryExecutor
+        implements ItemQueries {
 
     /**
      * Logger.
      */
-    private static final Logger   LOGGER         = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(DefaultItemQueries.class);
 
-    private static final Renderer cypherRenderer = Renderer
-            .getDefaultRenderer();
-
-    private final Neo4jClient     client;
+    private final Neo4jClient   client;
 
     public DefaultItemQueries(final Neo4jClient clnt) {
-        super();
+        super(clnt, Renderer.getDefaultRenderer());
 
         client = clnt;
     }
@@ -95,53 +86,6 @@ public final class DefaultItemQueries implements ItemQueries {
                 .collect(Collectors.toList());
 
         return data;
-    }
-
-    private final <T> Page<T> fetch(
-            final BuildableStatement<ResultStatement> statementBuilder,
-            final Function<Map<String, Object>, T> mapper,
-            final Pageable page) {
-        final String query;
-        final List<T> data;
-        final ResultStatement statement;
-        final Collection<Map<String, Object>> read;
-        final String countTemplate;
-        final String countQuery;
-        final Long count;
-
-        countTemplate = "CALL {%s} RETURN COUNT(*)";
-        countQuery = String.format(countTemplate,
-                cypherRenderer.render(statementBuilder.build()));
-
-        // Pagination
-        if (page != Pageable.unpaged()) {
-            if (statementBuilder instanceof TerminalExposesSkip) {
-                ((TerminalExposesSkip) statementBuilder)
-                        .skip(page.getPageNumber());
-            }
-            if (statementBuilder instanceof TerminalExposesLimit) {
-                ((TerminalExposesLimit) statementBuilder)
-                        .limit(page.getPageSize());
-            }
-        }
-
-        statement = statementBuilder.build();
-        query = cypherRenderer.render(statement);
-
-        LOGGER.debug("Query: {}", query);
-        LOGGER.debug("Count: {}", countQuery);
-
-        count = client.query(countQuery).fetchAs(Long.class).first().get();
-
-        if (count == 0) {
-            data = Collections.emptyList();
-        } else {
-            // Data is fetched and mapped
-            read = client.query(query).fetch().all();
-            data = read.stream().map(mapper).collect(Collectors.toList());
-        }
-
-        return new PageImpl<>(data, page, count);
     }
 
     private final Item toItem(final Map<String, Object> record) {
