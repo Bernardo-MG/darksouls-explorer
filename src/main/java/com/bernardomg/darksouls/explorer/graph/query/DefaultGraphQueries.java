@@ -92,7 +92,7 @@ public final class DefaultGraphQueries implements GraphQueries {
         source = Cypher.anyNode().named("s");
         target = Cypher.anyNode().named("t");
         rel = source.relationshipTo(target).named("r");
-        statementBuilder = Cypher.match(source, target).match(rel).returning(
+        statementBuilder = Cypher.match(rel).returning(
                 source.property("name").as("source"),
                 source.internalId().as("sourceId"),
                 target.property("name").as("target"),
@@ -128,13 +128,12 @@ public final class DefaultGraphQueries implements GraphQueries {
             result = new DefaultGraph();
         } else {
             validTypes = StreamSupport.stream(types.spliterator(), false)
-                    .map((string) -> "'" + string + "'").map(Cypher::literalOf)
-                    .collect(Collectors.toList());
+                    .map(Cypher::literalOf).collect(Collectors.toList());
 
             source = Cypher.anyNode().named("s");
             target = Cypher.anyNode().named("t");
             rel = source.relationshipTo(target).named("r");
-            statementBuilder = Cypher.match(source, target).match(rel)
+            statementBuilder = Cypher.match(rel)
                     .where(Functions.type(rel).in(Cypher.listOf(validTypes)))
                     .returning(source.property("name").as("source"),
                             source.internalId().as("sourceId"),
@@ -170,8 +169,7 @@ public final class DefaultGraphQueries implements GraphQueries {
         target = Cypher.anyNode().named("t");
         rel = source.relationshipTo(target).named("r");
         relField = Functions.type(rel).as("relationship");
-        statementBuilder = Cypher.match(source, target).match(rel)
-                .returningDistinct(relField)
+        statementBuilder = Cypher.match(rel).returningDistinct(relField)
                 .orderBy(relField.asName().ascending());
 
         statement = statementBuilder.build();
