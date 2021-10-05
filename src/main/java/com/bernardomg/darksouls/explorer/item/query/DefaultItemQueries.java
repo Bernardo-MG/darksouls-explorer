@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.item.query;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -98,11 +99,19 @@ public final class DefaultItemQueries implements ItemQueries {
 
     private final <T> Page<T> fetch(
             final BuildableStatement<ResultStatement> statementBuilder,
-            Function<Map<String, Object>, T> mapper, final Pageable page) {
+            final Function<Map<String, Object>, T> mapper,
+            final Pageable page) {
         final String query;
         final List<T> data;
         final ResultStatement statement;
         final Collection<Map<String, Object>> read;
+        final String countTemplate;
+        final String countQuery;
+        final Long count;
+
+        countTemplate = "CALL {%s} RETURN COUNT(*)";
+        countQuery = String.format(countTemplate,
+                cypherRenderer.render(statementBuilder.build()));
 
         // Pagination
         if (page != Pageable.unpaged()) {
@@ -118,13 +127,21 @@ public final class DefaultItemQueries implements ItemQueries {
 
         statement = statementBuilder.build();
         query = cypherRenderer.render(statement);
+
         LOGGER.debug("Query: {}", query);
+        LOGGER.debug("Count: {}", countQuery);
 
-        // Data is fetched and mapped
-        read = client.query(query).fetch().all();
-        data = read.stream().map(mapper).collect(Collectors.toList());
+        count = client.query(countQuery).fetchAs(Long.class).first().get();
 
-        return new PageImpl<>(data);
+        if (count == 0) {
+            data = Collections.emptyList();
+        } else {
+            // Data is fetched and mapped
+            read = client.query(query).fetch().all();
+            data = read.stream().map(mapper).collect(Collectors.toList());
+        }
+
+        return new PageImpl<>(data, page, count);
     }
 
     private final Item toItem(final Map<String, Object> record) {
