@@ -48,6 +48,7 @@ import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.processor.GraphProcessor;
 import com.bernardomg.darksouls.explorer.graph.query.processor.Processor;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
 /**
@@ -226,12 +227,12 @@ public final class DefaultGraphQueries implements GraphQueries {
             info.setName((String) row.getOrDefault("name", ""));
 
             description = (String) row.getOrDefault("description", "");
-            if (!description.isBlank()) {
+            if (Strings.isNullOrEmpty(description)) {
+                info.setDescription(Collections.emptyList());
+            } else {
                 info.setDescription(Arrays
                         .asList(((String) row.getOrDefault("description", ""))
                                 .split("\\|")));
-            } else {
-                info.setDescription(Collections.emptyList());
             }
 
             result = Optional.of(info);
