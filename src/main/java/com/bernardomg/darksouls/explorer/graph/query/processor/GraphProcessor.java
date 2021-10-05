@@ -2,15 +2,13 @@
 package com.bernardomg.darksouls.explorer.graph.query.processor;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.neo4j.driver.Record;
-import org.neo4j.driver.Result;
-import org.neo4j.driver.Value;
-import org.neo4j.driver.util.Pair;
 
 import com.bernardomg.darksouls.explorer.graph.model.DefaultGraph;
 import com.bernardomg.darksouls.explorer.graph.model.DefaultLink;
@@ -29,7 +27,7 @@ public final class GraphProcessor implements Processor<Graph> {
     }
 
     @Override
-    public final Graph process(final Result rows) {
+    public final Graph process(final Collection<Map<String, Object>> rows) {
         final List<Link> links;
         final Set<Node> nodes;
         final Set<String> resultTypes;
@@ -57,19 +55,19 @@ public final class GraphProcessor implements Processor<Graph> {
         return result;
     }
 
-    private final Link toLink(final Record row) {
+    private final Link toLink(final Map<String, Object> row) {
         final Link relationship;
 
         relationship = new DefaultLink();
-        relationship.setSource(row.get("source", ""));
-        relationship.setSourceId(row.get("sourceId", 0l));
-        relationship.setTarget(row.get("target", ""));
-        relationship.setTargetId(row.get("targetId", 0l));
-        relationship.setType(row.get("relationship", ""));
+        relationship.setSource((String) row.getOrDefault("source", ""));
+        relationship.setSourceId((Long) row.getOrDefault("sourceId", 0l));
+        relationship.setTarget((String) row.getOrDefault("target", ""));
+        relationship.setTargetId((Long) row.getOrDefault("targetId", 0l));
+        relationship.setType((String) row.getOrDefault("relationship", ""));
 
-        for (final Pair<String, Value> pair : row.fields()) {
-            if (!linkFields.contains(pair.key())) {
-                relationship.addAttribute(pair.key(), pair.value().asObject());
+        for (final Entry<String, Object> pair : row.entrySet()) {
+            if (!linkFields.contains(pair.getKey())) {
+                relationship.addAttribute(pair.getKey(), pair.getValue());
             }
         }
 

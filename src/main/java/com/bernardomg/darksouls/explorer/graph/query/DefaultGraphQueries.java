@@ -20,17 +20,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.Record;
-import org.neo4j.driver.Result;
-import org.neo4j.driver.Session;
+import org.neo4j.cypherdsl.core.AliasedExpression;
+import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Expression;
+import org.neo4j.cypherdsl.core.Functions;
+import org.neo4j.cypherdsl.core.Node;
+import org.neo4j.cypherdsl.core.Relationship;
+import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.Statement;
+import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
+import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.graph.model.DefaultGraph;
@@ -57,41 +65,60 @@ public final class DefaultGraphQueries implements GraphQueries {
     private static final Logger    LOGGER         = LoggerFactory
             .getLogger(DefaultGraphQueries.class);
 
-    private final Driver           driver;
+    private final Renderer         cypherRenderer = Renderer
+            .getDefaultRenderer();
+
+    private final Neo4jClient      client;
 
     private final Processor<Graph> graphProcessor = new GraphProcessor();
 
     @Autowired
-    public DefaultGraphQueries(final Driver drv) {
+    public DefaultGraphQueries(final Neo4jClient clnt) {
         super();
 
-        driver = drv;
+        client = clnt;
     }
 
     @Override
     public final Graph findAll() {
-        final Result rows;
+        final Node source;
+        final Node target;
+        final Relationship rel;
+        final BuildableStatement<ResultStatement> statementBuilder;
         final String query;
-        final Graph result;
+        final Statement statement;
+        final Collection<Map<String, Object>> rows;
 
-        query = "MATCH (s)-[r]->(t) RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId, type(r) AS relationship";
+        source = Cypher.anyNode().named("s");
+        target = Cypher.anyNode().named("t");
+        rel = source.relationshipTo(target).named("r");
+        statementBuilder = Cypher.match(source, target).match(rel).returning(
+                source.property("name").as("source"),
+                source.internalId().as("sourceId"),
+                target.property("name").as("target"),
+                target.internalId().as("targetId"),
+                Functions.type(rel).as("relationship"));
+
+        statement = statementBuilder.build();
+        query = cypherRenderer.render(statement);
+
         LOGGER.debug("Query: {}", query);
 
-        try (final Session session = driver.session()) {
-            rows = session.run(query);
-            result = graphProcessor.process(rows);
-        }
-
-        return result;
+        rows = client.query(query).fetch().all();
+        return graphProcessor.process(rows);
     }
 
     @Override
     public final Graph findAllByLinkType(final Iterable<String> types) {
-        final Result rows;
-        final String queryTemplate;
         final String query;
         final Graph result;
-        final Iterable<String> validTypes;
+        final Collection<Expression> validTypes;
+        final Collection<Map<String, Object>> rows;
+        final Node source;
+        final Node target;
+        final Relationship rel;
+        final BuildableStatement<ResultStatement> statementBuilder;
+        final Statement statement;
 
         Preconditions.checkNotNull(types);
 
@@ -101,17 +128,27 @@ public final class DefaultGraphQueries implements GraphQueries {
             result = new DefaultGraph();
         } else {
             validTypes = StreamSupport.stream(types.spliterator(), false)
-                    .map((string) -> "'" + string + "'")
+                    .map((string) -> "'" + string + "'").map(Cypher::literalOf)
                     .collect(Collectors.toList());
 
-            queryTemplate = "MATCH (s)-[r]->(t) WHERE type(r) IN %s RETURN s.name AS source, ID(s) AS sourceId, t.name AS target, ID(t) AS targetId, type(r) AS relationship";
-            query = String.format(queryTemplate, validTypes);
+            source = Cypher.anyNode().named("s");
+            target = Cypher.anyNode().named("t");
+            rel = source.relationshipTo(target).named("r");
+            statementBuilder = Cypher.match(source, target).match(rel)
+                    .where(Functions.type(rel).in(Cypher.listOf(validTypes)))
+                    .returning(source.property("name").as("source"),
+                            source.internalId().as("sourceId"),
+                            target.property("name").as("target"),
+                            target.internalId().as("targetId"),
+                            Functions.type(rel).as("relationship"));
+
+            statement = statementBuilder.build();
+            query = cypherRenderer.render(statement);
+
             LOGGER.debug("Query: {}", query);
 
-            try (final Session session = driver.session()) {
-                rows = session.run(query);
-                result = graphProcessor.process(rows);
-            }
+            rows = client.query(query).fetch().all();
+            result = graphProcessor.process(rows);
         }
 
         return result;
@@ -119,21 +156,33 @@ public final class DefaultGraphQueries implements GraphQueries {
 
     @Override
     public final Iterable<String> findAllLinks() {
-        final Result rows;
         final String query;
         final Collection<String> result;
-        Record record;
+        final Collection<Map<String, Object>> rows;
+        final Node source;
+        final Node target;
+        final Relationship rel;
+        final AliasedExpression relField;
+        final BuildableStatement<ResultStatement> statementBuilder;
+        final Statement statement;
 
-        query = "MATCH (s)-[r]->(t) RETURN DISTINCT type(r) AS relationship ORDER BY relationship";
+        source = Cypher.anyNode().named("s");
+        target = Cypher.anyNode().named("t");
+        rel = source.relationshipTo(target).named("r");
+        relField = Functions.type(rel).as("relationship");
+        statementBuilder = Cypher.match(source, target).match(rel)
+                .returningDistinct(relField)
+                .orderBy(relField.asName().ascending());
+
+        statement = statementBuilder.build();
+        query = cypherRenderer.render(statement);
+
         LOGGER.debug("Query: {}", query);
 
         result = new ArrayList<>();
-        try (final Session session = driver.session()) {
-            rows = session.run(query);
-            while (rows.hasNext()) {
-                record = rows.next();
-                result.add(record.get("relationship", ""));
-            }
+        rows = client.query(query).fetch().all();
+        for (final Map<String, Object> row : rows) {
+            result.add((String) row.getOrDefault("relationship", ""));
         }
 
         return result;
@@ -141,52 +190,56 @@ public final class DefaultGraphQueries implements GraphQueries {
 
     @Override
     public final Optional<Info> findById(final Long id) {
-        final Result rows;
-        final Record row;
-        final String queryTemplate;
         final String query;
-        final Info node;
+        final Info info;
         final Optional<Info> result;
         final String description;
+        final Map<String, Object> row;
+        final Optional<Map<String, Object>> read;
+        final BuildableStatement<ResultStatement> statementBuilder;
+        final Node node;
+        final Statement statement;
 
         Preconditions.checkNotNull(id);
 
         LOGGER.debug("Id: {}", id);
 
-        queryTemplate = "MATCH (node) WHERE ID(node) = %s RETURN node.name AS name, node.description AS description, ID(node) AS id";
-        query = String.format(queryTemplate, id);
+        node = Cypher.anyNode().named("node");
+        statementBuilder = Cypher.match(node)
+                .where(node.internalId().isEqualTo(Cypher.literalOf(id)))
+                .returning(node.property("name").as("name"),
+                        node.property("description").as("description"),
+                        node.internalId().as("id"));
+
+        statement = statementBuilder.build();
+        query = cypherRenderer.render(statement);
         LOGGER.debug("Query: {}", query);
 
-        final Session session;
+        read = client.query(query).fetch().first();
 
-        session = driver.session();
-
-        rows = session.run(query);
-
-        if (rows.hasNext()) {
-            row = rows.single();
-            node = new DefaultInfo();
-            node.setId(row.get("id", 0l));
-            node.setName(row.get("name", ""));
-
-            description = row.get("description", "");
-            if (!description.isBlank()) {
-                node.setDescription(
-                        Arrays.asList(row.get("description", "").split("\\|")));
-            } else {
-                node.setDescription(Collections.emptyList());
-            }
-
-            result = Optional.of(node);
-
-            LOGGER.debug("Result: {}", node);
-        } else {
+        if (read.isEmpty()) {
             result = Optional.empty();
 
             LOGGER.debug("No data found");
-        }
+        } else {
+            row = read.get();
+            info = new DefaultInfo();
+            info.setId((Long) row.getOrDefault("id", 0l));
+            info.setName((String) row.getOrDefault("name", ""));
 
-        session.close();
+            description = (String) row.getOrDefault("description", "");
+            if (!description.isBlank()) {
+                info.setDescription(Arrays
+                        .asList(((String) row.getOrDefault("description", ""))
+                                .split("\\|")));
+            } else {
+                info.setDescription(Collections.emptyList());
+            }
+
+            result = Optional.of(info);
+
+            LOGGER.debug("Result: {}", info);
+        }
 
         return result;
     }

@@ -1,10 +1,11 @@
 
 package com.bernardomg.darksouls.explorer.graph.query.processor;
 
-import org.neo4j.driver.Result;
+import java.util.Collection;
+import java.util.Map;
 
 public interface Processor<T> {
 
-    public T process(final Result rows);
+    public T process(final Collection<Map<String, Object>> rows);
 
 }
