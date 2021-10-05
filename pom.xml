@@ -233,7 +233,7 @@
       <junit.jupiter.version>5.8.0</junit.jupiter.version>
       <log4j.version>2.14.1</log4j.version>
       <mockito.version>3.12.4</mockito.version>
-      <neo4j.dsl.version>2021.2.4</neo4j.dsl.version>
+      <neo4j.dsl.version>2021.3.2</neo4j.dsl.version>
       <neo4j.test.version>4.3.3</neo4j.test.version>
       <reactiveStreams.version>1.0.3</reactiveStreams.version>
       <reactor.version>3.4.9</reactor.version>

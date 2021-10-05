@@ -23,10 +23,14 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.ResultStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
+import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingAndReturn;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesLimit;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesSkip;
+import org.neo4j.cypherdsl.core.SymbolicName;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,21 +59,19 @@ public abstract class AbstractQueryExecutor {
         cypherRenderer = renderer;
     }
 
-    protected final <T> Iterable<T> fetch(
-            final BuildableStatement<ResultStatement> statementBuilder,
-            final Function<Map<String, Object>, T> mapper) {
-        final String query;
-        final ResultStatement statement;
-        final Collection<Map<String, Object>> read;
+    private final String getCountQuery(
+            final BuildableStatement<ResultStatement> statementBuilder) {
+        final String countSubquery;
+        final SymbolicName name;
+        final OngoingReadingAndReturn call;
 
-        statement = statementBuilder.build();
-        query = cypherRenderer.render(statement);
+        countSubquery = cypherRenderer.render(statementBuilder.build());
+        name = Cypher.name("value");
+        call = Cypher.call("apoc.cypher.run")
+                .withArgs(Cypher.literalOf(countSubquery), Cypher.mapOf())
+                .yield(name).returning(Functions.count(name));
 
-        LOGGER.debug("Query: {}", query);
-
-        // Data is fetched and mapped
-        read = client.query(query).fetch().all();
-        return read.stream().map(mapper).collect(Collectors.toList());
+        return cypherRenderer.render(call.build());
     }
 
     protected final <T> Page<T> fetch(
@@ -80,13 +82,10 @@ public abstract class AbstractQueryExecutor {
         final List<T> data;
         final ResultStatement statement;
         final Collection<Map<String, Object>> read;
-        final String countTemplate;
         final String countQuery;
         final Long count;
 
-        countTemplate = "CALL {%s} RETURN COUNT(*)";
-        countQuery = String.format(countTemplate,
-                cypherRenderer.render(statementBuilder.build()));
+        countQuery = getCountQuery(statementBuilder);
 
         // Pagination
         if (page != Pageable.unpaged()) {
@@ -117,20 +116,6 @@ public abstract class AbstractQueryExecutor {
         }
 
         return new PageImpl<>(data, page, count);
-    }
-
-    protected final <T> Collection<Map<String, Object>> fetchRows(
-            final BuildableStatement<ResultStatement> statementBuilder,
-            final Function<Map<String, Object>, T> mapper) {
-        final String query;
-        final ResultStatement statement;
-
-        statement = statementBuilder.build();
-        query = cypherRenderer.render(statement);
-
-        LOGGER.debug("Query: {}", query);
-
-        return client.query(query).fetch().all();
     }
 
 }
