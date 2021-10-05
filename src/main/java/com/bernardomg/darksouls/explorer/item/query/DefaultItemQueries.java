@@ -11,7 +11,10 @@ import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingMatchAndReturnWithOrder;
+import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesLimit;
+import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesSkip;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +62,7 @@ public final class DefaultItemQueries implements ItemQueries {
                 // Order by
                 .orderBy(name.asName().ascending());
 
-        return findAll(statementBuilder, this::toItem, page);
+        return fetch(statementBuilder, this::toItem, page);
     }
 
     @Override
@@ -93,8 +96,8 @@ public final class DefaultItemQueries implements ItemQueries {
         return data;
     }
 
-    private final <T> Page<T> findAll(
-            final OngoingMatchAndReturnWithOrder statementBuilder,
+    private final <T> Page<T> fetch(
+            final BuildableStatement<ResultStatement> statementBuilder,
             Function<Map<String, Object>, T> mapper, final Pageable page) {
         final String query;
         final List<T> data;
@@ -103,8 +106,14 @@ public final class DefaultItemQueries implements ItemQueries {
 
         // Pagination
         if (page != Pageable.unpaged()) {
-            statementBuilder.skip(page.getPageNumber())
-                    .limit(page.getPageSize());
+            if (statementBuilder instanceof TerminalExposesSkip) {
+                ((TerminalExposesSkip) statementBuilder)
+                        .skip(page.getPageNumber());
+            }
+            if (statementBuilder instanceof TerminalExposesLimit) {
+                ((TerminalExposesLimit) statementBuilder)
+                        .limit(page.getPageSize());
+            }
         }
 
         statement = statementBuilder.build();
