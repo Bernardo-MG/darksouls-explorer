@@ -27,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -96,7 +97,7 @@ public class ITItemServiceFindAllSources {
     public void testFindAllSources_Count() {
         final Iterable<ItemSource> data;
 
-        data = service.getAllSources();
+        data = service.getAllSources(Pageable.unpaged());
 
         Assertions.assertEquals(1, Iterables.size(data));
     }
@@ -106,7 +107,7 @@ public class ITItemServiceFindAllSources {
     public void testFindAllSources_Data() {
         final ItemSource data;
 
-        data = service.getAllSources().iterator().next();
+        data = service.getAllSources(Pageable.unpaged()).iterator().next();
 
         Assertions.assertEquals("Item", data.getItem());
         Assertions.assertEquals("Merchant", data.getSource());

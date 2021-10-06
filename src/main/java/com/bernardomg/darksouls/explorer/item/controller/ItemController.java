@@ -29,8 +29,8 @@ public class ItemController {
     }
 
     @GetMapping(path = "/sources", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<ItemSource> readSources() {
-        return service.getAllSources();
+    public Iterable<ItemSource> readSources(final Pageable page) {
+        return service.getAllSources(page);
     }
 
 }

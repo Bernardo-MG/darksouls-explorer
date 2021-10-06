@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingAndReturn;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesLimit;
@@ -59,13 +60,12 @@ public abstract class AbstractQueryExecutor {
         cypherRenderer = renderer;
     }
 
-    private final String getCountQuery(
-            final BuildableStatement<ResultStatement> statementBuilder) {
+    private final String getCountQuery(final Statement statement) {
         final String countSubquery;
         final SymbolicName name;
         final OngoingReadingAndReturn call;
 
-        countSubquery = cypherRenderer.render(statementBuilder.build());
+        countSubquery = cypherRenderer.render(statement);
         name = Cypher.name("value");
         call = Cypher.call("apoc.cypher.run")
                 .withArgs(Cypher.literalOf(countSubquery), Cypher.mapOf())
@@ -85,7 +85,7 @@ public abstract class AbstractQueryExecutor {
         final String countQuery;
         final Long count;
 
-        countQuery = getCountQuery(statementBuilder);
+        countQuery = getCountQuery(statementBuilder.build());
 
         // Pagination
         if (page != Pageable.unpaged()) {

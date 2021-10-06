@@ -11,6 +11,6 @@ public interface ItemQueries {
 
     public Page<Item> findAll(final Pageable page);
 
-    public Iterable<ItemSource> findAllSources();
+    public Page<ItemSource> findAllSources(final Pageable page);
 
 }

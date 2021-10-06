@@ -10,6 +10,6 @@ public interface ItemService {
 
     public Iterable<Item> getAll(final Pageable page);
 
-    public Iterable<ItemSource> getAllSources();
+    public Iterable<ItemSource> getAllSources(final Pageable page);
 
 }
