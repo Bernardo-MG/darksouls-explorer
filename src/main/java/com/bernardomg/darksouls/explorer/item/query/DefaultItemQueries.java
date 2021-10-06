@@ -1,14 +1,19 @@
 
 package com.bernardomg.darksouls.explorer.item.query;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
+import org.neo4j.cypherdsl.core.Relationship;
+import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingMatchAndReturnWithOrder;
+import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingAndReturn;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +39,8 @@ public final class DefaultItemQueries extends AbstractQueryExecutor
             .getLogger(DefaultItemQueries.class);
 
     private final Neo4jClient   client;
+
+    private final Renderer cypherRenderer = Renderer.getDefaultRenderer();
 
     public DefaultItemQueries(final Neo4jClient clnt) {
         super(clnt, Renderer.getDefaultRenderer());
@@ -62,22 +69,32 @@ public final class DefaultItemQueries extends AbstractQueryExecutor
         final String query;
         final Collection<ItemSource> data;
         final Collection<Map<String, Object>> read;
+        final Node s;
+        final Node i;
+        final Node startingGift;
+        final Relationship rel;
+        final OngoingReadingAndReturn firstStatementBuilder;
+        final OngoingReadingAndReturn secondStatementBuilder;
+        final Statement statementBuilder;
 
-        // @formatter:off
-        query = "MATCH\r\n"
-                + "        (s)-[rel:DROPS|SELLS|STARTS_WITH|REWARDS]->(i:Item)\r\n"
-                + "RETURN\r\n" + "        i.name AS item,\r\n"
-                + "        s.name AS source,\r\n" + "        CASE type(rel)\r\n"
-                + "        WHEN 'DROPS' THEN 'drop'\r\n"
-                + "        WHEN 'SELLS' THEN 'sold'\r\n"
-                + "        WHEN 'STARTS_WITH' THEN 'starting'\r\n"
-                + "        WHEN 'REWARDS' THEN 'covenant_reward'\r\n"
-                + "        END AS relationship\r\n" + "UNION ALL\r\n"
-                + "MATCH\r\n" + "        (i:Item:StartingGift)\r\n"
-                + "RETURN\r\n" + "        i.name AS item,\r\n"
-                + "        \"Starting gift\" AS source,\r\n"
-                + "        \"starting_gift\" AS relationship";
-        // @formatter:on
+        s = Cypher.anyNode().named("s");
+        i = Cypher.node("Item").named("i");
+        rel = s.relationshipTo(i, "DROPS", "SELLS", "STARTS_WITH", "REWARDS")
+                .named("rel");
+        firstStatementBuilder = Cypher.match(rel).returning(
+                i.property("name").as("item"), s.property("name").as("source"),
+                Functions.type(rel).as("relationship"));
+
+        startingGift = Cypher.node("Item", "StartingGift").named("i");
+        secondStatementBuilder = Cypher.match(startingGift).returning(
+                i.property("name").as("item"),
+                Cypher.literalOf("Starting gift").as("source"),
+                Cypher.literalOf("starting_gift").as("relationship"));
+
+        statementBuilder = Cypher.union(Arrays.asList(
+                firstStatementBuilder.build(), secondStatementBuilder.build()));
+
+        query = cypherRenderer.render(statementBuilder);
         LOGGER.debug("Query: {}", query);
 
         // Data is fetched and mapped
