@@ -35,12 +35,12 @@ public final class DefaultItemQueries extends AbstractQueryExecutor
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger LOGGER         = LoggerFactory
             .getLogger(DefaultItemQueries.class);
 
     private final Neo4jClient   client;
 
-    private final Renderer cypherRenderer = Renderer.getDefaultRenderer();
+    private final Renderer      cypherRenderer = Renderer.getDefaultRenderer();
 
     public DefaultItemQueries(final Neo4jClient clnt) {
         super(clnt, Renderer.getDefaultRenderer());
@@ -117,12 +117,29 @@ public final class DefaultItemQueries extends AbstractQueryExecutor
 
     private final ItemSource toItemSource(final Map<String, Object> record) {
         final ItemSource source;
+        final String type;
+
+        switch ((String) record.getOrDefault("relationship", "")) {
+            case "DROPS":
+                type = "drop";
+                break;
+            case "SELLS":
+                type = "sold";
+                break;
+            case "STARTS_WITH":
+                type = "starting";
+                break;
+            case "REWARDS":
+                type = "covenant_reward";
+                break;
+            default:
+                type = "";
+        }
 
         source = new DefaultItemSource();
         source.setItem((String) record.getOrDefault("item", ""));
         source.setSource((String) record.getOrDefault("source", ""));
-        source.setRelationship(
-                (String) record.getOrDefault("relationship", ""));
+        source.setRelationship(type);
 
         return source;
     }
