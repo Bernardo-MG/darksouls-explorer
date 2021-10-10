@@ -17,6 +17,7 @@
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
@@ -37,6 +38,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
@@ -103,25 +105,6 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Reads first page")
-    public void testFetch_FirstPage() {
-        final Page<Item> data;
-        final Pageable page;
-        final BuildableStatement<ResultStatement> statementBuilder;
-
-        page = Pageable.ofSize(1);
-
-        statementBuilder = getStatementBuilder();
-
-        data = queryExecutor.fetch(statementBuilder, this::toItem, page);
-
-        Assertions.assertEquals(1, data.getSize());
-        Assertions.assertEquals(5, data.getTotalElements());
-        Assertions.assertEquals(5, data.getTotalPages());
-        Assertions.assertEquals(0, data.getNumber());
-    }
-
-    @Test
     @DisplayName("Returns all the data when not paginated")
     public void testFetch_NoPagination() {
         final Page<Item> data;
@@ -141,8 +124,69 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
+    @DisplayName("Sorts in ascending order")
+    public void testFetch_Order_Ascending() {
+        final Iterator<Item> data;
+        final Pageable page;
+        final BuildableStatement<ResultStatement> statementBuilder;
+
+        page = PageRequest.of(0, 5, Direction.ASC, "name");
+
+        statementBuilder = getStatementBuilder();
+
+        data = queryExecutor.fetch(statementBuilder, this::toItem, page)
+                .iterator();
+
+        Assertions.assertEquals("Item1", data.next().getName());
+        Assertions.assertEquals("Item2", data.next().getName());
+        Assertions.assertEquals("Item3", data.next().getName());
+        Assertions.assertEquals("Item4", data.next().getName());
+        Assertions.assertEquals("Item5", data.next().getName());
+    }
+
+    @Test
+    @DisplayName("Sorts in descending order")
+    public void testFetch_Order_Descending() {
+        final Iterator<Item> data;
+        final Pageable page;
+        final BuildableStatement<ResultStatement> statementBuilder;
+
+        page = PageRequest.of(0, 5, Direction.DESC, "name");
+
+        statementBuilder = getStatementBuilder();
+
+        data = queryExecutor.fetch(statementBuilder, this::toItem, page)
+                .iterator();
+
+        Assertions.assertEquals("Item5", data.next().getName());
+        Assertions.assertEquals("Item4", data.next().getName());
+        Assertions.assertEquals("Item3", data.next().getName());
+        Assertions.assertEquals("Item2", data.next().getName());
+        Assertions.assertEquals("Item1", data.next().getName());
+    }
+
+    @Test
+    @DisplayName("Reads first page")
+    public void testFetch_Pagination_FirstPage() {
+        final Page<Item> data;
+        final Pageable page;
+        final BuildableStatement<ResultStatement> statementBuilder;
+
+        page = Pageable.ofSize(1);
+
+        statementBuilder = getStatementBuilder();
+
+        data = queryExecutor.fetch(statementBuilder, this::toItem, page);
+
+        Assertions.assertEquals(1, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(5, data.getTotalPages());
+        Assertions.assertEquals(0, data.getNumber());
+    }
+
+    @Test
     @DisplayName("Reads second page")
-    public void testFetch_SecondPage() {
+    public void testFetch_Pagination_SecondPage() {
         final Page<Item> data;
         final Pageable page;
         final BuildableStatement<ResultStatement> statementBuilder;

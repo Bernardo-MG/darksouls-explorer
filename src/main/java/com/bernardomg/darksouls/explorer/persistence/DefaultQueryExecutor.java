@@ -31,12 +31,14 @@ import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingAndReturn;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesLimit;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesOrderBy;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesSkip;
+import org.neo4j.cypherdsl.core.StatementBuilder.TerminalOngoingOrderDefinition;
 import org.neo4j.cypherdsl.core.SymbolicName;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.data.support.PageableExecutionUtils;
 
@@ -70,6 +72,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         final ResultStatement statement;
         final Collection<Map<String, Object>> read;
         final Statement baseStatement;
+        TerminalOngoingOrderDefinition orderExpression;
 
         baseStatement = statementBuilder.build();
 
@@ -89,9 +92,16 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         // TODO: Apply sort
         if (page.getSort().isSorted()) {
             if (statementBuilder instanceof TerminalExposesOrderBy) {
-                ((TerminalExposesOrderBy) statementBuilder)
-                        .orderBy(Cypher.anyNode().property("abc").as("name")
-                                .asName().ascending());
+                for (final Order order : page.getSort()) {
+                    orderExpression = ((TerminalExposesOrderBy) statementBuilder)
+                            .orderBy(Cypher.anyNode().property("property")
+                                    .as(order.getProperty()).asName());
+                    if (order.isAscending()) {
+                        orderExpression.ascending();
+                    } else {
+                        orderExpression.descending();
+                    }
+                }
             }
         }
 
