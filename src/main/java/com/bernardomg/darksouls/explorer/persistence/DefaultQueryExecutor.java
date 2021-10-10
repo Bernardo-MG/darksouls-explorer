@@ -69,12 +69,15 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         final List<T> data;
         final ResultStatement statement;
         final Collection<Map<String, Object>> read;
+        final Statement baseStatement;
+
+        baseStatement = statementBuilder.build();
 
         // Pagination
         if (page.isPaged()) {
             if (statementBuilder instanceof TerminalExposesSkip) {
                 ((TerminalExposesSkip) statementBuilder)
-                        .skip(page.getPageNumber());
+                        .skip(page.getPageNumber() * page.getPageSize());
             }
             if (statementBuilder instanceof TerminalExposesLimit) {
                 ((TerminalExposesLimit) statementBuilder)
@@ -102,14 +105,13 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         data = read.stream().map(mapper).collect(Collectors.toList());
 
         return PageableExecutionUtils.getPage(data, page,
-                () -> count(statementBuilder));
+                () -> count(baseStatement));
     }
 
-    private final Long
-            count(final BuildableStatement<ResultStatement> statementBuilder) {
+    private final Long count(final Statement statement) {
         final String countQuery;
 
-        countQuery = getCountQuery(statementBuilder.build());
+        countQuery = getCountQuery(statement);
 
         LOGGER.debug("Count: {}", countQuery);
 
