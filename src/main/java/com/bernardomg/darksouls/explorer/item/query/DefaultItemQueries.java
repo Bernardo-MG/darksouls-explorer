@@ -8,8 +8,8 @@ import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.Relationship;
-import org.neo4j.cypherdsl.core.StatementBuilder.OngoingMatchAndReturnWithOrder;
-import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingAndReturn;
+import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,30 +20,33 @@ import com.bernardomg.darksouls.explorer.item.model.DefaultItem;
 import com.bernardomg.darksouls.explorer.item.model.DefaultItemSource;
 import com.bernardomg.darksouls.explorer.item.model.Item;
 import com.bernardomg.darksouls.explorer.item.model.ItemSource;
-import com.bernardomg.darksouls.explorer.persistence.AbstractQueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 
 @Component
-public final class DefaultItemQueries extends AbstractQueryExecutor
-        implements ItemQueries {
+public final class DefaultItemQueries implements ItemQueries {
+
+    private final QueryExecutor queryExecutor;
 
     public DefaultItemQueries(final Neo4jClient clnt) {
-        super(clnt, Renderer.getDefaultRenderer());
+        super();
+
+        queryExecutor = new DefaultQueryExecutor(clnt,
+                Renderer.getDefaultRenderer());
     }
 
     @Override
     public final Page<Item> findAll(final Pageable page) {
-        final Node m;
+        final Node item;
         final AliasedExpression name;
-        final OngoingMatchAndReturnWithOrder statementBuilder;
+        final BuildableStatement<ResultStatement> statementBuilder;
 
-        m = Cypher.node("Item").named("i");
-        name = m.property("name").as("name");
-        statementBuilder = Cypher.match(m)
-                .returning(name, m.property("description").as("description"))
-                // Order by
-                .orderBy(name.asName().ascending());
+        item = Cypher.node("Item").named("i");
+        name = item.property("name").as("name");
+        statementBuilder = Cypher.match(item).returning(name,
+                item.property("description").as("description"));
 
-        return fetch(statementBuilder, this::toItem, page);
+        return queryExecutor.fetch(statementBuilder, this::toItem, page);
     }
 
     @Override
@@ -51,7 +54,7 @@ public final class DefaultItemQueries extends AbstractQueryExecutor
         final Node s;
         final Node i;
         final Relationship rel;
-        final OngoingReadingAndReturn statementBuilder;
+        final BuildableStatement<ResultStatement> statementBuilder;
 
         s = Cypher.anyNode().named("s");
         i = Cypher.node("Item").named("i");
@@ -61,7 +64,7 @@ public final class DefaultItemQueries extends AbstractQueryExecutor
                 i.property("name").as("item"), s.property("name").as("source"),
                 Functions.type(rel).as("relationship"));
 
-        return fetch(statementBuilder, this::toItemSource, page);
+        return queryExecutor.fetch(statementBuilder, this::toItemSource, page);
     }
 
     private final Item toItem(final Map<String, Object> record) {

@@ -29,6 +29,7 @@ import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingAndReturn;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesLimit;
+import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesOrderBy;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesSkip;
 import org.neo4j.cypherdsl.core.SymbolicName;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
@@ -39,19 +40,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.data.support.PageableExecutionUtils;
 
-public abstract class AbstractQueryExecutor {
+public final class DefaultQueryExecutor implements QueryExecutor {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(AbstractQueryExecutor.class);
+            .getLogger(DefaultQueryExecutor.class);
 
     private final Renderer      cypherRenderer;
 
     private final Neo4jClient   client;
 
-    public AbstractQueryExecutor(final Neo4jClient clnt,
+    public DefaultQueryExecutor(final Neo4jClient clnt,
             final Renderer renderer) {
         super();
 
@@ -59,21 +60,8 @@ public abstract class AbstractQueryExecutor {
         cypherRenderer = renderer;
     }
 
-    private final String getCountQuery(final Statement statement) {
-        final String countSubquery;
-        final SymbolicName name;
-        final OngoingReadingAndReturn call;
-
-        countSubquery = cypherRenderer.render(statement);
-        name = Cypher.name("value");
-        call = Cypher.call("apoc.cypher.run")
-                .withArgs(Cypher.literalOf(countSubquery), Cypher.mapOf())
-                .yield(name).returning(Functions.count(name));
-
-        return cypherRenderer.render(call.build());
-    }
-
-    protected final <T> Page<T> fetch(
+    @Override
+    public final <T> Page<T> fetch(
             final BuildableStatement<ResultStatement> statementBuilder,
             final Function<Map<String, Object>, T> mapper,
             final Pageable page) {
@@ -96,6 +84,13 @@ public abstract class AbstractQueryExecutor {
 
         // Sort
         // TODO: Apply sort
+        if (page.getSort().isSorted()) {
+            if (statementBuilder instanceof TerminalExposesOrderBy) {
+                ((TerminalExposesOrderBy) statementBuilder)
+                        .orderBy(Cypher.anyNode().property("abc").as("name")
+                                .asName().ascending());
+            }
+        }
 
         statement = statementBuilder.build();
         query = cypherRenderer.render(statement);
@@ -119,6 +114,20 @@ public abstract class AbstractQueryExecutor {
         LOGGER.debug("Count: {}", countQuery);
 
         return client.query(countQuery).fetchAs(Long.class).first().get();
+    }
+
+    private final String getCountQuery(final Statement statement) {
+        final String countSubquery;
+        final SymbolicName name;
+        final OngoingReadingAndReturn call;
+
+        countSubquery = cypherRenderer.render(statement);
+        name = Cypher.name("value");
+        call = Cypher.call("apoc.cypher.run")
+                .withArgs(Cypher.literalOf(countSubquery), Cypher.mapOf())
+                .yield(name).returning(Functions.count(name));
+
+        return cypherRenderer.render(call.build());
     }
 
 }
