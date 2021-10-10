@@ -89,7 +89,6 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         }
 
         // Sort
-        // TODO: Apply sort
         if (page.getSort().isSorted()) {
             if (statementBuilder instanceof TerminalExposesOrderBy) {
                 for (final Order order : page.getSort()) {
