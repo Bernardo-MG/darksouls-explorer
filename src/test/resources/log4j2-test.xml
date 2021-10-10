@@ -18,7 +18,7 @@
 
    <Loggers>
       <!-- Application log -->
-      <Logger name="com.bernardomg.darksouls" level="debug" additivity="false">
+      <Logger name="com.bernardomg.darksouls" level="error" additivity="false">
          <AppenderRef ref="console" />
          <AppenderRef ref="file" />
       </Logger>
