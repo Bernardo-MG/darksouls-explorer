@@ -32,7 +32,6 @@ import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.domain.Page;
@@ -52,6 +51,7 @@ import com.bernardomg.darksouls.explorer.item.model.Item;
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
+import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
@@ -72,14 +72,8 @@ public class ITQueryExecutorPagination {
         @Override
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
-
-            neo4jContainer.addExposedPorts(7687);
-            TestPropertyValues
-                    .of("spring.neo4j.uri=" + neo4jContainer.getBoltUrl(),
-                            "spring.neo4j.authentication.username=neo4j",
-                            "spring.neo4j.authentication.password="
-                                    + neo4jContainer.getAdminPassword())
-                    .applyTo(configurableApplicationContext.getEnvironment());
+            new Neo4jApplicationContextInitializer(neo4jContainer)
+                    .initialize(configurableApplicationContext);
         }
     }
 
