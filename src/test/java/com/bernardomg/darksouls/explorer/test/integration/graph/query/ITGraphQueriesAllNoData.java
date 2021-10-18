@@ -26,7 +26,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
@@ -40,7 +39,6 @@ import com.google.common.collect.Iterables;
  * Integration tests for the {@link GraphQueries}.
  */
 @IntegrationTest
-@Testcontainers
 @ContextConfiguration(
         initializers = { ITGraphQueriesAllNoData.Initializer.class })
 @SpringBootTest(classes = Application.class)
