@@ -54,13 +54,13 @@ public class ITGraphQueriesByLinkTypeNoData {
         @Override
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
+            new Neo4jApplicationContextInitializer(dbContainer)
                     .initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory
             .getNeo4jContainer();
 
     @Autowired

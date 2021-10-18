@@ -55,19 +55,19 @@ public class ITGraphQueriesByLinkTypeMultiple {
         @Override
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
+            new Neo4jApplicationContextInitializer(dbContainer)
                     .initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory
             .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
+                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
                 Arrays.asList("classpath:db/queries/graph/multiple.cypher"));
     }
 

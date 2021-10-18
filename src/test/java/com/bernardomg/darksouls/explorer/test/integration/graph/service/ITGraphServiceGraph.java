@@ -57,24 +57,24 @@ public class ITGraphServiceGraph {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
 
-            neo4jContainer.addExposedPorts(7687);
+            dbContainer.addExposedPorts(7687);
             TestPropertyValues
-                    .of("spring.neo4j.uri=" + neo4jContainer.getBoltUrl(),
+                    .of("spring.neo4j.uri=" + dbContainer.getBoltUrl(),
                             "spring.neo4j.authentication.username=neo4j",
                             "spring.neo4j.authentication.password="
-                                    + neo4jContainer.getAdminPassword())
+                                    + dbContainer.getAdminPassword())
                     .applyTo(configurableApplicationContext.getEnvironment());
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory
             .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
+                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
                 Arrays.asList(
                         "classpath:db/queries/graph/multiple_relationships.cypher"));
     }
