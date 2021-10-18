@@ -24,14 +24,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
@@ -46,7 +44,6 @@ import com.google.common.collect.Iterables;
 @IntegrationTest
 @ContextConfiguration(
         initializers = { ITGraphQueriesFindById.Initializer.class })
-@SpringBootTest(classes = Application.class)
 @DisplayName("Querying the repository by id")
 public class ITGraphQueriesFindById {
 

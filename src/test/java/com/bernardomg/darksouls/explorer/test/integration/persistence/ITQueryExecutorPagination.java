@@ -31,7 +31,6 @@ import org.neo4j.cypherdsl.core.ResultStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.domain.Page;
@@ -43,7 +42,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.item.model.DefaultItem;
 import com.bernardomg.darksouls.explorer.item.model.Item;
@@ -60,7 +58,6 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 @IntegrationTest
 @ContextConfiguration(
         initializers = { ITQueryExecutorPagination.Initializer.class })
-@SpringBootTest(classes = Application.class)
 @DisplayName("Reading all the items")
 public class ITQueryExecutorPagination {
 
