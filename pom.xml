@@ -262,6 +262,14 @@
             <type>pom</type>
             <scope>import</scope>
          </dependency>
+         <dependency>
+            <!-- Testcontainers BOM -->
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-bom</artifactId>
+            <version>${testcontainers.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
       </dependencies>
    </dependencyManagement>
 
@@ -509,24 +517,21 @@
       <!-- ======= TEST ENVIRONMENT DEPENDENCIES ======== -->
       <!-- ============================================== -->
       <dependency>
-         <!-- Test Containers -->
+         <!-- Testcontainers -->
          <groupId>org.testcontainers</groupId>
          <artifactId>testcontainers</artifactId>
-         <version>${testcontainers.version}</version>
          <scope>test</scope>
       </dependency>
       <dependency>
-         <!-- Test Containers Junit 5 -->
+         <!-- Testcontainers Junit 5 -->
          <groupId>org.testcontainers</groupId>
          <artifactId>junit-jupiter</artifactId>
-         <version>${testcontainers.version}</version>
          <scope>test</scope>
       </dependency>
       <dependency>
-         <!-- Test Containers Neo4j -->
+         <!-- Testcontainers Neo4j -->
          <groupId>org.testcontainers</groupId>
          <artifactId>neo4j</artifactId>
-         <version>${testcontainers.version}</version>
          <scope>test</scope>
       </dependency>
       <dependency>
