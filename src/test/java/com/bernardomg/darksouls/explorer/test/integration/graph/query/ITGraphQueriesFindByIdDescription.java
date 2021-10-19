@@ -67,7 +67,7 @@ public class ITGraphQueriesFindByIdDescription {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
                 dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/description.cypher"));
+                Arrays.asList("classpath:db/queries/graph/single_node.cypher"));
     }
 
     @Autowired
