@@ -25,16 +25,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.bernardomg.darksouls.explorer.Application;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.graph.service.GraphService;
@@ -46,9 +43,7 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
  * Integration tests for the {@link GraphQueries}.
  */
 @IntegrationTest
-@Testcontainers
 @ContextConfiguration(initializers = { ITGraphServiceGraph.Initializer.class })
-@SpringBootTest(classes = Application.class)
 @DisplayName("Getting the graph from the service")
 public class ITGraphServiceGraph {
 
@@ -59,24 +54,24 @@ public class ITGraphServiceGraph {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
 
-            neo4jContainer.addExposedPorts(7687);
+            dbContainer.addExposedPorts(7687);
             TestPropertyValues
-                    .of("spring.neo4j.uri=" + neo4jContainer.getBoltUrl(),
+                    .of("spring.neo4j.uri=" + dbContainer.getBoltUrl(),
                             "spring.neo4j.authentication.username=neo4j",
                             "spring.neo4j.authentication.password="
-                                    + neo4jContainer.getAdminPassword())
+                                    + dbContainer.getAdminPassword())
                     .applyTo(configurableApplicationContext.getEnvironment());
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory
             .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
+                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
                 Arrays.asList(
                         "classpath:db/queries/graph/multiple_relationships.cypher"));
     }

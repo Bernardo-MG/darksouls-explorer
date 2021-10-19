@@ -230,42 +230,50 @@
 	<!-- *************** DEPENDENCIES ***************** -->
 	<!-- ********************************************** -->
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<!-- Spring Framework BOM -->
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-framework-bom</artifactId>
-				<version>${spring.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<!-- Spring Data BOM -->
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-bom</artifactId>
-				<version>${spring.data.train.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<!-- Jackson BOM -->
-				<groupId>com.fasterxml.jackson</groupId>
-				<artifactId>jackson-bom</artifactId>
-				<version>${jackson.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<!-- JUnit BOM -->
-				<groupId>org.junit</groupId>
-				<artifactId>junit-bom</artifactId>
-				<version>${junit.jupiter.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <!-- Spring Framework BOM -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-framework-bom</artifactId>
+            <version>${spring.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <!-- Spring Data BOM -->
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-bom</artifactId>
+            <version>${spring.data.train.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <!-- Jackson BOM -->
+            <groupId>com.fasterxml.jackson</groupId>
+            <artifactId>jackson-bom</artifactId>
+            <version>${jackson.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <!-- JUnit BOM -->
+            <groupId>org.junit</groupId>
+            <artifactId>junit-bom</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <!-- Testcontainers BOM -->
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-bom</artifactId>
+            <version>${testcontainers.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
 
 	<dependencies>
 		<!-- ============================================== -->
@@ -521,21 +529,18 @@
 			<!-- Test Containers -->
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
-			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<!-- Test Containers Junit 5 -->
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<!-- Test Containers Neo4j -->
 			<groupId>org.testcontainers</groupId>
 			<artifactId>neo4j</artifactId>
-			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
