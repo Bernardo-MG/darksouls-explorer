@@ -1,6 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.item.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +25,12 @@ public class ItemController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Item> read(final Pageable page) {
+    public Page<Item> read(final Pageable page) {
         return service.getAll(page);
     }
 
     @GetMapping(path = "/sources", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<ItemSource> readSources(final Pageable page) {
+    public Page<ItemSource> readSources(final Pageable page) {
         return service.getAllSources(page);
     }
 
