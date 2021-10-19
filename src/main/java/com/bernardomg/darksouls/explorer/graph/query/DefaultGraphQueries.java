@@ -25,6 +25,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Expression;
@@ -47,9 +49,8 @@ import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.processor.GraphProcessor;
 import com.bernardomg.darksouls.explorer.graph.query.processor.Processor;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
+
+import lombok.NonNull;
 
 /**
  * People repository.
@@ -110,7 +111,8 @@ public final class DefaultGraphQueries implements GraphQueries {
     }
 
     @Override
-    public final Graph findAllByLinkType(final Iterable<String> types) {
+    public final Graph
+            findAllByLinkType(@NonNull final Iterable<String> types) {
         final String query;
         final Graph result;
         final Collection<Expression> validTypes;
@@ -121,11 +123,9 @@ public final class DefaultGraphQueries implements GraphQueries {
         final BuildableStatement<ResultStatement> statementBuilder;
         final Statement statement;
 
-        Preconditions.checkNotNull(types);
-
         LOGGER.debug("Filtering by links: {}", types);
 
-        if (Iterables.isEmpty(types)) {
+        if (IterableUtils.isEmpty(types)) {
             result = new DefaultGraph();
         } else {
             validTypes = StreamSupport.stream(types.spliterator(), false)
@@ -188,7 +188,7 @@ public final class DefaultGraphQueries implements GraphQueries {
     }
 
     @Override
-    public final Optional<Info> findById(final Long id) {
+    public final Optional<Info> findById(@NonNull final Long id) {
         final String query;
         final Info info;
         final Optional<Info> result;
@@ -198,8 +198,6 @@ public final class DefaultGraphQueries implements GraphQueries {
         final BuildableStatement<ResultStatement> statementBuilder;
         final Node node;
         final Statement statement;
-
-        Preconditions.checkNotNull(id);
 
         LOGGER.debug("Id: {}", id);
 
@@ -226,7 +224,7 @@ public final class DefaultGraphQueries implements GraphQueries {
                     (String) row.getOrDefault("name", ""));
 
             description = (String) row.getOrDefault("description", "");
-            if (Strings.isNullOrEmpty(description)) {
+            if (StringUtils.isBlank(description)) {
                 info.setDescription(Collections.emptyList());
             } else {
                 info.setDescription(Arrays

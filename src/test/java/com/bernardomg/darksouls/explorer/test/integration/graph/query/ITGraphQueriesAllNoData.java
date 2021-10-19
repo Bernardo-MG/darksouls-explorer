@@ -16,6 +16,7 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,6 @@ import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.
@@ -85,9 +85,9 @@ public class ITGraphQueriesAllNoData {
 
         data = queries.findAll();
 
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getLinks()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getNodes()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getTypes()));
     }
 
 }

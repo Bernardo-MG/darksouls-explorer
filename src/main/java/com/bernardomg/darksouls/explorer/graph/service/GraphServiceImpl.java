@@ -1,6 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.graph.service;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.model.Info;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
-import com.google.common.collect.Iterables;
 
 @Service
 public final class GraphServiceImpl implements GraphService {
@@ -35,7 +35,7 @@ public final class GraphServiceImpl implements GraphService {
 
         LOGGER.debug("Filtering by links: {}", relationships);
 
-        if (Iterables.isEmpty(relationships)) {
+        if (IterableUtils.isEmpty(relationships)) {
             graph = queries.findAll();
         } else {
             graph = queries.findAllByLinkType(relationships);

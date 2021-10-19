@@ -18,6 +18,7 @@ package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +38,6 @@ import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.
@@ -96,7 +96,7 @@ public class ITGraphQueriesAllLinksMultiple {
 
         data = queries.findAllLinks();
 
-        Assertions.assertEquals(2, Iterables.size(data));
+        Assertions.assertEquals(2, IterableUtils.size(data));
     }
 
     @Test

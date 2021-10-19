@@ -19,6 +19,7 @@ package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +41,6 @@ import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.
@@ -98,9 +98,9 @@ public class ITGraphQueriesByLinkType {
 
         data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"));
 
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+        Assertions.assertEquals(1, IterableUtils.size(data.getLinks()));
+        Assertions.assertEquals(2, IterableUtils.size(data.getNodes()));
+        Assertions.assertEquals(1, IterableUtils.size(data.getTypes()));
     }
 
     @Test
@@ -123,9 +123,9 @@ public class ITGraphQueriesByLinkType {
 
         data = queries.findAllByLinkType(Collections.emptyList());
 
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getLinks()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getNodes()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getTypes()));
     }
 
     @Test
@@ -135,9 +135,9 @@ public class ITGraphQueriesByLinkType {
 
         data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP", "ABC"));
 
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+        Assertions.assertEquals(1, IterableUtils.size(data.getLinks()));
+        Assertions.assertEquals(2, IterableUtils.size(data.getNodes()));
+        Assertions.assertEquals(1, IterableUtils.size(data.getTypes()));
     }
 
     @Test
@@ -147,9 +147,9 @@ public class ITGraphQueriesByLinkType {
 
         data = queries.findAllByLinkType(Arrays.asList("ABC"));
 
-        Assertions.assertEquals(0, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(0, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(0, Iterables.size(data.getTypes()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getLinks()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getNodes()));
+        Assertions.assertEquals(0, IterableUtils.size(data.getTypes()));
     }
 
     @Test

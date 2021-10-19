@@ -94,7 +94,7 @@ public class ITQueryExecutorPagination {
                 Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    private QueryExecutor queryExecutor;
+    private final QueryExecutor queryExecutor;
 
     @Autowired
     public ITQueryExecutorPagination(final Neo4jClient clnt) {

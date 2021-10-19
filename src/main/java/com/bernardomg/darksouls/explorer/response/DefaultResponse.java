@@ -16,9 +16,8 @@
 
 package com.bernardomg.darksouls.explorer.response;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.MoreObjects;
+import lombok.Data;
+import lombok.NonNull;
 
 /**
  * Default implementation of the response.
@@ -28,16 +27,19 @@ import com.google.common.base.MoreObjects;
  * @param <T>
  *            response content type
  */
+@Data
 public class DefaultResponse<T> implements Response<T> {
 
     /**
      * Response content.
      */
+    @NonNull
     private T              content;
 
     /**
      * Response status.
      */
+    @NonNull
     private ResponseStatus status = ResponseStatus.SUCCESS;
 
     /**
@@ -53,10 +55,10 @@ public class DefaultResponse<T> implements Response<T> {
      * @param cont
      *            content
      */
-    public DefaultResponse(final T cont) {
+    public DefaultResponse(@NonNull final T cont) {
         super();
 
-        content = checkNotNull(cont, "Missing content");
+        content = cont;
     }
 
     /**
@@ -67,47 +69,12 @@ public class DefaultResponse<T> implements Response<T> {
      * @param stat
      *            status
      */
-    public DefaultResponse(final T cont, final ResponseStatus stat) {
+    public DefaultResponse(@NonNull final T cont,
+            @NonNull final ResponseStatus stat) {
         super();
 
-        content = checkNotNull(cont, "Missing content");
-        status = checkNotNull(stat, "Missing status");
-    }
-
-    @Override
-    public T getContent() {
-        return content;
-    }
-
-    @Override
-    public ResponseStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * Sets the content.
-     *
-     * @param value
-     *            response content
-     */
-    public void setContent(final T value) {
-        content = value;
-    }
-
-    /**
-     * Sets the status.
-     *
-     * @param value
-     *            response status
-     */
-    public void setStatus(final ResponseStatus value) {
-        status = value;
-    }
-
-    @Override
-    public final String toString() {
-        return MoreObjects.toStringHelper(this).add("status", status)
-                .add("content", content).toString();
+        content = cont;
+        status = stat;
     }
 
 }

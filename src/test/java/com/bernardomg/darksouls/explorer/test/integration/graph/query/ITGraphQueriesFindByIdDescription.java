@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Optional;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +41,6 @@ import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.
@@ -113,7 +113,8 @@ public class ITGraphQueriesFindByIdDescription {
 
         Assertions.assertNotNull(data.get().getId());
         Assertions.assertEquals("Target", data.get().getName());
-        Assertions.assertEquals(2, Iterables.size(data.get().getDescription()));
+        Assertions.assertEquals(2,
+                IterableUtils.size(data.get().getDescription()));
 
         itr = data.get().getDescription().iterator();
         Assertions.assertEquals("line1", itr.next());

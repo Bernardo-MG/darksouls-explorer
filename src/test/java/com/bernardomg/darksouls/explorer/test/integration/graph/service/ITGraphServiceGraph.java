@@ -19,6 +19,7 @@ package com.bernardomg.darksouls.explorer.test.integration.graph.service;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +41,6 @@ import com.bernardomg.darksouls.explorer.graph.service.GraphService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.
@@ -98,9 +98,9 @@ public class ITGraphServiceGraph {
 
         data = service.getGraph(Collections.emptyList());
 
-        Assertions.assertEquals(2, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(2, Iterables.size(data.getTypes()));
+        Assertions.assertEquals(2, IterableUtils.size(data.getLinks()));
+        Assertions.assertEquals(2, IterableUtils.size(data.getNodes()));
+        Assertions.assertEquals(2, IterableUtils.size(data.getTypes()));
     }
 
     @Test
@@ -110,9 +110,9 @@ public class ITGraphServiceGraph {
 
         data = service.getGraph(Arrays.asList("RELATIONSHIP"));
 
-        Assertions.assertEquals(1, Iterables.size(data.getLinks()));
-        Assertions.assertEquals(2, Iterables.size(data.getNodes()));
-        Assertions.assertEquals(1, Iterables.size(data.getTypes()));
+        Assertions.assertEquals(1, IterableUtils.size(data.getLinks()));
+        Assertions.assertEquals(2, IterableUtils.size(data.getNodes()));
+        Assertions.assertEquals(1, IterableUtils.size(data.getTypes()));
     }
 
 }

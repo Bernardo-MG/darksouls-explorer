@@ -18,6 +18,7 @@ package com.bernardomg.darksouls.explorer.test.integration.item.service;
 
 import java.util.Arrays;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +41,6 @@ import com.bernardomg.darksouls.explorer.item.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.google.common.collect.Iterables;
 
 /**
  * Integration tests for the {@link GraphQueries}.
@@ -97,7 +97,7 @@ public class ITItemServiceFindAll {
 
         data = service.getAll(Pageable.unpaged());
 
-        Assertions.assertEquals(1, Iterables.size(data));
+        Assertions.assertEquals(1, IterableUtils.size(data));
     }
 
     @Test
