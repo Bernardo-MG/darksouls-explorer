@@ -77,9 +77,7 @@ public final class GraphProcessor implements Processor<Graph> {
     private final Node toSourceNode(final Link link) {
         final Node result;
 
-        result = new DefaultNode();
-        result.setId(link.getSourceId());
-        result.setName(link.getSource());
+        result = new DefaultNode(link.getSourceId(), link.getSource());
 
         return result;
     }
@@ -87,9 +85,7 @@ public final class GraphProcessor implements Processor<Graph> {
     private final Node toTargetNode(final Link link) {
         final Node result;
 
-        result = new DefaultNode();
-        result.setId(link.getTargetId());
-        result.setName(link.getTarget());
+        result = new DefaultNode(link.getTargetId(), link.getTarget());
 
         return result;
     }

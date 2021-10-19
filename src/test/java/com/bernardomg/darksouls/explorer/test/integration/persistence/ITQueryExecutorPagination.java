@@ -216,9 +216,8 @@ public class ITQueryExecutorPagination {
     private final Item toItem(final Map<String, Object> record) {
         final Item item;
 
-        item = new DefaultItem();
-        item.setName((String) record.getOrDefault("name", ""));
-        item.setDescription((String) record.getOrDefault("description", ""));
+        item = new DefaultItem((String) record.getOrDefault("name", ""),
+                (String) record.getOrDefault("description", ""));
 
         return item;
     }

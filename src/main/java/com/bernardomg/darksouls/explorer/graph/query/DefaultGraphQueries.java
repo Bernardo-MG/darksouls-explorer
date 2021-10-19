@@ -66,10 +66,10 @@ public final class DefaultGraphQueries implements GraphQueries {
     private static final Logger    LOGGER         = LoggerFactory
             .getLogger(DefaultGraphQueries.class);
 
+    private final Neo4jClient      client;
+
     private final Renderer         cypherRenderer = Renderer
             .getDefaultRenderer();
-
-    private final Neo4jClient      client;
 
     private final Processor<Graph> graphProcessor = new GraphProcessor();
 
@@ -222,9 +222,8 @@ public final class DefaultGraphQueries implements GraphQueries {
             LOGGER.debug("No data found");
         } else {
             row = read.get();
-            info = new DefaultInfo();
-            info.setId((Long) row.getOrDefault("id", 0l));
-            info.setName((String) row.getOrDefault("name", ""));
+            info = new DefaultInfo((Long) row.getOrDefault("id", 0l),
+                    (String) row.getOrDefault("name", ""));
 
             description = (String) row.getOrDefault("description", "");
             if (Strings.isNullOrEmpty(description)) {

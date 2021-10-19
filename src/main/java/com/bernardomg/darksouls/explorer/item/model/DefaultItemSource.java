@@ -1,46 +1,28 @@
 
 package com.bernardomg.darksouls.explorer.item.model;
 
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
 public class DefaultItemSource implements ItemSource {
 
+    @NonNull
     private String item;
 
+    @NonNull
     private String relationship;
 
+    @NonNull
     private String source;
 
-    public DefaultItemSource() {
+    public DefaultItemSource(@NonNull final String item,
+            @NonNull final String source, @NonNull final String relationship) {
         super();
-    }
 
-    @Override
-    public String getItem() {
-        return item;
-    }
-
-    @Override
-    public String getRelationship() {
-        return relationship;
-    }
-
-    @Override
-    public String getSource() {
-        return source;
-    }
-
-    @Override
-    public void setItem(final String item) {
         this.item = item;
-    }
-
-    @Override
-    public void setRelationship(final String relationship) {
-        this.relationship = relationship;
-    }
-
-    @Override
-    public void setSource(final String source) {
         this.source = source;
+        this.relationship = relationship;
     }
 
 }

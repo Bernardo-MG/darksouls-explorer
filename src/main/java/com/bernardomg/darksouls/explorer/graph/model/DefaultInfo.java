@@ -1,75 +1,21 @@
 
 package com.bernardomg.darksouls.explorer.graph.model;
 
-import java.util.Objects;
+import java.util.Collections;
 
-import com.google.common.base.MoreObjects;
+import lombok.Data;
+import lombok.NonNull;
 
+@Data
 public final class DefaultInfo implements Info {
 
-    private Iterable<String> description;
+    @NonNull
+    private Iterable<String> description = Collections.emptyList();
 
+    @NonNull
     private Long             id;
 
+    @NonNull
     private String           name;
-
-    public DefaultInfo() {
-        super();
-    }
-
-    @Override
-    public final boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if ((obj == null) || (getClass() != obj.getClass())) {
-            return false;
-        }
-
-        final DefaultInfo other = (DefaultInfo) obj;
-        return Objects.equals(id, other.id);
-    }
-
-    @Override
-    public final Iterable<String> getDescription() {
-        return description;
-    }
-
-    @Override
-    public final Long getId() {
-        return id;
-    }
-
-    @Override
-    public final String getName() {
-        return name;
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public final void setDescription(final Iterable<String> description) {
-        this.description = description;
-    }
-
-    @Override
-    public final void setId(final Long value) {
-        id = value;
-    }
-
-    @Override
-    public final void setName(final String value) {
-        name = value;
-    }
-
-    @Override
-    public final String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("name", name)
-                .add("description", description).toString();
-    }
 
 }

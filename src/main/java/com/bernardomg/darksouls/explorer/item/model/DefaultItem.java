@@ -1,34 +1,24 @@
 
 package com.bernardomg.darksouls.explorer.item.model;
 
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
 public final class DefaultItem implements Item {
 
+    @NonNull
     private String description;
 
+    @NonNull
     private String name;
 
-    public DefaultItem() {
+    public DefaultItem(@NonNull final String name,
+            @NonNull final String description) {
         super();
-    }
 
-    @Override
-    public final String getDescription() {
-        return description;
-    }
-
-    @Override
-    public final String getName() {
-        return name;
-    }
-
-    @Override
-    public final void setDescription(final String description) {
-        this.description = description;
-    }
-
-    @Override
-    public final void setName(final String name) {
         this.name = name;
+        this.description = description;
     }
 
 }

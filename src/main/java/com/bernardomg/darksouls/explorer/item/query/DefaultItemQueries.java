@@ -70,9 +70,8 @@ public final class DefaultItemQueries implements ItemQueries {
     private final Item toItem(final Map<String, Object> record) {
         final Item item;
 
-        item = new DefaultItem();
-        item.setName((String) record.getOrDefault("name", ""));
-        item.setDescription((String) record.getOrDefault("description", ""));
+        item = new DefaultItem((String) record.getOrDefault("name", ""),
+                (String) record.getOrDefault("description", ""));
 
         return item;
     }
@@ -98,10 +97,8 @@ public final class DefaultItemQueries implements ItemQueries {
                 type = "";
         }
 
-        source = new DefaultItemSource();
-        source.setItem((String) record.getOrDefault("item", ""));
-        source.setSource((String) record.getOrDefault("source", ""));
-        source.setRelationship(type);
+        source = new DefaultItemSource((String) record.getOrDefault("item", ""),
+                (String) record.getOrDefault("source", ""), type);
 
         return source;
     }

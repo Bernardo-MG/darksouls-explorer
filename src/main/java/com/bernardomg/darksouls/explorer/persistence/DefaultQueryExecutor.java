@@ -50,9 +50,9 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(DefaultQueryExecutor.class);
 
-    private final Renderer      cypherRenderer;
-
     private final Neo4jClient   client;
+
+    private final Renderer      cypherRenderer;
 
     public DefaultQueryExecutor(final Neo4jClient clnt,
             final Renderer renderer) {

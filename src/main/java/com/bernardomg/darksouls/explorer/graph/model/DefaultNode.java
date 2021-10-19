@@ -1,63 +1,16 @@
 
 package com.bernardomg.darksouls.explorer.graph.model;
 
-import java.util.Objects;
+import lombok.Data;
+import lombok.NonNull;
 
-import com.google.common.base.MoreObjects;
-
+@Data
 public final class DefaultNode implements Node {
 
+    @NonNull
     private Long   id;
 
+    @NonNull
     private String name;
-
-    public DefaultNode() {
-        super();
-    }
-
-    @Override
-    public final boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if ((obj == null) || (getClass() != obj.getClass())) {
-            return false;
-        }
-
-        final DefaultNode other = (DefaultNode) obj;
-        return Objects.equals(id, other.id);
-    }
-
-    @Override
-    public final Long getId() {
-        return id;
-    }
-
-    @Override
-    public final String getName() {
-        return name;
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public final void setId(final Long value) {
-        id = value;
-    }
-
-    @Override
-    public final void setName(final String value) {
-        name = value;
-    }
-
-    @Override
-    public final String toString() {
-        return MoreObjects.toStringHelper(this).add("name", name).add("id", id)
-                .toString();
-    }
 
 }
