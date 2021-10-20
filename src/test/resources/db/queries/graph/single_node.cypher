@@ -1,1 +1,1 @@
-CREATE ({name: 'Source'});
+CREATE ({name: 'Node'});

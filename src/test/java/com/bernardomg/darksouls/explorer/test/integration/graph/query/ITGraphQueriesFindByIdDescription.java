@@ -76,7 +76,8 @@ public class ITGraphQueriesFindByIdDescription {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
                 dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/single_node.cypher"));
+                Arrays.asList(
+                        "classpath:db/queries/graph/single_node_description.cypher"));
     }
 
     @Autowired
@@ -85,7 +86,7 @@ public class ITGraphQueriesFindByIdDescription {
     private final Renderer cypherRenderer = Renderer.getDefaultRenderer();
 
     @Autowired
-    private GraphQueries queries;
+    private GraphQueries   queries;
 
     /**
      * Default constructor.
@@ -115,7 +116,7 @@ public class ITGraphQueriesFindByIdDescription {
         data = queries.findById(id);
 
         Assertions.assertNotNull(data.get().getId());
-        Assertions.assertEquals("Target", data.get().getName());
+        Assertions.assertEquals("Node", data.get().getName());
         Assertions.assertEquals(2,
                 IterableUtils.size(data.get().getDescription()));
 

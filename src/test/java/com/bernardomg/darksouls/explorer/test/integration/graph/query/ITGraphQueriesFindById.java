@@ -113,7 +113,7 @@ public class ITGraphQueriesFindById {
         data = queries.findById(id);
 
         Assertions.assertNotNull(data.get().getId());
-        Assertions.assertEquals("Target", data.get().getName());
+        Assertions.assertEquals("Node", data.get().getName());
         Assertions.assertEquals(0,
                 IterableUtils.size(data.get().getDescription()));
     }
