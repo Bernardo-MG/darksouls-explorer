@@ -16,7 +16,6 @@ Several technologies are combined to make this work:
 
 - [Spring MVC](https://spring.io/)
 - [Neo4j](https://neo4j.com/)
-- [Angular](https://angular.io/)
 
 ## Documentation
 
