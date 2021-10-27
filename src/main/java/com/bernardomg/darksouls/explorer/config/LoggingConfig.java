@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 the original author or authors
+ * Copyright 2021 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -25,7 +25,7 @@ import com.bernardomg.darksouls.explorer.logging.aspect.ServiceLoggingAspect;
 
 /**
  * Logging configuration.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -40,17 +40,17 @@ public class LoggingConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "logging.service", matchIfMissing = false,
-            havingValue = "true")
-    public ServiceLoggingAspect serviceLoggingAspect() {
-        return new ServiceLoggingAspect();
-    }
-
-    @Bean
     @ConditionalOnProperty(name = "logging.controller", matchIfMissing = false,
             havingValue = "true")
     public ControllerLoggingAspect controllerLoggingAspect() {
         return new ControllerLoggingAspect();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "logging.service", matchIfMissing = false,
+            havingValue = "true")
+    public ServiceLoggingAspect serviceLoggingAspect() {
+        return new ServiceLoggingAspect();
     }
 
 }

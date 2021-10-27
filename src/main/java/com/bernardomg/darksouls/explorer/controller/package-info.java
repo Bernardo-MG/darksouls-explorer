@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 the original author or authors
+ * Copyright 2021 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,12 +15,6 @@
  */
 /**
  * Controller classes.
- * <p>
- * These serve as adapters between the view and the rest of the application, and
- * are the C in the MVC architecture.
- * <p>
- * As the view is based on templates, these controllers are tied up to specific
- * views, and usually they will tell the next view to be shown.
  */
 
 package com.bernardomg.darksouls.explorer.controller;

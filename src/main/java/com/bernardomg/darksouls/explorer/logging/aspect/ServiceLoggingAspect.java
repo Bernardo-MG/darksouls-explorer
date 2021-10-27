@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 the original author or authors
+ * Copyright 2021 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Logging aspect for services. Will log arguments and returned values.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  */
 @Aspect
@@ -46,7 +46,7 @@ public class ServiceLoggingAspect {
 
     /**
      * Logs the returned value after the method is called.
-     * 
+     *
      * @param joinPoint
      *            point where the aspect is applied
      * @param returnValue
@@ -61,7 +61,7 @@ public class ServiceLoggingAspect {
 
     /**
      * Logs the received arguments before the method is called.
-     * 
+     *
      * @param joinPoint
      *            point where the aspect is applied
      */

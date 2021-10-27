@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 the original author or authors
+ * Copyright 2021 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,7 +18,7 @@ package com.bernardomg.darksouls.explorer.response;
 
 /**
  * Response to the frontend.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  * @param <T>
@@ -28,14 +28,14 @@ public interface Response<T> {
 
     /**
      * Returns the response content.
-     * 
+     *
      * @return the response content
      */
     public T getContent();
 
     /**
      * Returns the response status.
-     * 
+     *
      * @return the response status
      */
     public ResponseStatus getStatus();

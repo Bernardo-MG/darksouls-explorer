@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 the original author or authors
+ * Copyright 2021 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -21,7 +21,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Application runnable class. This allows Spring Boot to run the application.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -30,7 +30,7 @@ public class Application {
 
     /**
      * Runnable main method.
-     * 
+     *
      * @param args
      *            execution parameters
      */

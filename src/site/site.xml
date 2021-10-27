@@ -33,6 +33,7 @@
       <menu name="General Info" inherit="top">
          <item name="Acquire" href="./acquire.html" />
          <item name="Usage" href="./usage.html" />
+         <item name="Swagger" href="./swagger.html" />
          <item name="Changes Log" href="./changes-report.html" />
          <item name="JavaDocs" href="./apidocs/" />
       </menu>
@@ -58,7 +59,7 @@
          </item>
       </menu>
       <menu name="Icons" inherit="bottom">
-         <item name="Github" img="github" href="${project.scm.url}" />
+         <item name="Github" img="fab fa-github" href="${project.scm.url}" />
       </menu>
    </body>
 
