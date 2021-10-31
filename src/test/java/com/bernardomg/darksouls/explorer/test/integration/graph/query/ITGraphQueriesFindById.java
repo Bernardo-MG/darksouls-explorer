@@ -17,6 +17,8 @@
 package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.collections4.IterableUtils;
@@ -24,9 +26,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Node;
+import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.Statement;
+import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
+import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -70,7 +79,12 @@ public class ITGraphQueriesFindById {
     }
 
     @Autowired
-    private GraphQueries queries;
+    private Neo4jClient    client;
+
+    private final Renderer cypherRenderer = Renderer.getDefaultRenderer();
+
+    @Autowired
+    private GraphQueries   queries;
 
     /**
      * Default constructor.
@@ -107,13 +121,30 @@ public class ITGraphQueriesFindById {
         final Optional<Info> data;
         final Long id;
 
-        id = queries.findAll().getNodes().iterator().next().getId();
+        id = getId();
         data = queries.findById(id);
 
         Assertions.assertNotNull(data.get().getId());
-        Assertions.assertEquals("Target", data.get().getName());
+        Assertions.assertEquals("Node", data.get().getName());
         Assertions.assertEquals(0,
                 IterableUtils.size(data.get().getDescription()));
+    }
+
+    private final Long getId() {
+        final BuildableStatement<ResultStatement> statementBuilder;
+        final Node node;
+        final Statement statement;
+        final String query;
+        final Collection<Map<String, Object>> rows;
+
+        node = Cypher.anyNode().named("n");
+        statementBuilder = Cypher.match(node).returning(node);
+
+        statement = statementBuilder.build();
+        query = cypherRenderer.render(statement);
+        rows = client.query(query).fetch().all();
+
+        return (Long) rows.stream().findFirst().get().getOrDefault("id", 0l);
     }
 
 }
