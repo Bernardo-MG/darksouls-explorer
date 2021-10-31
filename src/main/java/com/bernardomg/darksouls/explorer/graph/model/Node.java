@@ -5,10 +5,10 @@ public interface Node {
 
     public Long getId();
 
-    public String getName();
+    public String getLabel();
 
     public void setId(final Long value);
 
-    public void setName(final String value);
+    public void setLabel(final String value);
 
 }

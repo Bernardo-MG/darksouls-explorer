@@ -9,23 +9,23 @@ public interface Link {
 
     public Map<String, Object> getAttributes();
 
-    public String getSource();
+    public Long getSource();
 
-    public Long getSourceId();
+    public String getSourceLabel();
 
-    public String getTarget();
+    public Long getTarget();
 
-    public Long getTargetId();
+    public String getTargetLabel();
 
     public String getType();
 
-    public void setSource(final String value);
+    public void setSource(final Long value);
 
-    public void setSourceId(final Long value);
+    public void setSourceLabel(final String value);
 
-    public void setTarget(final String value);
+    public void setTarget(final Long value);
 
-    public void setTargetId(final Long value);
+    public void setTargetLabel(final String value);
 
     public void setType(final String type);
 

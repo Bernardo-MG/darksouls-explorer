@@ -11,6 +11,6 @@ public final class DefaultNode implements Node {
     private Long   id;
 
     @NonNull
-    private String name;
+    private String label;
 
 }

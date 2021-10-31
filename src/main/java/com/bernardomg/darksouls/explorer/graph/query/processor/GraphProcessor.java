@@ -70,10 +70,10 @@ public final class GraphProcessor implements Processor<Graph> {
         LOGGER.trace("Mapping row {} to link", row);
 
         result = new DefaultLink();
-        result.setSource((String) row.getOrDefault("source", ""));
-        result.setSourceId((Long) row.getOrDefault("sourceId", 0l));
-        result.setTarget((String) row.getOrDefault("target", ""));
-        result.setTargetId((Long) row.getOrDefault("targetId", 0l));
+        result.setSourceLabel((String) row.getOrDefault("source", ""));
+        result.setSource((Long) row.getOrDefault("sourceId", 0l));
+        result.setTargetLabel((String) row.getOrDefault("target", ""));
+        result.setTarget((Long) row.getOrDefault("targetId", 0l));
         result.setType((String) row.getOrDefault("relationship", ""));
 
         for (final Entry<String, Object> pair : row.entrySet()) {

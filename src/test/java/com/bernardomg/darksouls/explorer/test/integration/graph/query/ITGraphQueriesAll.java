@@ -99,8 +99,8 @@ public class ITGraphQueriesAll {
 
         data = queries.findAll().getLinks().iterator().next();
 
-        Assertions.assertEquals("Source", data.getSource());
-        Assertions.assertEquals("Target", data.getTarget());
+        Assertions.assertEquals("Source", data.getSourceLabel());
+        Assertions.assertEquals("Target", data.getTargetLabel());
         Assertions.assertEquals("RELATIONSHIP", data.getType());
     }
 
@@ -113,10 +113,10 @@ public class ITGraphQueriesAll {
         nodes = queries.findAll().getNodes().iterator();
 
         data = nodes.next();
-        Assertions.assertEquals("Source", data.getName());
+        Assertions.assertEquals("Source", data.getLabel());
 
         data = nodes.next();
-        Assertions.assertEquals("Target", data.getName());
+        Assertions.assertEquals("Target", data.getLabel());
     }
 
     @Test

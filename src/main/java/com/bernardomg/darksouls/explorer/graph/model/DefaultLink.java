@@ -11,22 +11,22 @@ import lombok.NonNull;
 public final class DefaultLink implements Link {
 
     @NonNull
-    private final Map<String, Object> attributes = new HashMap<>();
+    private final Map<String, Object> attributes  = new HashMap<>();
 
     @NonNull
-    private String                    source     = "";
+    private Long                      source      = 0l;
 
     @NonNull
-    private Long                      sourceId   = 0l;
+    private String                    sourceLabel = "";
 
     @NonNull
-    private String                    target     = "";
+    private Long                      target      = 0l;
 
     @NonNull
-    private Long                      targetId   = 0l;
+    private String                    targetLabel = "";
 
     @NonNull
-    private String                    type       = "";
+    private String                    type        = "";
 
     @Override
     public final void addAttribute(final String key, final Object value) {

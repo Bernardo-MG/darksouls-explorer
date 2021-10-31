@@ -16,6 +16,6 @@ public final class DefaultInfo implements Info {
     private Long             id;
 
     @NonNull
-    private String           name;
+    private String           label;
 
 }
