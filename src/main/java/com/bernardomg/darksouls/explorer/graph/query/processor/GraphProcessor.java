@@ -65,33 +65,37 @@ public final class GraphProcessor implements Processor<Graph> {
     }
 
     private final Link toLink(final Map<String, Object> row) {
-        final Link relationship;
+        final Link result;
 
-        LOGGER.debug("Mapping row {} to link", row);
+        LOGGER.trace("Mapping row {} to link", row);
 
-        relationship = new DefaultLink();
-        relationship.setSource((String) row.getOrDefault("source", ""));
-        relationship.setSourceId((Long) row.getOrDefault("sourceId", 0l));
-        relationship.setTarget((String) row.getOrDefault("target", ""));
-        relationship.setTargetId((Long) row.getOrDefault("targetId", 0l));
-        relationship.setType((String) row.getOrDefault("relationship", ""));
+        result = new DefaultLink();
+        result.setSource((String) row.getOrDefault("source", ""));
+        result.setSourceId((Long) row.getOrDefault("sourceId", 0l));
+        result.setTarget((String) row.getOrDefault("target", ""));
+        result.setTargetId((Long) row.getOrDefault("targetId", 0l));
+        result.setType((String) row.getOrDefault("relationship", ""));
 
         for (final Entry<String, Object> pair : row.entrySet()) {
             if (!linkFields.contains(pair.getKey())) {
-                relationship.addAttribute(pair.getKey(), pair.getValue());
+                result.addAttribute(pair.getKey(), pair.getValue());
             }
         }
 
-        return relationship;
+        LOGGER.debug("Mapped row {} to {}", row, result);
+
+        return result;
     }
 
     private final Node toSourceNode(final Map<String, Object> row) {
         final Node result;
 
-        LOGGER.debug("Mapping row {} to source node", row);
+        LOGGER.trace("Mapping row {} to source node", row);
 
         result = new DefaultNode((Long) row.getOrDefault("sourceId", 0l),
                 (String) row.getOrDefault("source", ""));
+
+        LOGGER.debug("Mapped row {} to {}", row, result);
 
         return result;
     }
@@ -99,10 +103,12 @@ public final class GraphProcessor implements Processor<Graph> {
     private final Node toTargetNode(final Map<String, Object> row) {
         final Node result;
 
-        LOGGER.debug("Mapping row {} to target node", row);
+        LOGGER.trace("Mapping row {} to target node", row);
 
         result = new DefaultNode((Long) row.getOrDefault("targetId", 0l),
                 (String) row.getOrDefault("target", ""));
+
+        LOGGER.debug("Mapped row {} to {}", row, result);
 
         return result;
     }
