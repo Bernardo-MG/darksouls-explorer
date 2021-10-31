@@ -18,6 +18,7 @@ package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -33,6 +34,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.model.Link;
+import com.bernardomg.darksouls.explorer.graph.model.Node;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
@@ -103,6 +105,48 @@ public class ITGraphQueriesByLinkType {
         Assertions.assertEquals("Source", data.getSource());
         Assertions.assertEquals("Target", data.getTarget());
         Assertions.assertEquals("RELATIONSHIP", data.getType());
+    }
+
+    @Test
+    @DisplayName("Returns the correct links")
+    public void testFindAllByLinkType_Data_Links() {
+        final Link data;
+
+        data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
+                .getLinks().iterator().next();
+
+        Assertions.assertEquals("Source", data.getSource());
+        Assertions.assertEquals("Target", data.getTarget());
+        Assertions.assertEquals("RELATIONSHIP", data.getType());
+    }
+
+    @Test
+    @DisplayName("Returns the correct nodes")
+    public void testFindAllByLinkType_Data_Nodes() {
+        final Iterator<Node> nodes;
+        Node data;
+
+        nodes = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
+                .getNodes().iterator();
+
+        data = nodes.next();
+        Assertions.assertEquals("Source", data.getName());
+
+        data = nodes.next();
+        Assertions.assertEquals("Target", data.getName());
+    }
+
+    @Test
+    @DisplayName("Returns the correct types")
+    public void testFindAllByLinkType_Data_Types() {
+        final Iterator<String> types;
+        String type;
+
+        types = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
+                .getTypes().iterator();
+
+        type = types.next();
+        Assertions.assertEquals("RELATIONSHIP", type);
     }
 
     @Test

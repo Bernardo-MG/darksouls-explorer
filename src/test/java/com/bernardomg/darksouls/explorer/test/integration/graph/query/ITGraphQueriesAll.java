@@ -17,6 +17,7 @@
 package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +33,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.graph.model.Graph;
 import com.bernardomg.darksouls.explorer.graph.model.Link;
+import com.bernardomg.darksouls.explorer.graph.model.Node;
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
@@ -91,8 +93,8 @@ public class ITGraphQueriesAll {
     }
 
     @Test
-    @DisplayName("Returns the correct data")
-    public void testFindAll_Data() {
+    @DisplayName("Returns the correct links")
+    public void testFindAll_Data_Links() {
         final Link data;
 
         data = queries.findAll().getLinks().iterator().next();
@@ -100,6 +102,33 @@ public class ITGraphQueriesAll {
         Assertions.assertEquals("Source", data.getSource());
         Assertions.assertEquals("Target", data.getTarget());
         Assertions.assertEquals("RELATIONSHIP", data.getType());
+    }
+
+    @Test
+    @DisplayName("Returns the correct nodes")
+    public void testFindAll_Data_Nodes() {
+        final Iterator<Node> nodes;
+        Node data;
+
+        nodes = queries.findAll().getNodes().iterator();
+
+        data = nodes.next();
+        Assertions.assertEquals("Source", data.getName());
+
+        data = nodes.next();
+        Assertions.assertEquals("Target", data.getName());
+    }
+
+    @Test
+    @DisplayName("Returns the correct types")
+    public void testFindAll_Data_Types() {
+        final Iterator<String> types;
+        String type;
+
+        types = queries.findAll().getTypes().iterator();
+
+        type = types.next();
+        Assertions.assertEquals("RELATIONSHIP", type);
     }
 
 }

@@ -17,6 +17,9 @@
 package com.bernardomg.darksouls.explorer.test.integration.graph.query;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -91,11 +94,15 @@ public class ITGraphQueriesAllLinksMultiple {
     @Test
     @DisplayName("Returns the correct data")
     public void testFindAll_Data() {
-        final Iterable<String> data;
+        final Iterable<String> read;
+        final Collection<String> types;
 
-        data = queries.findAllLinks();
+        read = queries.findAll().getTypes();
+        types = StreamSupport.stream(read.spliterator(), false)
+                .collect(Collectors.toList());
 
-        Assertions.assertEquals("RELATIONSHIP", data.iterator().next());
+        Assertions.assertTrue(types.contains("RELATIONSHIP"));
+        Assertions.assertTrue(types.contains("RELATIONSHIP2"));
     }
 
 }
