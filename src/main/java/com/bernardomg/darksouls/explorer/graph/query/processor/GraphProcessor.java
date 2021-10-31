@@ -10,6 +10,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bernardomg.darksouls.explorer.graph.model.DefaultGraph;
 import com.bernardomg.darksouls.explorer.graph.model.DefaultLink;
 import com.bernardomg.darksouls.explorer.graph.model.DefaultNode;
@@ -19,7 +22,13 @@ import com.bernardomg.darksouls.explorer.graph.model.Node;
 
 public final class GraphProcessor implements Processor<Graph> {
 
-    private final List<String> linkFields = Arrays.asList("source", "sourceId",
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER     = LoggerFactory
+            .getLogger(GraphProcessor.class);
+
+    private final List<String>  linkFields = Arrays.asList("source", "sourceId",
             "target", "targetId", "relationship");
 
     public GraphProcessor() {
@@ -38,9 +47,9 @@ public final class GraphProcessor implements Processor<Graph> {
         // TODO: Build only if they are requested
 
         nodes = new HashSet<>();
-        nodes.addAll(links.stream().map(this::toSourceNode)
+        nodes.addAll(rows.stream().map(this::toSourceNode)
                 .collect(Collectors.toList()));
-        nodes.addAll(links.stream().map(this::toTargetNode)
+        nodes.addAll(rows.stream().map(this::toTargetNode)
                 .collect(Collectors.toList()));
 
         resultTypes = new HashSet<>();
@@ -58,6 +67,8 @@ public final class GraphProcessor implements Processor<Graph> {
     private final Link toLink(final Map<String, Object> row) {
         final Link relationship;
 
+        LOGGER.debug("Mapping row {} to link", row);
+
         relationship = new DefaultLink();
         relationship.setSource((String) row.getOrDefault("source", ""));
         relationship.setSourceId((Long) row.getOrDefault("sourceId", 0l));
@@ -74,18 +85,24 @@ public final class GraphProcessor implements Processor<Graph> {
         return relationship;
     }
 
-    private final Node toSourceNode(final Link link) {
+    private final Node toSourceNode(final Map<String, Object> row) {
         final Node result;
 
-        result = new DefaultNode(link.getSourceId(), link.getSource());
+        LOGGER.debug("Mapping row {} to source node", row);
+
+        result = new DefaultNode((Long) row.getOrDefault("sourceId", 0l),
+                (String) row.getOrDefault("source", ""));
 
         return result;
     }
 
-    private final Node toTargetNode(final Link link) {
+    private final Node toTargetNode(final Map<String, Object> row) {
         final Node result;
 
-        result = new DefaultNode(link.getTargetId(), link.getTarget());
+        LOGGER.debug("Mapping row {} to target node", row);
+
+        result = new DefaultNode((Long) row.getOrDefault("targetId", 0l),
+                (String) row.getOrDefault("target", ""));
 
         return result;
     }
