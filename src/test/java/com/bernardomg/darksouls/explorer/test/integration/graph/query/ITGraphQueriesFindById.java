@@ -99,7 +99,7 @@ public class ITGraphQueriesFindById {
         final Optional<Info> data;
         final Long id;
 
-        id = queries.findAll().getNodes().iterator().next().getId();
+        id = getId();
         data = queries.findById(id);
 
         Assertions.assertTrue(data.isPresent());
