@@ -12,6 +12,7 @@ import org.neo4j.cypherdsl.core.Relationship;
 import org.neo4j.cypherdsl.core.ResultStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
@@ -29,6 +30,7 @@ public final class DefaultItemQueries implements ItemQueries {
 
     private final QueryExecutor queryExecutor;
 
+    @Autowired
     public DefaultItemQueries(final Neo4jClient clnt) {
         super();
 
