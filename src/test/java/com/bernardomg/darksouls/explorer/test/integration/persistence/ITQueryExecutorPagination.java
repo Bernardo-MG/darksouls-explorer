@@ -203,12 +203,13 @@ public class ITQueryExecutorPagination {
     }
 
     private final Item toItem(final Map<String, Object> record) {
-        final Item item;
+        final Iterable<String> description;
 
-        item = new DefaultItem((String) record.getOrDefault("name", ""),
-                (String) record.getOrDefault("description", ""));
+        description = Arrays.asList(
+                ((String) record.getOrDefault("description", "")).split("\\|"));
 
-        return item;
+        return new DefaultItem((String) record.getOrDefault("name", ""),
+                description);
     }
 
 }

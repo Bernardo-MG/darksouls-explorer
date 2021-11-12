@@ -8,13 +8,13 @@ import lombok.NonNull;
 public final class DefaultItem implements Item {
 
     @NonNull
-    private String description;
+    private Iterable<String> description;
 
     @NonNull
-    private String name;
+    private String           name;
 
     public DefaultItem(@NonNull final String name,
-            @NonNull final String description) {
+            @NonNull final Iterable<String> description) {
         super();
 
         this.name = name;

@@ -1,6 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.item.query;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
@@ -68,16 +69,16 @@ public final class DefaultItemQueries implements ItemQueries {
     }
 
     private final Item toItem(final Map<String, Object> record) {
-        final Item item;
+        final Iterable<String> description;
 
-        item = new DefaultItem((String) record.getOrDefault("name", ""),
-                (String) record.getOrDefault("description", ""));
+        description = Arrays.asList(
+                ((String) record.getOrDefault("description", "")).split("\\|"));
 
-        return item;
+        return new DefaultItem((String) record.getOrDefault("name", ""),
+                description);
     }
 
     private final ItemSource toItemSource(final Map<String, Object> record) {
-        final ItemSource source;
         final String type;
 
         switch ((String) record.getOrDefault("relationship", "")) {
@@ -97,10 +98,8 @@ public final class DefaultItemQueries implements ItemQueries {
                 type = "";
         }
 
-        source = new DefaultItemSource((String) record.getOrDefault("item", ""),
+        return new DefaultItemSource((String) record.getOrDefault("item", ""),
                 (String) record.getOrDefault("source", ""), type);
-
-        return source;
     }
 
 }
