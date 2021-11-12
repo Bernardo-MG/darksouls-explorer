@@ -52,7 +52,8 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     }
 
     private final DataProblem toProblem(final Map<String, Object> record) {
-        return new DefaultDataProblem((String) record.getOrDefault("id", ""));
+        return new DefaultDataProblem((String) record.getOrDefault("id", ""),
+                "item", "no_description");
     }
 
 }
