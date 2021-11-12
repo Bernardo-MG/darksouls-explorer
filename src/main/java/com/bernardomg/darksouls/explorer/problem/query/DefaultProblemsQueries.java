@@ -45,8 +45,9 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
         name = item.property("name").as("id");
         description = item.property("description");
 
-        statementBuilder = Cypher.match(item)
-                .where(description.eq(Cypher.literalOf(""))).returning(name);
+        statementBuilder = Cypher.match(item).where(
+                description.eq(Cypher.literalOf("")).or(description.isNull()))
+                .returning(name);
 
         return queryExecutor.fetch(statementBuilder, this::toProblem, page);
     }

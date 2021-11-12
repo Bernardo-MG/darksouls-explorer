@@ -8,6 +8,6 @@ import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 
 public interface ProblemService {
 
-    public Page<DataProblem> findProblems(final Pageable page);
+    public Page<DataProblem> getAll(final Pageable page);
 
 }

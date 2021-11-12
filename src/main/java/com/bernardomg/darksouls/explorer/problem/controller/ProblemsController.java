@@ -25,7 +25,7 @@ public class ProblemsController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<DataProblem> read(final Pageable page) {
-        return service.findProblems(page);
+        return service.getAll(page);
     }
 
 }

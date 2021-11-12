@@ -1,0 +1,1 @@
+CREATE (i:Item {name: 'Item', description: ''});
