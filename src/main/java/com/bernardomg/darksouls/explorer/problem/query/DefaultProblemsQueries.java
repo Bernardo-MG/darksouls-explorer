@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.problems.query;
+package com.bernardomg.darksouls.explorer.problem.query;
 
 import java.util.Map;
 
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
-import com.bernardomg.darksouls.explorer.problems.model.DataProblem;
-import com.bernardomg.darksouls.explorer.problems.model.DefaultDataProblem;
+import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
+import com.bernardomg.darksouls.explorer.problem.model.DefaultDataProblem;
 
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {

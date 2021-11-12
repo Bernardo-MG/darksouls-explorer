@@ -1,13 +1,13 @@
 
-package com.bernardomg.darksouls.explorer.problems.service;
+package com.bernardomg.darksouls.explorer.problem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.problems.model.DataProblem;
-import com.bernardomg.darksouls.explorer.problems.query.ProblemsQueries;
+import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
+import com.bernardomg.darksouls.explorer.problem.query.ProblemsQueries;
 
 @Service
 public final class DefaultProblemService implements ProblemService {

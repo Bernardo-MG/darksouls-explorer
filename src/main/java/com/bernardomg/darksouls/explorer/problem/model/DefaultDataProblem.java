@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.problems.model;
+package com.bernardomg.darksouls.explorer.problem.model;
 
 import lombok.Data;
 import lombok.NonNull;

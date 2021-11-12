@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.problems.controller;
+package com.bernardomg.darksouls.explorer.problem.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.problems.model.DataProblem;
-import com.bernardomg.darksouls.explorer.problems.service.ProblemService;
+import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
+import com.bernardomg.darksouls.explorer.problem.service.ProblemService;
 
 @RestController
 @RequestMapping("/problems")
