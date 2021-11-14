@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.Property;
 import org.neo4j.cypherdsl.core.ResultStatement;
@@ -36,20 +37,39 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
     @Override
     public final Page<DataProblem> findAll(final Pageable page) {
+        final BuildableStatement<ResultStatement> noDescStatementBuilder;
+
+        noDescStatementBuilder = getNoDescriptionItems();
+
+        return queryExecutor.fetch(noDescStatementBuilder, this::toProblem,
+                page);
+    }
+
+    private final BuildableStatement<ResultStatement> getNoDescriptionItems() {
         final Node item;
         final AliasedExpression name;
         final Property description;
-        final BuildableStatement<ResultStatement> statementBuilder;
 
         item = Cypher.node("Item").named("i");
         name = item.property("name").as("id");
         description = item.property("description");
 
-        statementBuilder = Cypher.match(item).where(
+        return Cypher.match(item).where(
                 description.eq(Cypher.literalOf("")).or(description.isNull()))
                 .returning(name);
+    }
 
-        return queryExecutor.fetch(statementBuilder, this::toProblem, page);
+    private final BuildableStatement<ResultStatement> getDuplicatedItems() {
+        final Node item;
+        final AliasedExpression name;
+        final AliasedExpression count;
+
+        item = Cypher.node("Item").named("i");
+        name = item.property("name").as("id");
+        count = Functions.count(item).as("count");
+
+        return Cypher.match(item).with(name, count)
+                .where(count.gt(Cypher.literalOf(1))).returning(name);
     }
 
     private final DataProblem toProblem(final Map<String, Object> record) {
