@@ -8,6 +8,6 @@ import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 
 public interface ProblemsQueries {
 
-    public Page<DataProblem> findAll(final Pageable page);
+    public Page<DataProblem> findItemsWithoutDescription(final Pageable page);
 
 }

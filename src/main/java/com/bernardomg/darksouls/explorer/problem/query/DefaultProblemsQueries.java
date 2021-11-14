@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.problem.query;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
@@ -36,13 +37,15 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     }
 
     @Override
-    public final Page<DataProblem> findAll(final Pageable page) {
+    public final Page<DataProblem> findItemsWithoutDescription(final Pageable page) {
         final BuildableStatement<ResultStatement> noDescStatementBuilder;
+        final Function<Map<String, Object>, DataProblem> mapper;
 
         noDescStatementBuilder = getNoDescriptionItems();
 
-        return queryExecutor.fetch(noDescStatementBuilder, this::toProblem,
-                page);
+        mapper = (record) -> toProblem("no_description", record);
+
+        return queryExecutor.fetch(noDescStatementBuilder, mapper, page);
     }
 
     private final BuildableStatement<ResultStatement> getNoDescriptionItems() {
@@ -72,7 +75,8 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
                 .where(count.gt(Cypher.literalOf(1))).returning(name);
     }
 
-    private final DataProblem toProblem(final Map<String, Object> record) {
+    private final DataProblem toProblem(final String error,
+            final Map<String, Object> record) {
         return new DefaultDataProblem((String) record.getOrDefault("id", ""),
                 "item", "no_description");
     }
