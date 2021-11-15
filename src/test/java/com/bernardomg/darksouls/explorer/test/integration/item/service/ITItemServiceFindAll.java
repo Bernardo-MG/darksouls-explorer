@@ -97,7 +97,8 @@ public class ITItemServiceFindAll {
         data = service.getAll(Pageable.unpaged()).iterator().next();
 
         Assertions.assertEquals("Item", data.getName());
-        Assertions.assertEquals("Description", data.getDescription());
+        Assertions.assertEquals(Arrays.asList("Description"),
+                data.getDescription());
     }
 
 }
