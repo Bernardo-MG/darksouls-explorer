@@ -11,9 +11,7 @@ import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.Property;
 import org.neo4j.cypherdsl.core.ResultStatement;
-import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
-import org.neo4j.cypherdsl.parser.CypherParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -120,16 +118,11 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
     @Override
     public final Page<DataProblem> findAll(final Pageable page) {
-        final Statement query;
         final Function<Map<String, Object>, DataProblem> mapper;
-
-        query = CypherParser.parseStatement("MATCH (p:Problem) RETURN p");
-        CypherParser.parseExpression("MATCH (p:Problem) RETURN p");
 
         mapper = this::toProblem;
 
-        // return queryExecutor.fetch(query, mapper, page);
-        return null;
+        return queryExecutor.fetch("MATCH (p:Problem) RETURN p", mapper, page);
     }
 
     private final DataProblem toProblem(final Map<String, Object> record) {

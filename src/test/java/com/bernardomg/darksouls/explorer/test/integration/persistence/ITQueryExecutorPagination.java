@@ -92,8 +92,94 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Returns all the data when not paginated")
-    public void testFetch_NoPagination() {
+    @DisplayName("Returns all the data when not paginated through a query")
+    public void testFetch_Query_NoPagination() {
+        final Page<Item> data;
+        final Pageable page;
+
+        page = Pageable.unpaged();
+
+        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+
+        Assertions.assertEquals(5, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(1, data.getTotalPages());
+        Assertions.assertEquals(0, data.getNumber());
+    }
+
+    @Test
+    @DisplayName("Sorts in ascending order through a query")
+    public void testFetch_Query_Order_Ascending() {
+        final Iterator<Item> data;
+        final Pageable page;
+
+        page = PageRequest.of(0, 5, Direction.ASC, "name");
+
+        data = queryExecutor.fetch(getQuery(), this::toItem, page).iterator();
+
+        Assertions.assertEquals("Item1", data.next().getName());
+        Assertions.assertEquals("Item2", data.next().getName());
+        Assertions.assertEquals("Item3", data.next().getName());
+        Assertions.assertEquals("Item4", data.next().getName());
+        Assertions.assertEquals("Item5", data.next().getName());
+    }
+
+    @Test
+    @DisplayName("Sorts in descending order through a query")
+    public void testFetch_Query_Order_Descending() {
+        final Iterator<Item> data;
+        final Pageable page;
+
+        page = PageRequest.of(0, 5, Direction.DESC, "name");
+
+        data = queryExecutor.fetch(getQuery(), this::toItem, page).iterator();
+
+        Assertions.assertEquals("Item5", data.next().getName());
+        Assertions.assertEquals("Item4", data.next().getName());
+        Assertions.assertEquals("Item3", data.next().getName());
+        Assertions.assertEquals("Item2", data.next().getName());
+        Assertions.assertEquals("Item1", data.next().getName());
+    }
+
+    @Test
+    @DisplayName("Reads first page through a query")
+    public void testFetch_Query_Pagination_FirstPage() {
+        final Page<Item> data;
+        final Pageable page;
+
+        page = PageRequest.of(0, 1, Direction.ASC, "name");
+
+        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+
+        Assertions.assertEquals(1, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(5, data.getTotalPages());
+        Assertions.assertEquals(0, data.getNumber());
+
+        Assertions.assertEquals("Item1", data.iterator().next().getName());
+    }
+
+    @Test
+    @DisplayName("Reads second page through a query")
+    public void testFetch_Query_Pagination_SecondPage() {
+        final Page<Item> data;
+        final Pageable page;
+
+        page = PageRequest.of(1, 1, Direction.ASC, "name");
+
+        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+
+        Assertions.assertEquals(1, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(5, data.getTotalPages());
+        Assertions.assertEquals(1, data.getNumber());
+
+        Assertions.assertEquals("Item2", data.iterator().next().getName());
+    }
+
+    @Test
+    @DisplayName("Returns all the data when not paginated through an statement")
+    public void testFetch_Statement_NoPagination() {
         final Page<Item> data;
         final Pageable page;
         final BuildableStatement<ResultStatement> statementBuilder;
@@ -111,8 +197,8 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Sorts in ascending order")
-    public void testFetch_Order_Ascending() {
+    @DisplayName("Sorts in ascending order through an statement")
+    public void testFetch_Statement_Order_Ascending() {
         final Iterator<Item> data;
         final Pageable page;
         final BuildableStatement<ResultStatement> statementBuilder;
@@ -132,8 +218,8 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Sorts in descending order")
-    public void testFetch_Order_Descending() {
+    @DisplayName("Sorts in descending order through an statement")
+    public void testFetch_Statement_Order_Descending() {
         final Iterator<Item> data;
         final Pageable page;
         final BuildableStatement<ResultStatement> statementBuilder;
@@ -153,8 +239,8 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Reads first page")
-    public void testFetch_Pagination_FirstPage() {
+    @DisplayName("Reads first page through an statement")
+    public void testFetch_Statement_Pagination_FirstPage() {
         final Page<Item> data;
         final Pageable page;
         final BuildableStatement<ResultStatement> statementBuilder;
@@ -169,11 +255,13 @@ public class ITQueryExecutorPagination {
         Assertions.assertEquals(5, data.getTotalElements());
         Assertions.assertEquals(5, data.getTotalPages());
         Assertions.assertEquals(0, data.getNumber());
+
+        Assertions.assertEquals("Item1", data.iterator().next().getName());
     }
 
     @Test
-    @DisplayName("Reads second page")
-    public void testFetch_Pagination_SecondPage() {
+    @DisplayName("Reads second page through an statement")
+    public void testFetch_Statement_Pagination_SecondPage() {
         final Page<Item> data;
         final Pageable page;
         final BuildableStatement<ResultStatement> statementBuilder;
@@ -188,6 +276,12 @@ public class ITQueryExecutorPagination {
         Assertions.assertEquals(5, data.getTotalElements());
         Assertions.assertEquals(5, data.getTotalPages());
         Assertions.assertEquals(1, data.getNumber());
+
+        Assertions.assertEquals("Item2", data.iterator().next().getName());
+    }
+
+    private final String getQuery() {
+        return "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
     }
 
     private final BuildableStatement<ResultStatement> getStatementBuilder() {

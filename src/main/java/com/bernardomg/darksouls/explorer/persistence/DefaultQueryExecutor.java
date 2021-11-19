@@ -19,6 +19,7 @@ package com.bernardomg.darksouls.explorer.persistence;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,7 @@ import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesOrderBy;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesSkip;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalOngoingOrderDefinition;
 import org.neo4j.cypherdsl.core.SymbolicName;
+import org.neo4j.cypherdsl.parser.CypherParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -104,6 +106,51 @@ public final class DefaultQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         read = client.query(query).fetch().all();
+        data = read.stream().map(mapper).collect(Collectors.toList());
+
+        return PageableExecutionUtils.getPage(data, page,
+                () -> count(baseStatement));
+    }
+
+    private final String getOrder(final Order order) {
+        return String.format(" %s %s ", order.getProperty(),
+                order.getDirection());
+    }
+
+    @Override
+    public final <T> Page<T> fetch(final String query,
+            final Function<Map<String, Object>, T> mapper,
+            final Pageable page) {
+        final List<T> data;
+        final Collection<Map<String, Object>> read;
+        final Statement baseStatement;
+        final Optional<String> sort;
+        String finalQuery;
+
+        baseStatement = CypherParser.parseStatement(query);
+
+        finalQuery = query;
+
+        // Sort
+        if (page.getSort().isSorted()) {
+            sort = page.getSort().stream().map(this::getOrder)
+                    .reduce((a, b) -> a + ", " + b);
+            if (sort.isPresent()) {
+                finalQuery += " ORDER BY " + sort.get();
+            }
+        }
+
+        // Pagination
+        if (page.isPaged()) {
+            finalQuery += String.format(" SKIP %d",
+                    page.getPageNumber() * page.getPageSize());
+            finalQuery += String.format(" LIMIT %d", page.getPageSize());
+        }
+
+        LOGGER.debug("Query: {}", query);
+
+        // Data is fetched and mapped
+        read = client.query(finalQuery).fetch().all();
         data = read.stream().map(mapper).collect(Collectors.toList());
 
         return PageableExecutionUtils.getPage(data, page,
