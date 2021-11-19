@@ -26,9 +26,9 @@ import com.bernardomg.darksouls.explorer.problem.model.DefaultDataProblem;
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {
 
-    private final QueryExecutor queryExecutor;
-
     private final Neo4jClient   client;
+
+    private final QueryExecutor queryExecutor;
 
     @Autowired
     public DefaultProblemsQueries(final Neo4jClient clnt) {
@@ -44,7 +44,16 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     }
 
     @Override
-    public final Page<DataProblem> findDuplicatedItems(Pageable page) {
+    public final Page<DataProblem> findAll(final Pageable page) {
+        final Function<Map<String, Object>, DataProblem> mapper;
+
+        mapper = this::toProblem;
+
+        return queryExecutor.fetch("MATCH (p:Problem) RETURN p", mapper, page);
+    }
+
+    @Override
+    public final Page<DataProblem> findDuplicatedItems(final Pageable page) {
         final BuildableStatement<ResultStatement> noDescStatementBuilder;
         final Function<Map<String, Object>, DataProblem> mapper;
 
@@ -110,25 +119,16 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
                 .returning(name);
     }
 
-    private final DataProblem toProblem(final String error,
-            final Map<String, Object> record) {
-        return new DefaultDataProblem((String) record.getOrDefault("id", ""),
-                "item", error);
-    }
-
-    @Override
-    public final Page<DataProblem> findAll(final Pageable page) {
-        final Function<Map<String, Object>, DataProblem> mapper;
-
-        mapper = this::toProblem;
-
-        return queryExecutor.fetch("MATCH (p:Problem) RETURN p", mapper, page);
-    }
-
     private final DataProblem toProblem(final Map<String, Object> record) {
         return new DefaultDataProblem((String) record.getOrDefault("id", ""),
                 (String) record.getOrDefault("source", ""),
                 (String) record.getOrDefault("problem", ""));
+    }
+
+    private final DataProblem toProblem(final String error,
+            final Map<String, Object> record) {
+        return new DefaultDataProblem((String) record.getOrDefault("id", ""),
+                "item", error);
     }
 
 }

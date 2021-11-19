@@ -11,13 +11,13 @@ public class DefaultDataProblem implements DataProblem {
     private String id;
 
     @NonNull
-    private String source;
-
-    @NonNull
     private String problem;
 
-    public DefaultDataProblem(@NonNull String id, @NonNull String source,
-            @NonNull String problem) {
+    @NonNull
+    private String source;
+
+    public DefaultDataProblem(@NonNull final String id,
+            @NonNull final String source, @NonNull final String problem) {
         super();
 
         this.id = id;

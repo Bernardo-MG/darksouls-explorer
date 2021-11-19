@@ -112,11 +112,6 @@ public final class DefaultQueryExecutor implements QueryExecutor {
                 () -> count(baseStatement));
     }
 
-    private final String getOrder(final Order order) {
-        return String.format(" %s %s ", order.getProperty(),
-                order.getDirection());
-    }
-
     @Override
     public final <T> Page<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper,
@@ -177,6 +172,11 @@ public final class DefaultQueryExecutor implements QueryExecutor {
                 .yield(name).returning(Functions.count(name));
 
         return call.build().getCypher();
+    }
+
+    private final String getOrder(final Order order) {
+        return String.format(" %s %s ", order.getProperty(),
+                order.getDirection());
     }
 
 }
