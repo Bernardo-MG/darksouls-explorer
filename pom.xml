@@ -230,50 +230,50 @@
 	<!-- *************** DEPENDENCIES ***************** -->
 	<!-- ********************************************** -->
 
-   <dependencyManagement>
-      <dependencies>
-         <dependency>
-            <!-- Spring Framework BOM -->
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-framework-bom</artifactId>
-            <version>${spring.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <!-- Spring Data BOM -->
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-bom</artifactId>
-            <version>${spring.data.train.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <!-- Jackson BOM -->
-            <groupId>com.fasterxml.jackson</groupId>
-            <artifactId>jackson-bom</artifactId>
-            <version>${jackson.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <!-- JUnit BOM -->
-            <groupId>org.junit</groupId>
-            <artifactId>junit-bom</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <!-- Testcontainers BOM -->
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers-bom</artifactId>
-            <version>${testcontainers.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-      </dependencies>
-   </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<!-- Spring Framework BOM -->
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${spring.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- Spring Data BOM -->
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-bom</artifactId>
+				<version>${spring.data.train.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- Jackson BOM -->
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- JUnit BOM -->
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit.jupiter.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- Testcontainers BOM -->
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<!-- ============================================== -->
@@ -382,8 +382,15 @@
 		<!-- ================== NEO4J ===================== -->
 		<!-- ============================================== -->
 		<dependency>
+			<!-- Cypher DSL -->
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-cypher-dsl</artifactId>
+			<version>${neo4j.dsl.version}</version>
+		</dependency>
+		<dependency>
+			<!-- Cypher DSL Parser -->
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-cypher-dsl-parser</artifactId>
 			<version>${neo4j.dsl.version}</version>
 		</dependency>
 		<!-- ============================================== -->

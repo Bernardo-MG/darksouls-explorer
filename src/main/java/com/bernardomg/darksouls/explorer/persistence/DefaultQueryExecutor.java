@@ -33,7 +33,6 @@ import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesOrderBy;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesSkip;
 import org.neo4j.cypherdsl.core.StatementBuilder.TerminalOngoingOrderDefinition;
 import org.neo4j.cypherdsl.core.SymbolicName;
-import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -52,14 +51,10 @@ public final class DefaultQueryExecutor implements QueryExecutor {
 
     private final Neo4jClient   client;
 
-    private final Renderer      cypherRenderer;
-
-    public DefaultQueryExecutor(final Neo4jClient clnt,
-            final Renderer renderer) {
+    public DefaultQueryExecutor(final Neo4jClient clnt) {
         super();
 
         client = clnt;
-        cypherRenderer = renderer;
     }
 
     @Override
@@ -69,7 +64,6 @@ public final class DefaultQueryExecutor implements QueryExecutor {
             final Pageable page) {
         final String query;
         final List<T> data;
-        final ResultStatement statement;
         final Collection<Map<String, Object>> read;
         final Statement baseStatement;
         TerminalOngoingOrderDefinition orderExpression;
@@ -104,8 +98,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
             }
         }
 
-        statement = statementBuilder.build();
-        query = cypherRenderer.render(statement);
+        query = statementBuilder.build().getCypher();
 
         LOGGER.debug("Query: {}", query);
 
@@ -120,25 +113,23 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     private final Long count(final Statement statement) {
         final String countQuery;
 
-        countQuery = getCountQuery(statement);
+        countQuery = getCountQuery(statement.getCypher());
 
         LOGGER.debug("Count: {}", countQuery);
 
         return client.query(countQuery).fetchAs(Long.class).first().get();
     }
 
-    private final String getCountQuery(final Statement statement) {
-        final String countSubquery;
+    private final String getCountQuery(final String subquery) {
         final SymbolicName name;
         final OngoingReadingAndReturn call;
 
-        countSubquery = cypherRenderer.render(statement);
         name = Cypher.name("value");
         call = Cypher.call("apoc.cypher.run")
-                .withArgs(Cypher.literalOf(countSubquery), Cypher.mapOf())
+                .withArgs(Cypher.literalOf(subquery), Cypher.mapOf())
                 .yield(name).returning(Functions.count(name));
 
-        return cypherRenderer.render(call.build());
+        return call.build().getCypher();
     }
 
 }

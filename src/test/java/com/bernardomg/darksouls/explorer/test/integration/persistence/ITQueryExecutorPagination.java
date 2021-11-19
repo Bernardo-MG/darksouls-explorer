@@ -29,7 +29,6 @@ import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.ResultStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
-import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -89,8 +88,7 @@ public class ITQueryExecutorPagination {
     public ITQueryExecutorPagination(final Neo4jClient clnt) {
         super();
 
-        queryExecutor = new DefaultQueryExecutor(clnt,
-                Renderer.getDefaultRenderer());
+        queryExecutor = new DefaultQueryExecutor(clnt);
     }
 
     @Test

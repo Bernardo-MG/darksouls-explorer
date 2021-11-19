@@ -8,8 +8,14 @@ import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 
 public interface ProblemsQueries {
 
+    public void deleteAll();
+
     public Page<DataProblem> findDuplicatedItems(final Pageable page);
 
     public Page<DataProblem> findItemsWithoutDescription(final Pageable page);
+
+    public void save(final Iterable<DataProblem> data);
+
+    public Page<DataProblem> findAll(final Pageable page);
 
 }

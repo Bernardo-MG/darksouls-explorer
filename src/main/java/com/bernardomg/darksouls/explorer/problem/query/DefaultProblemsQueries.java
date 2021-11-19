@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.problem.query;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.neo4j.cypherdsl.core.AliasedExpression;
@@ -10,8 +11,9 @@ import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.Property;
 import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
-import org.neo4j.cypherdsl.core.renderer.Renderer;
+import org.neo4j.cypherdsl.parser.CypherParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,12 +30,19 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
     private final QueryExecutor queryExecutor;
 
+    private final Neo4jClient   client;
+
     @Autowired
     public DefaultProblemsQueries(final Neo4jClient clnt) {
         super();
 
-        queryExecutor = new DefaultQueryExecutor(clnt,
-                Renderer.getDefaultRenderer());
+        client = Objects.requireNonNull(clnt);
+        queryExecutor = new DefaultQueryExecutor(clnt);
+    }
+
+    @Override
+    public final void deleteAll() {
+        client.query("MATCH (p:Problem) DELETE p").run();
     }
 
     @Override
@@ -59,6 +68,21 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
         mapper = (record) -> toProblem("no_description", record);
 
         return queryExecutor.fetch(noDescStatementBuilder, mapper, page);
+    }
+
+    @Override
+    public final void save(final Iterable<DataProblem> data) {
+        final Node p = Cypher.node("Problem").named("p");
+
+        for (final DataProblem problem : data) {
+            Cypher.merge(p).onCreate()
+                    .set(p.property("id").to(Cypher.literalOf(problem.getId())))
+                    .set(p.property("problem")
+                            .to(Cypher.literalOf(problem.getProblem())))
+                    .set(p.property("source")
+                            .to(Cypher.literalOf(problem.getSource())))
+                    .build();
+        }
     }
 
     private final BuildableStatement<ResultStatement> getDuplicatedItems() {
@@ -92,6 +116,26 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
             final Map<String, Object> record) {
         return new DefaultDataProblem((String) record.getOrDefault("id", ""),
                 "item", error);
+    }
+
+    @Override
+    public final Page<DataProblem> findAll(final Pageable page) {
+        final Statement query;
+        final Function<Map<String, Object>, DataProblem> mapper;
+
+        query = CypherParser.parseStatement("MATCH (p:Problem) RETURN p");
+        CypherParser.parseExpression("MATCH (p:Problem) RETURN p");
+
+        mapper = this::toProblem;
+
+        // return queryExecutor.fetch(query, mapper, page);
+        return null;
+    }
+
+    private final DataProblem toProblem(final Map<String, Object> record) {
+        return new DefaultDataProblem((String) record.getOrDefault("id", ""),
+                (String) record.getOrDefault("source", ""),
+                (String) record.getOrDefault("problem", ""));
     }
 
 }
