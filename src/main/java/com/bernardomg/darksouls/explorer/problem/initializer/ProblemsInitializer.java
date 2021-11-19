@@ -3,6 +3,7 @@ package com.bernardomg.darksouls.explorer.problem.initializer;
 
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ public final class ProblemsInitializer
 
     private final ProblemsQueries queries;
 
+    @Autowired
     public ProblemsInitializer(final ProblemsQueries qrs) {
         super();
 
