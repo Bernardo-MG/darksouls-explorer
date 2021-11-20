@@ -98,7 +98,7 @@ public class ITItemServiceFindAllSources {
 
         data = service.getAllSources(Pageable.unpaged()).iterator().next();
 
-        Assertions.assertEquals("Item", data.getItem());
+        Assertions.assertEquals("Item name", data.getItem());
         Assertions.assertEquals("Merchant", data.getSource());
         Assertions.assertEquals("sold", data.getRelationship());
     }

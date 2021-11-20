@@ -42,8 +42,8 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
  * Integration tests for the {@link GraphQueries}.
  */
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITProblemsQueriesMissingFieldNoField.Initializer.class })
+@ContextConfiguration(initializers = {
+        ITProblemsQueriesMissingFieldNoField.Initializer.class })
 @DisplayName("Query for items without description using item with no description")
 public class ITProblemsQueriesMissingFieldNoField {
 
@@ -98,8 +98,8 @@ public class ITProblemsQueriesMissingFieldNoField {
         data = queries.findMissingField("Item", "description").iterator()
                 .next();
 
-        Assertions.assertEquals("Item", data.getId());
-        Assertions.assertEquals("item", data.getSource());
+        Assertions.assertEquals("Item name", data.getId());
+        Assertions.assertEquals("Item", data.getSource());
         Assertions.assertEquals("no_description", data.getProblem());
     }
 
