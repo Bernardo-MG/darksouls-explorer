@@ -1,17 +1,15 @@
 
 package com.bernardomg.darksouls.explorer.problem.query;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
-import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
-import org.neo4j.cypherdsl.core.Property;
-import org.neo4j.cypherdsl.core.ResultStatement;
-import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
+import org.neo4j.cypherdsl.core.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,74 +47,53 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
         mapper = this::toProblem;
 
-        return queryExecutor.fetch("MATCH (p:Problem) RETURN p", mapper, page);
+        return queryExecutor.fetch(
+                "MATCH (p:Problem) RETURN p.id AS id, p.source AS source, p.problem AS problem",
+                mapper, page);
     }
 
     @Override
-    public final Page<DataProblem> findDuplicatedItems(final Pageable page) {
-        final BuildableStatement<ResultStatement> noDescStatementBuilder;
+    public final Iterable<DataProblem> findDuplicatedItems() {
         final Function<Map<String, Object>, DataProblem> mapper;
-
-        noDescStatementBuilder = getDuplicatedItems();
 
         mapper = (record) -> toProblem("duplicated", record);
 
-        return queryExecutor.fetch(noDescStatementBuilder, mapper, page);
+        return queryExecutor.fetch(
+                "MATCH (i:Item) WITH i.name AS id, count(i) AS count WHERE count > 1 RETURN id",
+                mapper);
     }
 
     @Override
-    public final Page<DataProblem>
-            findItemsWithoutDescription(final Pageable page) {
-        final BuildableStatement<ResultStatement> noDescStatementBuilder;
+    public final Iterable<DataProblem> findItemsWithoutDescription() {
         final Function<Map<String, Object>, DataProblem> mapper;
-
-        noDescStatementBuilder = getNoDescriptionItems();
 
         mapper = (record) -> toProblem("no_description", record);
 
-        return queryExecutor.fetch(noDescStatementBuilder, mapper, page);
+        return queryExecutor.fetch(
+                "MATCH (i:Item) WHERE (i.description = '' OR i.description IS NULL) RETURN i.name AS id",
+                mapper);
     }
 
     @Override
     public final void save(final Iterable<DataProblem> data) {
-        final Node p = Cypher.node("Problem").named("p");
+        final Node p;
+        final Collection<Statement> statements;
+        Statement statement;
 
-        for (final DataProblem problem : data) {
-            Cypher.merge(p).onCreate()
-                    .set(p.property("id").to(Cypher.literalOf(problem.getId())))
-                    .set(p.property("problem")
-                            .to(Cypher.literalOf(problem.getProblem())))
-                    .set(p.property("source")
-                            .to(Cypher.literalOf(problem.getSource())))
-                    .build();
+        p = Cypher.node("Problem").named("p");
+
+        statements = new ArrayList<>();
+
+        for (final DataProblem dataProblem : data) {
+            statement = Cypher.merge(p.withProperties(Cypher.mapOf("id",
+                    Cypher.literalOf(dataProblem.getId()), "problem",
+                    Cypher.literalOf(dataProblem.getProblem()), "source",
+                    Cypher.literalOf(dataProblem.getSource())))).build();
+
+            statements.add(statement);
         }
-    }
 
-    private final BuildableStatement<ResultStatement> getDuplicatedItems() {
-        final Node item;
-        final AliasedExpression name;
-        final AliasedExpression count;
-
-        item = Cypher.node("Item").named("i");
-        name = item.property("name").as("id");
-        count = Functions.count(item).as("count");
-
-        return Cypher.match(item).with(name, count)
-                .where(count.gt(Cypher.literalOf(1))).returning(name);
-    }
-
-    private final BuildableStatement<ResultStatement> getNoDescriptionItems() {
-        final Node item;
-        final AliasedExpression name;
-        final Property description;
-
-        item = Cypher.node("Item").named("i");
-        name = item.property("name").as("id");
-        description = item.property("description");
-
-        return Cypher.match(item).where(
-                description.eq(Cypher.literalOf("")).or(description.isNull()))
-                .returning(name);
+        queryExecutor.run(statements);
     }
 
     private final DataProblem toProblem(final Map<String, Object> record) {

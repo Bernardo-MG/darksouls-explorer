@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -85,7 +84,7 @@ public class ITProblemsQueriesDuplicatedItems {
     public void testFindAll_Count() {
         final Iterable<DataProblem> data;
 
-        data = queries.findDuplicatedItems(Pageable.unpaged());
+        data = queries.findDuplicatedItems();
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -95,8 +94,7 @@ public class ITProblemsQueriesDuplicatedItems {
     public void testFindAll_Data() {
         final DataProblem data;
 
-        data = queries.findDuplicatedItems(Pageable.unpaged()).iterator()
-                .next();
+        data = queries.findDuplicatedItems().iterator().next();
 
         Assertions.assertEquals("Item", data.getId());
         Assertions.assertEquals("item", data.getSource());

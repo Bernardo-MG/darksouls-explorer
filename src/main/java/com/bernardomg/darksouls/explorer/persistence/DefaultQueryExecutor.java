@@ -113,6 +113,16 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     }
 
     @Override
+    public final <T> Iterable<T> fetch(final String query,
+            final Function<Map<String, Object>, T> mapper) {
+        LOGGER.debug("Query: {}", query);
+
+        // Data is fetched and mapped
+        return client.query(query).fetch().all().stream().map(mapper)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public final <T> Page<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper,
             final Pageable page) {
@@ -142,7 +152,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
             finalQuery += String.format(" LIMIT %d", page.getPageSize());
         }
 
-        LOGGER.debug("Query: {}", query);
+        LOGGER.debug("Query: {}", finalQuery);
 
         // Data is fetched and mapped
         read = client.query(finalQuery).fetch().all();
@@ -150,6 +160,19 @@ public final class DefaultQueryExecutor implements QueryExecutor {
 
         return PageableExecutionUtils.getPage(data, page,
                 () -> count(baseStatement));
+    }
+
+    @Override
+    public final void run(final Iterable<Statement> statements) {
+        String query;
+
+        for (final Statement statement : statements) {
+            query = statement.getCypher();
+
+            LOGGER.debug("Running {}", query);
+
+            client.query(query).run();
+        }
     }
 
     private final Long count(final Statement statement) {
@@ -175,7 +198,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     }
 
     private final String getOrder(final Order order) {
-        return String.format(" %s %s ", order.getProperty(),
+        return String.format("%s %s", order.getProperty(),
                 order.getDirection());
     }
 

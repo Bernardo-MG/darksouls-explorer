@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -86,7 +85,7 @@ public class ITProblemsQueriesItemsNoDescEmptyDesc {
     public void testFindAll_Count() {
         final Iterable<DataProblem> data;
 
-        data = queries.findItemsWithoutDescription(Pageable.unpaged());
+        data = queries.findItemsWithoutDescription();
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -96,8 +95,7 @@ public class ITProblemsQueriesItemsNoDescEmptyDesc {
     public void testFindAll_Data() {
         final DataProblem data;
 
-        data = queries.findItemsWithoutDescription(Pageable.unpaged())
-                .iterator().next();
+        data = queries.findItemsWithoutDescription().iterator().next();
 
         Assertions.assertEquals("Item", data.getId());
         Assertions.assertEquals("item", data.getSource());

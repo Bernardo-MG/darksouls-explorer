@@ -23,7 +23,7 @@ public final class DefaultProblemService implements ProblemService {
 
     @Override
     public final Page<DataProblem> getAll(final Pageable page) {
-        return queries.findItemsWithoutDescription(page);
+        return queries.findAll(page);
     }
 
 }

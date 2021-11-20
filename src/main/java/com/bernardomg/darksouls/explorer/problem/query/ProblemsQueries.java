@@ -12,9 +12,9 @@ public interface ProblemsQueries {
 
     public Page<DataProblem> findAll(final Pageable page);
 
-    public Page<DataProblem> findDuplicatedItems(final Pageable page);
+    public Iterable<DataProblem> findDuplicatedItems();
 
-    public Page<DataProblem> findItemsWithoutDescription(final Pageable page);
+    public Iterable<DataProblem> findItemsWithoutDescription();
 
     public void save(final Iterable<DataProblem> data);
 
