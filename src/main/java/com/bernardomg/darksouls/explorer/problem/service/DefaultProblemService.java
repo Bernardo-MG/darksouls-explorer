@@ -1,6 +1,9 @@
 
 package com.bernardomg.darksouls.explorer.problem.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,19 +47,26 @@ public final class DefaultProblemService implements ProblemService {
     }
 
     private final Iterable<DataProblem> recollect() {
-        Iterable<DataProblem> data;
+        final Collection<DataProblem> data;
+        final Collection<DataProblem> itemNoDescription;
+        final Collection<DataProblem> itemsDuplicated;
+        final Collection<DataProblem> actorsDuplicated;
 
         queries.deleteAll();
 
-        data = queries.findDuplicatedItems();
+        itemNoDescription = queries.findMissingField("Item", "description");
+        itemsDuplicated = queries.findDuplicated("Item");
+        actorsDuplicated = queries.findDuplicated("Actor");
 
-        LOGGER.debug("Duplicated items: {}", data);
+        LOGGER.debug("Duplicated items: {}", itemsDuplicated);
+        LOGGER.debug("Items without description: {}", itemNoDescription);
+        LOGGER.debug("Actors without description: {}", actorsDuplicated);
+        // Nodes without relationships
 
-        queries.save(data);
-
-        data = queries.findItemsWithoutDescription();
-
-        LOGGER.debug("Items without description: {}", data);
+        data = new ArrayList<>();
+        data.addAll(itemsDuplicated);
+        data.addAll(itemNoDescription);
+        data.addAll(actorsDuplicated);
 
         return data;
     }

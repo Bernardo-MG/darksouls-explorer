@@ -43,9 +43,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
  */
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITProblemsQueriesItemsNoDescNoDesc.Initializer.class })
+        initializers = { ITProblemsQueriesMissingFieldNoField.Initializer.class })
 @DisplayName("Query for items without description using item with no description")
-public class ITProblemsQueriesItemsNoDescNoDesc {
+public class ITProblemsQueriesMissingFieldNoField {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -76,7 +76,7 @@ public class ITProblemsQueriesItemsNoDescNoDesc {
     /**
      * Default constructor.
      */
-    public ITProblemsQueriesItemsNoDescNoDesc() {
+    public ITProblemsQueriesMissingFieldNoField() {
         super();
     }
 
@@ -85,7 +85,7 @@ public class ITProblemsQueriesItemsNoDescNoDesc {
     public void testFindAll_Count() {
         final Iterable<DataProblem> data;
 
-        data = queries.findItemsWithoutDescription();
+        data = queries.findMissingField("Item", "description");
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -95,7 +95,8 @@ public class ITProblemsQueriesItemsNoDescNoDesc {
     public void testFindAll_Data() {
         final DataProblem data;
 
-        data = queries.findItemsWithoutDescription().iterator().next();
+        data = queries.findMissingField("Item", "description").iterator()
+                .next();
 
         Assertions.assertEquals("Item", data.getId());
         Assertions.assertEquals("item", data.getSource());

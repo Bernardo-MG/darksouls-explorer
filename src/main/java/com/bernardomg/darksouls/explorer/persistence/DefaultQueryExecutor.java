@@ -113,7 +113,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     }
 
     @Override
-    public final <T> Iterable<T> fetch(final String query,
+    public final <T> Collection<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper) {
         LOGGER.debug("Query: {}", query);
 

@@ -53,25 +53,34 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     }
 
     @Override
-    public final Iterable<DataProblem> findDuplicatedItems() {
+    public final Collection<DataProblem> findDuplicated(final String node) {
         final Function<Map<String, Object>, DataProblem> mapper;
+        final String template;
+        final String query;
 
-        mapper = (record) -> toProblem("duplicated", record);
+        mapper = (record) -> toProblem("duplicated", node, record);
 
-        return queryExecutor.fetch(
-                "MATCH (i:Item) WITH i.name AS id, count(i) AS count WHERE count > 1 RETURN id",
-                mapper);
+        // TODO: Use query parameters
+        template = "MATCH (n:%s) WITH n.name AS id, count(n) AS count WHERE count > 1 RETURN id";
+        query = String.format(template, node);
+
+        return queryExecutor.fetch(query, mapper);
     }
 
     @Override
-    public final Iterable<DataProblem> findItemsWithoutDescription() {
+    public final Collection<DataProblem> findMissingField(final String node,
+            final String field) {
         final Function<Map<String, Object>, DataProblem> mapper;
+        final String template;
+        final String query;
 
-        mapper = (record) -> toProblem("no_description", record);
+        mapper = (record) -> toProblem("no_description", node, record);
 
-        return queryExecutor.fetch(
-                "MATCH (n:Item) WHERE (n.description = '' OR n.description IS NULL) RETURN n.name AS id",
-                mapper);
+        // TODO: Use query parameters
+        template = "MATCH (n:%1$s) WHERE (n.%2$s = '' OR n.%2$s IS NULL) RETURN n.name AS id";
+        query = String.format(template, node, field);
+
+        return queryExecutor.fetch(query, mapper);
     }
 
     @Override
@@ -102,10 +111,10 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
                 (String) record.getOrDefault("problem", ""));
     }
 
-    private final DataProblem toProblem(final String error,
+    private final DataProblem toProblem(final String error, final String source,
             final Map<String, Object> record) {
         return new DefaultDataProblem((String) record.getOrDefault("id", ""),
-                "item", error);
+                source, error);
     }
 
 }

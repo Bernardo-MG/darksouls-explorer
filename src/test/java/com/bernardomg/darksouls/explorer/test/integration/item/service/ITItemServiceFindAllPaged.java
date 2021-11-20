@@ -82,13 +82,13 @@ public class ITItemServiceFindAllPaged {
     }
 
     @Test
-    @DisplayName("When unpaged returns all the data")
-    public void testFindAll_Unpaged() {
+    @DisplayName("Returns a page")
+    public void testFindAll_Instance() {
         final Iterable<Item> data;
 
-        data = service.getAll(Pageable.unpaged());
+        data = service.getAll(Pageable.ofSize(1));
 
-        Assertions.assertEquals(5, IterableUtils.size(data));
+        Assertions.assertInstanceOf(Page.class, data);
     }
 
     @Test
@@ -102,13 +102,13 @@ public class ITItemServiceFindAllPaged {
     }
 
     @Test
-    @DisplayName("Returns a page")
-    public void testFindAll_Instance() {
+    @DisplayName("When unpaged returns all the data")
+    public void testFindAll_Unpaged() {
         final Iterable<Item> data;
 
-        data = service.getAll(Pageable.ofSize(1));
+        data = service.getAll(Pageable.unpaged());
 
-        Assertions.assertInstanceOf(Page.class, data);
+        Assertions.assertEquals(5, IterableUtils.size(data));
     }
 
 }
