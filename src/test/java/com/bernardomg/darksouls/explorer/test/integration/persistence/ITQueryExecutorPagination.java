@@ -266,7 +266,7 @@ public class ITQueryExecutorPagination {
         final Pageable page;
         final BuildableStatement<ResultStatement> statementBuilder;
 
-        page = PageRequest.of(1, 1);
+        page = PageRequest.of(1, 1, Direction.ASC, "name");
 
         statementBuilder = getStatementBuilder();
 
