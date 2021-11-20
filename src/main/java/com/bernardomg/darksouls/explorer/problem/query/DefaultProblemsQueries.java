@@ -70,7 +70,7 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
         mapper = (record) -> toProblem("no_description", record);
 
         return queryExecutor.fetch(
-                "MATCH (i:Item) WHERE (i.description = '' OR i.description IS NULL) RETURN i.name AS id",
+                "MATCH (n:Item) WHERE (n.description = '' OR n.description IS NULL) RETURN n.name AS id",
                 mapper);
     }
 

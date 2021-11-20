@@ -10,4 +10,6 @@ public interface ProblemService {
 
     public Page<DataProblem> getAll(final Pageable page);
 
+    public void recollectAndRegister();
+
 }
