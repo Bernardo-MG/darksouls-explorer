@@ -28,8 +28,9 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final Page<ItemSource> getAllSources(final Pageable page) {
-        return queries.findAllSources(page);
+    public final Page<ItemSource> getSources(final Long id,
+            final Pageable page) {
+        return queries.findSources(id, page);
     }
 
 }

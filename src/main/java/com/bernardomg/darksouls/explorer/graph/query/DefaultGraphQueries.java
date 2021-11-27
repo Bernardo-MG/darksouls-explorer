@@ -188,7 +188,7 @@ public final class DefaultGraphQueries implements GraphQueries {
     }
 
     @Override
-    public final Optional<Info> findById(@NonNull final Long id) {
+    public final Optional<Info> findById(final Long id) {
         final String query;
         final Info info;
         final Optional<Info> result;

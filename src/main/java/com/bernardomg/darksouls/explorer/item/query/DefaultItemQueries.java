@@ -51,7 +51,8 @@ public final class DefaultItemQueries implements ItemQueries {
     }
 
     @Override
-    public final Page<ItemSource> findAllSources(final Pageable page) {
+    public final Page<ItemSource> findSources(final Long id,
+            final Pageable page) {
         final Node s;
         final Node i;
         final Relationship rel;
@@ -61,9 +62,11 @@ public final class DefaultItemQueries implements ItemQueries {
         i = Cypher.node("Item").named("i");
         rel = s.relationshipTo(i, "DROPS", "SELLS", "STARTS_WITH", "REWARDS",
                 "CHOSEN_FROM").named("rel");
-        statementBuilder = Cypher.match(rel).returning(
-                i.property("name").as("item"), s.property("name").as("source"),
-                Functions.type(rel).as("relationship"));
+        statementBuilder = Cypher.match(rel)
+                .where(i.internalId().isEqualTo(Cypher.literalOf(id)))
+                .returning(i.property("name").as("item"),
+                        s.property("name").as("source"),
+                        Functions.type(rel).as("relationship"));
 
         return queryExecutor.fetch(statementBuilder, this::toItemSource, page);
     }

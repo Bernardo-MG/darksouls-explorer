@@ -11,6 +11,6 @@ public interface ItemService {
 
     public Page<Item> getAll(final Pageable page);
 
-    public Page<ItemSource> getAllSources(final Pageable page);
+    public Page<ItemSource> getSources(final Long id, final Pageable page);
 
 }

@@ -17,6 +17,8 @@
 package com.bernardomg.darksouls.explorer.test.integration.item.service;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -44,9 +47,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
  */
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITItemServiceFindAllSources.Initializer.class })
+        initializers = { ITItemServiceFindSources.Initializer.class })
 @DisplayName("Reading all the item sources")
-public class ITItemServiceFindAllSources {
+public class ITItemServiceFindSources {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -72,12 +75,15 @@ public class ITItemServiceFindAllSources {
     }
 
     @Autowired
+    private Neo4jClient client;
+
+    @Autowired
     private ItemService service;
 
     /**
      * Default constructor.
      */
-    public ITItemServiceFindAllSources() {
+    public ITItemServiceFindSources() {
         super();
     }
 
@@ -85,8 +91,11 @@ public class ITItemServiceFindAllSources {
     @DisplayName("Returns all the data")
     public void testFindAllSources_Count() {
         final Iterable<ItemSource> data;
+        final Long id;
 
-        data = service.getAllSources(Pageable.unpaged());
+        id = getId();
+
+        data = service.getSources(id, Pageable.unpaged());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -95,12 +104,23 @@ public class ITItemServiceFindAllSources {
     @DisplayName("Returns the correct data")
     public void testFindAllSources_Data() {
         final ItemSource data;
+        final Long id;
 
-        data = service.getAllSources(Pageable.unpaged()).iterator().next();
+        id = getId();
+
+        data = service.getSources(id, Pageable.unpaged()).iterator().next();
 
         Assertions.assertEquals("Item name", data.getItem());
         Assertions.assertEquals("Merchant", data.getSource());
         Assertions.assertEquals("sold", data.getRelationship());
+    }
+
+    private final Long getId() {
+        final Collection<Map<String, Object>> rows;
+
+        rows = client.query("MATCH (n) RETURN n").fetch().all();
+
+        return (Long) rows.stream().findFirst().get().getOrDefault("id", 0l);
     }
 
 }
