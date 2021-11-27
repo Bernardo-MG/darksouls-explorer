@@ -2,15 +2,9 @@
 package com.bernardomg.darksouls.explorer.item.query;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
-import org.neo4j.cypherdsl.core.AliasedExpression;
-import org.neo4j.cypherdsl.core.Cypher;
-import org.neo4j.cypherdsl.core.Functions;
-import org.neo4j.cypherdsl.core.Node;
-import org.neo4j.cypherdsl.core.Relationship;
-import org.neo4j.cypherdsl.core.ResultStatement;
-import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,37 +32,22 @@ public final class DefaultItemQueries implements ItemQueries {
 
     @Override
     public final Page<Item> findAll(final Pageable page) {
-        final Node item;
-        final AliasedExpression name;
-        final BuildableStatement<ResultStatement> statementBuilder;
-
-        item = Cypher.node("Item").named("i");
-        name = item.property("name").as("name");
-        statementBuilder = Cypher.match(item).returning(name,
-                item.property("description").as("description"));
-
-        return queryExecutor.fetch(statementBuilder, this::toItem, page);
+        return queryExecutor.fetch(
+                "MATCH (i:Item) RETURN i.name AS name, i.description AS description",
+                this::toItem, page);
     }
 
     @Override
     public final Page<ItemSource> findSources(final Long id,
             final Pageable page) {
-        final Node s;
-        final Node i;
-        final Relationship rel;
-        final BuildableStatement<ResultStatement> statementBuilder;
+        final Map<String, Object> params;
 
-        s = Cypher.anyNode().named("s");
-        i = Cypher.node("Item").named("i");
-        rel = s.relationshipTo(i, "DROPS", "SELLS", "STARTS_WITH", "REWARDS",
-                "CHOSEN_FROM").named("rel");
-        statementBuilder = Cypher.match(rel)
-                .where(i.internalId().isEqualTo(Cypher.literalOf(id)))
-                .returning(i.property("name").as("item"),
-                        s.property("name").as("source"),
-                        Functions.type(rel).as("relationship"));
+        params = new HashMap<>();
+        params.put("id", id);
 
-        return queryExecutor.fetch(statementBuilder, this::toItemSource, page);
+        return queryExecutor.fetch(
+                "MATCH (s)-[rel:DROPS|SELLS|STARTS_WITH|REWARDS|CHOSEN_FROM]->(i:Item) WHERE id(i) = $id RETURN i.name AS item, s.name AS source, type(rel) AS relationship",
+                this::toItemSource, params, page);
     }
 
     private final Item toItem(final Map<String, Object> record) {

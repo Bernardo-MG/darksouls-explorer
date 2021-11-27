@@ -17,6 +17,7 @@
 package com.bernardomg.darksouls.explorer.persistence;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -123,9 +124,20 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     }
 
     @Override
-    public final <T> Page<T> fetch(final String query,
+    public final <T> Collection<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper,
-            final Pageable page) {
+            final Map<String, Object> parameters) {
+        LOGGER.debug("Query: {}", query);
+
+        // Data is fetched and mapped
+        return client.query(query).bindAll(parameters).fetch().all().stream()
+                .map(mapper).collect(Collectors.toList());
+    }
+
+    @Override
+    public final <T> Page<T> fetch(String query,
+            Function<Map<String, Object>, T> mapper,
+            Map<String, Object> parameters, Pageable page) {
         final List<T> data;
         final Collection<Map<String, Object>> read;
         final Statement baseStatement;
@@ -155,11 +167,18 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         LOGGER.debug("Query: {}", finalQuery);
 
         // Data is fetched and mapped
-        read = client.query(finalQuery).fetch().all();
+        read = client.query(finalQuery).bindAll(parameters).fetch().all();
         data = read.stream().map(mapper).collect(Collectors.toList());
 
         return PageableExecutionUtils.getPage(data, page,
                 () -> count(baseStatement));
+    }
+
+    @Override
+    public final <T> Page<T> fetch(final String query,
+            final Function<Map<String, Object>, T> mapper,
+            final Pageable page) {
+        return fetch(query, mapper, Collections.emptyMap(), page);
     }
 
     @Override

@@ -20,6 +20,14 @@ public interface QueryExecutor {
     public <T> Collection<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper);
 
+    public <T> Collection<T> fetch(final String query,
+            final Function<Map<String, Object>, T> mapper,
+            final Map<String, Object> parameters);
+
+    public <T> Page<T> fetch(final String query,
+            final Function<Map<String, Object>, T> mapper,
+            final Map<String, Object> parameters, final Pageable page);
+
     public <T> Page<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper, final Pageable page);
 

@@ -32,9 +32,9 @@ public class ItemController {
 
     @GetMapping(path = "/{id}/sources",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<ItemSource> readSources(@PathVariable("id") final Long itemId,
+    public Page<ItemSource> readSources(@PathVariable("id") final Long id,
             final Pageable page) {
-        return service.getSources(itemId, page);
+        return service.getSources(id, page);
     }
 
 }

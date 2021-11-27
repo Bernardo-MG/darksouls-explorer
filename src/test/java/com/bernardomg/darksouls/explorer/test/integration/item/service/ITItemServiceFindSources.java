@@ -48,7 +48,7 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 @IntegrationTest
 @ContextConfiguration(
         initializers = { ITItemServiceFindSources.Initializer.class })
-@DisplayName("Reading all the item sources")
+@DisplayName("Reading item sources")
 public class ITItemServiceFindSources {
 
     public static class Initializer implements
@@ -88,8 +88,8 @@ public class ITItemServiceFindSources {
     }
 
     @Test
-    @DisplayName("Returns all the data")
-    public void testFindAllSources_Count() {
+    @DisplayName("Returns all the data for an id")
+    public void testGetSources_Count() {
         final Iterable<ItemSource> data;
         final Long id;
 
@@ -101,8 +101,8 @@ public class ITItemServiceFindSources {
     }
 
     @Test
-    @DisplayName("Returns the correct data")
-    public void testFindAllSources_Data() {
+    @DisplayName("Returns the correct data for an id")
+    public void testGetSources_Data() {
         final ItemSource data;
         final Long id;
 
