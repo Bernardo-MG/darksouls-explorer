@@ -33,7 +33,7 @@ public final class DefaultItemQueries implements ItemQueries {
     @Override
     public final Page<Item> findAll(final Pageable page) {
         return queryExecutor.fetch(
-                "MATCH (i:Item) RETURN i.name AS name, i.description AS description",
+                "MATCH (i:Item) RETURN id(i) AS id, i.name AS name, i.description AS description",
                 this::toItem, page);
     }
 
@@ -51,13 +51,16 @@ public final class DefaultItemQueries implements ItemQueries {
     }
 
     private final Item toItem(final Map<String, Object> record) {
+        final Long id;
+        final String name;
         final Iterable<String> description;
 
+        id = (Long) record.getOrDefault("id", Long.valueOf(-1));
+        name = (String) record.getOrDefault("name", "");
         description = Arrays.asList(
                 ((String) record.getOrDefault("description", "")).split("\\|"));
 
-        return new DefaultItem((String) record.getOrDefault("name", ""),
-                description);
+        return new DefaultItem(id, name, description);
     }
 
     private final ItemSource toItemSource(final Map<String, Object> record) {
