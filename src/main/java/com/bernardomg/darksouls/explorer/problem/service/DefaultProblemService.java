@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.problem.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ public final class DefaultProblemService implements ProblemService {
      * Logger.
      */
     private static final Logger   LOGGER = LoggerFactory
-            .getLogger(DefaultProblemService.class);
+        .getLogger(DefaultProblemService.class);
 
     private final ProblemsQueries queries;
 
@@ -51,22 +52,26 @@ public final class DefaultProblemService implements ProblemService {
         final Collection<DataProblem> itemNoDescription;
         final Collection<DataProblem> itemsDuplicated;
         final Collection<DataProblem> actorsDuplicated;
+        final Collection<DataProblem> itemsWithoutSource;
 
         queries.deleteAll();
 
         itemNoDescription = queries.findMissingField("Item", "description");
         itemsDuplicated = queries.findDuplicated("Item");
         actorsDuplicated = queries.findDuplicated("Actor");
+        itemsWithoutSource = queries.findMissingRelationships("Item", Arrays
+            .asList("DROPS", "SELLS", "STARTS_WITH", "REWARDS", "CHOSEN_FROM"));
 
         LOGGER.debug("Duplicated items: {}", itemsDuplicated);
         LOGGER.debug("Items without description: {}", itemNoDescription);
         LOGGER.debug("Actors without description: {}", actorsDuplicated);
-        // Nodes without relationships
+        LOGGER.debug("Items without source: {}", itemsWithoutSource);
 
         data = new ArrayList<>();
         data.addAll(itemsDuplicated);
         data.addAll(itemNoDescription);
         data.addAll(actorsDuplicated);
+        data.addAll(itemsWithoutSource);
 
         return data;
     }

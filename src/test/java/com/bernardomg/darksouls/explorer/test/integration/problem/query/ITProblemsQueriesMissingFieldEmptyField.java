@@ -44,7 +44,7 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 @IntegrationTest
 @ContextConfiguration(initializers = {
         ITProblemsQueriesMissingFieldEmptyField.Initializer.class })
-@DisplayName("Query for items without description using item with empty description")
+@DisplayName("Query for nodes without description using a node with empty description")
 public class ITProblemsQueriesMissingFieldEmptyField {
 
     public static class Initializer implements
@@ -54,20 +54,19 @@ public class ITProblemsQueriesMissingFieldEmptyField {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList(
-                        "classpath:db/queries/item/empty_description.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(), Arrays
+                .asList("classpath:db/queries/item/empty_description.cypher"));
     }
 
     @Autowired
@@ -82,7 +81,7 @@ public class ITProblemsQueriesMissingFieldEmptyField {
 
     @Test
     @DisplayName("Returns all the data")
-    public void testFindAll_Count() {
+    public void testFindMissingField_Count() {
         final Iterable<DataProblem> data;
 
         data = queries.findMissingField("Item", "description");
@@ -92,11 +91,12 @@ public class ITProblemsQueriesMissingFieldEmptyField {
 
     @Test
     @DisplayName("Returns the correct data")
-    public void testFindAll_Data() {
+    public void testFindMissingField_Data() {
         final DataProblem data;
 
-        data = queries.findMissingField("Item", "description").iterator()
-                .next();
+        data = queries.findMissingField("Item", "description")
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Item name", data.getId());
         Assertions.assertEquals("Item", data.getSource());

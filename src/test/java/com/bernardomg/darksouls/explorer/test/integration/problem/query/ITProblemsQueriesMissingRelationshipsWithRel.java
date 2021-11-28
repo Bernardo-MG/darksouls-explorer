@@ -42,10 +42,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
  * Integration tests for the {@link GraphQueries}.
  */
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITProblemsQueriesDuplicated.Initializer.class })
-@DisplayName("Query for duplicated nodes")
-public class ITProblemsQueriesDuplicated {
+@ContextConfiguration(initializers = {
+        ITProblemsQueriesMissingRelationshipsWithRel.Initializer.class })
+@DisplayName("Query for nodes missing relationships using a node with the relationship")
+public class ITProblemsQueriesMissingRelationshipsWithRel {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -66,7 +66,8 @@ public class ITProblemsQueriesDuplicated {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
             dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/duplicated.cypher"));
+            Arrays.asList(
+                "classpath:db/queries/item/with_merchant_source.cypher"));
     }
 
     @Autowired
@@ -75,32 +76,18 @@ public class ITProblemsQueriesDuplicated {
     /**
      * Default constructor.
      */
-    public ITProblemsQueriesDuplicated() {
+    public ITProblemsQueriesMissingRelationshipsWithRel() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data")
+    @DisplayName("Returns no data")
     public void testFindDuplicated_Count() {
         final Iterable<DataProblem> data;
 
-        data = queries.findDuplicated("Item");
+        data = queries.findMissingRelationships("Item", Arrays.asList("SELLS"));
 
-        Assertions.assertEquals(1, IterableUtils.size(data));
-    }
-
-    @Test
-    @DisplayName("Returns the correct data")
-    public void testFindDuplicated_Data() {
-        final DataProblem data;
-
-        data = queries.findDuplicated("Item")
-            .iterator()
-            .next();
-
-        Assertions.assertEquals("Item name", data.getId());
-        Assertions.assertEquals("Item", data.getSource());
-        Assertions.assertEquals("duplicated", data.getProblem());
+        Assertions.assertEquals(0, IterableUtils.size(data));
     }
 
 }

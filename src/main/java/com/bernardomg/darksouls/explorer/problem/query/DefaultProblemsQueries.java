@@ -3,6 +3,7 @@ package com.bernardomg.darksouls.explorer.problem.query;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -38,7 +39,8 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
     @Override
     public final void deleteAll() {
-        client.query("MATCH (p:Problem) DELETE p").run();
+        client.query("MATCH (p:Problem) DELETE p")
+            .run();
     }
 
     @Override
@@ -48,8 +50,13 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
         mapper = this::toProblem;
 
         return queryExecutor.fetch(
-                "MATCH (p:Problem) RETURN p.id AS id, p.source AS source, p.problem AS problem",
-                mapper, page);
+        // @formatter:off
+              "MATCH"
+            + "  (p:Problem)"
+            + "RETURN"
+            + "  p.id AS id, p.source AS source, p.problem AS problem",
+            // @formatter:on
+            mapper, page);
     }
 
     @Override
@@ -84,20 +91,55 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     }
 
     @Override
+    public final Collection<DataProblem> findMissingRelationships(
+            final String node, final Iterable<String> relationships) {
+        final Function<Map<String, Object>, DataProblem> mapper;
+        final String mergedRels;
+        final Map<String, Object> params;
+        final String template;
+        final String query;
+
+        mapper = (record) -> toProblem("no_relationships", node, record);
+
+        mergedRels = String.join("|", relationships);
+
+        params = new HashMap<>();
+        params.put("node", node);
+        params.put("relationships", mergedRels);
+
+        // TODO: Use query parameters
+        // @formatter:off
+        template =
+              "MATCH" + System.lineSeparator()
+            + "  (n:%s)" + System.lineSeparator()
+            + "WHERE" + System.lineSeparator()
+            + "  NOT ()-[:%s]->(n)" + System.lineSeparator()
+            + "RETURN" + System.lineSeparator()
+            + "  n.name AS id";
+        // @formatter:on
+        query = String.format(template, node, mergedRels);
+
+        return queryExecutor.fetch(query, mapper);
+    }
+
+    @Override
     public final void save(final Iterable<DataProblem> data) {
         final Node p;
         final Collection<Statement> statements;
         Statement statement;
 
-        p = Cypher.node("Problem").named("p");
+        p = Cypher.node("Problem")
+            .named("p");
 
         statements = new ArrayList<>();
 
         for (final DataProblem dataProblem : data) {
-            statement = Cypher.merge(p.withProperties(Cypher.mapOf("id",
-                    Cypher.literalOf(dataProblem.getId()), "problem",
-                    Cypher.literalOf(dataProblem.getProblem()), "source",
-                    Cypher.literalOf(dataProblem.getSource())))).build();
+            statement = Cypher
+                .merge(p.withProperties(
+                    Cypher.mapOf("id", Cypher.literalOf(dataProblem.getId()),
+                        "problem", Cypher.literalOf(dataProblem.getProblem()),
+                        "source", Cypher.literalOf(dataProblem.getSource()))))
+                .build();
 
             statements.add(statement);
         }
@@ -107,14 +149,14 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
     private final DataProblem toProblem(final Map<String, Object> record) {
         return new DefaultDataProblem((String) record.getOrDefault("id", ""),
-                (String) record.getOrDefault("source", ""),
-                (String) record.getOrDefault("problem", ""));
+            (String) record.getOrDefault("source", ""),
+            (String) record.getOrDefault("problem", ""));
     }
 
     private final DataProblem toProblem(final String error, final String source,
             final Map<String, Object> record) {
         return new DefaultDataProblem((String) record.getOrDefault("id", ""),
-                source, error);
+            source, error);
     }
 
 }

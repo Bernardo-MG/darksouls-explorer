@@ -33,8 +33,13 @@ public final class DefaultItemQueries implements ItemQueries {
     @Override
     public final Page<Item> findAll(final Pageable page) {
         return queryExecutor.fetch(
-                "MATCH (i:Item) RETURN id(i) AS id, i.name AS name, i.description AS description",
-                this::toItem, page);
+        // @formatter:off
+              "MATCH" + System.lineSeparator()
+            + "  (i:Item)" + System.lineSeparator()
+            + "RETURN" + System.lineSeparator()
+            + "  id(i) AS id, i.name AS name, i.description AS description",
+       // @formatter:on
+            this::toItem, page);
     }
 
     @Override
@@ -46,8 +51,15 @@ public final class DefaultItemQueries implements ItemQueries {
         params.put("id", id);
 
         return queryExecutor.fetch(
-                "MATCH (s)-[rel:DROPS|SELLS|STARTS_WITH|REWARDS|CHOSEN_FROM]->(i:Item) WHERE id(i) = $id RETURN i.name AS item, s.name AS source, type(rel) AS relationship",
-                this::toItemSource, params, page);
+        // @formatter:off
+              "MATCH" + System.lineSeparator()
+            + "  (s)-[rel:DROPS|SELLS|STARTS_WITH|REWARDS|CHOSEN_FROM]->(i:Item)" + System.lineSeparator()
+            + "WHERE" + System.lineSeparator()
+            + "  id(i) = $id" + System.lineSeparator()
+            + "RETURN" + System.lineSeparator()
+            + "  i.name AS item, s.name AS source, type(rel) AS relationship",
+            // @formatter:on
+            this::toItemSource, params, page);
     }
 
     private final Item toItem(final Map<String, Object> record) {
@@ -58,7 +70,7 @@ public final class DefaultItemQueries implements ItemQueries {
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");
         description = Arrays.asList(
-                ((String) record.getOrDefault("description", "")).split("\\|"));
+            ((String) record.getOrDefault("description", "")).split("\\|"));
 
         return new DefaultItem(id, name, description);
     }
@@ -84,7 +96,7 @@ public final class DefaultItemQueries implements ItemQueries {
         }
 
         return new DefaultItemSource((String) record.getOrDefault("item", ""),
-                (String) record.getOrDefault("source", ""), type);
+            (String) record.getOrDefault("source", ""), type);
     }
 
 }

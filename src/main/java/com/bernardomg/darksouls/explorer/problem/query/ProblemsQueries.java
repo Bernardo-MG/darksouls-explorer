@@ -19,6 +19,9 @@ public interface ProblemsQueries {
     public Collection<DataProblem> findMissingField(final String node,
             final String field);
 
+    public Collection<DataProblem> findMissingRelationships(final String node,
+            final Iterable<String> relationships);
+
     public void save(final Iterable<DataProblem> data);
 
 }
