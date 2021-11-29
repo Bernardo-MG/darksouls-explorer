@@ -50,10 +50,11 @@ public final class DefaultItemQueries implements ItemQueries {
         params = new HashMap<>();
         params.put("id", id);
 
+        // TODO: Use a list for the relationships
         return queryExecutor.fetch(
         // @formatter:off
               "MATCH" + System.lineSeparator()
-            + "  (s)-[rel:DROPS|SELLS|STARTS_WITH|REWARDS|CHOSEN_FROM]->(i:Item)" + System.lineSeparator()
+            + "  (s)-[rel:DROPS|SELLS|STARTS_WITH|REWARDS|CHOSEN_FROM|ASCENDS]->(i:Item)" + System.lineSeparator()
             + "WHERE" + System.lineSeparator()
             + "  id(i) = $id" + System.lineSeparator()
             + "RETURN" + System.lineSeparator()

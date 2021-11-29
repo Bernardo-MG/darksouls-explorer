@@ -59,8 +59,9 @@ public final class DefaultProblemService implements ProblemService {
         itemNoDescription = queries.findMissingField("Item", "description");
         itemsDuplicated = queries.findDuplicated("Item");
         actorsDuplicated = queries.findDuplicated("Actor");
-        itemsWithoutSource = queries.findMissingRelationships("Item", Arrays
-            .asList("DROPS", "SELLS", "STARTS_WITH", "REWARDS", "CHOSEN_FROM"));
+        itemsWithoutSource = queries.findMissingRelationships("Item",
+            Arrays.asList("DROPS", "SELLS", "STARTS_WITH", "REWARDS",
+                "CHOSEN_FROM", "ASCENDS"));
 
         LOGGER.debug("Duplicated items: {}", itemsDuplicated);
         LOGGER.debug("Items without description: {}", itemNoDescription);
