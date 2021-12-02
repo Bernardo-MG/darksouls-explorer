@@ -55,7 +55,7 @@ public final class DefaultItemQueries implements ItemQueries {
         params.put("id", id);
 
         rels = Arrays.asList("DROPS", "SELLS", "STARTS_WITH", "REWARDS",
-            "CHOSEN_FROM", "ASCENDS", "LOOT", "CHOSEN_FROM");
+            "CHOSEN_FROM", "ASCENDS", "LOOT");
 
         queryTemplate =
         // @formatter:off
@@ -86,8 +86,11 @@ public final class DefaultItemQueries implements ItemQueries {
 
     private final ItemSource toItemSource(final Map<String, Object> record) {
         final String type;
+        final String rel;
 
-        switch ((String) record.getOrDefault("relationship", "")) {
+        rel = (String) record.getOrDefault("relationship", "");
+
+        switch (rel) {
             case "DROPS":
                 type = "drop";
                 break;
@@ -100,8 +103,17 @@ public final class DefaultItemQueries implements ItemQueries {
             case "REWARDS":
                 type = "covenant_reward";
                 break;
+            case "CHOSEN_FROM":
+                type = "starting_gift";
+                break;
+            case "ASCEND":
+                type = "ascended";
+                break;
+            case "LOOT":
+                type = "loot";
+                break;
             default:
-                type = "";
+                type = rel;
         }
 
         return new DefaultItemSource((String) record.getOrDefault("item", ""),
