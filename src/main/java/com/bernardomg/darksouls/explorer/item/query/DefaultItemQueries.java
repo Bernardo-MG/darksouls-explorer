@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.item.query;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,21 +47,28 @@ public final class DefaultItemQueries implements ItemQueries {
     public final Page<ItemSource> findSources(final Long id,
             final Pageable page) {
         final Map<String, Object> params;
+        final Collection<String> rels;
+        final String queryTemplate;
+        final String query;
 
         params = new HashMap<>();
         params.put("id", id);
 
-        // TODO: Use a list for the relationships
-        return queryExecutor.fetch(
+        rels = Arrays.asList("DROPS", "SELLS", "STARTS_WITH", "REWARDS",
+            "CHOSEN_FROM", "ASCENDS", "LOOT", "CHOSEN_FROM");
+
+        queryTemplate =
         // @formatter:off
-              "MATCH" + System.lineSeparator()
-            + "  (s)-[rel:DROPS|SELLS|STARTS_WITH|REWARDS|CHOSEN_FROM|ASCENDS]->(i:Item)" + System.lineSeparator()
-            + "WHERE" + System.lineSeparator()
-            + "  id(i) = $id" + System.lineSeparator()
-            + "RETURN" + System.lineSeparator()
-            + "  i.name AS item, s.name AS source, type(rel) AS relationship",
-            // @formatter:on
-            this::toItemSource, params, page);
+            "MATCH" + System.lineSeparator()
+          + "  (s)-[rel:%s]->(i:Item)" + System.lineSeparator()
+          + "WHERE" + System.lineSeparator()
+          + "  id(i) = $id" + System.lineSeparator()
+          + "RETURN" + System.lineSeparator()
+          + "  i.name AS item, s.name AS source, type(rel) AS relationship";
+        // @formatter:on;
+
+        query = String.format(queryTemplate, String.join("|", rels));
+        return queryExecutor.fetch(query, this::toItemSource, params, page);
     }
 
     private final Item toItem(final Map<String, Object> record) {
