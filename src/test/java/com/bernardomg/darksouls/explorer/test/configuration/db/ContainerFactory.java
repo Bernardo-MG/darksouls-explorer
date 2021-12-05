@@ -9,8 +9,8 @@ public final class ContainerFactory {
     public static final Neo4jContainer<?> getNeo4jContainer() {
         final Neo4jContainer<?> container;
 
-        container = new Neo4jContainer<>(
-                DockerImageName.parse("neo4j").withTag("3.5.27"));
+        container = new Neo4jContainer<>(DockerImageName.parse("neo4j")
+            .withTag("3.5.27"));
         container.withReuse(true);
         container.addEnv("NEO4JLABS_PLUGINS", "[\"apoc\"]");
 

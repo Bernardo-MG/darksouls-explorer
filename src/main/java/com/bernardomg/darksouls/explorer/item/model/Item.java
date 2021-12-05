@@ -9,10 +9,14 @@ public interface Item {
 
     public String getName();
 
+    public Iterable<String> getTags();
+
     public void setDescription(final Iterable<String> description);
 
     public void setId(final Long id);
 
     public void setName(final String name);
+
+    public void setTags(final Iterable<String> tags);
 
 }

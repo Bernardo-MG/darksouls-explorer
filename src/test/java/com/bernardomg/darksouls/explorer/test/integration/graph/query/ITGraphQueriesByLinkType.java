@@ -57,19 +57,19 @@ public class ITGraphQueriesByLinkType {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/simple.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList("classpath:db/queries/graph/simple.cypher"));
     }
 
     @Autowired
@@ -100,7 +100,9 @@ public class ITGraphQueriesByLinkType {
         final Link data;
 
         data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
-                .getLinks().iterator().next();
+            .getLinks()
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Source", data.getSourceLabel());
         Assertions.assertEquals("Target", data.getTargetLabel());
@@ -113,7 +115,9 @@ public class ITGraphQueriesByLinkType {
         final Link data;
 
         data = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
-                .getLinks().iterator().next();
+            .getLinks()
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Source", data.getSourceLabel());
         Assertions.assertEquals("Target", data.getTargetLabel());
@@ -127,7 +131,8 @@ public class ITGraphQueriesByLinkType {
         Node data;
 
         nodes = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
-                .getNodes().iterator();
+            .getNodes()
+            .iterator();
 
         data = nodes.next();
         Assertions.assertEquals("Source", data.getLabel());
@@ -143,7 +148,8 @@ public class ITGraphQueriesByLinkType {
         String type;
 
         types = queries.findAllByLinkType(Arrays.asList("RELATIONSHIP"))
-                .getTypes().iterator();
+            .getTypes()
+            .iterator();
 
         type = types.next();
         Assertions.assertEquals("RELATIONSHIP", type);
@@ -189,7 +195,7 @@ public class ITGraphQueriesByLinkType {
     @DisplayName("Rejects a null value")
     public void testFindAllByLinkType_Null() {
         Assertions.assertThrows(NullPointerException.class,
-                () -> queries.findAllByLinkType(null));
+            () -> queries.findAllByLinkType(null));
     }
 
 }

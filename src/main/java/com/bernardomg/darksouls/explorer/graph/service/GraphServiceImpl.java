@@ -18,7 +18,7 @@ public final class GraphServiceImpl implements GraphService {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(GraphServiceImpl.class);
+        .getLogger(GraphServiceImpl.class);
 
     private final GraphQueries  queries;
 
@@ -46,7 +46,8 @@ public final class GraphServiceImpl implements GraphService {
 
     @Override
     public final Info getInfo(final Long id) {
-        return queries.findById(id).orElse(null);
+        return queries.findById(id)
+            .orElse(null);
     }
 
     @Override

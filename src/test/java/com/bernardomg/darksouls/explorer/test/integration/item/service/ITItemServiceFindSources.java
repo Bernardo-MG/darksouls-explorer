@@ -58,20 +58,20 @@ public class ITItemServiceFindSources {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList(
-                        "classpath:db/queries/item/with_merchant_source.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList(
+                "classpath:db/queries/item/with_merchant_source.cypher"));
     }
 
     @Autowired
@@ -108,7 +108,9 @@ public class ITItemServiceFindSources {
 
         id = getId();
 
-        data = service.getSources(id, Pageable.unpaged()).iterator().next();
+        data = service.getSources(id, Pageable.unpaged())
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Item name", data.getItem());
         Assertions.assertEquals("Merchant", data.getSource());
@@ -118,9 +120,14 @@ public class ITItemServiceFindSources {
     private final Long getId() {
         final Collection<Map<String, Object>> rows;
 
-        rows = client.query("MATCH (n) RETURN n").fetch().all();
+        rows = client.query("MATCH (n) RETURN n")
+            .fetch()
+            .all();
 
-        return (Long) rows.stream().findFirst().get().getOrDefault("id", 0l);
+        return (Long) rows.stream()
+            .findFirst()
+            .get()
+            .getOrDefault("id", 0l);
     }
 
 }

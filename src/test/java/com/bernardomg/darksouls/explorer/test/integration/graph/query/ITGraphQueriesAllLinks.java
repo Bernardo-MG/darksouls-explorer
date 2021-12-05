@@ -52,19 +52,19 @@ public class ITGraphQueriesAllLinks {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/simple.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList("classpath:db/queries/graph/simple.cypher"));
     }
 
     @Autowired
@@ -94,7 +94,8 @@ public class ITGraphQueriesAllLinks {
 
         data = queries.findAllLinks();
 
-        Assertions.assertEquals("RELATIONSHIP", data.iterator().next());
+        Assertions.assertEquals("RELATIONSHIP", data.iterator()
+            .next());
     }
 
 }

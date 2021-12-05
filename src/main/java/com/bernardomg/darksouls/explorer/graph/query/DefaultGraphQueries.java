@@ -65,12 +65,12 @@ public final class DefaultGraphQueries implements GraphQueries {
      * Logger.
      */
     private static final Logger    LOGGER         = LoggerFactory
-            .getLogger(DefaultGraphQueries.class);
+        .getLogger(DefaultGraphQueries.class);
 
     private final Neo4jClient      client;
 
     private final Renderer         cypherRenderer = Renderer
-            .getDefaultRenderer();
+        .getDefaultRenderer();
 
     private final Processor<Graph> graphProcessor = new GraphProcessor();
 
@@ -91,22 +91,32 @@ public final class DefaultGraphQueries implements GraphQueries {
         final Statement statement;
         final Collection<Map<String, Object>> rows;
 
-        source = Cypher.anyNode().named("s");
-        target = Cypher.anyNode().named("t");
-        rel = source.relationshipTo(target).named("r");
-        statementBuilder = Cypher.match(rel).returning(
-                source.property("name").as("source"),
-                source.internalId().as("sourceId"),
-                target.property("name").as("target"),
-                target.internalId().as("targetId"),
-                Functions.type(rel).as("relationship"));
+        source = Cypher.anyNode()
+            .named("s");
+        target = Cypher.anyNode()
+            .named("t");
+        rel = source.relationshipTo(target)
+            .named("r");
+        statementBuilder = Cypher.match(rel)
+            .returning(source.property("name")
+                .as("source"),
+                source.internalId()
+                    .as("sourceId"),
+                target.property("name")
+                    .as("target"),
+                target.internalId()
+                    .as("targetId"),
+                Functions.type(rel)
+                    .as("relationship"));
 
         statement = statementBuilder.build();
         query = cypherRenderer.render(statement);
 
         LOGGER.debug("Query: {}", query);
 
-        rows = client.query(query).fetch().all();
+        rows = client.query(query)
+            .fetch()
+            .all();
         return graphProcessor.process(rows);
     }
 
@@ -129,25 +139,37 @@ public final class DefaultGraphQueries implements GraphQueries {
             result = new DefaultGraph();
         } else {
             validTypes = StreamSupport.stream(types.spliterator(), false)
-                    .map(Cypher::literalOf).collect(Collectors.toList());
+                .map(Cypher::literalOf)
+                .collect(Collectors.toList());
 
-            source = Cypher.anyNode().named("s");
-            target = Cypher.anyNode().named("t");
-            rel = source.relationshipTo(target).named("r");
+            source = Cypher.anyNode()
+                .named("s");
+            target = Cypher.anyNode()
+                .named("t");
+            rel = source.relationshipTo(target)
+                .named("r");
             statementBuilder = Cypher.match(rel)
-                    .where(Functions.type(rel).in(Cypher.listOf(validTypes)))
-                    .returning(source.property("name").as("source"),
-                            source.internalId().as("sourceId"),
-                            target.property("name").as("target"),
-                            target.internalId().as("targetId"),
-                            Functions.type(rel).as("relationship"));
+                .where(Functions.type(rel)
+                    .in(Cypher.listOf(validTypes)))
+                .returning(source.property("name")
+                    .as("source"),
+                    source.internalId()
+                        .as("sourceId"),
+                    target.property("name")
+                        .as("target"),
+                    target.internalId()
+                        .as("targetId"),
+                    Functions.type(rel)
+                        .as("relationship"));
 
             statement = statementBuilder.build();
             query = cypherRenderer.render(statement);
 
             LOGGER.debug("Query: {}", query);
 
-            rows = client.query(query).fetch().all();
+            rows = client.query(query)
+                .fetch()
+                .all();
             result = graphProcessor.process(rows);
         }
 
@@ -166,12 +188,18 @@ public final class DefaultGraphQueries implements GraphQueries {
         final BuildableStatement<ResultStatement> statementBuilder;
         final Statement statement;
 
-        source = Cypher.anyNode().named("s");
-        target = Cypher.anyNode().named("t");
-        rel = source.relationshipTo(target).named("r");
-        relField = Functions.type(rel).as("relationship");
-        statementBuilder = Cypher.match(rel).returningDistinct(relField)
-                .orderBy(relField.asName().ascending());
+        source = Cypher.anyNode()
+            .named("s");
+        target = Cypher.anyNode()
+            .named("t");
+        rel = source.relationshipTo(target)
+            .named("r");
+        relField = Functions.type(rel)
+            .as("relationship");
+        statementBuilder = Cypher.match(rel)
+            .returningDistinct(relField)
+            .orderBy(relField.asName()
+                .ascending());
 
         statement = statementBuilder.build();
         query = cypherRenderer.render(statement);
@@ -179,7 +207,9 @@ public final class DefaultGraphQueries implements GraphQueries {
         LOGGER.debug("Query: {}", query);
 
         result = new ArrayList<>();
-        rows = client.query(query).fetch().all();
+        rows = client.query(query)
+            .fetch()
+            .all();
         for (final Map<String, Object> row : rows) {
             result.add((String) row.getOrDefault("relationship", ""));
         }
@@ -201,18 +231,25 @@ public final class DefaultGraphQueries implements GraphQueries {
 
         LOGGER.debug("Id: {}", id);
 
-        node = Cypher.anyNode().named("node");
+        node = Cypher.anyNode()
+            .named("node");
         statementBuilder = Cypher.match(node)
-                .where(node.internalId().isEqualTo(Cypher.literalOf(id)))
-                .returning(node.property("name").as("name"),
-                        node.property("description").as("description"),
-                        node.internalId().as("id"));
+            .where(node.internalId()
+                .isEqualTo(Cypher.literalOf(id)))
+            .returning(node.property("name")
+                .as("name"),
+                node.property("description")
+                    .as("description"),
+                node.internalId()
+                    .as("id"));
 
         statement = statementBuilder.build();
         query = cypherRenderer.render(statement);
         LOGGER.debug("Query: {}", query);
 
-        read = client.query(query).fetch().first();
+        read = client.query(query)
+            .fetch()
+            .first();
 
         if (read.isEmpty()) {
             result = Optional.empty();
@@ -221,15 +258,15 @@ public final class DefaultGraphQueries implements GraphQueries {
         } else {
             row = read.get();
             info = new DefaultInfo((Long) row.getOrDefault("id", 0l),
-                    (String) row.getOrDefault("name", ""));
+                (String) row.getOrDefault("name", ""));
 
             description = (String) row.getOrDefault("description", "");
             if (StringUtils.isBlank(description)) {
                 info.setDescription(Collections.emptyList());
             } else {
-                info.setDescription(Arrays
-                        .asList(((String) row.getOrDefault("description", ""))
-                                .split("\\|")));
+                info.setDescription(
+                    Arrays.asList(((String) row.getOrDefault("description", ""))
+                        .split("\\|")));
             }
 
             result = Optional.of(info);

@@ -17,6 +17,7 @@
 package com.bernardomg.darksouls.explorer.test.integration.persistence;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -67,19 +68,19 @@ public class ITQueryExecutorPagination {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/item/multiple.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
     private final QueryExecutor queryExecutor;
@@ -115,13 +116,19 @@ public class ITQueryExecutorPagination {
 
         page = PageRequest.of(0, 5, Direction.ASC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page).iterator();
+        data = queryExecutor.fetch(getQuery(), this::toItem, page)
+            .iterator();
 
-        Assertions.assertEquals("Item1", data.next().getName());
-        Assertions.assertEquals("Item2", data.next().getName());
-        Assertions.assertEquals("Item3", data.next().getName());
-        Assertions.assertEquals("Item4", data.next().getName());
-        Assertions.assertEquals("Item5", data.next().getName());
+        Assertions.assertEquals("Item1", data.next()
+            .getName());
+        Assertions.assertEquals("Item2", data.next()
+            .getName());
+        Assertions.assertEquals("Item3", data.next()
+            .getName());
+        Assertions.assertEquals("Item4", data.next()
+            .getName());
+        Assertions.assertEquals("Item5", data.next()
+            .getName());
     }
 
     @Test
@@ -132,13 +139,19 @@ public class ITQueryExecutorPagination {
 
         page = PageRequest.of(0, 5, Direction.DESC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page).iterator();
+        data = queryExecutor.fetch(getQuery(), this::toItem, page)
+            .iterator();
 
-        Assertions.assertEquals("Item5", data.next().getName());
-        Assertions.assertEquals("Item4", data.next().getName());
-        Assertions.assertEquals("Item3", data.next().getName());
-        Assertions.assertEquals("Item2", data.next().getName());
-        Assertions.assertEquals("Item1", data.next().getName());
+        Assertions.assertEquals("Item5", data.next()
+            .getName());
+        Assertions.assertEquals("Item4", data.next()
+            .getName());
+        Assertions.assertEquals("Item3", data.next()
+            .getName());
+        Assertions.assertEquals("Item2", data.next()
+            .getName());
+        Assertions.assertEquals("Item1", data.next()
+            .getName());
     }
 
     @Test
@@ -156,7 +169,9 @@ public class ITQueryExecutorPagination {
         Assertions.assertEquals(5, data.getTotalPages());
         Assertions.assertEquals(0, data.getNumber());
 
-        Assertions.assertEquals("Item1", data.iterator().next().getName());
+        Assertions.assertEquals("Item1", data.iterator()
+            .next()
+            .getName());
     }
 
     @Test
@@ -174,7 +189,9 @@ public class ITQueryExecutorPagination {
         Assertions.assertEquals(5, data.getTotalPages());
         Assertions.assertEquals(1, data.getNumber());
 
-        Assertions.assertEquals("Item2", data.iterator().next().getName());
+        Assertions.assertEquals("Item2", data.iterator()
+            .next()
+            .getName());
     }
 
     @Test
@@ -208,13 +225,18 @@ public class ITQueryExecutorPagination {
         statementBuilder = getStatementBuilder();
 
         data = queryExecutor.fetch(statementBuilder, this::toItem, page)
-                .iterator();
+            .iterator();
 
-        Assertions.assertEquals("Item1", data.next().getName());
-        Assertions.assertEquals("Item2", data.next().getName());
-        Assertions.assertEquals("Item3", data.next().getName());
-        Assertions.assertEquals("Item4", data.next().getName());
-        Assertions.assertEquals("Item5", data.next().getName());
+        Assertions.assertEquals("Item1", data.next()
+            .getName());
+        Assertions.assertEquals("Item2", data.next()
+            .getName());
+        Assertions.assertEquals("Item3", data.next()
+            .getName());
+        Assertions.assertEquals("Item4", data.next()
+            .getName());
+        Assertions.assertEquals("Item5", data.next()
+            .getName());
     }
 
     @Test
@@ -229,13 +251,18 @@ public class ITQueryExecutorPagination {
         statementBuilder = getStatementBuilder();
 
         data = queryExecutor.fetch(statementBuilder, this::toItem, page)
-                .iterator();
+            .iterator();
 
-        Assertions.assertEquals("Item5", data.next().getName());
-        Assertions.assertEquals("Item4", data.next().getName());
-        Assertions.assertEquals("Item3", data.next().getName());
-        Assertions.assertEquals("Item2", data.next().getName());
-        Assertions.assertEquals("Item1", data.next().getName());
+        Assertions.assertEquals("Item5", data.next()
+            .getName());
+        Assertions.assertEquals("Item4", data.next()
+            .getName());
+        Assertions.assertEquals("Item3", data.next()
+            .getName());
+        Assertions.assertEquals("Item2", data.next()
+            .getName());
+        Assertions.assertEquals("Item1", data.next()
+            .getName());
     }
 
     @Test
@@ -256,7 +283,9 @@ public class ITQueryExecutorPagination {
         Assertions.assertEquals(5, data.getTotalPages());
         Assertions.assertEquals(0, data.getNumber());
 
-        Assertions.assertEquals("Item1", data.iterator().next().getName());
+        Assertions.assertEquals("Item1", data.iterator()
+            .next()
+            .getName());
     }
 
     @Test
@@ -277,7 +306,9 @@ public class ITQueryExecutorPagination {
         Assertions.assertEquals(5, data.getTotalPages());
         Assertions.assertEquals(1, data.getNumber());
 
-        Assertions.assertEquals("Item2", data.iterator().next().getName());
+        Assertions.assertEquals("Item2", data.iterator()
+            .next()
+            .getName());
     }
 
     private final String getQuery() {
@@ -288,23 +319,29 @@ public class ITQueryExecutorPagination {
         final Node item;
         final AliasedExpression name;
 
-        item = Cypher.node("Item").named("i");
-        name = item.property("name").as("name");
-        return Cypher.match(item).returning(name,
-                item.property("description").as("description"));
+        item = Cypher.node("Item")
+            .named("i");
+        name = item.property("name")
+            .as("name");
+        return Cypher.match(item)
+            .returning(name, item.property("description")
+                .as("description"));
     }
 
     private final Item toItem(final Map<String, Object> record) {
         final Long id;
         final String name;
         final Iterable<String> description;
+        final Iterable<String> tags;
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");
         description = Arrays.asList(
-                ((String) record.getOrDefault("description", "")).split("\\|"));
+            ((String) record.getOrDefault("description", "")).split("\\|"));
+        tags = (Iterable<String>) record.getOrDefault("labels",
+            Collections.emptyList());
 
-        return new DefaultItem(id, name, description);
+        return new DefaultItem(id, name, description, tags);
     }
 
 }

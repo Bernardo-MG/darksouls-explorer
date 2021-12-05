@@ -57,19 +57,19 @@ public class ITGraphQueriesFindById {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/single_node.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList("classpath:db/queries/graph/single_node.cypher"));
     }
 
     @Autowired
@@ -116,18 +116,25 @@ public class ITGraphQueriesFindById {
         id = getId();
         data = queries.findById(id);
 
-        Assertions.assertNotNull(data.get().getId());
-        Assertions.assertEquals("Node", data.get().getLabel());
-        Assertions.assertEquals(0,
-                IterableUtils.size(data.get().getDescription()));
+        Assertions.assertNotNull(data.get()
+            .getId());
+        Assertions.assertEquals("Node", data.get()
+            .getLabel());
+        Assertions.assertEquals(0, IterableUtils.size(data.get()
+            .getDescription()));
     }
 
     private final Long getId() {
         final Collection<Map<String, Object>> rows;
 
-        rows = client.query("MATCH (n) RETURN n").fetch().all();
+        rows = client.query("MATCH (n) RETURN n")
+            .fetch()
+            .all();
 
-        return (Long) rows.stream().findFirst().get().getOrDefault("id", 0l);
+        return (Long) rows.stream()
+            .findFirst()
+            .get()
+            .getOrDefault("id", 0l);
     }
 
 }

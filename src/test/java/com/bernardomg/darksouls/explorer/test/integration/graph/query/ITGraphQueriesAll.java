@@ -55,19 +55,19 @@ public class ITGraphQueriesAll {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList("classpath:db/queries/graph/simple.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList("classpath:db/queries/graph/simple.cypher"));
     }
 
     @Autowired
@@ -97,7 +97,10 @@ public class ITGraphQueriesAll {
     public void testFindAll_Data_Links() {
         final Link data;
 
-        data = queries.findAll().getLinks().iterator().next();
+        data = queries.findAll()
+            .getLinks()
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Source", data.getSourceLabel());
         Assertions.assertEquals("Target", data.getTargetLabel());
@@ -110,7 +113,9 @@ public class ITGraphQueriesAll {
         final Iterator<Node> nodes;
         Node data;
 
-        nodes = queries.findAll().getNodes().iterator();
+        nodes = queries.findAll()
+            .getNodes()
+            .iterator();
 
         data = nodes.next();
         Assertions.assertEquals("Source", data.getLabel());
@@ -125,7 +130,9 @@ public class ITGraphQueriesAll {
         final Iterator<String> types;
         String type;
 
-        types = queries.findAll().getTypes().iterator();
+        types = queries.findAll()
+            .getTypes()
+            .iterator();
 
         type = types.next();
         Assertions.assertEquals("RELATIONSHIP", type);

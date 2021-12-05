@@ -3,9 +3,14 @@ package com.bernardomg.darksouls.explorer.item.query;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +26,12 @@ import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 
 @Component
 public final class DefaultItemQueries implements ItemQueries {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory
+        .getLogger(DefaultItemQueries.class);
 
     private final QueryExecutor queryExecutor;
 
@@ -38,7 +49,10 @@ public final class DefaultItemQueries implements ItemQueries {
               "MATCH" + System.lineSeparator()
             + "  (i:Item)" + System.lineSeparator()
             + "RETURN" + System.lineSeparator()
-            + "  id(i) AS id, i.name AS name, i.description AS description",
+            + "  id(i) AS id,"
+            + "  i.name AS name,"
+            + "  i.description AS description,"
+            + "  LABELS(i) AS labels",
        // @formatter:on
             this::toItem, page);
     }
@@ -75,13 +89,20 @@ public final class DefaultItemQueries implements ItemQueries {
         final Long id;
         final String name;
         final Iterable<String> description;
+        final Iterable<String> tags;
+        final Iterable<String> tagsSorted;
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");
         description = Arrays.asList(
             ((String) record.getOrDefault("description", "")).split("\\|"));
+        tags = (Iterable<String>) record.getOrDefault("labels",
+            Collections.emptyList());
+        tagsSorted = StreamSupport.stream(tags.spliterator(), false)
+            .sorted()
+            .collect(Collectors.toList());
 
-        return new DefaultItem(id, name, description);
+        return new DefaultItem(id, name, description, tagsSorted);
     }
 
     private final ItemSource toItemSource(final Map<String, Object> record) {

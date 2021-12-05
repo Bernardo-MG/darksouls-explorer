@@ -55,20 +55,20 @@ public class ITGraphQueriesAllLinksMultiple {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList(
-                        "classpath:db/queries/graph/multiple_relationships.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList(
+                "classpath:db/queries/graph/multiple_relationships.cypher"));
     }
 
     @Autowired
@@ -97,9 +97,10 @@ public class ITGraphQueriesAllLinksMultiple {
         final Iterable<String> read;
         final Collection<String> types;
 
-        read = queries.findAll().getTypes();
+        read = queries.findAll()
+            .getTypes();
         types = StreamSupport.stream(read.spliterator(), false)
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
 
         Assertions.assertTrue(types.contains("RELATIONSHIP"));
         Assertions.assertTrue(types.contains("RELATIONSHIP2"));

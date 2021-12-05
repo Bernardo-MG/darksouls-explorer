@@ -50,7 +50,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(DefaultQueryExecutor.class);
+        .getLogger(DefaultQueryExecutor.class);
 
     private final Neo4jClient   client;
 
@@ -77,21 +77,24 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         if (page.isPaged()) {
             if (statementBuilder instanceof TerminalExposesSkip) {
                 ((TerminalExposesSkip) statementBuilder)
-                        .skip(page.getPageNumber() * page.getPageSize());
+                    .skip(page.getPageNumber() * page.getPageSize());
             }
             if (statementBuilder instanceof TerminalExposesLimit) {
                 ((TerminalExposesLimit) statementBuilder)
-                        .limit(page.getPageSize());
+                    .limit(page.getPageSize());
             }
         }
 
         // Sort
-        if (page.getSort().isSorted()) {
+        if (page.getSort()
+            .isSorted()) {
             if (statementBuilder instanceof TerminalExposesOrderBy) {
                 for (final Order order : page.getSort()) {
                     orderExpression = ((TerminalExposesOrderBy) statementBuilder)
-                            .orderBy(Cypher.anyNode().property("property")
-                                    .as(order.getProperty()).asName());
+                        .orderBy(Cypher.anyNode()
+                            .property("property")
+                            .as(order.getProperty())
+                            .asName());
                     if (order.isAscending()) {
                         orderExpression.ascending();
                     } else {
@@ -101,16 +104,21 @@ public final class DefaultQueryExecutor implements QueryExecutor {
             }
         }
 
-        query = statementBuilder.build().getCypher();
+        query = statementBuilder.build()
+            .getCypher();
 
         LOGGER.debug("Query: {}", query);
 
         // Data is fetched and mapped
-        read = client.query(query).fetch().all();
-        data = read.stream().map(mapper).collect(Collectors.toList());
+        read = client.query(query)
+            .fetch()
+            .all();
+        data = read.stream()
+            .map(mapper)
+            .collect(Collectors.toList());
 
         return PageableExecutionUtils.getPage(data, page,
-                () -> count(baseStatement));
+            () -> count(baseStatement));
     }
 
     @Override
@@ -119,8 +127,12 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         LOGGER.debug("Query: {}", query);
 
         // Data is fetched and mapped
-        return client.query(query).fetch().all().stream().map(mapper)
-                .collect(Collectors.toList());
+        return client.query(query)
+            .fetch()
+            .all()
+            .stream()
+            .map(mapper)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -130,14 +142,19 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         LOGGER.debug("Query: {}", query);
 
         // Data is fetched and mapped
-        return client.query(query).bindAll(parameters).fetch().all().stream()
-                .map(mapper).collect(Collectors.toList());
+        return client.query(query)
+            .bindAll(parameters)
+            .fetch()
+            .all()
+            .stream()
+            .map(mapper)
+            .collect(Collectors.toList());
     }
 
     @Override
-    public final <T> Page<T> fetch(String query,
-            Function<Map<String, Object>, T> mapper,
-            Map<String, Object> parameters, Pageable page) {
+    public final <T> Page<T> fetch(final String query,
+            final Function<Map<String, Object>, T> mapper,
+            final Map<String, Object> parameters, final Pageable page) {
         final List<T> data;
         final Collection<Map<String, Object>> read;
         final Statement baseStatement;
@@ -149,9 +166,12 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         finalQuery = query;
 
         // Sort
-        if (page.getSort().isSorted()) {
-            sort = page.getSort().stream().map(this::getOrder)
-                    .reduce((a, b) -> a + ", " + b);
+        if (page.getSort()
+            .isSorted()) {
+            sort = page.getSort()
+                .stream()
+                .map(this::getOrder)
+                .reduce((a, b) -> a + ", " + b);
             if (sort.isPresent()) {
                 finalQuery += " ORDER BY " + sort.get();
             }
@@ -160,18 +180,23 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         // Pagination
         if (page.isPaged()) {
             finalQuery += String.format(" SKIP %d",
-                    page.getPageNumber() * page.getPageSize());
+                page.getPageNumber() * page.getPageSize());
             finalQuery += String.format(" LIMIT %d", page.getPageSize());
         }
 
         LOGGER.debug("Query: {}", finalQuery);
 
         // Data is fetched and mapped
-        read = client.query(finalQuery).bindAll(parameters).fetch().all();
-        data = read.stream().map(mapper).collect(Collectors.toList());
+        read = client.query(finalQuery)
+            .bindAll(parameters)
+            .fetch()
+            .all();
+        data = read.stream()
+            .map(mapper)
+            .collect(Collectors.toList());
 
         return PageableExecutionUtils.getPage(data, page,
-                () -> count(baseStatement));
+            () -> count(baseStatement));
     }
 
     @Override
@@ -190,7 +215,8 @@ public final class DefaultQueryExecutor implements QueryExecutor {
 
             LOGGER.debug("Running {}", query);
 
-            client.query(query).run();
+            client.query(query)
+                .run();
         }
     }
 
@@ -201,7 +227,10 @@ public final class DefaultQueryExecutor implements QueryExecutor {
 
         LOGGER.debug("Count: {}", countQuery);
 
-        return client.query(countQuery).fetchAs(Long.class).first().get();
+        return client.query(countQuery)
+            .fetchAs(Long.class)
+            .first()
+            .get();
     }
 
     private final String getCountQuery(final String subquery) {
@@ -210,15 +239,17 @@ public final class DefaultQueryExecutor implements QueryExecutor {
 
         name = Cypher.name("value");
         call = Cypher.call("apoc.cypher.run")
-                .withArgs(Cypher.literalOf(subquery), Cypher.mapOf())
-                .yield(name).returning(Functions.count(name));
+            .withArgs(Cypher.literalOf(subquery), Cypher.mapOf())
+            .yield(name)
+            .returning(Functions.count(name));
 
-        return call.build().getCypher();
+        return call.build()
+            .getCypher();
     }
 
     private final String getOrder(final Order order) {
         return String.format("%s %s", order.getProperty(),
-                order.getDirection());
+            order.getDirection());
     }
 
 }

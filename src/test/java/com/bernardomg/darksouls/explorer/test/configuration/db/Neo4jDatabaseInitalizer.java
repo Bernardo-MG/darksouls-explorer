@@ -43,12 +43,12 @@ public final class Neo4jDatabaseInitalizer implements DatabaseInitalizer {
 
         file = ResourceUtils.getFile(path);
         try (final BufferedReader br = new BufferedReader(
-                new FileReader(file))) {
+            new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 final String instruction = line;
-                session.<Object> writeTransaction(
-                        work -> work.run(instruction));
+                session
+                    .<Object> writeTransaction(work -> work.run(instruction));
             }
         }
     }

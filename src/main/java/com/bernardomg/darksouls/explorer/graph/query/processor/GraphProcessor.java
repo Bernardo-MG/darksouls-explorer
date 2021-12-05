@@ -26,10 +26,10 @@ public final class GraphProcessor implements Processor<Graph> {
      * Logger.
      */
     private static final Logger LOGGER     = LoggerFactory
-            .getLogger(GraphProcessor.class);
+        .getLogger(GraphProcessor.class);
 
     private final List<String>  linkFields = Arrays.asList("source", "sourceId",
-            "target", "targetId", "relationship");
+        "target", "targetId", "relationship");
 
     public GraphProcessor() {
         super();
@@ -42,19 +42,24 @@ public final class GraphProcessor implements Processor<Graph> {
         final Set<String> resultTypes;
         final Graph result;
 
-        links = rows.stream().map(this::toLink).collect(Collectors.toList());
+        links = rows.stream()
+            .map(this::toLink)
+            .collect(Collectors.toList());
 
         // TODO: Build only if they are requested
 
         nodes = new HashSet<>();
-        nodes.addAll(rows.stream().map(this::toSourceNode)
-                .collect(Collectors.toList()));
-        nodes.addAll(rows.stream().map(this::toTargetNode)
-                .collect(Collectors.toList()));
+        nodes.addAll(rows.stream()
+            .map(this::toSourceNode)
+            .collect(Collectors.toList()));
+        nodes.addAll(rows.stream()
+            .map(this::toTargetNode)
+            .collect(Collectors.toList()));
 
         resultTypes = new HashSet<>();
-        resultTypes.addAll(
-                links.stream().map(Link::getType).collect(Collectors.toList()));
+        resultTypes.addAll(links.stream()
+            .map(Link::getType)
+            .collect(Collectors.toList()));
 
         result = new DefaultGraph();
         result.setLinks(links);
@@ -93,7 +98,7 @@ public final class GraphProcessor implements Processor<Graph> {
         LOGGER.trace("Mapping row {} to source node", row);
 
         result = new DefaultNode((Long) row.getOrDefault("sourceId", 0l),
-                (String) row.getOrDefault("source", ""));
+            (String) row.getOrDefault("source", ""));
 
         LOGGER.debug("Mapped row {} to {}", row, result);
 
@@ -106,7 +111,7 @@ public final class GraphProcessor implements Processor<Graph> {
         LOGGER.trace("Mapping row {} to target node", row);
 
         result = new DefaultNode((Long) row.getOrDefault("targetId", 0l),
-                (String) row.getOrDefault("target", ""));
+            (String) row.getOrDefault("target", ""));
 
         LOGGER.debug("Mapped row {} to {}", row, result);
 

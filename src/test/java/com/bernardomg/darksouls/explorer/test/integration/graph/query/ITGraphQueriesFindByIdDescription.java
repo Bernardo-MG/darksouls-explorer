@@ -64,20 +64,20 @@ public class ITGraphQueriesFindByIdDescription {
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
             new Neo4jApplicationContextInitializer(dbContainer)
-                    .initialize(configurableApplicationContext);
+                .initialize(configurableApplicationContext);
         }
     }
 
     @Container
     private static final Neo4jContainer<?> dbContainer = ContainerFactory
-            .getNeo4jContainer();
+        .getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
-                dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-                Arrays.asList(
-                        "classpath:db/queries/graph/single_node_description.cypher"));
+            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList(
+                "classpath:db/queries/graph/single_node_description.cypher"));
     }
 
     @Autowired
@@ -115,12 +115,16 @@ public class ITGraphQueriesFindByIdDescription {
         id = getId();
         data = queries.findById(id);
 
-        Assertions.assertNotNull(data.get().getId());
-        Assertions.assertEquals("Node", data.get().getLabel());
-        Assertions.assertEquals(2,
-                IterableUtils.size(data.get().getDescription()));
+        Assertions.assertNotNull(data.get()
+            .getId());
+        Assertions.assertEquals("Node", data.get()
+            .getLabel());
+        Assertions.assertEquals(2, IterableUtils.size(data.get()
+            .getDescription()));
 
-        itr = data.get().getDescription().iterator();
+        itr = data.get()
+            .getDescription()
+            .iterator();
         Assertions.assertEquals("line1", itr.next());
         Assertions.assertEquals("line2", itr.next());
     }
@@ -132,14 +136,21 @@ public class ITGraphQueriesFindByIdDescription {
         final String query;
         final Collection<Map<String, Object>> rows;
 
-        node = Cypher.anyNode().named("n");
-        statementBuilder = Cypher.match(node).returning(node);
+        node = Cypher.anyNode()
+            .named("n");
+        statementBuilder = Cypher.match(node)
+            .returning(node);
 
         statement = statementBuilder.build();
         query = cypherRenderer.render(statement);
-        rows = client.query(query).fetch().all();
+        rows = client.query(query)
+            .fetch()
+            .all();
 
-        return (Long) rows.stream().findFirst().get().getOrDefault("id", 0l);
+        return (Long) rows.stream()
+            .findFirst()
+            .get()
+            .getOrDefault("id", 0l);
     }
 
 }

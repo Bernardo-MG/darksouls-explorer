@@ -24,11 +24,11 @@ public final class Neo4jApplicationContextInitializer implements
 
         dbContainer.addExposedPorts(7687);
         TestPropertyValues
-                .of("spring.neo4j.uri=" + dbContainer.getBoltUrl(),
-                        "spring.neo4j.authentication.username=neo4j",
-                        "spring.neo4j.authentication.password="
-                                + dbContainer.getAdminPassword())
-                .applyTo(configurableApplicationContext.getEnvironment());
+            .of("spring.neo4j.uri=" + dbContainer.getBoltUrl(),
+                "spring.neo4j.authentication.username=neo4j",
+                "spring.neo4j.authentication.password="
+                        + dbContainer.getAdminPassword())
+            .applyTo(configurableApplicationContext.getEnvironment());
     }
 
 }
