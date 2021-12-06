@@ -14,11 +14,10 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.service;
+package com.bernardomg.darksouls.explorer.test.integration.metadata.service;
 
 import java.util.Arrays;
 
-import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -26,14 +25,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
-import com.bernardomg.darksouls.explorer.item.model.Item;
-import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.metadata.service.MetadataService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -44,9 +41,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
  */
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITItemServiceFindAllAdditionalTag.Initializer.class })
-@DisplayName("Reading all the items with an additional tag")
-public class ITItemServiceFindAllAdditionalTag {
+        initializers = { MetadataServiceGetTagsSingle.Initializer.class })
+@DisplayName("Reading tag list with a single tag")
+public class MetadataServiceGetTagsSingle {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -67,42 +64,27 @@ public class ITItemServiceFindAllAdditionalTag {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
             dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/additional_tag.cypher"));
+            Arrays.asList("classpath:db/queries/item/single.cypher"));
     }
 
     @Autowired
-    private ItemService service;
+    private MetadataService service;
 
     /**
      * Default constructor.
      */
-    public ITItemServiceFindAllAdditionalTag() {
+    public MetadataServiceGetTagsSingle() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data")
-    public void testFindAll_Count() {
-        final Iterable<Item> data;
+    @DisplayName("Returns all the tags")
+    public void testGetTags_Count() {
+        final Iterable<String> data;
 
-        data = service.getAll(Pageable.unpaged());
+        data = service.getTags("Item");
 
-        Assertions.assertEquals(1, IterableUtils.size(data));
-    }
-
-    @Test
-    @DisplayName("Returns the correct data")
-    public void testFindAll_Data() {
-        final Item data;
-
-        data = service.getAll(Pageable.unpaged())
-            .iterator()
-            .next();
-
-        Assertions.assertEquals("Item name", data.getName());
-        Assertions.assertEquals(Arrays.asList("Description"),
-            data.getDescription());
-        Assertions.assertEquals(Arrays.asList("Item", "Tag"), data.getTags());
+        Assertions.assertEquals(Arrays.asList("Item"), data);
     }
 
 }

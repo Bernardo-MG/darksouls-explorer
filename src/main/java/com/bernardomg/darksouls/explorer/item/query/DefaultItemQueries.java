@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +24,6 @@ import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 
 @Component
 public final class DefaultItemQueries implements ItemQueries {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory
-        .getLogger(DefaultItemQueries.class);
 
     private final QueryExecutor queryExecutor;
 
@@ -81,6 +73,7 @@ public final class DefaultItemQueries implements ItemQueries {
           + "  i.name AS item, s.name AS source, type(rel) AS relationship";
         // @formatter:on;
 
+        // TODO: Use parameters
         query = String.format(queryTemplate, String.join("|", rels));
         return queryExecutor.fetch(query, this::toItemSource, params, page);
     }
