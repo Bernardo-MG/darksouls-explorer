@@ -1,7 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.service;
 
-import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,15 +26,7 @@ public final class DefaultItemService implements ItemService {
     @Override
     public final Page<Item> getAll(final ItemRequest request,
             final Pageable page) {
-        final Page<Item> items;
-
-        if (IterableUtils.isEmpty(request.getTags())) {
-            items = queries.findAll(page);
-        } else {
-            items = queries.findAllByTags(request.getTags(), page);
-        }
-
-        return items;
+        return queries.findAll(request.getName(), request.getTags(), page);
     }
 
     @Override

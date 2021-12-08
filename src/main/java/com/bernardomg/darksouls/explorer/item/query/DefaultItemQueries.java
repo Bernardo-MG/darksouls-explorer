@@ -9,6 +9,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Functions;
+import org.neo4j.cypherdsl.core.Node;
+import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,50 +40,28 @@ public final class DefaultItemQueries implements ItemQueries {
     }
 
     @Override
-    public final Page<Item> findAll(final Pageable page) {
-        final String query;
+    public final Page<Item> findAll(final String name,
+            final Iterable<String> tags, final Pageable page) {
+        final Node item;
+        final BuildableStatement<ResultStatement> statementBuilder;
+        final String[] additionalLabels;
 
-        query =
-        // @formatter:off
-                "MATCH" + System.lineSeparator()
-              + "  (i:Item)" + System.lineSeparator()
-              + "RETURN" + System.lineSeparator()
-              + "  id(i) AS id,"
-              + "  i.name AS name,"
-              + "  i.description AS description,"
-              + "  LABELS(i) AS labels";
-         // @formatter:on
+        additionalLabels = StreamSupport.stream(tags.spliterator(), false)
+            .toArray(String[]::new);
+        item = Cypher.node("Item", additionalLabels)
+            .named("s");
 
-        return queryExecutor.fetch(query, this::toItem, page);
-    }
+        statementBuilder = Cypher.match(item)
+            .returning(item.property("name")
+                .as("name"),
+                item.property("description")
+                    .as("description"),
+                Functions.id(item)
+                    .as("id"),
+                Functions.labels(item)
+                    .as("labels"));
 
-    @Override
-    public final Page<Item> findAllByTags(final Iterable<String> tags,
-            final Pageable page) {
-        final Map<String, Object> params;
-        final String queryTemplate;
-        final String query;
-        final String joinedTags;
-
-        params = new HashMap<>();
-        params.put("tags", tags);
-
-        queryTemplate =
-        // @formatter:off
-                "MATCH" + System.lineSeparator()
-              + "  (i:Item:%s)" + System.lineSeparator()
-              + "RETURN" + System.lineSeparator()
-              + "  id(i) AS id,"
-              + "  i.name AS name,"
-              + "  i.description AS description,"
-              + "  LABELS(i) AS labels";
-         // @formatter:on
-
-        // TODO: Use parameters
-        joinedTags = StreamSupport.stream(tags.spliterator(), false)
-            .collect(Collectors.joining(":"));
-        query = String.format(queryTemplate, joinedTags);
-        return queryExecutor.fetch(query, this::toItem, params, page);
+        return queryExecutor.fetch(statementBuilder, this::toItem, page);
     }
 
     @Override

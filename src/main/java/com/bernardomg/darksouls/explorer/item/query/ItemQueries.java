@@ -9,9 +9,7 @@ import com.bernardomg.darksouls.explorer.item.model.ItemSource;
 
 public interface ItemQueries {
 
-    public Page<Item> findAll(final Pageable page);
-
-    public Page<Item> findAllByTags(final Iterable<String> tags,
+    public Page<Item> findAll(final String name, final Iterable<String> tags,
             final Pageable page);
 
     public Page<ItemSource> findSources(final Long id, final Pageable page);
