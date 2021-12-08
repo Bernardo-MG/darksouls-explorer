@@ -36,17 +36,49 @@ public final class DefaultItemQueries implements ItemQueries {
 
     @Override
     public final Page<Item> findAll(final Pageable page) {
-        return queryExecutor.fetch(
+        final String query;
+
+        query =
         // @formatter:off
-              "MATCH" + System.lineSeparator()
-            + "  (i:Item)" + System.lineSeparator()
-            + "RETURN" + System.lineSeparator()
-            + "  id(i) AS id,"
-            + "  i.name AS name,"
-            + "  i.description AS description,"
-            + "  LABELS(i) AS labels",
-       // @formatter:on
-            this::toItem, page);
+                "MATCH" + System.lineSeparator()
+              + "  (i:Item)" + System.lineSeparator()
+              + "RETURN" + System.lineSeparator()
+              + "  id(i) AS id,"
+              + "  i.name AS name,"
+              + "  i.description AS description,"
+              + "  LABELS(i) AS labels";
+         // @formatter:on
+
+        return queryExecutor.fetch(query, this::toItem, page);
+    }
+
+    @Override
+    public final Page<Item> findAllByTags(final Iterable<String> tags,
+            final Pageable page) {
+        final Map<String, Object> params;
+        final String queryTemplate;
+        final String query;
+        final String joinedTags;
+
+        params = new HashMap<>();
+        params.put("tags", tags);
+
+        queryTemplate =
+        // @formatter:off
+                "MATCH" + System.lineSeparator()
+              + "  (i:Item:%s)" + System.lineSeparator()
+              + "RETURN" + System.lineSeparator()
+              + "  id(i) AS id,"
+              + "  i.name AS name,"
+              + "  i.description AS description,"
+              + "  LABELS(i) AS labels";
+         // @formatter:on
+
+        // TODO: Use parameters
+        joinedTags = StreamSupport.stream(tags.spliterator(), false)
+            .collect(Collectors.joining(":"));
+        query = String.format(queryTemplate, joinedTags);
+        return queryExecutor.fetch(query, this::toItem, params, page);
     }
 
     @Override
@@ -54,6 +86,7 @@ public final class DefaultItemQueries implements ItemQueries {
             final Pageable page) {
         final Map<String, Object> params;
         final Collection<String> rels;
+        final String joinedRels;
         final String queryTemplate;
         final String query;
 
@@ -74,7 +107,9 @@ public final class DefaultItemQueries implements ItemQueries {
         // @formatter:on;
 
         // TODO: Use parameters
-        query = String.format(queryTemplate, String.join("|", rels));
+        joinedRels = rels.stream()
+            .collect(Collectors.joining("|"));
+        query = String.format(queryTemplate, joinedRels);
         return queryExecutor.fetch(query, this::toItemSource, params, page);
     }
 

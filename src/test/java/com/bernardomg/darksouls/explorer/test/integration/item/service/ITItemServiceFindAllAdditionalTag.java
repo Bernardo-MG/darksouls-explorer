@@ -32,7 +32,9 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
+import com.bernardomg.darksouls.explorer.item.model.DefaultItemRequest;
 import com.bernardomg.darksouls.explorer.item.model.Item;
+import com.bernardomg.darksouls.explorer.item.model.ItemRequest;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
@@ -84,8 +86,11 @@ public class ITItemServiceFindAllAdditionalTag {
     @DisplayName("Returns all the data")
     public void testFindAll_Count() {
         final Iterable<Item> data;
+        final ItemRequest request;
 
-        data = service.getAll(Pageable.unpaged());
+        request = new DefaultItemRequest();
+
+        data = service.getAll(request, Pageable.unpaged());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -94,8 +99,11 @@ public class ITItemServiceFindAllAdditionalTag {
     @DisplayName("Returns the correct data")
     public void testFindAll_Data() {
         final Item data;
+        final ItemRequest request;
 
-        data = service.getAll(Pageable.unpaged())
+        request = new DefaultItemRequest();
+
+        data = service.getAll(request, Pageable.unpaged())
             .iterator()
             .next();
 
