@@ -111,7 +111,7 @@ public class ITItemServiceFindAllByTags {
         Assertions.assertEquals("Item name", data.getName());
         Assertions.assertEquals(Arrays.asList("Description"),
             data.getDescription());
-        Assertions.assertEquals(Arrays.asList("Item"), data.getTags());
+        Assertions.assertEquals(Arrays.asList("Item", "Tag"), data.getTags());
     }
 
 }
