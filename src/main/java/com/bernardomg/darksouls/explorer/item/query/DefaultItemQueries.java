@@ -9,11 +9,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.neo4j.cypherdsl.core.Condition;
 import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Expression;
 import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.ResultStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
+import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingWithoutWhere;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,23 +46,32 @@ public final class DefaultItemQueries implements ItemQueries {
     public final Page<Item> findAll(final String name,
             final Iterable<String> tags, final Pageable page) {
         final Node item;
+        final Expression nodeName;
+        final OngoingReadingWithoutWhere ongoingBuilder;
         final BuildableStatement<ResultStatement> statementBuilder;
         final String[] additionalLabels;
+        final Condition nameCondition;
 
         additionalLabels = StreamSupport.stream(tags.spliterator(), false)
             .toArray(String[]::new);
         item = Cypher.node("Item", additionalLabels)
             .named("s");
+        nodeName = item.property("name");
 
-        statementBuilder = Cypher.match(item)
-            .returning(item.property("name")
-                .as("name"),
-                item.property("description")
-                    .as("description"),
-                Functions.id(item)
-                    .as("id"),
-                Functions.labels(item)
-                    .as("labels"));
+        ongoingBuilder = Cypher.match(item);
+
+        if (!name.isBlank()) {
+            nameCondition = nodeName.matches(".*" + name + ".*");
+            ongoingBuilder.where(nameCondition);
+        }
+
+        statementBuilder = ongoingBuilder.returning(nodeName.as("name"),
+            item.property("description")
+                .as("description"),
+            Functions.id(item)
+                .as("id"),
+            Functions.labels(item)
+                .as("labels"));
 
         return queryExecutor.fetch(statementBuilder, this::toItem, page);
     }
