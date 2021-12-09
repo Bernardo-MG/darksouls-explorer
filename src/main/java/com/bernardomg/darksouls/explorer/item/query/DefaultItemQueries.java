@@ -61,7 +61,7 @@ public final class DefaultItemQueries implements ItemQueries {
         ongoingBuilder = Cypher.match(item);
 
         if (!name.isBlank()) {
-            nameCondition = nodeName.matches(".*" + name + ".*");
+            nameCondition = nodeName.matches("(?i).*" + name + ".*");
             ongoingBuilder.where(nameCondition);
         }
 
