@@ -24,6 +24,7 @@ import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.item.model.DefaultItem;
+import com.bernardomg.darksouls.explorer.item.model.DefaultItemMerchantSource;
 import com.bernardomg.darksouls.explorer.item.model.DefaultItemSource;
 import com.bernardomg.darksouls.explorer.item.model.Item;
 import com.bernardomg.darksouls.explorer.item.model.ItemSource;
@@ -98,7 +99,7 @@ public final class DefaultItemQueries implements ItemQueries {
           + "WHERE" + System.lineSeparator()
           + "  id(i) = $id" + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
-          + "  i.name AS item, s.name AS source, type(rel) AS relationship";
+          + "  i.name AS item, s.name AS source, rel.price AS price, type(rel) AS relationship";
         // @formatter:on;
 
         // TODO: Use parameters
@@ -131,6 +132,7 @@ public final class DefaultItemQueries implements ItemQueries {
     private final ItemSource toItemSource(final Map<String, Object> record) {
         final String type;
         final String rel;
+        final ItemSource source;
 
         rel = (String) record.getOrDefault("relationship", "");
 
@@ -160,8 +162,20 @@ public final class DefaultItemQueries implements ItemQueries {
                 type = rel;
         }
 
-        return new DefaultItemSource((String) record.getOrDefault("item", ""),
-            (String) record.getOrDefault("source", ""), type);
+        switch (rel) {
+            case "SELLS":
+                source = new DefaultItemMerchantSource(
+                    (String) record.getOrDefault("item", ""),
+                    (String) record.getOrDefault("source", ""), type,
+                    (Float) record.getOrDefault("price", 0f));
+                break;
+            default:
+                source = new DefaultItemSource(
+                    (String) record.getOrDefault("item", ""),
+                    (String) record.getOrDefault("source", ""), type);
+        }
+
+        return source;
     }
 
 }
