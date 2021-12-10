@@ -4,9 +4,9 @@ package com.bernardomg.darksouls.explorer.item.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.bernardomg.darksouls.explorer.item.model.Item;
-import com.bernardomg.darksouls.explorer.item.model.ItemRequest;
-import com.bernardomg.darksouls.explorer.item.model.ItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.Item;
+import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
+import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 
 public interface ItemService {
 

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.model.DefaultItemRequest;
-import com.bernardomg.darksouls.explorer.item.model.Item;
-import com.bernardomg.darksouls.explorer.item.model.ItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.Item;
+import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
+import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
 
 @RestController

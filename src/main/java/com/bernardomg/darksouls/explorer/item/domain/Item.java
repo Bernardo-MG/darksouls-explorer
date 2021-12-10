@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.model;
+package com.bernardomg.darksouls.explorer.item.domain;
 
 public interface Item {
 

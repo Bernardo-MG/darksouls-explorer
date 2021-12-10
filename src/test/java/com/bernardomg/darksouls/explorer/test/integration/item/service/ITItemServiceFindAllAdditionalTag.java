@@ -32,9 +32,9 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
-import com.bernardomg.darksouls.explorer.item.model.DefaultItemRequest;
-import com.bernardomg.darksouls.explorer.item.model.Item;
-import com.bernardomg.darksouls.explorer.item.model.ItemRequest;
+import com.bernardomg.darksouls.explorer.item.domain.Item;
+import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
+import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;

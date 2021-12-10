@@ -23,11 +23,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.item.model.DefaultItem;
-import com.bernardomg.darksouls.explorer.item.model.DefaultItemMerchantSource;
-import com.bernardomg.darksouls.explorer.item.model.DefaultItemSource;
-import com.bernardomg.darksouls.explorer.item.model.Item;
-import com.bernardomg.darksouls.explorer.item.model.ItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.DefaultItem;
+import com.bernardomg.darksouls.explorer.item.domain.DefaultItemMerchantSource;
+import com.bernardomg.darksouls.explorer.item.domain.DefaultItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.Item;
+import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 

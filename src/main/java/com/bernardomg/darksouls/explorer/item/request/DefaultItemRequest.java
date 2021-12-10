@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.model;
+package com.bernardomg.darksouls.explorer.item.request;
 
 import java.util.Collections;
 import java.util.List;
