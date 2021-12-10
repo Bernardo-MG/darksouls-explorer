@@ -167,7 +167,7 @@ public final class DefaultItemQueries implements ItemQueries {
                 source = new DefaultItemMerchantSource(
                     (String) record.getOrDefault("item", ""),
                     (String) record.getOrDefault("source", ""), type,
-                    (Float) record.getOrDefault("price", 0f));
+                    (Double) record.getOrDefault("price", 0d));
                 break;
             default:
                 source = new DefaultItemSource(

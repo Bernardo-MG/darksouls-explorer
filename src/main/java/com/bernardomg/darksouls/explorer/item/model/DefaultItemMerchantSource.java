@@ -17,11 +17,11 @@ public class DefaultItemMerchantSource implements ItemMerchantSource {
     private String source;
 
     @NonNull
-    private Float  cost;
+    private Double cost;
 
     public DefaultItemMerchantSource(@NonNull final String item,
             @NonNull final String source, @NonNull final String relationship,
-            @NonNull final Float cost) {
+            @NonNull final Double cost) {
         super();
 
         this.item = item;
