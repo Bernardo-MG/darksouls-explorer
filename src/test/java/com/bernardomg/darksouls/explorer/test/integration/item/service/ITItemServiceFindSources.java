@@ -115,6 +115,7 @@ public class ITItemServiceFindSources {
         Assertions.assertEquals("Item name", data.getItem());
         Assertions.assertEquals("Merchant", data.getSource());
         Assertions.assertEquals("sold", data.getRelationship());
+        Assertions.assertEquals("Location", data.getLocation());
     }
 
     private final Long getId() {

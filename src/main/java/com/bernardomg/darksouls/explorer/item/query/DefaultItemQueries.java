@@ -95,11 +95,12 @@ public final class DefaultItemQueries implements ItemQueries {
         queryTemplate =
         // @formatter:off
             "MATCH" + System.lineSeparator()
-          + "  (s)-[rel:%s]->(i:Item)" + System.lineSeparator()
+          + "  (s)-[rel:%s]->(i:Item)," + System.lineSeparator()
+          + "  (s)-[:LOCATED_IN]->(l)" + System.lineSeparator()
           + "WHERE" + System.lineSeparator()
           + "  id(i) = $id" + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
-          + "  i.name AS item, s.name AS source, rel.price AS price, type(rel) AS relationship";
+          + "  i.name AS item, s.name AS source, rel.price AS price, type(rel) AS relationship, l.name AS location";
         // @formatter:on;
 
         // TODO: Use parameters
@@ -133,6 +134,7 @@ public final class DefaultItemQueries implements ItemQueries {
         final String type;
         final String rel;
         final ItemSource source;
+        final Number cost;
 
         rel = (String) record.getOrDefault("relationship", "");
 
@@ -164,15 +166,18 @@ public final class DefaultItemQueries implements ItemQueries {
 
         switch (rel) {
             case "SELLS":
+                cost = (Number) record.getOrDefault("price", 0d);
                 source = new DefaultItemMerchantSource(
                     (String) record.getOrDefault("item", ""),
                     (String) record.getOrDefault("source", ""), type,
-                    (Double) record.getOrDefault("price", 0d));
+                    (String) record.getOrDefault("location", ""),
+                    cost.doubleValue());
                 break;
             default:
                 source = new DefaultItemSource(
                     (String) record.getOrDefault("item", ""),
-                    (String) record.getOrDefault("source", ""), type);
+                    (String) record.getOrDefault("source", ""), type,
+                    (String) record.getOrDefault("location", ""));
         }
 
         return source;

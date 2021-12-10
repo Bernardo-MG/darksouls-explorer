@@ -19,14 +19,18 @@ public class DefaultItemMerchantSource implements ItemMerchantSource {
     @NonNull
     private Double cost;
 
+    @NonNull
+    private String location;
+
     public DefaultItemMerchantSource(@NonNull final String item,
             @NonNull final String source, @NonNull final String relationship,
-            @NonNull final Double cost) {
+            @NonNull final String location, @NonNull final Double cost) {
         super();
 
         this.item = item;
         this.source = source;
         this.relationship = relationship;
+        this.location = location;
         this.cost = cost;
     }
 
