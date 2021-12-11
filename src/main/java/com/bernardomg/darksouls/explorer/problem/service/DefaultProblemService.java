@@ -62,6 +62,7 @@ public final class DefaultProblemService implements ProblemService {
         itemsWithoutSource = queries.findMissingRelationships("Item",
             Arrays.asList("DROPS", "SELLS", "STARTS_WITH", "REWARDS",
                 "CHOSEN_FROM", "ASCENDS", "LOOT", "DROPS_IN_COMBAT"));
+        // TODO: Items with no location
 
         LOGGER.debug("Duplicated items: {}", itemsDuplicated);
         LOGGER.debug("Items without description: {}", itemNoDescription);
