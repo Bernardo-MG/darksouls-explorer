@@ -11,12 +11,4 @@ public interface ItemSource {
 
     public String getSource();
 
-    public void setItem(final String item);
-
-    public void setLocation(final String location);
-
-    public void setRelationship(final String relationship);
-
-    public void setSource(final String source);
-
 }

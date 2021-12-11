@@ -5,15 +5,15 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public final class DefaultMap implements Map {
+public final class ImmutableMap implements Map {
 
     @NonNull
-    private Long   id;
+    private final Long   id;
 
     @NonNull
-    private String name;
+    private final String name;
 
-    public DefaultMap(@NonNull final Long id, @NonNull final String name) {
+    public ImmutableMap(@NonNull final Long id, @NonNull final String name) {
         super();
 
         this.id = id;

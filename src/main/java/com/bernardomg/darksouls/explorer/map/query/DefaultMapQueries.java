@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.map.domain.DefaultMap;
+import com.bernardomg.darksouls.explorer.map.domain.ImmutableMap;
 import com.bernardomg.darksouls.explorer.map.domain.Map;
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
@@ -46,7 +46,7 @@ public final class DefaultMapQueries implements MapQueries {
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");
 
-        return new DefaultMap(id, name);
+        return new ImmutableMap(id, name);
     }
 
 }

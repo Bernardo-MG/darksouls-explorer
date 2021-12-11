@@ -5,24 +5,24 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class DefaultItemMerchantSource implements ItemMerchantSource {
+public class ImmutableItemMerchantSource implements ItemMerchantSource {
 
     @NonNull
-    private String item;
+    private final String item;
 
     @NonNull
-    private String relationship;
+    private final String relationship;
 
     @NonNull
-    private String source;
+    private final String source;
 
     @NonNull
-    private Double cost;
+    private final Double cost;
 
     @NonNull
-    private String location;
+    private final String location;
 
-    public DefaultItemMerchantSource(@NonNull final String item,
+    public ImmutableItemMerchantSource(@NonNull final String item,
             @NonNull final String source, @NonNull final String relationship,
             @NonNull final String location, @NonNull final Double cost) {
         super();

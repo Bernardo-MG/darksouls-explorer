@@ -5,21 +5,21 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class DefaultItemSource implements ItemSource {
+public class ImmutableItemSource implements ItemSource {
 
     @NonNull
-    private String item;
+    private final String item;
 
     @NonNull
-    private String relationship;
+    private final String relationship;
 
     @NonNull
-    private String source;
+    private final String source;
 
     @NonNull
-    private String location;
+    private final String location;
 
-    public DefaultItemSource(@NonNull final String item,
+    public ImmutableItemSource(@NonNull final String item,
             @NonNull final String source, @NonNull final String relationship,
             @NonNull final String location) {
         super();

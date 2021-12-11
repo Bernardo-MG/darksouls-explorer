@@ -43,7 +43,7 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
-import com.bernardomg.darksouls.explorer.item.domain.DefaultItem;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
@@ -341,7 +341,7 @@ public class ITQueryExecutorPagination {
         tags = (Iterable<String>) record.getOrDefault("labels",
             Collections.emptyList());
 
-        return new DefaultItem(id, name, description, tags);
+        return new ImmutableItem(id, name, description, tags);
     }
 
 }

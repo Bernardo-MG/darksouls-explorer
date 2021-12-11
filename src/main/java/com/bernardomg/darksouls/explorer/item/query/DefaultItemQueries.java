@@ -23,9 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.item.domain.DefaultItem;
-import com.bernardomg.darksouls.explorer.item.domain.DefaultItemMerchantSource;
-import com.bernardomg.darksouls.explorer.item.domain.DefaultItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemMerchantSource;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemSource;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
@@ -128,7 +128,7 @@ public final class DefaultItemQueries implements ItemQueries {
             .sorted()
             .collect(Collectors.toList());
 
-        return new DefaultItem(id, name, description, tagsSorted);
+        return new ImmutableItem(id, name, description, tagsSorted);
     }
 
     private final ItemSource toItemSource(final Map<String, Object> record) {
@@ -171,14 +171,14 @@ public final class DefaultItemQueries implements ItemQueries {
         switch (rel) {
             case "SELLS":
                 cost = (Number) record.getOrDefault("price", 0d);
-                source = new DefaultItemMerchantSource(
+                source = new ImmutableItemMerchantSource(
                     (String) record.getOrDefault("item", ""),
                     (String) record.getOrDefault("source", ""), type,
                     (String) record.getOrDefault("location", ""),
                     cost.doubleValue());
                 break;
             default:
-                source = new DefaultItemSource(
+                source = new ImmutableItemSource(
                     (String) record.getOrDefault("item", ""),
                     (String) record.getOrDefault("source", ""), type,
                     (String) record.getOrDefault("location", ""));

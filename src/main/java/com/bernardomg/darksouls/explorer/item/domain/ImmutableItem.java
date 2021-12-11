@@ -5,21 +5,21 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public final class DefaultItem implements Item {
+public final class ImmutableItem implements Item {
 
     @NonNull
-    private Iterable<String> description;
+    private final Iterable<String> description;
 
     @NonNull
-    private Long             id;
+    private final Long             id;
 
     @NonNull
-    private String           name;
+    private final String           name;
 
     @NonNull
-    private Iterable<String> tags;
+    private final Iterable<String> tags;
 
-    public DefaultItem(@NonNull final Long id, @NonNull final String name,
+    public ImmutableItem(@NonNull final Long id, @NonNull final String name,
             @NonNull final Iterable<String> description,
             @NonNull final Iterable<String> tags) {
         super();
