@@ -8,19 +8,19 @@ import lombok.NonNull;
 public class ImmutableItemMerchantSource implements ItemMerchantSource {
 
     @NonNull
+    private final Double cost;
+
+    @NonNull
     private final String item;
+
+    @NonNull
+    private final String location;
 
     @NonNull
     private final String relationship;
 
     @NonNull
     private final String source;
-
-    @NonNull
-    private final Double cost;
-
-    @NonNull
-    private final String location;
 
     public ImmutableItemMerchantSource(@NonNull final String item,
             @NonNull final String source, @NonNull final String relationship,

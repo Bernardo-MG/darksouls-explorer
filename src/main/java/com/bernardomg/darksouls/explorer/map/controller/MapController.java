@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
 import com.bernardomg.darksouls.explorer.map.domain.Map;
+import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
 import com.bernardomg.darksouls.explorer.map.service.MapService;
 
 @RestController
@@ -28,6 +29,13 @@ public class MapController {
     public Page<Map> read(final DefaultItemRequest request,
             final Pageable page) {
         return service.getAll(page);
+    }
+
+    @GetMapping(path = "/connections",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<MapConnection> readConnections(final DefaultItemRequest request,
+            final Pageable page) {
+        return service.getAllConnections(page);
     }
 
 }

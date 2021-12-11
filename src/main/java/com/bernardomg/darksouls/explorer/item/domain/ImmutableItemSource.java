@@ -11,13 +11,13 @@ public class ImmutableItemSource implements ItemSource {
     private final String item;
 
     @NonNull
+    private final String location;
+
+    @NonNull
     private final String relationship;
 
     @NonNull
     private final String source;
-
-    @NonNull
-    private final String location;
 
     public ImmutableItemSource(@NonNull final String item,
             @NonNull final String source, @NonNull final String relationship,
