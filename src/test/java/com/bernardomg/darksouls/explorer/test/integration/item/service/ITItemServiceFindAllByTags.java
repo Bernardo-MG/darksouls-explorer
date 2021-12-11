@@ -31,7 +31,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.graph.query.GraphQueries;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
@@ -40,9 +39,6 @@ import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplica
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
-/**
- * Integration tests for the {@link GraphQueries}.
- */
 @IntegrationTest
 @ContextConfiguration(
         initializers = { ITItemServiceFindAllByTags.Initializer.class })
