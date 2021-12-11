@@ -89,8 +89,9 @@ public final class DefaultItemQueries implements ItemQueries {
         params = new HashMap<>();
         params.put("id", id);
 
+        // TODO: Include exchanges
         rels = Arrays.asList("DROPS", "SELLS", "STARTS_WITH", "REWARDS",
-            "CHOSEN_FROM", "ASCENDS", "LOOT");
+            "CHOSEN_FROM", "ASCENDS", "LOOT", "DROPS_IN_COMBAT");
 
         queryTemplate =
         // @formatter:off
@@ -159,6 +160,9 @@ public final class DefaultItemQueries implements ItemQueries {
                 break;
             case "LOOT":
                 type = "loot";
+                break;
+            case "DROPS_IN_COMBAT":
+                type = "combat_loot";
                 break;
             default:
                 type = rel;
