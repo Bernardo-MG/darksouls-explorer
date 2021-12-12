@@ -66,6 +66,16 @@ mvn spring-boot:run -P development
 
 It will be accessible at [http://localhost:8080/](http://localhost:8080/).
 
+### Docker image
+
+Alternatively, a Docker compose file is included.
+
+```
+docker-compose -f docker/docker-compose.yml up
+```
+
+This will start a Neo4j database, with the dashboard available at [http://localhost:7474/](http://localhost:7474/). And the backend, available at http://localhost:8080.
+
 ### Running the tests
 
 The project requires a database and a server for being able to run the integration tests.
