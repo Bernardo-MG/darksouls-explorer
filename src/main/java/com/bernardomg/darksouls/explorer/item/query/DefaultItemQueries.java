@@ -101,7 +101,10 @@ public final class DefaultItemQueries implements ItemQueries {
           + "WHERE" + System.lineSeparator()
           + "  id(i) = $id" + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
-          + "  i.name AS item, s.name AS source, rel.price AS price, type(rel) AS relationship, l.name AS location";
+          + "  ID(i) AS itemId, i.name AS item," + System.lineSeparator()
+            + "ID(s) AS sourceId, s.name AS source," + System.lineSeparator()
+            + "rel.price AS price, type(rel) AS relationship," + System.lineSeparator()
+            + "ID(l) AS locationId, l.name AS location";
         // @formatter:on;
 
         // TODO: Use parameters
@@ -172,15 +175,21 @@ public final class DefaultItemQueries implements ItemQueries {
             case "SELLS":
                 cost = (Number) record.getOrDefault("price", 0d);
                 source = new ImmutableItemMerchantSource(
+                    (Long) record.getOrDefault("itemId", 0l),
                     (String) record.getOrDefault("item", ""),
+                    (Long) record.getOrDefault("sourceId", 0l),
                     (String) record.getOrDefault("source", ""), type,
+                    (Long) record.getOrDefault("locationId", 0l),
                     (String) record.getOrDefault("location", ""),
                     cost.doubleValue());
                 break;
             default:
                 source = new ImmutableItemSource(
+                    (Long) record.getOrDefault("itemId", 0l),
                     (String) record.getOrDefault("item", ""),
+                    (Long) record.getOrDefault("sourceId", 0l),
                     (String) record.getOrDefault("source", ""), type,
+                    (Long) record.getOrDefault("locationId", 0l),
                     (String) record.getOrDefault("location", ""));
         }
 

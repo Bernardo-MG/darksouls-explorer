@@ -22,14 +22,28 @@ public class ImmutableItemMerchantSource implements ItemMerchantSource {
     @NonNull
     private final String source;
 
-    public ImmutableItemMerchantSource(@NonNull final String item,
+    @NonNull
+    private final Long   itemId;
+
+    @NonNull
+    private final Long   locationId;
+
+    @NonNull
+    private final Long   sourceId;
+
+    public ImmutableItemMerchantSource(@NonNull final Long itemId,
+            @NonNull final String item, @NonNull final Long sourceId,
             @NonNull final String source, @NonNull final String relationship,
-            @NonNull final String location, @NonNull final Double cost) {
+            @NonNull final Long locationId, @NonNull final String location,
+            @NonNull final Double cost) {
         super();
 
+        this.itemId = itemId;
         this.item = item;
+        this.sourceId = sourceId;
         this.source = source;
         this.relationship = relationship;
+        this.locationId = locationId;
         this.location = location;
         this.cost = cost;
     }
