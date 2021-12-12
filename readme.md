@@ -71,7 +71,7 @@ It will be accessible at [http://localhost:8080/](http://localhost:8080/).
 Alternatively, a Docker compose file is included.
 
 ```
-docker-compose -f docker/docker-compose.yml up
+docker-compose -f docker/docker-compose.yml --profile backend up
 ```
 
 This will start a Neo4j database, with the dashboard available at [http://localhost:7474/](http://localhost:7474/). And the backend, available at http://localhost:8080.
