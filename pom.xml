@@ -205,6 +205,7 @@
 		<log4j.version>2.14.1</log4j.version>
 		<lombok.version>1.18.22</lombok.version>
 		<mockito.version>3.12.4</mockito.version>
+		<mysql.version>8.0.21</mysql.version>
 		<neo4j.dsl.version>2021.3.2</neo4j.dsl.version>
 		<neo4j.test.version>4.3.3</neo4j.test.version>
 		<reactiveStreams.version>1.0.3</reactiveStreams.version>
@@ -373,10 +374,25 @@
 			<version>${spring.boot.version}</version>
 		</dependency>
 		<dependency>
+			<!-- Spring Boot Starter: JDBC -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+		<dependency>
 			<!-- Spring Boot Starter: Swagger -->
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>${springfox.version}</version>
+		</dependency>
+		<!-- ============================================== -->
+		<!-- ================== MYSQL ===================== -->
+		<!-- ============================================== -->
+		<dependency>
+			<!-- MySQL connector -->
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
 		</dependency>
 		<!-- ============================================== -->
 		<!-- ================== NEO4J ===================== -->

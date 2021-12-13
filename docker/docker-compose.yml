@@ -2,13 +2,29 @@ version: '3'
 services:
     db:
         container_name: darksouls-db
+        image: mysql:8
+        environment:
+            MYSQL_DATABASE: 'data'
+            MYSQL_USER: 'user'
+            MYSQL_PASSWORD: 'password'
+            MYSQL_ROOT_PASSWORD: 'password'
+        expose:
+            - "3306"
+        healthcheck:
+            test: mysql ${MYSQL_DATABASE} --user=${MYSQL_USER} --password='${MYSQL_PASSWORD}' --silent --execute "SELECT 1;"
+            interval: 30s
+            timeout: 10s
+            retries: 5
+    graph-db:
+        container_name: darksouls-graph-db
         build:
             context: ../
             dockerfile: ./docker/Dockerfile.db
         ports:
-            - "7687:7687"
             - "7474:7474"
             - "7473:7473"
+        expose:
+            - "7687"
         environment:
             - NEO4J_AUTH=neo4j/secret
             - NEO4J_dbms_memory_pagecache_size=1G
@@ -20,16 +36,16 @@ services:
             interval: 30s
             timeout: 10s
             retries: 5
-    db-seeder:
-        container_name: darksouls-db-seeder
+    graph-db-seeder:
+        container_name: darksouls-graph-db-seeder
         build:
             context: ../
             dockerfile: ./docker/Dockerfile.seeder
         depends_on:
-            db:
+            graph-db:
                 condition: service_healthy
         links:
-            - "db"
+            - "graph-db"
         environment: 
             - NEO4J_USERNAME=neo4j
             - NEO4J_PASSWORD=secret
@@ -39,7 +55,9 @@ services:
         depends_on:
             db:
                 condition: service_healthy
-            db-seeder:
+            graph-db:
+                condition: service_healthy
+            graph-db-seeder:
                 condition: service_completed_successfully
         build:
             context: ../
@@ -48,5 +66,6 @@ services:
                 WAR_NAME: darksouls-explorer-backend
         links:
             - "db"
+            - "graph-db"
         ports:
             - "8080:8080"
