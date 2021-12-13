@@ -1,20 +1,19 @@
 
 package com.bernardomg.darksouls.explorer.problem.query;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.neo4j.cypherdsl.core.Cypher;
-import org.neo4j.cypherdsl.core.Node;
-import org.neo4j.cypherdsl.core.Statement;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
@@ -25,14 +24,19 @@ import com.bernardomg.darksouls.explorer.problem.model.DefaultDataProblem;
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {
 
-    private final Neo4jClient   client;
+    private final Neo4jClient      client;
 
-    private final QueryExecutor queryExecutor;
+    private final QueryExecutor    queryExecutor;
+
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     @Autowired
-    public DefaultProblemsQueries(final Neo4jClient clnt) {
+    public DefaultProblemsQueries(final DataSource dataSource,
+            final Neo4jClient clnt) {
         super();
 
+        simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
+            .withTableName("PROBLEMS");
         client = Objects.requireNonNull(clnt);
         queryExecutor = new DefaultQueryExecutor(clnt);
     }
@@ -124,27 +128,16 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
     @Override
     public final void save(final Iterable<DataProblem> data) {
-        final Node p;
-        final Collection<Statement> statements;
-        Statement statement;
-
-        p = Cypher.node("Problem")
-            .named("p");
-
-        statements = new ArrayList<>();
+        Map<String, Object> parameters;
 
         for (final DataProblem dataProblem : data) {
-            statement = Cypher
-                .merge(p.withProperties(
-                    Cypher.mapOf("id", Cypher.literalOf(dataProblem.getId()),
-                        "problem", Cypher.literalOf(dataProblem.getProblem()),
-                        "source", Cypher.literalOf(dataProblem.getSource()))))
-                .build();
+            parameters = new HashMap<String, Object>();
+            parameters.put("ID", dataProblem.getId());
+            parameters.put("PROBLEM", dataProblem.getProblem());
+            parameters.put("SOURCE", dataProblem.getSource());
 
-            statements.add(statement);
+            simpleJdbcInsert.execute(parameters);
         }
-
-        queryExecutor.run(statements);
     }
 
     private final DataProblem toProblem(final Map<String, Object> record) {

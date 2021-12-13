@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: problems
+      author: Bernardo
+      changes:
+        - createTable:
+            tableName: problems
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: problem
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: source
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+      modifySql:
+        - append:
+            dbms: mysql
+            value: ' ENGINE=InnoDB DEFAULT CHARSET=latin1'

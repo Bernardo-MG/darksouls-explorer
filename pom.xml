@@ -202,6 +202,7 @@
 		<javassist.version>3.28.0-GA</javassist.version>
 		<jsonpath.version>2.6.0</jsonpath.version>
 		<junit.jupiter.version>5.8.0</junit.jupiter.version>
+      <liquibase.version>3.10.2</liquibase.version>
 		<log4j.version>2.14.1</log4j.version>
 		<lombok.version>1.18.22</lombok.version>
 		<mockito.version>3.12.4</mockito.version>
@@ -518,6 +519,21 @@
 			<artifactId>commons-collections4</artifactId>
 			<version>${commons.collections.version}</version>
 		</dependency>
+      <!-- ============================================== -->
+      <!-- ================ LIQUIBASE =================== -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Liquibase -->
+         <groupId>org.liquibase</groupId>
+         <artifactId>liquibase-core</artifactId>
+         <version>${liquibase.version}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>ch.qos.logback</groupId>
+               <artifactId>logback-classic</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
 		<!-- ============================================== -->
 		<!-- =========== VERSION ENFORCEMENT ============== -->
 		<!-- ============================================== -->
