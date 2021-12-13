@@ -36,7 +36,8 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
         super();
 
         simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-            .withTableName("PROBLEMS");
+            .withTableName("problems")
+            .usingGeneratedKeyColumns("id");
         client = Objects.requireNonNull(clnt);
         queryExecutor = new DefaultQueryExecutor(clnt);
     }
@@ -132,9 +133,8 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
         for (final DataProblem dataProblem : data) {
             parameters = new HashMap<String, Object>();
-            parameters.put("ID", dataProblem.getId());
-            parameters.put("PROBLEM", dataProblem.getProblem());
-            parameters.put("SOURCE", dataProblem.getSource());
+            parameters.put("problem", dataProblem.getProblem());
+            parameters.put("source", dataProblem.getSource());
 
             simpleJdbcInsert.execute(parameters);
         }
