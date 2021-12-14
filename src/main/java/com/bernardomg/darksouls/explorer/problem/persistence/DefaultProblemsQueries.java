@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.problem.query;
+package com.bernardomg.darksouls.explorer.problem.persistence;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,9 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.neo4j.cypherdsl.core.Cypher;
-import org.neo4j.cypherdsl.core.Node;
-import org.neo4j.cypherdsl.core.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,43 +17,33 @@ import org.springframework.stereotype.Component;
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
-import com.bernardomg.darksouls.explorer.problem.model.DefaultDataProblem;
+import com.bernardomg.darksouls.explorer.problem.model.ImmutableDataProblem;
+import com.bernardomg.darksouls.explorer.problem.model.PersistentDataProblem;
 
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {
 
-    private final Neo4jClient   client;
+    private final QueryExecutor         queryExecutor;
 
-    private final QueryExecutor queryExecutor;
+    private final DataProblemRepository repository;
 
     @Autowired
-    public DefaultProblemsQueries(final Neo4jClient clnt) {
+    public DefaultProblemsQueries(final DataProblemRepository repo,
+            final Neo4jClient clnt) {
         super();
 
-        client = Objects.requireNonNull(clnt);
+        repository = Objects.requireNonNull(repo);
         queryExecutor = new DefaultQueryExecutor(clnt);
     }
 
     @Override
     public final void deleteAll() {
-        client.query("MATCH (p:Problem) DELETE p")
-            .run();
+        repository.deleteAll();
     }
 
     @Override
-    public final Page<DataProblem> findAll(final Pageable page) {
-        final Function<Map<String, Object>, DataProblem> mapper;
-
-        mapper = this::toProblem;
-
-        return queryExecutor.fetch(
-        // @formatter:off
-              "MATCH"
-            + "  (p:Problem)"
-            + "RETURN"
-            + "  p.id AS id, p.source AS source, p.problem AS problem",
-            // @formatter:on
-            mapper, page);
+    public final Page<? extends DataProblem> findAll(final Pageable page) {
+        return repository.findAll(page);
     }
 
     @Override
@@ -123,39 +110,26 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     }
 
     @Override
-    public final void save(final Iterable<DataProblem> data) {
-        final Node p;
-        final Collection<Statement> statements;
-        Statement statement;
+    public final void save(final Iterable<? extends DataProblem> data) {
+        final Collection<PersistentDataProblem> entities;
+        PersistentDataProblem entity;
 
-        p = Cypher.node("Problem")
-            .named("p");
-
-        statements = new ArrayList<>();
-
+        entities = new ArrayList<>();
         for (final DataProblem dataProblem : data) {
-            statement = Cypher
-                .merge(p.withProperties(
-                    Cypher.mapOf("id", Cypher.literalOf(dataProblem.getId()),
-                        "problem", Cypher.literalOf(dataProblem.getProblem()),
-                        "source", Cypher.literalOf(dataProblem.getSource()))))
-                .build();
+            entity = new PersistentDataProblem();
+            entity.setName(dataProblem.getName());
+            entity.setProblem(dataProblem.getProblem());
+            entity.setSource(dataProblem.getSource());
 
-            statements.add(statement);
+            entities.add(entity);
         }
 
-        queryExecutor.run(statements);
-    }
-
-    private final DataProblem toProblem(final Map<String, Object> record) {
-        return new DefaultDataProblem((String) record.getOrDefault("id", ""),
-            (String) record.getOrDefault("source", ""),
-            (String) record.getOrDefault("problem", ""));
+        repository.saveAll(entities);
     }
 
     private final DataProblem toProblem(final String error, final String source,
             final Map<String, Object> record) {
-        return new DefaultDataProblem((String) record.getOrDefault("id", ""),
+        return new ImmutableDataProblem((String) record.getOrDefault("id", ""),
             source, error);
     }
 

@@ -5,22 +5,22 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class DefaultDataProblem implements DataProblem {
+public final class ImmutableDataProblem implements DataProblem {
 
     @NonNull
-    private String id;
+    private final String name;
 
     @NonNull
-    private String problem;
+    private final String problem;
 
     @NonNull
-    private String source;
+    private final String source;
 
-    public DefaultDataProblem(@NonNull final String id,
+    public ImmutableDataProblem(@NonNull final String name,
             @NonNull final String source, @NonNull final String problem) {
         super();
 
-        this.id = id;
+        this.name = name;
         this.source = source;
         this.problem = problem;
     }

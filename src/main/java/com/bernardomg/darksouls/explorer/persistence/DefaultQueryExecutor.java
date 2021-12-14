@@ -108,7 +108,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         query = statementBuilder.build()
             .getCypher();
 
-        LOGGER.debug("Query: {}", query);
+        LOGGER.debug("Query:\n{}", query);
 
         // Data is fetched and mapped
         read = client.query(query)
@@ -125,7 +125,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     @Override
     public final <T> Collection<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper) {
-        LOGGER.debug("Query: {}", query);
+        LOGGER.debug("Query:\n{}", query);
 
         // Data is fetched and mapped
         return client.query(query)
@@ -140,7 +140,7 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     public final <T> Collection<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper,
             final Map<String, Object> parameters) {
-        LOGGER.debug("Query: {}", query);
+        LOGGER.debug("Query:\n{}", query);
 
         // Data is fetched and mapped
         return client.query(query)

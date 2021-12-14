@@ -197,14 +197,17 @@
 		<commons.collections.version>4.4</commons.collections.version>
 		<commons.lang.version>3.12.0</commons.lang.version>
 		<glassfish.el.version>2.2</glassfish.el.version>
+		<h2.version>1.4.200</h2.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<jackson.version>2.12.4</jackson.version>
 		<javassist.version>3.28.0-GA</javassist.version>
 		<jsonpath.version>2.6.0</jsonpath.version>
 		<junit.jupiter.version>5.8.0</junit.jupiter.version>
+		<liquibase.version>3.10.2</liquibase.version>
 		<log4j.version>2.14.1</log4j.version>
 		<lombok.version>1.18.22</lombok.version>
 		<mockito.version>3.12.4</mockito.version>
+		<mysql.version>8.0.21</mysql.version>
 		<neo4j.dsl.version>2021.3.2</neo4j.dsl.version>
 		<neo4j.test.version>4.3.3</neo4j.test.version>
 		<reactiveStreams.version>1.0.3</reactiveStreams.version>
@@ -373,10 +376,25 @@
 			<version>${spring.boot.version}</version>
 		</dependency>
 		<dependency>
+			<!-- Spring Boot Starter: JPA -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+		<dependency>
 			<!-- Spring Boot Starter: Swagger -->
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>${springfox.version}</version>
+		</dependency>
+		<!-- ============================================== -->
+		<!-- ================== MYSQL ===================== -->
+		<!-- ============================================== -->
+		<dependency>
+			<!-- MySQL connector -->
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
 		</dependency>
 		<!-- ============================================== -->
 		<!-- ================== NEO4J ===================== -->
@@ -501,6 +519,21 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>${commons.collections.version}</version>
+		</dependency>
+		<!-- ============================================== -->
+		<!-- ================ LIQUIBASE =================== -->
+		<!-- ============================================== -->
+		<dependency>
+			<!-- Liquibase -->
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>${liquibase.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- ============================================== -->
 		<!-- =========== VERSION ENFORCEMENT ============== -->
@@ -633,6 +666,13 @@
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-core</artifactId>
 			<version>${reactor.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<!-- H2 database -->
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
