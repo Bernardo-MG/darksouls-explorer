@@ -31,7 +31,7 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
-import com.bernardomg.darksouls.explorer.problem.query.ProblemsQueries;
+import com.bernardomg.darksouls.explorer.problem.persistence.ProblemsQueries;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -78,7 +78,7 @@ public class ITProblemsQueriesMissingFieldNoField {
     @Test
     @DisplayName("Returns all the data")
     public void testFindMissingField_Count() {
-        final Iterable<DataProblem> data;
+        final Iterable<? extends DataProblem> data;
 
         data = queries.findMissingField("Item", "description");
 
@@ -94,7 +94,7 @@ public class ITProblemsQueriesMissingFieldNoField {
             .iterator()
             .next();
 
-        Assertions.assertEquals("Item name", data.getId());
+        Assertions.assertEquals("Item name", data.getName());
         Assertions.assertEquals("Item", data.getSource());
         Assertions.assertEquals("no_description", data.getProblem());
     }

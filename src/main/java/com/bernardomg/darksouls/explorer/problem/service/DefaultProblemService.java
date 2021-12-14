@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
-import com.bernardomg.darksouls.explorer.problem.query.ProblemsQueries;
+import com.bernardomg.darksouls.explorer.problem.persistence.ProblemsQueries;
 
 @Service
 public final class DefaultProblemService implements ProblemService {
@@ -34,7 +34,7 @@ public final class DefaultProblemService implements ProblemService {
     }
 
     @Override
-    public final Page<DataProblem> getAll(final Pageable page) {
+    public final Page<? extends DataProblem> getAll(final Pageable page) {
         return queries.findAll(page);
     }
 
@@ -49,10 +49,10 @@ public final class DefaultProblemService implements ProblemService {
 
     private final Iterable<DataProblem> recollect() {
         final Collection<DataProblem> data;
-        final Collection<DataProblem> itemNoDescription;
-        final Collection<DataProblem> itemsDuplicated;
-        final Collection<DataProblem> actorsDuplicated;
-        final Collection<DataProblem> itemsWithoutSource;
+        final Collection<? extends DataProblem> itemNoDescription;
+        final Collection<? extends DataProblem> itemsDuplicated;
+        final Collection<? extends DataProblem> actorsDuplicated;
+        final Collection<? extends DataProblem> itemsWithoutSource;
 
         queries.deleteAll();
 

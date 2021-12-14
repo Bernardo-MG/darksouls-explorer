@@ -1,43 +1,40 @@
 
-package com.bernardomg.darksouls.explorer.problem.query;
+package com.bernardomg.darksouls.explorer.problem.persistence;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
-import com.bernardomg.darksouls.explorer.problem.model.DefaultDataProblem;
+import com.bernardomg.darksouls.explorer.problem.model.ImmutableDataProblem;
+import com.bernardomg.darksouls.explorer.problem.model.PersistentDataProblem;
 
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {
 
-    private final Neo4jClient      client;
+    private final Neo4jClient           client;
 
-    private final QueryExecutor    queryExecutor;
+    private final QueryExecutor         queryExecutor;
 
-    private final SimpleJdbcInsert simpleJdbcInsert;
+    private final DataProblemRepository repository;
 
     @Autowired
-    public DefaultProblemsQueries(final DataSource dataSource,
+    public DefaultProblemsQueries(final DataProblemRepository repo,
             final Neo4jClient clnt) {
         super();
 
-        simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-            .withTableName("problems")
-            .usingGeneratedKeyColumns("id");
+        repository = Objects.requireNonNull(repo);
         client = Objects.requireNonNull(clnt);
         queryExecutor = new DefaultQueryExecutor(clnt);
     }
@@ -49,19 +46,8 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     }
 
     @Override
-    public final Page<DataProblem> findAll(final Pageable page) {
-        final Function<Map<String, Object>, DataProblem> mapper;
-
-        mapper = this::toProblem;
-
-        return queryExecutor.fetch(
-        // @formatter:off
-              "MATCH"
-            + "  (p:Problem)"
-            + "RETURN"
-            + "  p.id AS id, p.source AS source, p.problem AS problem",
-            // @formatter:on
-            mapper, page);
+    public final Page<? extends DataProblem> findAll(final Pageable page) {
+        return repository.findAll(page);
     }
 
     @Override
@@ -128,27 +114,26 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     }
 
     @Override
-    public final void save(final Iterable<DataProblem> data) {
-        Map<String, Object> parameters;
+    public final void save(final Iterable<? extends DataProblem> data) {
+        final Collection<PersistentDataProblem> entities;
+        PersistentDataProblem entity;
 
+        entities = new ArrayList<>();
         for (final DataProblem dataProblem : data) {
-            parameters = new HashMap<String, Object>();
-            parameters.put("problem", dataProblem.getProblem());
-            parameters.put("source", dataProblem.getSource());
+            entity = new PersistentDataProblem();
+            entity.setName(dataProblem.getName());
+            entity.setProblem(dataProblem.getProblem());
+            entity.setSource(dataProblem.getSource());
 
-            simpleJdbcInsert.execute(parameters);
+            entities.add(entity);
         }
-    }
 
-    private final DataProblem toProblem(final Map<String, Object> record) {
-        return new DefaultDataProblem((String) record.getOrDefault("id", ""),
-            (String) record.getOrDefault("source", ""),
-            (String) record.getOrDefault("problem", ""));
+        repository.saveAll(entities);
     }
 
     private final DataProblem toProblem(final String error, final String source,
             final Map<String, Object> record) {
-        return new DefaultDataProblem((String) record.getOrDefault("id", ""),
+        return new ImmutableDataProblem((String) record.getOrDefault("id", ""),
             source, error);
     }
 

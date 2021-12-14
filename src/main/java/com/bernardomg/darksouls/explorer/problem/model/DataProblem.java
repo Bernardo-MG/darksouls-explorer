@@ -3,7 +3,7 @@ package com.bernardomg.darksouls.explorer.problem.model;
 
 public interface DataProblem {
 
-    public String getId();
+    public String getName();
 
     public String getProblem();
 

@@ -8,7 +8,7 @@ import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 
 public interface ProblemService {
 
-    public Page<DataProblem> getAll(final Pageable page);
+    public Page<? extends DataProblem> getAll(final Pageable page);
 
     public void recollectAndRegister();
 
