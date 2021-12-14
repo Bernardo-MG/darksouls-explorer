@@ -23,8 +23,6 @@ import com.bernardomg.darksouls.explorer.problem.model.PersistentDataProblem;
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {
 
-    private final Neo4jClient           client;
-
     private final QueryExecutor         queryExecutor;
 
     private final DataProblemRepository repository;
@@ -35,14 +33,12 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
         super();
 
         repository = Objects.requireNonNull(repo);
-        client = Objects.requireNonNull(clnt);
         queryExecutor = new DefaultQueryExecutor(clnt);
     }
 
     @Override
     public final void deleteAll() {
-        client.query("MATCH (p:Problem) DELETE p")
-            .run();
+        repository.deleteAll();
     }
 
     @Override
