@@ -31,7 +31,7 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.item.service.WeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -39,9 +39,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITItemServiceFindWeaponLevels.Initializer.class })
+        initializers = { ITWeaponServiceFindWeaponLevels.Initializer.class })
 @DisplayName("Reading weapon levels")
-public class ITItemServiceFindWeaponLevels {
+public class ITWeaponServiceFindWeaponLevels {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -67,12 +67,12 @@ public class ITItemServiceFindWeaponLevels {
     }
 
     @Autowired
-    private ItemService service;
+    private WeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITItemServiceFindWeaponLevels() {
+    public ITWeaponServiceFindWeaponLevels() {
         super();
     }
 

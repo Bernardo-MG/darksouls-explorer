@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.query.ItemQueries;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 
@@ -34,11 +33,6 @@ public final class DefaultItemService implements ItemService {
     public final Page<ItemSource> getSources(final Long id,
             final Pageable page) {
         return queries.findSources(id, page);
-    }
-
-    @Override
-    public final WeaponProgression getWeaponLevels(final String weapon) {
-        return queries.findWeaponSources(weapon);
     }
 
 }
