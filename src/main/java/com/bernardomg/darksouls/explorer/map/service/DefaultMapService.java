@@ -26,7 +26,7 @@ public final class DefaultMapService implements MapService {
     }
 
     @Override
-    public final Page<MapConnection> getAllConnections(Pageable page) {
+    public final Page<MapConnection> getAllConnections(final Pageable page) {
         return queries.findAllConnections(page);
     }
 

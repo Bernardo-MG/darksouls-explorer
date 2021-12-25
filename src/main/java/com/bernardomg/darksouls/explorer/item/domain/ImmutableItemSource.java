@@ -11,19 +11,19 @@ public class ImmutableItemSource implements ItemSource {
     private final String item;
 
     @NonNull
+    private final Long   itemId;
+
+    @NonNull
     private final String location;
+
+    @NonNull
+    private final Long   locationId;
 
     @NonNull
     private final String relationship;
 
     @NonNull
     private final String source;
-
-    @NonNull
-    private final Long   itemId;
-
-    @NonNull
-    private final Long   locationId;
 
     @NonNull
     private final Long   sourceId;
