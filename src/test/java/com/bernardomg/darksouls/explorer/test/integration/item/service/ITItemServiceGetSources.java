@@ -17,6 +17,8 @@
 package com.bernardomg.darksouls.explorer.test.integration.item.service;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,12 +29,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.domain.Item;
-import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
+import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
@@ -41,9 +43,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITItemServiceFindAllByName.Initializer.class })
-@DisplayName("Reading all the items")
-public class ITItemServiceFindAllByName {
+        initializers = { ITItemServiceGetSources.Initializer.class })
+@DisplayName("Reading item sources")
+public class ITItemServiceGetSources {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -64,8 +66,12 @@ public class ITItemServiceFindAllByName {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
             dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/single.cypher"));
+            Arrays.asList(
+                "classpath:db/queries/item/with_merchant_source.cypher"));
     }
+
+    @Autowired
+    private Neo4jClient client;
 
     @Autowired
     private ItemService service;
@@ -73,55 +79,52 @@ public class ITItemServiceFindAllByName {
     /**
      * Default constructor.
      */
-    public ITItemServiceFindAllByName() {
+    public ITItemServiceGetSources() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data when searching by full name")
-    public void testFindByName_FullName_Count() {
-        final Iterable<Item> data;
-        final DefaultItemRequest request;
+    @DisplayName("Returns all the data for an id")
+    public void testGetSources_Count() {
+        final Iterable<ItemSource> data;
+        final Long id;
 
-        request = new DefaultItemRequest();
-        request.setName("Item name");
+        id = getId();
 
-        data = service.getAll(request, Pageable.unpaged());
+        data = service.getSources(id, Pageable.unpaged());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
 
     @Test
-    @DisplayName("Returns the correct data when searching by full name")
-    public void testFindByName_FullName_Data() {
-        final Item data;
-        final DefaultItemRequest request;
+    @DisplayName("Returns the correct data for an id")
+    public void testGetSources_Data() {
+        final ItemSource data;
+        final Long id;
 
-        request = new DefaultItemRequest();
-        request.setName("Item name");
+        id = getId();
 
-        data = service.getAll(request, Pageable.unpaged())
+        data = service.getSources(id, Pageable.unpaged())
             .iterator()
             .next();
 
-        Assertions.assertEquals("Item name", data.getName());
-        Assertions.assertEquals(Arrays.asList("Description"),
-            data.getDescription());
-        Assertions.assertEquals(Arrays.asList("Item"), data.getTags());
+        Assertions.assertEquals("Item name", data.getItem());
+        Assertions.assertEquals("Merchant", data.getSource());
+        Assertions.assertEquals("sold", data.getRelationship());
+        Assertions.assertEquals("Location", data.getLocation());
     }
 
-    @Test
-    @DisplayName("Returns all the data when searching by partial name")
-    public void testFindByName_PartialName_Count() {
-        final Iterable<Item> data;
-        final DefaultItemRequest request;
+    private final Long getId() {
+        final Collection<Map<String, Object>> rows;
 
-        request = new DefaultItemRequest();
-        request.setName("name");
+        rows = client.query("MATCH (n) RETURN n")
+            .fetch()
+            .all();
 
-        data = service.getAll(request, Pageable.unpaged());
-
-        Assertions.assertEquals(1, IterableUtils.size(data));
+        return (Long) rows.stream()
+            .findFirst()
+            .get()
+            .getOrDefault("id", 0l);
     }
 
 }

@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
@@ -42,9 +43,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITItemServiceFindAllAdditionalTag.Initializer.class })
-@DisplayName("Reading all the items with an additional tag")
-public class ITItemServiceFindAllAdditionalTag {
+        initializers = { ITItemServiceGetAllPaged.Initializer.class })
+@DisplayName("Reading all the items")
+public class ITItemServiceGetAllPaged {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -65,7 +66,7 @@ public class ITItemServiceFindAllAdditionalTag {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
             dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/additional_tag.cypher"));
+            Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
     @Autowired
@@ -74,13 +75,39 @@ public class ITItemServiceFindAllAdditionalTag {
     /**
      * Default constructor.
      */
-    public ITItemServiceFindAllAdditionalTag() {
+    public ITItemServiceGetAllPaged() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data")
-    public void testFindAll_Count() {
+    @DisplayName("Returns a page")
+    public void testGetAll_Instance() {
+        final Iterable<Item> data;
+        final ItemRequest request;
+
+        request = new DefaultItemRequest();
+
+        data = service.getAll(request, Pageable.ofSize(1));
+
+        Assertions.assertInstanceOf(Page.class, data);
+    }
+
+    @Test
+    @DisplayName("Applies pagination size")
+    public void testGetAll_SingleResult() {
+        final Iterable<Item> data;
+        final ItemRequest request;
+
+        request = new DefaultItemRequest();
+
+        data = service.getAll(request, Pageable.ofSize(1));
+
+        Assertions.assertEquals(1, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("When unpaged returns all the data")
+    public void testGetAll_Unpaged() {
         final Iterable<Item> data;
         final ItemRequest request;
 
@@ -88,25 +115,7 @@ public class ITItemServiceFindAllAdditionalTag {
 
         data = service.getAll(request, Pageable.unpaged());
 
-        Assertions.assertEquals(1, IterableUtils.size(data));
-    }
-
-    @Test
-    @DisplayName("Returns the correct data")
-    public void testFindAll_Data() {
-        final Item data;
-        final ItemRequest request;
-
-        request = new DefaultItemRequest();
-
-        data = service.getAll(request, Pageable.unpaged())
-            .iterator()
-            .next();
-
-        Assertions.assertEquals("Item name", data.getName());
-        Assertions.assertEquals(Arrays.asList("Description"),
-            data.getDescription());
-        Assertions.assertEquals(Arrays.asList("Item", "Tag"), data.getTags());
+        Assertions.assertEquals(5, IterableUtils.size(data));
     }
 
 }

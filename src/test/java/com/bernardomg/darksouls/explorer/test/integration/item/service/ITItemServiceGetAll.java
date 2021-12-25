@@ -41,9 +41,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(initializers = { ITItemServiceFindAll.Initializer.class })
+@ContextConfiguration(initializers = { ITItemServiceGetAll.Initializer.class })
 @DisplayName("Reading all the items")
-public class ITItemServiceFindAll {
+public class ITItemServiceGetAll {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -73,13 +73,13 @@ public class ITItemServiceFindAll {
     /**
      * Default constructor.
      */
-    public ITItemServiceFindAll() {
+    public ITItemServiceGetAll() {
         super();
     }
 
     @Test
     @DisplayName("Returns all the data")
-    public void testFindAll_Count() {
+    public void testGetAll_Count() {
         final Iterable<Item> data;
         final ItemRequest request;
 
@@ -92,7 +92,7 @@ public class ITItemServiceFindAll {
 
     @Test
     @DisplayName("Returns the correct data")
-    public void testFindAll_Data() {
+    public void testGetAll_Data() {
         final Item data;
         final ItemRequest request;
 

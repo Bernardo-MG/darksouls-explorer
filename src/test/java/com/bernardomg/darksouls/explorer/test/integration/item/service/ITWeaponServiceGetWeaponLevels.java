@@ -39,9 +39,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITWeaponServiceFindWeaponLevels.Initializer.class })
+        initializers = { ITWeaponServiceGetWeaponLevels.Initializer.class })
 @DisplayName("Reading weapon levels")
-public class ITWeaponServiceFindWeaponLevels {
+public class ITWeaponServiceGetWeaponLevels {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -72,13 +72,13 @@ public class ITWeaponServiceFindWeaponLevels {
     /**
      * Default constructor.
      */
-    public ITWeaponServiceFindWeaponLevels() {
+    public ITWeaponServiceGetWeaponLevels() {
         super();
     }
 
     @Test
     @DisplayName("Returns the expected data")
-    public void testFindAll_Data() {
+    public void testGetAll_Data() {
         final WeaponProgression data;
 
         data = service.getWeaponLevels("Sword");
