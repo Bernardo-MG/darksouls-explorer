@@ -1,11 +1,12 @@
 
 package com.bernardomg.darksouls.explorer.item.query;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.Neo4jClient;
@@ -36,12 +37,12 @@ public final class DefaultWeaponQueries implements WeaponQueries {
     public final WeaponProgression findWeaponSources(final String weapon) {
         final String query;
         final Collection<Map<String, Object>> levelsInfo;
-        final Collection<WeaponLevel> levels;
         final Map<String, Object> params;
         final String name;
-        final String pathName;
-        final Iterable<WeaponProgressionPath> paths;
-        final WeaponProgressionPath path;
+        final Collection<WeaponProgressionPath> paths;
+        final Collection<String> pathNames;
+        Collection<WeaponLevel> levels;
+        WeaponProgressionPath path;
 
         params = new HashMap<>();
         params.put("weapon", weapon);
@@ -61,21 +62,27 @@ public final class DefaultWeaponQueries implements WeaponQueries {
 
         levelsInfo = queryExecutor.fetch(query, params);
 
-        levels = levelsInfo.stream()
-            .map(this::toWeaponLevel)
+        pathNames = levelsInfo.stream()
+            .map((data) -> (String) data.getOrDefault("path", ""))
+            .distinct()
             .collect(Collectors.toList());
-        // FIXME: Handle empty list
-        name = (String) levelsInfo.iterator()
-            .next()
-            .getOrDefault("weapon", "");
-        // FIXME: Handle empty list
-        pathName = (String) levelsInfo.iterator()
-            .next()
-            .getOrDefault("path", "");
 
-        path = new ImmutableWeaponProgressionPath(pathName, levels);
+        paths = new ArrayList<>();
+        for (final String pathName : pathNames) {
+            levels = levelsInfo.stream()
+                .filter(
+                    (data) -> pathName.equals(data.getOrDefault("path", "")))
+                .map(this::toWeaponLevel)
+                .collect(Collectors.toList());
 
-        paths = Arrays.asList(path);
+            path = new ImmutableWeaponProgressionPath(pathName, levels);
+            paths.add(path);
+        }
+
+        name = StreamSupport.stream(levelsInfo.spliterator(), false)
+            .map((data) -> (String) data.getOrDefault("weapon", ""))
+            .findAny()
+            .orElse("");
 
         return new ImmutableWeaponProgression(name, paths);
     }
