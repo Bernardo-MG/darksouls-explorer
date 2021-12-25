@@ -6,11 +6,14 @@ import org.springframework.data.domain.Pageable;
 
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 
 public interface ItemQueries {
 
     public Page<Item> findAll(final String name, final Iterable<String> tags,
             final Pageable page);
+
+    public WeaponProgression findWeaponSources(final String weapon);
 
     public Page<ItemSource> findSources(final Long id, final Pageable page);
 

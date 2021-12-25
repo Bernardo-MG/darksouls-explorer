@@ -26,8 +26,12 @@ import org.springframework.stereotype.Component;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemMerchantSource;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponLevel;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 
@@ -114,6 +118,48 @@ public final class DefaultItemQueries implements ItemQueries {
         return queryExecutor.fetch(query, this::toItemSource, params, page);
     }
 
+    @Override
+    public final WeaponProgression findWeaponSources(final String weapon) {
+        final String query;
+        final Collection<Map<String, Object>> levelsInfo;
+        final Collection<WeaponLevel> levels;
+        final Map<String, Object> params;
+        final String name;
+        final String path;
+
+        params = new HashMap<>();
+        params.put("weapon", weapon);
+
+        query =
+        // @formatter:off
+            "MATCH" + System.lineSeparator()
+          + "   (l:WeaponLevel)" + System.lineSeparator()
+          + "WHERE" + System.lineSeparator()
+          + "  l.weapon = $weapon" + System.lineSeparator()
+          + "RETURN" + System.lineSeparator()
+          + "   l.weapon AS weapon," + System.lineSeparator()
+          + "   l.path AS path," + System.lineSeparator()
+          + "   l.level AS level," + System.lineSeparator()
+          + "   l.physicalDamage AS physicalDamage";
+        // @formatter:on;
+
+        levelsInfo = queryExecutor.fetch(query, params);
+
+        levels = levelsInfo.stream()
+            .map(this::toWeaponLevel)
+            .collect(Collectors.toList());
+        // FIXME: Handle empty list
+        name = (String) levelsInfo.iterator()
+            .next()
+            .getOrDefault("weapon", "");
+        // FIXME: Handle empty list
+        path = (String) levelsInfo.iterator()
+            .next()
+            .getOrDefault("path", "");
+
+        return new ImmutableWeaponProgression(name, path, levels);
+    }
+
     private final Item toItem(final Map<String, Object> record) {
         final Long id;
         final String name;
@@ -194,6 +240,12 @@ public final class DefaultItemQueries implements ItemQueries {
         }
 
         return source;
+    }
+
+    private final WeaponLevel toWeaponLevel(final Map<String, Object> record) {
+        return new ImmutableWeaponLevel(
+            ((Long) record.getOrDefault("level", 0l)).intValue(),
+            ((Long) record.getOrDefault("physicalLevel", 0l)).intValue());
     }
 
 }

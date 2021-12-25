@@ -17,6 +17,8 @@ public interface QueryExecutor {
             final BuildableStatement<ResultStatement> statementBuilder,
             final Function<Map<String, Object>, T> mapper, final Pageable page);
 
+    public Collection<Map<String, Object>> fetch(final String query);
+
     public <T> Collection<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper);
 
@@ -30,6 +32,9 @@ public interface QueryExecutor {
 
     public <T> Page<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper, final Pageable page);
+
+    public Collection<Map<String, Object>> fetch(final String query,
+            final Map<String, Object> parameters);
 
     public void run(final Iterable<Statement> statements);
 

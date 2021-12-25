@@ -123,6 +123,16 @@ public final class DefaultQueryExecutor implements QueryExecutor {
     }
 
     @Override
+    public final Collection<Map<String, Object>> fetch(final String query) {
+        LOGGER.debug("Query:\n{}", query);
+
+        // Data is fetched and mapped
+        return client.query(query)
+            .fetch()
+            .all();
+    }
+
+    @Override
     public final <T> Collection<T> fetch(final String query,
             final Function<Map<String, Object>, T> mapper) {
         LOGGER.debug("Query:\n{}", query);
@@ -205,6 +215,18 @@ public final class DefaultQueryExecutor implements QueryExecutor {
             final Function<Map<String, Object>, T> mapper,
             final Pageable page) {
         return fetch(query, mapper, Collections.emptyMap(), page);
+    }
+
+    @Override
+    public final Collection<Map<String, Object>> fetch(final String query,
+            final Map<String, Object> parameters) {
+        LOGGER.debug("Query:\n{}", query);
+
+        // Data is fetched and mapped
+        return client.query(query)
+            .bindAll(parameters)
+            .fetch()
+            .all();
     }
 
     @Override
