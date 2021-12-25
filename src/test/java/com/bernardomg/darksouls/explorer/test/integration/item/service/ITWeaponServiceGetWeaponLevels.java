@@ -31,6 +31,7 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.service.WeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
@@ -80,12 +81,19 @@ public class ITWeaponServiceGetWeaponLevels {
     @DisplayName("Returns the expected data")
     public void testGetAll_Data() {
         final WeaponProgression data;
+        final WeaponProgressionPath path;
 
         data = service.getWeaponLevels("Sword");
 
         Assertions.assertEquals("Sword", data.getWeapon());
-        Assertions.assertEquals("Physical", data.getPath());
-        Assertions.assertEquals(5, IterableUtils.size(data.getLevels()));
+        Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
+
+        path = data.getPaths()
+            .iterator()
+            .next();
+
+        Assertions.assertEquals("Physical", path.getPath());
+        Assertions.assertEquals(5, IterableUtils.size(path.getLevels()));
     }
 
 }

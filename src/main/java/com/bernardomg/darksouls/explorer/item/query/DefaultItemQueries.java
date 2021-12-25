@@ -28,10 +28,12 @@ import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemMerchantSource
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemSource;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 
@@ -125,7 +127,9 @@ public final class DefaultItemQueries implements ItemQueries {
         final Collection<WeaponLevel> levels;
         final Map<String, Object> params;
         final String name;
-        final String path;
+        final String pathName;
+        final Iterable<WeaponProgressionPath> paths;
+        final WeaponProgressionPath path;
 
         params = new HashMap<>();
         params.put("weapon", weapon);
@@ -153,11 +157,15 @@ public final class DefaultItemQueries implements ItemQueries {
             .next()
             .getOrDefault("weapon", "");
         // FIXME: Handle empty list
-        path = (String) levelsInfo.iterator()
+        pathName = (String) levelsInfo.iterator()
             .next()
             .getOrDefault("path", "");
 
-        return new ImmutableWeaponProgression(name, path, levels);
+        path = new ImmutableWeaponProgressionPath(pathName, levels);
+
+        paths = Arrays.asList(path);
+
+        return new ImmutableWeaponProgression(name, paths);
     }
 
     private final Item toItem(final Map<String, Object> record) {

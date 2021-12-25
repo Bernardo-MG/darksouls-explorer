@@ -8,10 +8,10 @@ import lombok.NonNull;
 public final class ImmutableWeaponLevel implements WeaponLevel {
 
     @NonNull
-    private Integer level;
+    private final Integer level;
 
     @NonNull
-    private Integer physicalLevel;
+    private final Integer physicalLevel;
 
     public ImmutableWeaponLevel(@NonNull final Integer level,
             @NonNull final Integer physicalLevel) {

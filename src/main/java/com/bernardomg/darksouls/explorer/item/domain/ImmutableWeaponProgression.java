@@ -8,22 +8,17 @@ import lombok.NonNull;
 public final class ImmutableWeaponProgression implements WeaponProgression {
 
     @NonNull
-    private String                weapon;
+    private final String                          weapon;
 
     @NonNull
-    private String                path;
-
-    @NonNull
-    private Iterable<WeaponLevel> levels;
+    private final Iterable<WeaponProgressionPath> paths;
 
     public ImmutableWeaponProgression(@NonNull final String weapon,
-            @NonNull final String path,
-            @NonNull final Iterable<WeaponLevel> levels) {
+            @NonNull final Iterable<WeaponProgressionPath> paths) {
         super();
 
         this.weapon = weapon;
-        this.path = path;
-        this.levels = levels;
+        this.paths = paths;
     }
 
 }
