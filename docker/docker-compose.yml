@@ -68,5 +68,6 @@ services:
             - "graph-db"
         ports:
             - "8080:8080"
+            - "8000:8000"
         environment:
             - spring_profiles_active=docker
