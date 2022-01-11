@@ -17,6 +17,7 @@
 package com.bernardomg.darksouls.explorer.test.integration.item.service;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -30,6 +31,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
+import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.service.WeaponService;
@@ -94,6 +96,76 @@ public class ITWeaponServiceGetWeaponLevels {
 
         Assertions.assertEquals("Physical", path.getPath());
         Assertions.assertEquals(5, IterableUtils.size(path.getLevels()));
+    }
+
+    @Test
+    @DisplayName("Returns the levels in order")
+    public void testGetAll_Levels() {
+        final WeaponProgression data;
+        final WeaponProgressionPath path;
+        final Iterator<WeaponLevel> levels;
+        WeaponLevel level;
+
+        data = service.getWeaponLevels("Sword");
+
+        Assertions.assertEquals("Sword", data.getWeapon());
+        Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
+
+        path = data.getPaths()
+            .iterator()
+            .next();
+        levels = path.getLevels()
+            .iterator();
+
+        level = levels.next();
+        Assertions.assertEquals(0, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(1, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(2, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(3, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(4, level.getLevel());
+    }
+
+    @Test
+    @DisplayName("Returns the levels damage")
+    public void testGetAll_LevelsDamage() {
+        final WeaponProgression data;
+        final WeaponProgressionPath path;
+        final Iterator<WeaponLevel> levels;
+        WeaponLevel level;
+
+        data = service.getWeaponLevels("Sword");
+
+        Assertions.assertEquals("Sword", data.getWeapon());
+        Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
+
+        path = data.getPaths()
+            .iterator()
+            .next();
+        levels = path.getLevels()
+            .iterator();
+
+        level = levels.next();
+        Assertions.assertEquals(10, level.getPhysicalDamage());
+
+        level = levels.next();
+        Assertions.assertEquals(20, level.getPhysicalDamage());
+
+        level = levels.next();
+        Assertions.assertEquals(30, level.getPhysicalDamage());
+
+        level = levels.next();
+        Assertions.assertEquals(40, level.getPhysicalDamage());
+
+        level = levels.next();
+        Assertions.assertEquals(50, level.getPhysicalDamage());
     }
 
 }
