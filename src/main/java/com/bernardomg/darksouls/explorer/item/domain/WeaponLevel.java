@@ -5,6 +5,6 @@ public interface WeaponLevel {
 
     public Integer getLevel();
 
-    public Integer getPhysicalLevel();
+    public Integer getPhysicalDamage();
 
 }

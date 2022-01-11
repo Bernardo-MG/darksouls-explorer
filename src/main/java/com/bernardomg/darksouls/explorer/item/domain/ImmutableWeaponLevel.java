@@ -11,14 +11,14 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     private final Integer level;
 
     @NonNull
-    private final Integer physicalLevel;
+    private final Integer physicalDamage;
 
     public ImmutableWeaponLevel(@NonNull final Integer level,
-            @NonNull final Integer physicalLevel) {
+            @NonNull final Integer physicalDamage) {
         super();
 
         this.level = level;
-        this.physicalLevel = physicalLevel;
+        this.physicalDamage = physicalDamage;
     }
 
 }
