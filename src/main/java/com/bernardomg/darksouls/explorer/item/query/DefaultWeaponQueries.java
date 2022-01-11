@@ -57,7 +57,9 @@ public final class DefaultWeaponQueries implements WeaponQueries {
           + "   l.weapon AS weapon," + System.lineSeparator()
           + "   l.path AS path," + System.lineSeparator()
           + "   l.level AS level," + System.lineSeparator()
-          + "   l.physicalDamage AS physicalDamage";
+          + "   l.physicalDamage AS physicalDamage" + System.lineSeparator()
+          + "ORDER BY" + System.lineSeparator()
+          + "   level ASC";
         // @formatter:on;
 
         levelsInfo = queryExecutor.fetch(query, params);
@@ -90,7 +92,7 @@ public final class DefaultWeaponQueries implements WeaponQueries {
     private final WeaponLevel toWeaponLevel(final Map<String, Object> record) {
         return new ImmutableWeaponLevel(
             ((Long) record.getOrDefault("level", 0l)).intValue(),
-            ((Long) record.getOrDefault("physicalLevel", 0l)).intValue());
+            ((Long) record.getOrDefault("physicalDamage", 0l)).intValue());
     }
 
 }
