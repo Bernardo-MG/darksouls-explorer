@@ -24,6 +24,14 @@
          <AppenderRef ref="console" />
       </Logger>
 
+      <!-- Neo4j -->
+      <Logger name="org.neo4j" level="error" additivity="debug">
+         <AppenderRef ref="console" />
+      </Logger>
+      <Logger name="org.springframework.data.neo4j" level="error" additivity="debug">
+         <AppenderRef ref="console" />
+      </Logger>
+
       <Root level="error">
          <AppenderRef ref="file" />
          <AppenderRef ref="console" />

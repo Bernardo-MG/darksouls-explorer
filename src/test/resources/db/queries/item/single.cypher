@@ -1,1 +1,1 @@
-CREATE (i:Item {name: 'Item', description: 'Description'});
+CREATE (i:Item {name: 'Item name', description: 'Description'});

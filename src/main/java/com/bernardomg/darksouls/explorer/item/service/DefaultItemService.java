@@ -6,9 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.model.Item;
-import com.bernardomg.darksouls.explorer.item.model.ItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.Item;
+import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.item.query.ItemQueries;
+import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 
 @Service
 public final class DefaultItemService implements ItemService {
@@ -23,13 +24,15 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final Page<Item> getAll(final Pageable page) {
-        return queries.findAll(page);
+    public final Page<Item> getAll(final ItemRequest request,
+            final Pageable page) {
+        return queries.findAll(request.getName(), request.getTags(), page);
     }
 
     @Override
-    public final Page<ItemSource> getAllSources(final Pageable page) {
-        return queries.findAllSources(page);
+    public final Page<ItemSource> getSources(final Long id,
+            final Pageable page) {
+        return queries.findSources(id, page);
     }
 
 }

@@ -35,7 +35,7 @@ public class ControllerLoggingAspect {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(ControllerLoggingAspect.class);
+        .getLogger(ControllerLoggingAspect.class);
 
     /**
      * Default constructor.
@@ -55,8 +55,8 @@ public class ControllerLoggingAspect {
     @AfterReturning(value = "execution(* com.bernardomg..*Controller*.*(..))",
             returning = "returnValue")
     public void afterCall(final JoinPoint joinPoint, final Object returnValue) {
-        LOGGER.debug("Called {} and returning {}",
-                joinPoint.getSignature().toShortString(), returnValue);
+        LOGGER.debug("Called {} and returning {}", joinPoint.getSignature()
+            .toShortString(), returnValue);
     }
 
     /**
@@ -68,8 +68,8 @@ public class ControllerLoggingAspect {
     @Before(value = "execution(* com.bernardomg..*Controller*.*(..))",
             argNames = "joinPoint")
     public void beforeCall(final JoinPoint joinPoint) {
-        LOGGER.debug("Calling {} with arguments {}",
-                joinPoint.getSignature().toShortString(), joinPoint.getArgs());
+        LOGGER.debug("Calling {} with arguments {}", joinPoint.getSignature()
+            .toShortString(), joinPoint.getArgs());
     }
 
 }

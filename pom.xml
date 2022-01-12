@@ -106,48 +106,26 @@
 				</dependency>
 			</dependencies>
 		</profile>
-		<!-- ============================================== -->
-		<!-- ============ DEPLOYMENT PROFILES ============= -->
-		<!-- ============================================== -->
-		<profile>
-			<!-- Release site deployment profile -->
-			<!-- Sets the site repository to point to the releases repo -->
-			<id>deployment-release</id>
-			<activation>
-				<!-- Active by default so the repository appears in the reports -->
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<distributionManagement>
-				<site>
-					<id>site</id>
-					<name>Project Documentation Site</name>
-					<!-- The URL should be set externally -->
-					<url>${site.release.url}</url>
-				</site>
-			</distributionManagement>
-		</profile>
-		<profile>
-			<!-- Development site deployment profile -->
-			<!-- Sets the site repository to point to the development repo -->
-			<id>deployment-development</id>
-			<distributionManagement>
-				<site>
-					<id>site-development</id>
-					<name>Project Development Documentation Site</name>
-					<!-- The URL should be set externally -->
-					<url>${site.develop.url}</url>
-				</site>
-			</distributionManagement>
-		</profile>
-		<profile>
-			<!-- Deployment profile -->
-			<!-- Sets ups the environment for deployment -->
-			<id>deployment</id>
-			<properties>
-				<!-- Tests are skipped -->
-				<maven.test.skip>true</maven.test.skip>
-			</properties>
-		</profile>
+      <!-- ============================================== -->
+      <!-- ============ DEPLOYMENT PROFILES ============= -->
+      <!-- ============================================== -->
+      <profile>
+         <!-- Site deployment profile -->
+         <!-- Sets the site repository to point to the releases repo -->
+         <id>deployment-site</id>
+         <activation>
+            <!-- Active by default so the repository appears in the reports -->
+            <activeByDefault>true</activeByDefault>
+         </activation>
+         <distributionManagement>
+            <site>
+               <id>site</id>
+               <name>Project Documentation Site</name>
+               <!-- The URL should be set externally -->
+               <url>${site.url}</url>
+            </site>
+         </distributionManagement>
+      </profile>
 	</profiles>
 
 	<!-- ********************************************** -->
@@ -197,14 +175,17 @@
 		<commons.collections.version>4.4</commons.collections.version>
 		<commons.lang.version>3.12.0</commons.lang.version>
 		<glassfish.el.version>2.2</glassfish.el.version>
+		<h2.version>1.4.200</h2.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<jackson.version>2.12.4</jackson.version>
 		<javassist.version>3.28.0-GA</javassist.version>
 		<jsonpath.version>2.6.0</jsonpath.version>
 		<junit.jupiter.version>5.8.0</junit.jupiter.version>
+		<liquibase.version>3.10.2</liquibase.version>
 		<log4j.version>2.14.1</log4j.version>
 		<lombok.version>1.18.22</lombok.version>
 		<mockito.version>3.12.4</mockito.version>
+		<mysql.version>8.0.21</mysql.version>
 		<neo4j.dsl.version>2021.3.2</neo4j.dsl.version>
 		<neo4j.test.version>4.3.3</neo4j.test.version>
 		<reactiveStreams.version>1.0.3</reactiveStreams.version>
@@ -230,50 +211,50 @@
 	<!-- *************** DEPENDENCIES ***************** -->
 	<!-- ********************************************** -->
 
-   <dependencyManagement>
-      <dependencies>
-         <dependency>
-            <!-- Spring Framework BOM -->
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-framework-bom</artifactId>
-            <version>${spring.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <!-- Spring Data BOM -->
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-bom</artifactId>
-            <version>${spring.data.train.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <!-- Jackson BOM -->
-            <groupId>com.fasterxml.jackson</groupId>
-            <artifactId>jackson-bom</artifactId>
-            <version>${jackson.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <!-- JUnit BOM -->
-            <groupId>org.junit</groupId>
-            <artifactId>junit-bom</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         <dependency>
-            <!-- Testcontainers BOM -->
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers-bom</artifactId>
-            <version>${testcontainers.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-      </dependencies>
-   </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<!-- Spring Framework BOM -->
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${spring.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- Spring Data BOM -->
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-bom</artifactId>
+				<version>${spring.data.train.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- Jackson BOM -->
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- JUnit BOM -->
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit.jupiter.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- Testcontainers BOM -->
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<!-- ============================================== -->
@@ -373,17 +354,39 @@
 			<version>${spring.boot.version}</version>
 		</dependency>
 		<dependency>
+			<!-- Spring Boot Starter: JPA -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+		<dependency>
 			<!-- Spring Boot Starter: Swagger -->
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>${springfox.version}</version>
 		</dependency>
 		<!-- ============================================== -->
+		<!-- ================== MYSQL ===================== -->
+		<!-- ============================================== -->
+		<dependency>
+			<!-- MySQL connector -->
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
+		<!-- ============================================== -->
 		<!-- ================== NEO4J ===================== -->
 		<!-- ============================================== -->
 		<dependency>
+			<!-- Cypher DSL -->
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-cypher-dsl</artifactId>
+			<version>${neo4j.dsl.version}</version>
+		</dependency>
+		<dependency>
+			<!-- Cypher DSL Parser -->
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-cypher-dsl-parser</artifactId>
 			<version>${neo4j.dsl.version}</version>
 		</dependency>
 		<!-- ============================================== -->
@@ -494,6 +497,21 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>${commons.collections.version}</version>
+		</dependency>
+		<!-- ============================================== -->
+		<!-- ================ LIQUIBASE =================== -->
+		<!-- ============================================== -->
+		<dependency>
+			<!-- Liquibase -->
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>${liquibase.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- ============================================== -->
 		<!-- =========== VERSION ENFORCEMENT ============== -->
@@ -626,6 +644,13 @@
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-core</artifactId>
 			<version>${reactor.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<!-- H2 database -->
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

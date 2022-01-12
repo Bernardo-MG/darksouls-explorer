@@ -45,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Logger for the exception handler.
      */
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(GlobalExceptionHandler.class);
+        .getLogger(GlobalExceptionHandler.class);
 
     /**
      * Default constructor.
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         response = new DefaultResponse<>(message, ResponseStatus.FAILURE);
 
         return super.handleExceptionInternal(ex, response, headers, status,
-                request);
+            request);
     }
 
     @Override
@@ -88,13 +88,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         final Iterable<String> errors;
         final Response<Iterable<String>> response;
 
-        errors = ex.getBindingResult().getFieldErrors().stream()
-                .map(x -> x.getDefaultMessage()).collect(Collectors.toList());
+        errors = ex.getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(x -> x.getDefaultMessage())
+            .collect(Collectors.toList());
 
         response = new DefaultResponse<>(errors, ResponseStatus.WARNING);
 
         return super.handleExceptionInternal(ex, response, headers, status,
-                request);
+            request);
     }
 
 }
