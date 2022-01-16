@@ -1,0 +1,9 @@
+FROM neo4j:latest
+
+# Install git
+RUN apt update
+RUN apt-get -y install git
+
+# Clone data source
+RUN git clone -b develop https://github.com/Bernardo-MG/darksouls-explorer-dataset.git /ds
+RUN cp -r /ds/darksouls_1/data /var/lib/neo4j/import/data
