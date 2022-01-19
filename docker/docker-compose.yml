@@ -30,11 +30,6 @@ services:
             - NEO4J_dbms.memory.heap.initial_size=1G
             - NEO4J_dbms_memory_heap_max__size=1G
             - NEO4JLABS_PLUGINS=["apoc"]
-        healthcheck:
-            test: perl -MIO::Socket::INET -e 'exit(! defined( IO::Socket::INET->new("localhost:7687")))'
-            interval: 30s
-            timeout: 10s
-            retries: 5
     graph-db-seeder:
         container_name: darksouls-graph-db-seeder
         build:
