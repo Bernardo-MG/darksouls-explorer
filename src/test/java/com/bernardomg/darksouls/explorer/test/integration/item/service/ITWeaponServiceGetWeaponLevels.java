@@ -17,7 +17,9 @@
 package com.bernardomg.darksouls.explorer.test.integration.item.service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -70,6 +73,9 @@ public class ITWeaponServiceGetWeaponLevels {
     }
 
     @Autowired
+    private Neo4jClient   client;
+
+    @Autowired
     private WeaponService service;
 
     /**
@@ -84,8 +90,11 @@ public class ITWeaponServiceGetWeaponLevels {
     public void testGetAll_Data() {
         final WeaponProgression data;
         final WeaponProgressionPath path;
+        final Long id;
 
-        data = service.getWeaponLevels(1l);
+        id = getId();
+
+        data = service.getWeaponLevels(id);
 
         Assertions.assertEquals("Sword", data.getWeapon());
         Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
@@ -104,9 +113,12 @@ public class ITWeaponServiceGetWeaponLevels {
         final WeaponProgression data;
         final WeaponProgressionPath path;
         final Iterator<WeaponLevel> levels;
+        final Long id;
         WeaponLevel level;
 
-        data = service.getWeaponLevels(1l);
+        id = getId();
+
+        data = service.getWeaponLevels(id);
 
         Assertions.assertEquals("Sword", data.getWeapon());
         Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
@@ -139,9 +151,12 @@ public class ITWeaponServiceGetWeaponLevels {
         final WeaponProgression data;
         final WeaponProgressionPath path;
         final Iterator<WeaponLevel> levels;
+        final Long id;
         WeaponLevel level;
 
-        data = service.getWeaponLevels(1l);
+        id = getId();
+
+        data = service.getWeaponLevels(id);
 
         Assertions.assertEquals("Sword", data.getWeapon());
         Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
@@ -166,6 +181,19 @@ public class ITWeaponServiceGetWeaponLevels {
 
         level = levels.next();
         Assertions.assertEquals(50, level.getPhysicalDamage());
+    }
+
+    private final Long getId() {
+        final Collection<Map<String, Object>> rows;
+
+        rows = client.query("MATCH (n) RETURN n")
+            .fetch()
+            .all();
+
+        return (Long) rows.stream()
+            .findFirst()
+            .get()
+            .getOrDefault("id", 0l);
     }
 
 }
