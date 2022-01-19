@@ -85,7 +85,7 @@ public class ITWeaponServiceGetWeaponLevels {
         final WeaponProgression data;
         final WeaponProgressionPath path;
 
-        data = service.getWeaponLevels("Sword");
+        data = service.getWeaponLevels(1l);
 
         Assertions.assertEquals("Sword", data.getWeapon());
         Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
@@ -106,7 +106,7 @@ public class ITWeaponServiceGetWeaponLevels {
         final Iterator<WeaponLevel> levels;
         WeaponLevel level;
 
-        data = service.getWeaponLevels("Sword");
+        data = service.getWeaponLevels(1l);
 
         Assertions.assertEquals("Sword", data.getWeapon());
         Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
@@ -141,7 +141,7 @@ public class ITWeaponServiceGetWeaponLevels {
         final Iterator<WeaponLevel> levels;
         WeaponLevel level;
 
-        data = service.getWeaponLevels("Sword");
+        data = service.getWeaponLevels(1l);
 
         Assertions.assertEquals("Sword", data.getWeapon());
         Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));

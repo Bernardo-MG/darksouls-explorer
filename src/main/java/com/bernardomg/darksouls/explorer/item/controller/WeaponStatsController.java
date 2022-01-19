@@ -22,10 +22,10 @@ public class WeaponStatsController {
         this.service = service;
     }
 
-    @GetMapping(path = "/{weapon}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public WeaponProgression
-            readWeaponStats(@PathVariable("weapon") final String weapon) {
-        return service.getWeaponLevels(weapon);
+            readWeaponStats(@PathVariable("id") final Long id) {
+        return service.getWeaponLevels(id);
     }
 
 }

@@ -20,8 +20,8 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final WeaponProgression getWeaponLevels(final String weapon) {
-        return queries.findWeaponSources(weapon);
+    public final WeaponProgression getWeaponLevels(final Long id) {
+        return queries.findWeaponSources(id);
     }
 
 }

@@ -5,6 +5,6 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 
 public interface WeaponService {
 
-    public WeaponProgression getWeaponLevels(final String weapon);
+    public WeaponProgression getWeaponLevels(final Long id);
 
 }

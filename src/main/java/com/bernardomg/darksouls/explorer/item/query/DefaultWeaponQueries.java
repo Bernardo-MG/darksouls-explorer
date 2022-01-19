@@ -34,7 +34,7 @@ public final class DefaultWeaponQueries implements WeaponQueries {
     }
 
     @Override
-    public final WeaponProgression findWeaponSources(final String weapon) {
+    public final WeaponProgression findWeaponSources(final Long id) {
         final String query;
         final Collection<Map<String, Object>> levelsInfo;
         final Map<String, Object> params;
@@ -45,14 +45,14 @@ public final class DefaultWeaponQueries implements WeaponQueries {
         WeaponProgressionPath path;
 
         params = new HashMap<>();
-        params.put("weapon", weapon);
+        params.put("id", id);
 
         query =
         // @formatter:off
             "MATCH" + System.lineSeparator()
-          + "   (l:WeaponLevel)" + System.lineSeparator()
+          + "   (w:Weapon)-[HAS_LEVEL]->(l:WeaponLevel) " + System.lineSeparator()
           + "WHERE" + System.lineSeparator()
-          + "  l.weapon = $weapon" + System.lineSeparator()
+          + "  id(w) = $id" + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
           + "   l.weapon AS weapon," + System.lineSeparator()
           + "   l.path AS path," + System.lineSeparator()
