@@ -59,6 +59,7 @@ public final class DefaultWeaponQueries implements WeaponQueries {
           + "   l.level AS level," + System.lineSeparator()
           + "   l.physicalDamage AS physicalDamage" + System.lineSeparator()
           + "ORDER BY" + System.lineSeparator()
+          + "   path ASC," + System.lineSeparator()
           + "   level ASC";
         // @formatter:on;
 
@@ -67,6 +68,7 @@ public final class DefaultWeaponQueries implements WeaponQueries {
         pathNames = levelsInfo.stream()
             .map((data) -> (String) data.getOrDefault("path", ""))
             .distinct()
+            .sorted()
             .collect(Collectors.toList());
 
         paths = new ArrayList<>();
