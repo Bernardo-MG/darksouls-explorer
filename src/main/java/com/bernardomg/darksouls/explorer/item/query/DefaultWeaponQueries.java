@@ -94,7 +94,10 @@ public final class DefaultWeaponQueries implements WeaponQueries {
     private final WeaponLevel toWeaponLevel(final Map<String, Object> record) {
         return new ImmutableWeaponLevel(
             ((Long) record.getOrDefault("level", 0l)).intValue(),
-            ((Long) record.getOrDefault("physicalDamage", 0l)).intValue());
+            ((Long) record.getOrDefault("physicalDamage", 0l)).intValue(),
+            ((Long) record.getOrDefault("magicDamage", 0l)).intValue(),
+            ((Long) record.getOrDefault("fireDamage", 0l)).intValue(),
+            ((Long) record.getOrDefault("lightningDamage", 0l)).intValue());
     }
 
 }
