@@ -53,10 +53,13 @@ public final class DefaultWeaponQueries implements WeaponQueries {
           + "   (w:Weapon)-[HAS_LEVEL]->(l:WeaponLevel) " + System.lineSeparator()
           + "WHERE" + System.lineSeparator()
           + "  id(w) = $id" + System.lineSeparator()
+          + "OPTIONAL MATCH " + System.lineSeparator()
+          + "   (p:WeaponLevel)-[NEXT]->(l) " + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
           + "   l.weapon AS weapon," + System.lineSeparator()
           + "   l.path AS path," + System.lineSeparator()
           + "   l.level AS level," + System.lineSeparator()
+          + "   COALESCE(p.level, -1) + 1 AS pathLevel," + System.lineSeparator()
           + "   l.physicalDamage AS physicalDamage" + System.lineSeparator()
           + "ORDER BY" + System.lineSeparator()
           + "   path ASC," + System.lineSeparator()
@@ -94,6 +97,7 @@ public final class DefaultWeaponQueries implements WeaponQueries {
     private final WeaponLevel toWeaponLevel(final Map<String, Object> record) {
         return new ImmutableWeaponLevel(
             ((Long) record.getOrDefault("level", 0l)).intValue(),
+            ((Long) record.getOrDefault("pathLevel", 0l)).intValue(),
             ((Long) record.getOrDefault("physicalDamage", 0l)).intValue(),
             ((Long) record.getOrDefault("magicDamage", 0l)).intValue(),
             ((Long) record.getOrDefault("fireDamage", 0l)).intValue(),

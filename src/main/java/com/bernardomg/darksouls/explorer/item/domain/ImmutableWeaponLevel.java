@@ -14,6 +14,9 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     private final Integer level;
 
     @NonNull
+    private final Integer pathLevel;
+
+    @NonNull
     private final Integer lightningDamage;
 
     @NonNull
@@ -23,6 +26,7 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     private final Integer physicalDamage;
 
     public ImmutableWeaponLevel(@NonNull final Integer level,
+            @NonNull final Integer pathLevel,
             @NonNull final Integer physicalDamage,
             @NonNull final Integer magicDamage,
             @NonNull final Integer fireDamage,
@@ -30,6 +34,7 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
         super();
 
         this.level = level;
+        this.pathLevel = pathLevel;
         this.physicalDamage = physicalDamage;
         this.magicDamage = magicDamage;
         this.fireDamage = fireDamage;
