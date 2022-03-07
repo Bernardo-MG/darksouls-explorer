@@ -8,7 +8,11 @@ RUN apt-get -y install git
 WORKDIR /usr/src/import
 
 # Clone data source
-RUN git clone -b develop https://github.com/Bernardo-MG/darksouls-explorer-dataset.git /ds
+ENV USER=Bernardo-MG
+ENV REPOSITORY=darksouls-explorer-dataset
+ENV BRANCH=develop
+ADD https://api.github.com/repos/$USER/$REPOSITORY/git/refs/heads/$BRANCH version.json
+RUN git clone -b $BRANCH https://github.com/$USER/$REPOSITORY.git /ds
 
 COPY /docker/load_data.sh /load_data.sh
 
