@@ -86,46 +86,82 @@ public class ITWeaponServiceGetWeaponLevels {
     }
 
     @Test
-    @DisplayName("Returns the expected data")
-    public void testGetAll_Data() {
+    @DisplayName("Returns the expected structure")
+    public void testGetAll_Structure() {
         final WeaponProgression data;
-        final WeaponProgressionPath path;
         final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponProgressionPath path;
 
         id = getId();
 
         data = service.getWeaponLevels(id);
 
         Assertions.assertEquals("Sword", data.getWeapon());
-        Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
+        Assertions.assertEquals(2, IterableUtils.size(data.getPaths()));
 
-        path = data.getPaths()
-            .iterator()
-            .next();
+        itr = data.getPaths()
+            .iterator();
+        path = itr.next();
+
+        Assertions.assertEquals("Magic", path.getPath());
+        Assertions.assertEquals(1, IterableUtils.size(path.getLevels()));
+
+        path = itr.next();
 
         Assertions.assertEquals("Physical", path.getPath());
         Assertions.assertEquals(5, IterableUtils.size(path.getLevels()));
     }
 
     @Test
-    @DisplayName("Returns the levels in order")
-    public void testGetAll_Levels() {
+    @DisplayName("Returns the path level")
+    public void testGetAll_PathLevel() {
         final WeaponProgression data;
-        final WeaponProgressionPath path;
+        final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponLevel level;
+        WeaponProgressionPath path;
+
+        id = getId();
+
+        data = service.getWeaponLevels(id);
+
+        itr = data.getPaths()
+            .iterator();
+
+        path = itr.next();
+
+        level = path.getLevels()
+            .iterator()
+            .next();
+        Assertions.assertEquals(5, level.getPathLevel());
+
+        path = itr.next();
+
+        level = path.getLevels()
+            .iterator()
+            .next();
+        Assertions.assertEquals(0, level.getPathLevel());
+    }
+
+    @Test
+    @DisplayName("Returns the levels in order")
+    public void testGetAll_LevelsOrder() {
+        final WeaponProgression data;
         final Iterator<WeaponLevel> levels;
         final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponProgressionPath path;
         WeaponLevel level;
 
         id = getId();
 
         data = service.getWeaponLevels(id);
 
-        Assertions.assertEquals("Sword", data.getWeapon());
-        Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
-
-        path = data.getPaths()
-            .iterator()
-            .next();
+        itr = data.getPaths()
+            .iterator();
+        itr.next();
+        path = itr.next();
         levels = path.getLevels()
             .iterator();
 
@@ -149,38 +185,52 @@ public class ITWeaponServiceGetWeaponLevels {
     @DisplayName("Returns the levels damage")
     public void testGetAll_LevelsDamage() {
         final WeaponProgression data;
-        final WeaponProgressionPath path;
         final Iterator<WeaponLevel> levels;
         final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponProgressionPath path;
         WeaponLevel level;
 
         id = getId();
 
         data = service.getWeaponLevels(id);
 
-        Assertions.assertEquals("Sword", data.getWeapon());
-        Assertions.assertEquals(1, IterableUtils.size(data.getPaths()));
-
-        path = data.getPaths()
-            .iterator()
-            .next();
+        itr = data.getPaths()
+            .iterator();
+        itr.next();
+        path = itr.next();
         levels = path.getLevels()
             .iterator();
 
         level = levels.next();
         Assertions.assertEquals(10, level.getPhysicalDamage());
+        Assertions.assertEquals(11, level.getMagicDamage());
+        Assertions.assertEquals(12, level.getFireDamage());
+        Assertions.assertEquals(13, level.getLightningDamage());
 
         level = levels.next();
         Assertions.assertEquals(20, level.getPhysicalDamage());
+        Assertions.assertEquals(21, level.getMagicDamage());
+        Assertions.assertEquals(22, level.getFireDamage());
+        Assertions.assertEquals(23, level.getLightningDamage());
 
         level = levels.next();
         Assertions.assertEquals(30, level.getPhysicalDamage());
+        Assertions.assertEquals(31, level.getMagicDamage());
+        Assertions.assertEquals(32, level.getFireDamage());
+        Assertions.assertEquals(33, level.getLightningDamage());
 
         level = levels.next();
         Assertions.assertEquals(40, level.getPhysicalDamage());
+        Assertions.assertEquals(41, level.getMagicDamage());
+        Assertions.assertEquals(42, level.getFireDamage());
+        Assertions.assertEquals(43, level.getLightningDamage());
 
         level = levels.next();
         Assertions.assertEquals(50, level.getPhysicalDamage());
+        Assertions.assertEquals(51, level.getMagicDamage());
+        Assertions.assertEquals(52, level.getFireDamage());
+        Assertions.assertEquals(53, level.getLightningDamage());
     }
 
     private final Long getId() {

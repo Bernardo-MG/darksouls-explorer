@@ -60,7 +60,10 @@ public final class DefaultWeaponQueries implements WeaponQueries {
           + "   l.path AS path," + System.lineSeparator()
           + "   l.level AS level," + System.lineSeparator()
           + "   COALESCE(p.level, -1) + 1 AS pathLevel," + System.lineSeparator()
-          + "   l.physicalDamage AS physicalDamage" + System.lineSeparator()
+          + "   l.physicalDamage AS physicalDamage," + System.lineSeparator()
+          + "   l.magicDamage AS magicDamage," + System.lineSeparator()
+          + "   l.fireDamage AS fireDamage," + System.lineSeparator()
+          + "   l.lightningDamage AS lightningDamage" + System.lineSeparator()
           + "ORDER BY" + System.lineSeparator()
           + "   path ASC," + System.lineSeparator()
           + "   level ASC";
