@@ -50,11 +50,11 @@ public final class DefaultWeaponQueries implements WeaponQueries {
         query =
         // @formatter:off
             "MATCH" + System.lineSeparator()
-          + "   (w:Weapon)-[HAS_LEVEL]->(l:WeaponLevel) " + System.lineSeparator()
+          + "   (w:Weapon)-[HAS_LEVEL]->(l:Level) " + System.lineSeparator()
           + "WHERE" + System.lineSeparator()
           + "  id(w) = $id" + System.lineSeparator()
           + "OPTIONAL MATCH " + System.lineSeparator()
-          + "   (p:WeaponLevel)-[NEXT]->(l) " + System.lineSeparator()
+          + "   (p:Level)-[NEXT]->(l) " + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
           + "   l.weapon AS weapon," + System.lineSeparator()
           + "   l.path AS path," + System.lineSeparator()
