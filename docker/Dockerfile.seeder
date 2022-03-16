@@ -7,11 +7,14 @@ RUN apt-get -y install git
 # Create import directory
 WORKDIR /usr/src/import
 
-# Clone data source
 ENV USER=Bernardo-MG
 ENV REPOSITORY=darksouls-explorer-dataset
 ENV BRANCH=develop
+
+# Cache source
 ADD https://api.github.com/repos/$USER/$REPOSITORY/git/refs/heads/$BRANCH version.json
+
+# Clone data source
 RUN git clone -b $BRANCH https://github.com/$USER/$REPOSITORY.git /ds
 
 COPY /docker/load_data.sh /load_data.sh

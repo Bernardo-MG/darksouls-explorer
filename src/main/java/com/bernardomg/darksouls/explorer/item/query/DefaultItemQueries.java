@@ -101,10 +101,14 @@ public final class DefaultItemQueries implements ItemQueries {
           + "WHERE" + System.lineSeparator()
           + "  id(i) = $id" + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
-          + "  ID(i) AS itemId, i.name AS item," + System.lineSeparator()
-            + "ID(s) AS sourceId, s.name AS source," + System.lineSeparator()
-            + "rel.price AS price, type(rel) AS relationship," + System.lineSeparator()
-            + "ID(l) AS locationId, l.name AS location";
+          + "  ID(i) AS itemId," + System.lineSeparator()
+          + "  i.name AS item," + System.lineSeparator()
+          + "  ID(s) AS sourceId," + System.lineSeparator()
+          + "  s.name AS source," + System.lineSeparator()
+          + "  rel.price AS price," + System.lineSeparator()
+          + "  type(rel) AS relationship," + System.lineSeparator()
+          + "  ID(l) AS locationId," + System.lineSeparator()
+          + "  l.name AS location";
         // @formatter:on;
 
         // TODO: Use parameters
