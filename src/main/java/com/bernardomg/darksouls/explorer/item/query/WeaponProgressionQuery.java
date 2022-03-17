@@ -3,14 +3,9 @@ package com.bernardomg.darksouls.explorer.item.query;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.core.Neo4jClient;
-import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
@@ -18,34 +13,53 @@ import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionP
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.StringQuery;
 
-@Component
-public final class DefaultWeaponQueries implements WeaponQueries {
+public final class WeaponProgressionQuery implements
+        StringQuery<Collection<Map<String, Object>>, WeaponProgression> {
 
-    private final QueryExecutor queryExecutor;
-
-    @Autowired
-    public DefaultWeaponQueries(final Neo4jClient clnt) {
+    public WeaponProgressionQuery() {
         super();
-
-        queryExecutor = new DefaultQueryExecutor(clnt);
     }
 
     @Override
-    public final WeaponProgression findWeaponProgression(final Long id) {
-        final String query;
-        final Collection<Map<String, Object>> levelsInfo;
-        final Map<String, Object> params;
+    public final WeaponProgression
+            getOutput(final Collection<Map<String, Object>> record) {
         final String name;
         final Collection<WeaponProgressionPath> paths;
         final Collection<String> pathNames;
         Collection<WeaponLevel> levels;
         WeaponProgressionPath path;
 
-        params = new HashMap<>();
-        params.put("id", id);
+        pathNames = record.stream()
+            .map((data) -> (String) data.getOrDefault("path", ""))
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
+
+        paths = new ArrayList<>();
+        for (final String pathName : pathNames) {
+            levels = record.stream()
+                .filter(
+                    (data) -> pathName.equals(data.getOrDefault("path", "")))
+                .map(this::toWeaponLevel)
+                .collect(Collectors.toList());
+
+            path = new ImmutableWeaponProgressionPath(pathName, levels);
+            paths.add(path);
+        }
+
+        name = StreamSupport.stream(record.spliterator(), false)
+            .map((data) -> (String) data.getOrDefault("weapon", ""))
+            .findAny()
+            .orElse("");
+
+        return new ImmutableWeaponProgression(name, paths);
+    }
+
+    @Override
+    public final String getStatement() {
+        final String query;
 
         query =
         // @formatter:off
@@ -69,32 +83,7 @@ public final class DefaultWeaponQueries implements WeaponQueries {
           + "   level ASC";
         // @formatter:on;
 
-        levelsInfo = queryExecutor.fetch(query, params);
-
-        pathNames = levelsInfo.stream()
-            .map((data) -> (String) data.getOrDefault("path", ""))
-            .distinct()
-            .sorted()
-            .collect(Collectors.toList());
-
-        paths = new ArrayList<>();
-        for (final String pathName : pathNames) {
-            levels = levelsInfo.stream()
-                .filter(
-                    (data) -> pathName.equals(data.getOrDefault("path", "")))
-                .map(this::toWeaponLevel)
-                .collect(Collectors.toList());
-
-            path = new ImmutableWeaponProgressionPath(pathName, levels);
-            paths.add(path);
-        }
-
-        name = StreamSupport.stream(levelsInfo.spliterator(), false)
-            .map((data) -> (String) data.getOrDefault("weapon", ""))
-            .findAny()
-            .orElse("");
-
-        return new ImmutableWeaponProgression(name, paths);
+        return query;
     }
 
     private final WeaponLevel toWeaponLevel(final Map<String, Object> record) {
