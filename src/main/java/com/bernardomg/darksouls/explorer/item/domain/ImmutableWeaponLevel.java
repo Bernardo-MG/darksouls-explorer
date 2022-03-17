@@ -14,13 +14,13 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     private final Integer level;
 
     @NonNull
-    private final Integer pathLevel;
-
-    @NonNull
     private final Integer lightningDamage;
 
     @NonNull
     private final Integer magicDamage;
+
+    @NonNull
+    private final Integer pathLevel;
 
     @NonNull
     private final Integer physicalDamage;

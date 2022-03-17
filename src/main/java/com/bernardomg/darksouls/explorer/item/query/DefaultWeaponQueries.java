@@ -34,7 +34,7 @@ public final class DefaultWeaponQueries implements WeaponQueries {
     }
 
     @Override
-    public final WeaponProgression findWeaponSources(final Long id) {
+    public final WeaponProgression findWeaponProgression(final Long id) {
         final String query;
         final Collection<Map<String, Object>> levelsInfo;
         final Map<String, Object> params;

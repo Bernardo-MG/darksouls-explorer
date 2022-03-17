@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
 
@@ -37,6 +38,13 @@ public class ItemController {
     public Page<ItemSource> readSources(@PathVariable("id") final Long id,
             final Pageable page) {
         return service.getSources(id, page);
+    }
+
+    @GetMapping(path = "/{id}/stats/weapons",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public WeaponProgression
+            readWeaponStats(@PathVariable("id") final Long id) {
+        return service.getWeaponLevels(id);
     }
 
 }

@@ -37,7 +37,7 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.service.WeaponService;
+import com.bernardomg.darksouls.explorer.item.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -45,9 +45,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITWeaponServiceGetWeaponLevels.Initializer.class })
+        initializers = { ITItemServiceGetWeaponLevels.Initializer.class })
 @DisplayName("Reading weapon levels")
-public class ITWeaponServiceGetWeaponLevels {
+public class ITItemServiceGetWeaponLevels {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -73,112 +73,16 @@ public class ITWeaponServiceGetWeaponLevels {
     }
 
     @Autowired
-    private Neo4jClient   client;
+    private Neo4jClient client;
 
     @Autowired
-    private WeaponService service;
+    private ItemService service;
 
     /**
      * Default constructor.
      */
-    public ITWeaponServiceGetWeaponLevels() {
+    public ITItemServiceGetWeaponLevels() {
         super();
-    }
-
-    @Test
-    @DisplayName("Returns the expected structure")
-    public void testGetAll_Structure() {
-        final WeaponProgression data;
-        final Long id;
-        final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionPath path;
-
-        id = getId();
-
-        data = service.getWeaponLevels(id);
-
-        Assertions.assertEquals("Sword", data.getWeapon());
-        Assertions.assertEquals(2, IterableUtils.size(data.getPaths()));
-
-        itr = data.getPaths()
-            .iterator();
-        path = itr.next();
-
-        Assertions.assertEquals("Magic", path.getPath());
-        Assertions.assertEquals(1, IterableUtils.size(path.getLevels()));
-
-        path = itr.next();
-
-        Assertions.assertEquals("Physical", path.getPath());
-        Assertions.assertEquals(5, IterableUtils.size(path.getLevels()));
-    }
-
-    @Test
-    @DisplayName("Returns the path level")
-    public void testGetAll_PathLevel() {
-        final WeaponProgression data;
-        final Long id;
-        final Iterator<WeaponProgressionPath> itr;
-        WeaponLevel level;
-        WeaponProgressionPath path;
-
-        id = getId();
-
-        data = service.getWeaponLevels(id);
-
-        itr = data.getPaths()
-            .iterator();
-
-        path = itr.next();
-
-        level = path.getLevels()
-            .iterator()
-            .next();
-        Assertions.assertEquals(5, level.getPathLevel());
-
-        path = itr.next();
-
-        level = path.getLevels()
-            .iterator()
-            .next();
-        Assertions.assertEquals(0, level.getPathLevel());
-    }
-
-    @Test
-    @DisplayName("Returns the levels in order")
-    public void testGetAll_LevelsOrder() {
-        final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
-        final Long id;
-        final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionPath path;
-        WeaponLevel level;
-
-        id = getId();
-
-        data = service.getWeaponLevels(id);
-
-        itr = data.getPaths()
-            .iterator();
-        itr.next();
-        path = itr.next();
-        levels = path.getLevels()
-            .iterator();
-
-        level = levels.next();
-        Assertions.assertEquals(0, level.getLevel());
-
-        level = levels.next();
-        Assertions.assertEquals(1, level.getLevel());
-
-        level = levels.next();
-        Assertions.assertEquals(2, level.getLevel());
-
-        level = levels.next();
-        Assertions.assertEquals(3, level.getLevel());
-
-        level = levels.next();
-        Assertions.assertEquals(4, level.getLevel());
     }
 
     @Test
@@ -231,6 +135,102 @@ public class ITWeaponServiceGetWeaponLevels {
         Assertions.assertEquals(51, level.getMagicDamage());
         Assertions.assertEquals(52, level.getFireDamage());
         Assertions.assertEquals(53, level.getLightningDamage());
+    }
+
+    @Test
+    @DisplayName("Returns the levels in order")
+    public void testGetAll_LevelsOrder() {
+        final WeaponProgression data;
+        final Iterator<WeaponLevel> levels;
+        final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponProgressionPath path;
+        WeaponLevel level;
+
+        id = getId();
+
+        data = service.getWeaponLevels(id);
+
+        itr = data.getPaths()
+            .iterator();
+        itr.next();
+        path = itr.next();
+        levels = path.getLevels()
+            .iterator();
+
+        level = levels.next();
+        Assertions.assertEquals(0, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(1, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(2, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(3, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(4, level.getLevel());
+    }
+
+    @Test
+    @DisplayName("Returns the path level")
+    public void testGetAll_PathLevel() {
+        final WeaponProgression data;
+        final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponLevel level;
+        WeaponProgressionPath path;
+
+        id = getId();
+
+        data = service.getWeaponLevels(id);
+
+        itr = data.getPaths()
+            .iterator();
+
+        path = itr.next();
+
+        level = path.getLevels()
+            .iterator()
+            .next();
+        Assertions.assertEquals(5, level.getPathLevel());
+
+        path = itr.next();
+
+        level = path.getLevels()
+            .iterator()
+            .next();
+        Assertions.assertEquals(0, level.getPathLevel());
+    }
+
+    @Test
+    @DisplayName("Returns the expected structure")
+    public void testGetAll_Structure() {
+        final WeaponProgression data;
+        final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponProgressionPath path;
+
+        id = getId();
+
+        data = service.getWeaponLevels(id);
+
+        Assertions.assertEquals("Sword", data.getWeapon());
+        Assertions.assertEquals(2, IterableUtils.size(data.getPaths()));
+
+        itr = data.getPaths()
+            .iterator();
+        path = itr.next();
+
+        Assertions.assertEquals("Magic", path.getPath());
+        Assertions.assertEquals(1, IterableUtils.size(path.getLevels()));
+
+        path = itr.next();
+
+        Assertions.assertEquals("Physical", path.getPath());
+        Assertions.assertEquals(5, IterableUtils.size(path.getLevels()));
     }
 
     private final Long getId() {

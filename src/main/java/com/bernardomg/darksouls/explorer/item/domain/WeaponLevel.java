@@ -7,11 +7,11 @@ public interface WeaponLevel {
 
     public Integer getLevel();
 
-    public Integer getPathLevel();
-
     public Integer getLightningDamage();
 
     public Integer getMagicDamage();
+
+    public Integer getPathLevel();
 
     public Integer getPhysicalDamage();
 }
