@@ -7,19 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.TextQueryExecutor;
 
 @Component
 public final class DefaultMetadataQueries implements MetadataQueries {
 
-    private final QueryExecutor queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     @Autowired
     public DefaultMetadataQueries(final Neo4jClient clnt) {
         super();
 
-        queryExecutor = new DefaultQueryExecutor(clnt);
+        queryExecutor = new TextQueryExecutor(clnt);
     }
 
     @Override

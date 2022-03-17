@@ -11,19 +11,19 @@ import com.bernardomg.darksouls.explorer.map.domain.ImmutableMap;
 import com.bernardomg.darksouls.explorer.map.domain.ImmutableMapConnection;
 import com.bernardomg.darksouls.explorer.map.domain.Map;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
-import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.TextQueryExecutor;
 
 @Component
 public final class DefaultMapQueries implements MapQueries {
 
-    private final QueryExecutor queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     @Autowired
     public DefaultMapQueries(final Neo4jClient clnt) {
         super();
 
-        queryExecutor = new DefaultQueryExecutor(clnt);
+        queryExecutor = new TextQueryExecutor(clnt);
     }
 
     @Override

@@ -46,9 +46,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITQueryExecutorPagination.Initializer.class })
+        initializers = { ITTextQueryExecutorPagination.Initializer.class })
 @DisplayName("Text Query Executor")
-public class ITQueryExecutorPagination {
+public class ITTextQueryExecutorPagination {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -73,9 +73,9 @@ public class ITQueryExecutorPagination {
     }
 
     @Autowired
-    private QueryExecutor queryExecutor;
+    private QueryExecutor<String> queryExecutor;
 
-    public ITQueryExecutorPagination() {
+    public ITTextQueryExecutorPagination() {
         super();
     }
 

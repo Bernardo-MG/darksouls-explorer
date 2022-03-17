@@ -39,17 +39,17 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.data.support.PageableExecutionUtils;
 
-public final class DefaultQueryExecutor implements QueryExecutor {
+public final class TextQueryExecutor implements QueryExecutor<String> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory
-        .getLogger(DefaultQueryExecutor.class);
+        .getLogger(TextQueryExecutor.class);
 
     private final Neo4jClient   client;
 
-    public DefaultQueryExecutor(final Neo4jClient clnt) {
+    public TextQueryExecutor(final Neo4jClient clnt) {
         super();
 
         client = Objects.requireNonNull(clnt);
@@ -160,20 +160,6 @@ public final class DefaultQueryExecutor implements QueryExecutor {
             .bindAll(parameters)
             .fetch()
             .all();
-    }
-
-    @Override
-    public final void run(final Iterable<Statement> statements) {
-        String query;
-
-        for (final Statement statement : statements) {
-            query = statement.getCypher();
-
-            LOGGER.debug("Running {}", query);
-
-            client.query(query)
-                .run();
-        }
     }
 
     private final Long count(final Statement statement) {

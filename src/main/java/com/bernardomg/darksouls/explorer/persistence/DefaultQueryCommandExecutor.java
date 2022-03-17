@@ -25,15 +25,15 @@ import org.springframework.data.domain.Pageable;
 
 public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
 
-    private final QueryExecutor    executor;
+    private final QueryExecutor<String> textExecutor;
 
-    private final DslQueryExecutor dslExecutor;
+    private final DslQueryExecutor      dslExecutor;
 
-    public DefaultQueryCommandExecutor(final QueryExecutor exec,
+    public DefaultQueryCommandExecutor(final QueryExecutor<String> textExec,
             final DslQueryExecutor dslExec) {
         super();
 
-        executor = Objects.requireNonNull(exec);
+        textExecutor = Objects.requireNonNull(textExec);
         dslExecutor = Objects.requireNonNull(dslExec);
     }
 
@@ -47,7 +47,7 @@ public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
     public final <T> Page<T> fetch(
             final StringQuery<Map<String, Object>, T> query,
             final Map<String, Object> parameters, final Pageable page) {
-        return executor.fetch(query.getStatement(), query::getOutput,
+        return textExecutor.fetch(query.getStatement(), query::getOutput,
             parameters, page);
     }
 
@@ -57,7 +57,7 @@ public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
             final Map<String, Object> parameters) {
         final Collection<Map<String, Object>> read;
 
-        read = executor.fetch(query.getStatement(), parameters);
+        read = textExecutor.fetch(query.getStatement(), parameters);
 
         return query.getOutput(read);
     }

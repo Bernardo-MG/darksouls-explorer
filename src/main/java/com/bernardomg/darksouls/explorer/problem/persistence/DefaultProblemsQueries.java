@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.TextQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 import com.bernardomg.darksouls.explorer.problem.model.ImmutableDataProblem;
@@ -33,7 +33,7 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
         super();
 
         repository = Objects.requireNonNull(repo);
-        queryExecutor = new DefaultQueryExecutor(clnt);
+        queryExecutor = new TextQueryExecutor(clnt);
     }
 
     @Override
