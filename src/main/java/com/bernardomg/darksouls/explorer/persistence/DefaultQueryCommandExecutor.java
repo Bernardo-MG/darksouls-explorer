@@ -39,6 +39,27 @@ public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
     }
 
     @Override
+    public final <T> Iterable<T>
+            fetch(final DslQuery<Map<String, Object>, T> query) {
+        return dslExecutor.fetch(query.getStatement(), query::getOutput);
+    }
+
+    @Override
+    public final <T> Iterable<T> fetch(
+            final DslQuery<Map<String, Object>, T> query,
+            final Map<String, Object> parameters) {
+        return dslExecutor.fetch(query.getStatement(), query::getOutput,
+            parameters);
+    }
+
+    @Override
+    public final <T> Page<T> fetch(final DslQuery<Map<String, Object>, T> query,
+            final Map<String, Object> parameters, final Pageable page) {
+        return dslExecutor.fetch(query.getStatement(), query::getOutput,
+            parameters, page);
+    }
+
+    @Override
     public final <T> Page<T> fetch(final DslQuery<Map<String, Object>, T> query,
             final Pageable page) {
         return dslExecutor.fetch(query.getStatement(), query::getOutput, page);

@@ -8,6 +8,14 @@ import org.springframework.data.domain.Pageable;
 
 public interface QueryCommandExecutor {
 
+    public <T> Iterable<T> fetch(final DslQuery<Map<String, Object>, T> query);
+
+    public <T> Iterable<T> fetch(final DslQuery<Map<String, Object>, T> query,
+            final Map<String, Object> parameters);
+
+    public <T> Page<T> fetch(final DslQuery<Map<String, Object>, T> query,
+            final Map<String, Object> parameters, final Pageable page);
+
     public <T> Page<T> fetch(final DslQuery<Map<String, Object>, T> query,
             final Pageable page);
 
