@@ -12,11 +12,17 @@ public interface QueryCommandExecutor {
     public <T> Page<T> fetch(final DslQuery<Map<String, Object>, T> query,
             final Pageable page);
 
-    public <T> Page<T> fetch(final StringQuery<Map<String, Object>, T> query,
+    public <T> Iterable<T>
+            fetch(final TextQuery<Map<String, Object>, T> query);
+
+    public <T> Page<T> fetch(final TextQuery<Map<String, Object>, T> query,
             final Map<String, Object> parameters, final Pageable page);
 
+    public <T> Page<T> fetch(final TextQuery<Map<String, Object>, T> query,
+            final Pageable page);
+
     public <T> T fetchOne(
-            final StringQuery<Collection<Map<String, Object>>, T> query,
+            final TextQuery<Collection<Map<String, Object>>, T> query,
             final Map<String, Object> parameters);
 
 }

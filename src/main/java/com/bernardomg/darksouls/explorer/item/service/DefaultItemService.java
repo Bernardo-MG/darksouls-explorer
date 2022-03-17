@@ -20,7 +20,7 @@ import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 import com.bernardomg.darksouls.explorer.persistence.DslQuery;
 import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
-import com.bernardomg.darksouls.explorer.persistence.StringQuery;
+import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
 @Service
 public final class DefaultItemService implements ItemService {
@@ -48,7 +48,7 @@ public final class DefaultItemService implements ItemService {
     public final Page<ItemSource> getSources(final Long id,
             final Pageable page) {
         final Map<String, Object> params;
-        final StringQuery<Map<String, Object>, ItemSource> query;
+        final TextQuery<Map<String, Object>, ItemSource> query;
 
         query = new ItemSourcesQuery();
 
@@ -61,7 +61,7 @@ public final class DefaultItemService implements ItemService {
     @Override
     public final WeaponProgression getWeaponLevels(final Long id) {
         final Map<String, Object> params;
-        final StringQuery<Collection<Map<String, Object>>, WeaponProgression> query;
+        final TextQuery<Collection<Map<String, Object>>, WeaponProgression> query;
 
         params = new HashMap<>();
         params.put("id", id);

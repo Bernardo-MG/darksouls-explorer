@@ -13,10 +13,10 @@ import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionP
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.persistence.StringQuery;
+import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
 public final class WeaponProgressionQuery implements
-        StringQuery<Collection<Map<String, Object>>, WeaponProgression> {
+        TextQuery<Collection<Map<String, Object>>, WeaponProgression> {
 
     public WeaponProgressionQuery() {
         super();

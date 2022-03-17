@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemMerchantSource;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemSource;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
-import com.bernardomg.darksouls.explorer.persistence.StringQuery;
+import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
 public final class ItemSourcesQuery
-        implements StringQuery<Map<String, Object>, ItemSource> {
+        implements TextQuery<Map<String, Object>, ItemSource> {
 
     public ItemSourcesQuery() {
         super();

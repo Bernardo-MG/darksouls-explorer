@@ -46,16 +46,29 @@ public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
     }
 
     @Override
+    public final <T> Iterable<T>
+            fetch(final TextQuery<Map<String, Object>, T> query) {
+        return textExecutor.fetch(query.getStatement(), query::getOutput);
+    }
+
+    @Override
     public final <T> Page<T> fetch(
-            final StringQuery<Map<String, Object>, T> query,
+            final TextQuery<Map<String, Object>, T> query,
             final Map<String, Object> parameters, final Pageable page) {
         return textExecutor.fetch(query.getStatement(), query::getOutput,
             parameters, page);
     }
 
     @Override
+    public final <T> Page<T> fetch(
+            final TextQuery<Map<String, Object>, T> query,
+            final Pageable page) {
+        return textExecutor.fetch(query.getStatement(), query::getOutput, page);
+    }
+
+    @Override
     public final <T> T fetchOne(
-            final StringQuery<Collection<Map<String, Object>>, T> query,
+            final TextQuery<Collection<Map<String, Object>>, T> query,
             final Map<String, Object> parameters) {
         final Collection<Map<String, Object>> read;
 
