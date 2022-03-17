@@ -25,6 +25,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.neo4j.cypherdsl.core.AliasedExpression;
+import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Node;
+import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -38,7 +43,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
-import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.DslQueryExecutor;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -46,9 +51,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITQueryExecutorPagination.Initializer.class })
-@DisplayName("Text Query Executor")
-public class ITQueryExecutorPagination {
+        initializers = { ITDslQueryExecutorPagination.Initializer.class })
+@DisplayName("DSL Query Executor")
+public class ITDslQueryExecutorPagination {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -73,21 +78,24 @@ public class ITQueryExecutorPagination {
     }
 
     @Autowired
-    private QueryExecutor queryExecutor;
+    private DslQueryExecutor queryExecutor;
 
-    public ITQueryExecutorPagination() {
+    public ITDslQueryExecutorPagination() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data when not paginated through a query")
-    public void testFetch_Query_NoPagination() {
+    @DisplayName("Returns all the data when not paginated through an statement")
+    public void testFetch_Statement_NoPagination() {
         final Page<Item> data;
         final Pageable page;
+        final BuildableStatement<ResultStatement> statementBuilder;
 
         page = Pageable.unpaged();
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+        statementBuilder = getStatementBuilder();
+
+        data = queryExecutor.fetch(statementBuilder, this::toItem, page);
 
         Assertions.assertEquals(5, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -96,14 +104,17 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Sorts in ascending order through a query")
-    public void testFetch_Query_Order_Ascending() {
+    @DisplayName("Sorts in ascending order through an statement")
+    public void testFetch_Statement_Order_Ascending() {
         final Iterator<Item> data;
         final Pageable page;
+        final BuildableStatement<ResultStatement> statementBuilder;
 
         page = PageRequest.of(0, 5, Direction.ASC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page)
+        statementBuilder = getStatementBuilder();
+
+        data = queryExecutor.fetch(statementBuilder, this::toItem, page)
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
@@ -119,14 +130,17 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Sorts in descending order through a query")
-    public void testFetch_Query_Order_Descending() {
+    @DisplayName("Sorts in descending order through an statement")
+    public void testFetch_Statement_Order_Descending() {
         final Iterator<Item> data;
         final Pageable page;
+        final BuildableStatement<ResultStatement> statementBuilder;
 
         page = PageRequest.of(0, 5, Direction.DESC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page)
+        statementBuilder = getStatementBuilder();
+
+        data = queryExecutor.fetch(statementBuilder, this::toItem, page)
             .iterator();
 
         Assertions.assertEquals("Item5", data.next()
@@ -142,14 +156,17 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Reads first page through a query")
-    public void testFetch_Query_Pagination_FirstPage() {
+    @DisplayName("Reads first page through an statement")
+    public void testFetch_Statement_Pagination_FirstPage() {
         final Page<Item> data;
         final Pageable page;
+        final BuildableStatement<ResultStatement> statementBuilder;
 
-        page = PageRequest.of(0, 1, Direction.ASC, "name");
+        page = Pageable.ofSize(1);
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+        statementBuilder = getStatementBuilder();
+
+        data = queryExecutor.fetch(statementBuilder, this::toItem, page);
 
         Assertions.assertEquals(1, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -162,14 +179,17 @@ public class ITQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Reads second page through a query")
-    public void testFetch_Query_Pagination_SecondPage() {
+    @DisplayName("Reads second page through an statement")
+    public void testFetch_Statement_Pagination_SecondPage() {
         final Page<Item> data;
         final Pageable page;
+        final BuildableStatement<ResultStatement> statementBuilder;
 
         page = PageRequest.of(1, 1, Direction.ASC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+        statementBuilder = getStatementBuilder();
+
+        data = queryExecutor.fetch(statementBuilder, this::toItem, page);
 
         Assertions.assertEquals(1, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -181,8 +201,17 @@ public class ITQueryExecutorPagination {
             .getName());
     }
 
-    private final String getQuery() {
-        return "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
+    private final BuildableStatement<ResultStatement> getStatementBuilder() {
+        final Node item;
+        final AliasedExpression name;
+
+        item = Cypher.node("Item")
+            .named("i");
+        name = item.property("name")
+            .as("name");
+        return Cypher.match(item)
+            .returning(name, item.property("description")
+                .as("description"));
     }
 
     private final Item toItem(final Map<String, Object> record) {

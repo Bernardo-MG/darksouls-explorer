@@ -27,14 +27,8 @@ import java.util.stream.Collectors;
 
 import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Functions;
-import org.neo4j.cypherdsl.core.ResultStatement;
 import org.neo4j.cypherdsl.core.Statement;
-import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingAndReturn;
-import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesLimit;
-import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesOrderBy;
-import org.neo4j.cypherdsl.core.StatementBuilder.TerminalExposesSkip;
-import org.neo4j.cypherdsl.core.StatementBuilder.TerminalOngoingOrderDefinition;
 import org.neo4j.cypherdsl.core.SymbolicName;
 import org.neo4j.cypherdsl.parser.CypherParser;
 import org.slf4j.Logger;
@@ -59,67 +53,6 @@ public final class DefaultQueryExecutor implements QueryExecutor {
         super();
 
         client = Objects.requireNonNull(clnt);
-    }
-
-    @Override
-    public final <T> Page<T> fetch(
-            final BuildableStatement<ResultStatement> statementBuilder,
-            final Function<Map<String, Object>, T> mapper,
-            final Pageable page) {
-        final String query;
-        final List<T> data;
-        final Collection<Map<String, Object>> read;
-        final Statement baseStatement;
-        TerminalOngoingOrderDefinition orderExpression;
-
-        baseStatement = statementBuilder.build();
-
-        // Pagination
-        if (page.isPaged()) {
-            if (statementBuilder instanceof TerminalExposesSkip) {
-                ((TerminalExposesSkip) statementBuilder)
-                    .skip(page.getPageNumber() * page.getPageSize());
-            }
-            if (statementBuilder instanceof TerminalExposesLimit) {
-                ((TerminalExposesLimit) statementBuilder)
-                    .limit(page.getPageSize());
-            }
-        }
-
-        // Sort
-        if (page.getSort()
-            .isSorted()) {
-            if (statementBuilder instanceof TerminalExposesOrderBy) {
-                for (final Order order : page.getSort()) {
-                    orderExpression = ((TerminalExposesOrderBy) statementBuilder)
-                        .orderBy(Cypher.anyNode()
-                            .property("property")
-                            .as(order.getProperty())
-                            .asName());
-                    if (order.isAscending()) {
-                        orderExpression.ascending();
-                    } else {
-                        orderExpression.descending();
-                    }
-                }
-            }
-        }
-
-        query = statementBuilder.build()
-            .getCypher();
-
-        LOGGER.debug("Query:\n{}", query);
-
-        // Data is fetched and mapped
-        read = client.query(query)
-            .fetch()
-            .all();
-        data = read.stream()
-            .map(mapper)
-            .collect(Collectors.toList());
-
-        return PageableExecutionUtils.getPage(data, page,
-            () -> count(baseStatement));
     }
 
     @Override

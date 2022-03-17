@@ -4,11 +4,11 @@ package com.bernardomg.darksouls.explorer.item.service;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.item.domain.Item;
@@ -18,8 +18,6 @@ import com.bernardomg.darksouls.explorer.item.query.AllItemsQuery;
 import com.bernardomg.darksouls.explorer.item.query.ItemSourcesQuery;
 import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
-import com.bernardomg.darksouls.explorer.persistence.DefaultQueryCommandExecutor;
-import com.bernardomg.darksouls.explorer.persistence.DefaultQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.DslQuery;
 import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
 import com.bernardomg.darksouls.explorer.persistence.StringQuery;
@@ -30,11 +28,10 @@ public final class DefaultItemService implements ItemService {
     private final QueryCommandExecutor queryExecutor;
 
     @Autowired
-    public DefaultItemService(final Neo4jClient clnt) {
+    public DefaultItemService(final QueryCommandExecutor queryExec) {
         super();
 
-        queryExecutor = new DefaultQueryCommandExecutor(
-            new DefaultQueryExecutor(clnt));
+        queryExecutor = Objects.requireNonNull(queryExec);
     }
 
     @Override
