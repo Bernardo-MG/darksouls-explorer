@@ -20,17 +20,19 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
+import org.neo4j.cypherdsl.core.ResultStatement;
+import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
 
-    private final QueryExecutor<String> textExecutor;
+    private final QueryExecutor<BuildableStatement<ResultStatement>> dslExecutor;
 
-    private final DslQueryExecutor      dslExecutor;
+    private final QueryExecutor<String>                              textExecutor;
 
     public DefaultQueryCommandExecutor(final QueryExecutor<String> textExec,
-            final DslQueryExecutor dslExec) {
+            final QueryExecutor<BuildableStatement<ResultStatement>> dslExec) {
         super();
 
         textExecutor = Objects.requireNonNull(textExec);
