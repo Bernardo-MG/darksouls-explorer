@@ -16,7 +16,6 @@
 
 package com.bernardomg.darksouls.explorer.persistence;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
@@ -52,6 +51,14 @@ public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
     }
 
     @Override
+    public final <T> Iterable<T> fetch(
+            final TextQuery<Map<String, Object>, T> query,
+            final Map<String, Object> parameters) {
+        return textExecutor.fetch(query.getStatement(), query::getOutput,
+            parameters);
+    }
+
+    @Override
     public final <T> Page<T> fetch(
             final TextQuery<Map<String, Object>, T> query,
             final Map<String, Object> parameters, final Pageable page) {
@@ -64,17 +71,6 @@ public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
             final TextQuery<Map<String, Object>, T> query,
             final Pageable page) {
         return textExecutor.fetch(query.getStatement(), query::getOutput, page);
-    }
-
-    @Override
-    public final <T> T fetchOne(
-            final TextQuery<Collection<Map<String, Object>>, T> query,
-            final Map<String, Object> parameters) {
-        final Collection<Map<String, Object>> read;
-
-        read = textExecutor.fetch(query.getStatement(), parameters);
-
-        return query.getOutput(read);
     }
 
 }
