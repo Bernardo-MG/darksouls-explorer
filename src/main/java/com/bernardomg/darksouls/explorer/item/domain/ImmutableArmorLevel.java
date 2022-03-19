@@ -8,46 +8,49 @@ import lombok.NonNull;
 public final class ImmutableArmorLevel implements ArmorLevel {
 
     @NonNull
-    private final Integer level;
+    private final Integer bleedProtection;
 
     @NonNull
-    private final Integer regularProtection;
-
-    @NonNull
-    private final Integer strikeProtection;
-
-    @NonNull
-    private final Integer slashProtection;
-
-    @NonNull
-    private final Integer thrustProtection;
-
-    @NonNull
-    private final Integer magicProtection;
+    private final Integer curseProtection;
 
     @NonNull
     private final Integer fireProtection;
 
     @NonNull
+    private final Integer level;
+
+    @NonNull
     private final Integer lightningProtection;
 
     @NonNull
-    private final Integer bleedProtection;
+    private final Integer magicProtection;
 
     @NonNull
     private final Integer poisonProtection;
 
     @NonNull
-    private final Integer curseProtection;
+    private final Integer regularProtection;
 
-    public ImmutableArmorLevel(@NonNull Integer level,
-            @NonNull Integer regularProtection,
-            @NonNull Integer strikeProtection, @NonNull Integer slashProtection,
-            @NonNull Integer thrustProtection, @NonNull Integer magicProtection,
-            @NonNull Integer fireProtection,
-            @NonNull Integer lightningProtection,
-            @NonNull Integer bleedProtection, @NonNull Integer poisonProtection,
-            @NonNull Integer curseProtection) {
+    @NonNull
+    private final Integer slashProtection;
+
+    @NonNull
+    private final Integer strikeProtection;
+
+    @NonNull
+    private final Integer thrustProtection;
+
+    public ImmutableArmorLevel(@NonNull final Integer level,
+            @NonNull final Integer regularProtection,
+            @NonNull final Integer strikeProtection,
+            @NonNull final Integer slashProtection,
+            @NonNull final Integer thrustProtection,
+            @NonNull final Integer magicProtection,
+            @NonNull final Integer fireProtection,
+            @NonNull final Integer lightningProtection,
+            @NonNull final Integer bleedProtection,
+            @NonNull final Integer poisonProtection,
+            @NonNull final Integer curseProtection) {
         super();
 
         this.level = level;

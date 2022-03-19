@@ -8,10 +8,10 @@ import lombok.NonNull;
 public final class ImmutableArmorProgression implements ArmorProgression {
 
     @NonNull
-    private final Iterable<ArmorLevel> levels;
+    private final String               armor;
 
     @NonNull
-    private final String               armor;
+    private final Iterable<ArmorLevel> levels;
 
     public ImmutableArmorProgression(@NonNull final String armor,
             @NonNull final Iterable<ArmorLevel> levels) {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
@@ -33,6 +34,12 @@ public class ItemController {
         return service.getAll(request, page);
     }
 
+    @GetMapping(path = "/{id}/levels/armor",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ArmorProgression readArmorLevels(@PathVariable("id") final Long id) {
+        return service.getArmorLevels(id);
+    }
+
     @GetMapping(path = "/{id}/sources",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<ItemSource> readSources(@PathVariable("id") final Long id,
@@ -40,10 +47,10 @@ public class ItemController {
         return service.getSources(id, page);
     }
 
-    @GetMapping(path = "/{id}/stats/weapons",
+    @GetMapping(path = "/{id}/levels/weapons",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public WeaponProgression
-            readWeaponStats(@PathVariable("id") final Long id) {
+            readWeaponLevels(@PathVariable("id") final Long id) {
         return service.getWeaponLevels(id);
     }
 

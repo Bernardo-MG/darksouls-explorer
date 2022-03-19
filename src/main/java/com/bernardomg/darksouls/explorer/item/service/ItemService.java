@@ -14,10 +14,10 @@ public interface ItemService {
 
     public Page<Item> getAll(final ItemRequest request, final Pageable page);
 
+    public ArmorProgression getArmorLevels(final Long id);
+
     public Page<ItemSource> getSources(final Long id, final Pageable page);
 
     public WeaponProgression getWeaponLevels(final Long id);
-
-    public ArmorProgression getArmorLevels(final Long id);
 
 }

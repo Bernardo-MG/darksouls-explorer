@@ -3,25 +3,25 @@ package com.bernardomg.darksouls.explorer.item.domain;
 
 public interface ArmorLevel {
 
-    public Integer getLevel();
+    public Integer getBleedProtection();
 
-    public Integer getRegularProtection();
-
-    public Integer getStrikeProtection();
-
-    public Integer getSlashProtection();
-
-    public Integer getThrustProtection();
-
-    public Integer getMagicProtection();
+    public Integer getCurseProtection();
 
     public Integer getFireProtection();
 
+    public Integer getLevel();
+
     public Integer getLightningProtection();
 
-    public Integer getBleedProtection();
+    public Integer getMagicProtection();
 
     public Integer getPoisonProtection();
 
-    public Integer getCurseProtection();
+    public Integer getRegularProtection();
+
+    public Integer getSlashProtection();
+
+    public Integer getStrikeProtection();
+
+    public Integer getThrustProtection();
 }
