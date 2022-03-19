@@ -87,7 +87,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the levels damage")
-    public void testGetAll_LevelsDamage() {
+    public void testGetWeaponLevels_LevelsDamage() {
         final WeaponProgression data;
         final Iterator<WeaponLevel> levels;
         final Long id;
@@ -139,7 +139,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the levels in order")
-    public void testGetAll_LevelsOrder() {
+    public void testGetWeaponLevels_LevelsOrder() {
         final WeaponProgression data;
         final Iterator<WeaponLevel> levels;
         final Long id;
@@ -176,7 +176,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the path level")
-    public void testGetAll_PathLevel() {
+    public void testGetWeaponLevels_PathLevel() {
         final WeaponProgression data;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
@@ -207,7 +207,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the expected structure")
-    public void testGetAll_Structure() {
+    public void testGetWeaponLevels_Structure() {
         final WeaponProgression data;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
@@ -236,7 +236,7 @@ public class ITItemServiceGetWeaponLevels {
     private final Long getId() {
         final Collection<Map<String, Object>> rows;
 
-        rows = client.query("MATCH (n) RETURN n")
+        rows = client.query("MATCH (n:Weapon) RETURN n")
             .fetch()
             .all();
 

@@ -14,6 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.item.domain.ArmorLevel;
+import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorLevel;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionPath;
@@ -23,6 +27,7 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.query.AllItemsQuery;
+import com.bernardomg.darksouls.explorer.item.query.ArmorProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.query.ItemSourcesQuery;
 import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
@@ -53,6 +58,22 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
+    public final ArmorProgression getArmorLevels(final Long id) {
+        final Map<String, Object> params;
+        final TextQuery<Map<String, Object>, Map<String, Object>> query;
+        final Iterable<Map<String, Object>> data;
+
+        params = new HashMap<>();
+        params.put("id", id);
+
+        query = new ArmorProgressionQuery();
+
+        data = queryExecutor.fetch(query, params);
+
+        return toArmorProgression(data);
+    }
+
+    @Override
     public final Page<ItemSource> getSources(final Long id,
             final Pageable page) {
         final Map<String, Object> params;
@@ -79,11 +100,53 @@ public final class DefaultItemService implements ItemService {
 
         data = queryExecutor.fetch(query, params);
 
-        return getOutput(data);
+        return toWeaponProgression(data);
+    }
+
+    private final ArmorLevel toArmorLevel(final Map<String, Object> record) {
+        return new ImmutableArmorLevel(
+            ((Long) record.getOrDefault("level", 0l)).intValue(),
+            ((Long) record.getOrDefault("regularProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("strikeProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("slashProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("thrustProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("magicProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("fireProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("lightningProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("bleedProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("poisonProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("curseProtection", 0l)).intValue());
+    }
+
+    private final ArmorProgression
+            toArmorProgression(final Iterable<Map<String, Object>> record) {
+        final String name;
+        final Collection<ArmorLevel> levels;
+
+        levels = StreamSupport.stream(record.spliterator(), false)
+            .map(this::toArmorLevel)
+            .collect(Collectors.toList());
+
+        name = StreamSupport.stream(record.spliterator(), false)
+            .map((data) -> (String) data.getOrDefault("armor", ""))
+            .findAny()
+            .orElse("");
+
+        return new ImmutableArmorProgression(name, levels);
+    }
+
+    private final WeaponLevel toWeaponLevel(final Map<String, Object> record) {
+        return new ImmutableWeaponLevel(
+            ((Long) record.getOrDefault("level", 0l)).intValue(),
+            ((Long) record.getOrDefault("pathLevel", 0l)).intValue(),
+            ((Long) record.getOrDefault("physicalDamage", 0l)).intValue(),
+            ((Long) record.getOrDefault("magicDamage", 0l)).intValue(),
+            ((Long) record.getOrDefault("fireDamage", 0l)).intValue(),
+            ((Long) record.getOrDefault("lightningDamage", 0l)).intValue());
     }
 
     private final WeaponProgression
-            getOutput(final Iterable<Map<String, Object>> record) {
+            toWeaponProgression(final Iterable<Map<String, Object>> record) {
         final String name;
         final Collection<WeaponProgressionPath> paths;
         final Collection<String> pathNames;
@@ -114,16 +177,6 @@ public final class DefaultItemService implements ItemService {
             .orElse("");
 
         return new ImmutableWeaponProgression(name, paths);
-    }
-
-    private final WeaponLevel toWeaponLevel(final Map<String, Object> record) {
-        return new ImmutableWeaponLevel(
-            ((Long) record.getOrDefault("level", 0l)).intValue(),
-            ((Long) record.getOrDefault("pathLevel", 0l)).intValue(),
-            ((Long) record.getOrDefault("physicalDamage", 0l)).intValue(),
-            ((Long) record.getOrDefault("magicDamage", 0l)).intValue(),
-            ((Long) record.getOrDefault("fireDamage", 0l)).intValue(),
-            ((Long) record.getOrDefault("lightningDamage", 0l)).intValue());
     }
 
 }

@@ -8,8 +8,8 @@ CREATE (l:Level {name: 'Sword Physical 2', weapon: 'Sword', path: 'Physical', le
 CREATE (l:Level {name: 'Sword Physical 3', weapon: 'Sword', path: 'Physical', level: 3, physicalDamage: 40, magicDamage: 41, fireDamage: 42, lightningDamage: 43});
 CREATE (l:Level {name: 'Sword Physical 4', weapon: 'Sword', path: 'Physical', level: 4, physicalDamage: 50, magicDamage: 51, fireDamage: 52, lightningDamage: 53});
 CREATE (l:Level {name: 'Sword Magic', weapon: 'Sword', path: 'Magic', level: 0, physicalDamage: 10, magicDamage: 11, fireDamage: 12, lightningDamage: 13});
-MATCH (l:Level), (m:Level) WHERE m.path = l.path AND m.level = l.level + 1 MERGE (l)-[:NEXT]->(m);
+MATCH (l:Level), (m:Level) WHERE l.path = m.path AND m.level = l.level + 1 MERGE (l)-[:NEXT]->(m);
 MATCH (l:Level {path: 'Physical', level: 4}), (m:Level {path: 'Magic', level: 0}) MERGE (l)-[:NEXT]->(m);
 MATCH (p:UpgradePath {name: 'Physical'}), (l:Level {path: 'Physical'}) MERGE (p)-[:HAS_LEVEL]->(l);
 MATCH (p:UpgradePath {name: 'Magic'}), (l:Level {path: 'Magic'}) MERGE (p)-[:HAS_LEVEL]->(l);
-MATCH (w:Weapon {name: 'Sword'}), (l:Level) MERGE (w)-[:HAS_LEVEL]->(l);
+MATCH (w:Weapon), (l:Level) WHERE w.name = l.weapon MERGE (w)-[:HAS_LEVEL]->(l);
