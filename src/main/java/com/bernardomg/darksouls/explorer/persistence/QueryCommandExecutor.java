@@ -9,26 +9,14 @@ import org.springframework.data.domain.Pageable;
 
 public interface QueryCommandExecutor {
 
-    public <T> Iterable<T> fetch(final DslQuery<List<T>> query);
+    public <T> Iterable<T> fetch(final Query<List<T>> query);
 
-    public <T> Iterable<T> fetch(final DslQuery<List<T>> query,
+    public <T> Iterable<T> fetch(final Query<List<T>> query,
             final Map<String, Object> parameters);
 
-    public <T> Page<T> fetch(final DslQuery<List<T>> query,
+    public <T> Page<T> fetch(final Query<List<T>> query,
             final Map<String, Object> parameters, final Pageable page);
 
-    public <T> Page<T> fetch(final DslQuery<List<T>> query,
-            final Pageable page);
-
-    public <T> Iterable<T> fetch(final TextQuery<List<T>> query);
-
-    public <T> Iterable<T> fetch(final TextQuery<List<T>> query,
-            final Map<String, Object> parameters);
-
-    public <T> Page<T> fetch(final TextQuery<List<T>> query,
-            final Map<String, Object> parameters, final Pageable page);
-
-    public <T> Page<T> fetch(final TextQuery<List<T>> query,
-            final Pageable page);
+    public <T> Page<T> fetch(final Query<List<T>> query, final Pageable page);
 
 }

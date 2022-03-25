@@ -11,9 +11,9 @@ import java.util.stream.StreamSupport;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemMerchantSource;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemSource;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 
-public final class ItemSourcesQuery implements TextQuery<List<ItemSource>> {
+public final class ItemSourcesQuery implements Query<List<ItemSource>> {
 
     public ItemSourcesQuery() {
         super();

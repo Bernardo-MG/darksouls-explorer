@@ -12,8 +12,8 @@ import com.bernardomg.darksouls.explorer.map.domain.Map;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
 import com.bernardomg.darksouls.explorer.map.query.AllIMapsQuery;
 import com.bernardomg.darksouls.explorer.map.query.AllMapConnectionsQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
 @Component
 public final class DefaultMapService implements MapService {
@@ -28,7 +28,7 @@ public final class DefaultMapService implements MapService {
 
     @Override
     public final Page<Map> getAll(final Pageable page) {
-        final TextQuery<List<Map>> query;
+        final Query<List<Map>> query;
 
         query = new AllIMapsQuery();
 
@@ -37,7 +37,7 @@ public final class DefaultMapService implements MapService {
 
     @Override
     public final Page<MapConnection> getAllConnections(final Pageable page) {
-        final TextQuery<List<MapConnection>> query;
+        final Query<List<MapConnection>> query;
 
         query = new AllMapConnectionsQuery();
 

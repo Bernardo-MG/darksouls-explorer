@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.bernardomg.darksouls.explorer.map.domain.ImmutableMap;
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 
 public final class AllIMapsQuery implements
-        TextQuery<List<com.bernardomg.darksouls.explorer.map.domain.Map>> {
+        Query<List<com.bernardomg.darksouls.explorer.map.domain.Map>> {
 
     public AllIMapsQuery() {
         super();

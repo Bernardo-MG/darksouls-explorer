@@ -40,51 +40,26 @@ public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
     }
 
     @Override
-    public final <T> Iterable<T> fetch(final DslQuery<List<T>> query) {
-        return dslExecutor.fetch(query.getStatement(), query::getOutput);
-    }
-
-    @Override
-    public final <T> Iterable<T> fetch(final DslQuery<List<T>> query,
-            final Map<String, Object> parameters) {
-        return dslExecutor.fetch(query.getStatement(), query::getOutput,
-            parameters);
-    }
-
-    @Override
-    public final <T> Page<T> fetch(final DslQuery<List<T>> query,
-            final Map<String, Object> parameters, final Pageable page) {
-        return dslExecutor.fetch(query.getStatement(), query::getOutput,
-            parameters, page);
-    }
-
-    @Override
-    public final <T> Page<T> fetch(final DslQuery<List<T>> query,
-            final Pageable page) {
-        return dslExecutor.fetch(query.getStatement(), query::getOutput, page);
-    }
-
-    @Override
-    public final <T> Iterable<T> fetch(final TextQuery<List<T>> query) {
+    public final <T> Iterable<T> fetch(final Query<List<T>> query) {
         return textExecutor.fetch(query.getStatement(), query::getOutput);
     }
 
     @Override
-    public final <T> Iterable<T> fetch(final TextQuery<List<T>> query,
+    public final <T> Iterable<T> fetch(final Query<List<T>> query,
             final Map<String, Object> parameters) {
         return textExecutor.fetch(query.getStatement(), query::getOutput,
             parameters);
     }
 
     @Override
-    public final <T> Page<T> fetch(final TextQuery<List<T>> query,
+    public final <T> Page<T> fetch(final Query<List<T>> query,
             final Map<String, Object> parameters, final Pageable page) {
         return textExecutor.fetch(query.getStatement(), query::getOutput,
             parameters, page);
     }
 
     @Override
-    public final <T> Page<T> fetch(final TextQuery<List<T>> query,
+    public final <T> Page<T> fetch(final Query<List<T>> query,
             final Pageable page) {
         return textExecutor.fetch(query.getStatement(), query::getOutput, page);
     }

@@ -7,8 +7,8 @@ import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.metadata.query.AllTagsQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
 @Component
 public final class DefaultMetadataService implements MetadataService {
@@ -23,7 +23,7 @@ public final class DefaultMetadataService implements MetadataService {
 
     @Override
     public final Iterable<String> getTags(final String rootTag) {
-        final TextQuery<List<String>> query;
+        final Query<List<String>> query;
 
         query = new AllTagsQuery(rootTag);
 

@@ -23,9 +23,8 @@ import com.bernardomg.darksouls.explorer.item.query.ArmorProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.query.ItemSourcesQuery;
 import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
-import com.bernardomg.darksouls.explorer.persistence.DslQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
 @Service
 public final class DefaultItemService implements ItemService {
@@ -42,7 +41,7 @@ public final class DefaultItemService implements ItemService {
     @Override
     public final Page<Item> getAll(final ItemRequest request,
             final Pageable page) {
-        final DslQuery<List<Item>> query;
+        final Query<List<Item>> query;
 
         query = new AllItemsQuery(request.getName(), request.getTags());
 
@@ -52,7 +51,7 @@ public final class DefaultItemService implements ItemService {
     @Override
     public final ArmorProgression getArmorLevels(final Long id) {
         final Map<String, Object> params;
-        final TextQuery<List<ArmorProgression>> query;
+        final Query<List<ArmorProgression>> query;
         final Iterable<ArmorProgression> data;
         final ArmorProgression result;
 
@@ -78,7 +77,7 @@ public final class DefaultItemService implements ItemService {
     public final Page<ItemSource> getSources(final Long id,
             final Pageable page) {
         final Map<String, Object> params;
-        final TextQuery<List<ItemSource>> query;
+        final Query<List<ItemSource>> query;
 
         query = new ItemSourcesQuery();
 
@@ -91,7 +90,7 @@ public final class DefaultItemService implements ItemService {
     @Override
     public final WeaponProgression getWeaponLevels(final Long id) {
         final Map<String, Object> params;
-        final TextQuery<List<WeaponProgression>> query;
+        final Query<List<WeaponProgression>> query;
         final Iterable<WeaponProgression> data;
         final WeaponProgression result;
 

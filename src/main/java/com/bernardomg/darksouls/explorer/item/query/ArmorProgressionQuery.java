@@ -12,10 +12,10 @@ import com.bernardomg.darksouls.explorer.item.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorProgression;
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 
 public final class ArmorProgressionQuery
-        implements TextQuery<List<ArmorProgression>> {
+        implements Query<List<ArmorProgression>> {
 
     public ArmorProgressionQuery() {
         super();

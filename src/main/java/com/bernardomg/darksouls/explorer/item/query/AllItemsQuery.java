@@ -13,15 +13,13 @@ import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Expression;
 import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
-import org.neo4j.cypherdsl.core.ResultStatement;
-import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingWithoutWhere;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
-import com.bernardomg.darksouls.explorer.persistence.DslQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 
-public final class AllItemsQuery implements DslQuery<List<Item>> {
+public final class AllItemsQuery implements Query<List<Item>> {
 
     private final String           name;
 
@@ -43,7 +41,7 @@ public final class AllItemsQuery implements DslQuery<List<Item>> {
     }
 
     @Override
-    public final BuildableStatement<ResultStatement> getStatement() {
+    public final String getStatement() {
         final Node item;
         final Expression nodeName;
         final OngoingReadingWithoutWhere ongoingBuilder;
@@ -63,13 +61,15 @@ public final class AllItemsQuery implements DslQuery<List<Item>> {
             ongoingBuilder.where(nameCondition);
         }
 
-        return ongoingBuilder.returning(nodeName.as("name"),
-            item.property("description")
+        return ongoingBuilder
+            .returning(nodeName.as("name"), item.property("description")
                 .as("description"),
-            Functions.id(item)
-                .as("id"),
-            Functions.labels(item)
-                .as("labels"));
+                Functions.id(item)
+                    .as("id"),
+                Functions.labels(item)
+                    .as("labels"))
+            .build()
+            .getCypher();
     }
 
     public final Item toItem(final Map<String, Object> record) {

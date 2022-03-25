@@ -7,9 +7,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 
-public final class AllTagsQuery implements TextQuery<List<String>> {
+public final class AllTagsQuery implements Query<List<String>> {
 
     private final String rootTag;
 

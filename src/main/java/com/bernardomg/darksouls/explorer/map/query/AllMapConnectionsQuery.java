@@ -8,10 +8,10 @@ import java.util.stream.StreamSupport;
 
 import com.bernardomg.darksouls.explorer.map.domain.ImmutableMapConnection;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 
 public final class AllMapConnectionsQuery
-        implements TextQuery<List<MapConnection>> {
+        implements Query<List<MapConnection>> {
 
     public AllMapConnectionsQuery() {
         super();

@@ -15,10 +15,10 @@ import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionP
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.persistence.TextQuery;
+import com.bernardomg.darksouls.explorer.persistence.Query;
 
 public final class WeaponProgressionQuery
-        implements TextQuery<List<WeaponProgression>> {
+        implements Query<List<WeaponProgression>> {
 
     public WeaponProgressionQuery() {
         super();
