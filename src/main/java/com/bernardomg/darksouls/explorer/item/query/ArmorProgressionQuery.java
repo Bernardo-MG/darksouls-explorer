@@ -1,21 +1,30 @@
 
 package com.bernardomg.darksouls.explorer.item.query;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import com.bernardomg.darksouls.explorer.item.domain.ArmorLevel;
+import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorLevel;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
 public final class ArmorProgressionQuery
-        implements TextQuery<Map<String, Object>, Map<String, Object>> {
+        implements TextQuery<List<ArmorProgression>> {
 
     public ArmorProgressionQuery() {
         super();
     }
 
     @Override
-    public final Map<String, Object>
-            getOutput(final Map<String, Object> record) {
-        return record;
+    public final List<ArmorProgression>
+            getOutput(final Iterable<Map<String, Object>> record) {
+        return Arrays.asList(toArmorProgression(record));
     }
 
     @Override
@@ -45,6 +54,38 @@ public final class ArmorProgressionQuery
         // @formatter:on;
 
         return query;
+    }
+
+    private final ArmorLevel toArmorLevel(final Map<String, Object> record) {
+        return new ImmutableArmorLevel(
+            ((Long) record.getOrDefault("level", 0l)).intValue(),
+            ((Long) record.getOrDefault("regularProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("strikeProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("slashProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("thrustProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("magicProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("fireProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("lightningProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("bleedProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("poisonProtection", 0l)).intValue(),
+            ((Long) record.getOrDefault("curseProtection", 0l)).intValue());
+    }
+
+    private final ArmorProgression
+            toArmorProgression(final Iterable<Map<String, Object>> record) {
+        final String name;
+        final Collection<ArmorLevel> levels;
+
+        levels = StreamSupport.stream(record.spliterator(), false)
+            .map(this::toArmorLevel)
+            .collect(Collectors.toList());
+
+        name = StreamSupport.stream(record.spliterator(), false)
+            .map((data) -> (String) data.getOrDefault("armor", ""))
+            .findAny()
+            .orElse("");
+
+        return new ImmutableArmorProgression(name, levels);
     }
 
 }

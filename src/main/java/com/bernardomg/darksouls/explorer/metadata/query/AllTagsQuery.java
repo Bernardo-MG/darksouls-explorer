@@ -1,13 +1,15 @@
 
 package com.bernardomg.darksouls.explorer.metadata.query;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
-public final class AllTagsQuery
-        implements TextQuery<Map<String, Object>, String> {
+public final class AllTagsQuery implements TextQuery<List<String>> {
 
     private final String rootTag;
 
@@ -18,8 +20,11 @@ public final class AllTagsQuery
     }
 
     @Override
-    public final String getOutput(final Map<String, Object> record) {
-        return (String) record.getOrDefault("label", "");
+    public final List<String>
+            getOutput(final Iterable<Map<String, Object>> record) {
+        return StreamSupport.stream(record.spliterator(), false)
+            .map(this::toTag)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -44,6 +49,10 @@ public final class AllTagsQuery
         query = String.format(queryTemplate, rootTag);
 
         return query;
+    }
+
+    public final String toTag(final Map<String, Object> record) {
+        return (String) record.getOrDefault("label", "");
     }
 
 }

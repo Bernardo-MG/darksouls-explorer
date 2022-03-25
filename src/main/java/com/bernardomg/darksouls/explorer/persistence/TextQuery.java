@@ -1,6 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.persistence;
 
-public interface TextQuery<T, S> extends Query<T, S, String> {
+public interface TextQuery<S> extends Query<S, String> {
 
 }

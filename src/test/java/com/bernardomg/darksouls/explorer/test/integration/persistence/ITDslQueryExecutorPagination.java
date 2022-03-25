@@ -19,7 +19,10 @@ package com.bernardomg.darksouls.explorer.test.integration.persistence;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -95,7 +98,7 @@ public class ITDslQueryExecutorPagination {
 
         statementBuilder = getStatementBuilder();
 
-        data = queryExecutor.fetch(statementBuilder, this::toItem, page);
+        data = queryExecutor.fetch(statementBuilder, this::toItems, page);
 
         Assertions.assertEquals(5, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -114,7 +117,7 @@ public class ITDslQueryExecutorPagination {
 
         statementBuilder = getStatementBuilder();
 
-        data = queryExecutor.fetch(statementBuilder, this::toItem, page)
+        data = queryExecutor.fetch(statementBuilder, this::toItems, page)
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
@@ -140,7 +143,7 @@ public class ITDslQueryExecutorPagination {
 
         statementBuilder = getStatementBuilder();
 
-        data = queryExecutor.fetch(statementBuilder, this::toItem, page)
+        data = queryExecutor.fetch(statementBuilder, this::toItems, page)
             .iterator();
 
         Assertions.assertEquals("Item5", data.next()
@@ -166,7 +169,7 @@ public class ITDslQueryExecutorPagination {
 
         statementBuilder = getStatementBuilder();
 
-        data = queryExecutor.fetch(statementBuilder, this::toItem, page);
+        data = queryExecutor.fetch(statementBuilder, this::toItems, page);
 
         Assertions.assertEquals(1, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -189,7 +192,7 @@ public class ITDslQueryExecutorPagination {
 
         statementBuilder = getStatementBuilder();
 
-        data = queryExecutor.fetch(statementBuilder, this::toItem, page);
+        data = queryExecutor.fetch(statementBuilder, this::toItems, page);
 
         Assertions.assertEquals(1, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -212,6 +215,12 @@ public class ITDslQueryExecutorPagination {
         return Cypher.match(item)
             .returning(name, item.property("description")
                 .as("description"));
+    }
+
+    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
+        return StreamSupport.stream(data.spliterator(), false)
+            .map(this::toItem)
+            .collect(Collectors.toList());
     }
 
     private final Item toItem(final Map<String, Object> record) {

@@ -1,6 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.map.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.domain.Page;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.map.domain.Map;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
-import com.bernardomg.darksouls.explorer.map.query.AllIMapConnectionsQuery;
 import com.bernardomg.darksouls.explorer.map.query.AllIMapsQuery;
+import com.bernardomg.darksouls.explorer.map.query.AllMapConnectionsQuery;
 import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
 import com.bernardomg.darksouls.explorer.persistence.TextQuery;
 
@@ -27,7 +28,7 @@ public final class DefaultMapService implements MapService {
 
     @Override
     public final Page<Map> getAll(final Pageable page) {
-        final TextQuery<java.util.Map<String, Object>, com.bernardomg.darksouls.explorer.map.domain.Map> query;
+        final TextQuery<List<Map>> query;
 
         query = new AllIMapsQuery();
 
@@ -36,9 +37,9 @@ public final class DefaultMapService implements MapService {
 
     @Override
     public final Page<MapConnection> getAllConnections(final Pageable page) {
-        final TextQuery<java.util.Map<String, Object>, MapConnection> query;
+        final TextQuery<List<MapConnection>> query;
 
-        query = new AllIMapConnectionsQuery();
+        query = new AllMapConnectionsQuery();
 
         return queryExecutor.fetch(query, page);
     }

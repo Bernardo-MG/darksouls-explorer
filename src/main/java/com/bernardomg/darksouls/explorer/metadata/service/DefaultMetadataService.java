@@ -1,7 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.metadata.service;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public final class DefaultMetadataService implements MetadataService {
 
     @Override
     public final Iterable<String> getTags(final String rootTag) {
-        final TextQuery<Map<String, Object>, String> query;
+        final TextQuery<List<String>> query;
 
         query = new AllTagsQuery(rootTag);
 

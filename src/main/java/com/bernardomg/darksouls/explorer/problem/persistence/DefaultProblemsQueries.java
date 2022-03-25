@@ -4,9 +4,12 @@ package com.bernardomg.darksouls.explorer.problem.persistence;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +26,7 @@ import com.bernardomg.darksouls.explorer.problem.model.PersistentDataProblem;
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {
 
-    private final QueryExecutor         queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     private final DataProblemRepository repository;
 
@@ -48,11 +51,13 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
     @Override
     public final Collection<DataProblem> findDuplicated(final String node) {
-        final Function<Map<String, Object>, DataProblem> mapper;
+        final Function<Iterable<Map<String, Object>>, List<DataProblem>> mapper;
         final String template;
         final String query;
 
-        mapper = (record) -> toProblem("duplicated", node, record);
+        mapper = (records) -> StreamSupport.stream(records.spliterator(), false)
+            .map((record) -> toProblem("duplicated", node, record))
+            .collect(Collectors.toList());
 
         // TODO: Use query parameters
         template = "MATCH (n:%s) WITH n.name AS id, count(n) AS count WHERE count > 1 RETURN id";
@@ -64,11 +69,13 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     @Override
     public final Collection<DataProblem> findMissingField(final String node,
             final String field) {
-        final Function<Map<String, Object>, DataProblem> mapper;
+        final Function<Iterable<Map<String, Object>>, List<DataProblem>> mapper;
         final String template;
         final String query;
 
-        mapper = (record) -> toProblem("no_description", node, record);
+        mapper = (records) -> StreamSupport.stream(records.spliterator(), false)
+            .map((record) -> toProblem("no_description", node, record))
+            .collect(Collectors.toList());
 
         // TODO: Use query parameters
         template = "MATCH (n:%1$s) WHERE (n.%2$s = '' OR n.%2$s IS NULL) RETURN n.name AS id";
@@ -80,13 +87,15 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     @Override
     public final Collection<DataProblem> findMissingRelationships(
             final String node, final Iterable<String> relationships) {
-        final Function<Map<String, Object>, DataProblem> mapper;
+        final Function<Iterable<Map<String, Object>>, List<DataProblem>> mapper;
         final String mergedRels;
         final Map<String, Object> params;
         final String template;
         final String query;
 
-        mapper = (record) -> toProblem("no_relationships", node, record);
+        mapper = (records) -> StreamSupport.stream(records.spliterator(), false)
+            .map((record) -> toProblem("no_relationships", node, record))
+            .collect(Collectors.toList());
 
         mergedRels = String.join("|", relationships);
 

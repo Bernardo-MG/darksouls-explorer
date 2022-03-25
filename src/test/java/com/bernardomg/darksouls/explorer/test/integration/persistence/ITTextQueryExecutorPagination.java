@@ -19,7 +19,10 @@ package com.bernardomg.darksouls.explorer.test.integration.persistence;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -87,7 +90,7 @@ public class ITTextQueryExecutorPagination {
 
         page = Pageable.unpaged();
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+        data = queryExecutor.fetch(getQuery(), this::toItems, page);
 
         Assertions.assertEquals(5, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -103,7 +106,7 @@ public class ITTextQueryExecutorPagination {
 
         page = PageRequest.of(0, 5, Direction.ASC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page)
+        data = queryExecutor.fetch(getQuery(), this::toItems, page)
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
@@ -126,7 +129,7 @@ public class ITTextQueryExecutorPagination {
 
         page = PageRequest.of(0, 5, Direction.DESC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page)
+        data = queryExecutor.fetch(getQuery(), this::toItems, page)
             .iterator();
 
         Assertions.assertEquals("Item5", data.next()
@@ -149,7 +152,7 @@ public class ITTextQueryExecutorPagination {
 
         page = PageRequest.of(0, 1, Direction.ASC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+        data = queryExecutor.fetch(getQuery(), this::toItems, page);
 
         Assertions.assertEquals(1, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -169,7 +172,7 @@ public class ITTextQueryExecutorPagination {
 
         page = PageRequest.of(1, 1, Direction.ASC, "name");
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, page);
+        data = queryExecutor.fetch(getQuery(), this::toItems, page);
 
         Assertions.assertEquals(1, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
@@ -183,6 +186,12 @@ public class ITTextQueryExecutorPagination {
 
     private final String getQuery() {
         return "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
+    }
+
+    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
+        return StreamSupport.stream(data.spliterator(), false)
+            .map(this::toItem)
+            .collect(Collectors.toList());
     }
 
     private final Item toItem(final Map<String, Object> record) {

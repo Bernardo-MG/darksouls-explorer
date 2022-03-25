@@ -56,48 +56,42 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public final Collection<Map<String, Object>> fetch(final String query) {
-        LOGGER.debug("Query:\n{}", query);
-
-        // Data is fetched and mapped
-        return client.query(query)
-            .fetch()
-            .all();
-    }
-
-    @Override
     public final <T> Collection<T> fetch(final String query,
-            final Function<Map<String, Object>, T> mapper) {
+            final Function<Iterable<Map<String, Object>>, List<T>> mapper) {
+        final Iterable<Map<String, Object>> read;
+
         LOGGER.debug("Query:\n{}", query);
 
         // Data is fetched and mapped
-        return client.query(query)
+        read = client.query(query)
             .fetch()
             .all()
             .stream()
-            .map(mapper)
             .collect(Collectors.toList());
+        return mapper.apply(read);
     }
 
     @Override
     public final <T> Collection<T> fetch(final String query,
-            final Function<Map<String, Object>, T> mapper,
+            final Function<Iterable<Map<String, Object>>, List<T>> mapper,
             final Map<String, Object> parameters) {
+        final Iterable<Map<String, Object>> read;
+
         LOGGER.debug("Query:\n{}", query);
 
         // Data is fetched and mapped
-        return client.query(query)
+        read = client.query(query)
             .bindAll(parameters)
             .fetch()
             .all()
             .stream()
-            .map(mapper)
             .collect(Collectors.toList());
+        return mapper.apply(read);
     }
 
     @Override
     public final <T> Page<T> fetch(final String query,
-            final Function<Map<String, Object>, T> mapper,
+            final Function<Iterable<Map<String, Object>>, List<T>> mapper,
             final Map<String, Object> parameters, final Pageable page) {
         final List<T> data;
         final Collection<Map<String, Object>> read;
@@ -135,9 +129,8 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             .bindAll(parameters)
             .fetch()
             .all();
-        data = read.stream()
-            .map(mapper)
-            .collect(Collectors.toList());
+        data = mapper.apply(read.stream()
+            .collect(Collectors.toList()));
 
         return PageableExecutionUtils.getPage(data, page,
             () -> count(baseStatement));
@@ -145,7 +138,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
 
     @Override
     public final <T> Page<T> fetch(final String query,
-            final Function<Map<String, Object>, T> mapper,
+            final Function<Iterable<Map<String, Object>>, List<T>> mapper,
             final Pageable page) {
         return fetch(query, mapper, Collections.emptyMap(), page);
     }
