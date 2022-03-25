@@ -50,7 +50,15 @@ public final class WeaponProgressionQuery
         + "   l.physicalDamage AS physicalDamage," + System.lineSeparator()
         + "   l.magicDamage AS magicDamage," + System.lineSeparator()
         + "   l.fireDamage AS fireDamage," + System.lineSeparator()
-        + "   l.lightningDamage AS lightningDamage" + System.lineSeparator()
+        + "   l.lightningDamage AS lightningDamage," + System.lineSeparator()
+        + "   l.strengthBonus AS strengthBonus," + System.lineSeparator()
+        + "   l.dexterityBonus AS dexterityBonus," + System.lineSeparator()
+        + "   l.intelligenceBonus AS intelligenceBonus," + System.lineSeparator()
+        + "   l.faithBonus AS faithBonus," + System.lineSeparator()
+        + "   l.physicalReduction AS physicalReduction," + System.lineSeparator()
+        + "   l.magicReduction AS magicReduction," + System.lineSeparator()
+        + "   l.fireReduction AS fireReduction," + System.lineSeparator()
+        + "   l.lightningReduction AS lightningReduction" + System.lineSeparator()
         + "ORDER BY" + System.lineSeparator()
         + "   weapon ASC," + System.lineSeparator()
         + "   path ASC," + System.lineSeparator()
@@ -67,7 +75,19 @@ public final class WeaponProgressionQuery
             ((Long) record.getOrDefault("physicalDamage", 0l)).intValue(),
             ((Long) record.getOrDefault("magicDamage", 0l)).intValue(),
             ((Long) record.getOrDefault("fireDamage", 0l)).intValue(),
-            ((Long) record.getOrDefault("lightningDamage", 0l)).intValue());
+            ((Long) record.getOrDefault("lightningDamage", 0l)).intValue(),
+            record.getOrDefault("strengthBonus", "")
+                .toString(),
+            record.getOrDefault("dexterityBonus", "")
+                .toString(),
+            record.getOrDefault("intelligenceBonus", "")
+                .toString(),
+            record.getOrDefault("faithBonus", "")
+                .toString(),
+            ((Long) record.getOrDefault("physicalReduction", 0l)).intValue(),
+            ((Long) record.getOrDefault("magicReduction", 0l)).intValue(),
+            ((Long) record.getOrDefault("fireReduction", 0l)).intValue(),
+            ((Long) record.getOrDefault("lightningReduction", 0l)).intValue());
     }
 
     private final WeaponProgression
