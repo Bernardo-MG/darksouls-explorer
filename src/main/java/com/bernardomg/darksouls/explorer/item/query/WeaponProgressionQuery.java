@@ -76,14 +76,10 @@ public final class WeaponProgressionQuery
             ((Long) record.getOrDefault("magicDamage", 0l)).intValue(),
             ((Long) record.getOrDefault("fireDamage", 0l)).intValue(),
             ((Long) record.getOrDefault("lightningDamage", 0l)).intValue(),
-            record.getOrDefault("strengthBonus", "")
-                .toString(),
-            record.getOrDefault("dexterityBonus", "")
-                .toString(),
-            record.getOrDefault("intelligenceBonus", "")
-                .toString(),
-            record.getOrDefault("faithBonus", "")
-                .toString(),
+            String.valueOf(record.getOrDefault("strengthBonus", "")),
+            String.valueOf(record.getOrDefault("dexterityBonus", "")),
+            String.valueOf(record.getOrDefault("intelligenceBonus", "")),
+            String.valueOf(record.getOrDefault("faithBonus", "")),
             ((Long) record.getOrDefault("physicalReduction", 0l)).intValue(),
             ((Long) record.getOrDefault("magicReduction", 0l)).intValue(),
             ((Long) record.getOrDefault("fireReduction", 0l)).intValue(),
