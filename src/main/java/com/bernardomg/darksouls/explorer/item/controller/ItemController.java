@@ -34,7 +34,7 @@ public class ItemController {
         return service.getAll(request, page);
     }
 
-    @GetMapping(path = "/{id}/levels/armor",
+    @GetMapping(path = "/{id}/levels/armors",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ArmorProgression readArmorLevels(@PathVariable("id") final Long id) {
         return service.getArmorLevels(id);
