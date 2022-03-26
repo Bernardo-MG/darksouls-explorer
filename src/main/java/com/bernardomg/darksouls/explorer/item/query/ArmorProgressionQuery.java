@@ -35,6 +35,8 @@ public final class ArmorProgressionQuery
         // @formatter:off
           "MATCH" + System.lineSeparator()
         + "   (a:Armor)-[HAS_LEVEL]->(l:Level) " + System.lineSeparator()
+        + "WHERE" + System.lineSeparator()
+        + "  id(w) = $id" + System.lineSeparator()
         + "RETURN" + System.lineSeparator()
         + "   l.armor AS armor," + System.lineSeparator()
         + "   l.level AS level," + System.lineSeparator()
