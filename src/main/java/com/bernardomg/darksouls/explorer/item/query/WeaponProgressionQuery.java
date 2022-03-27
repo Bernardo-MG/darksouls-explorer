@@ -71,20 +71,20 @@ public final class WeaponProgressionQuery
 
     private final WeaponLevel toWeaponLevel(final Map<String, Object> record) {
         return new ImmutableWeaponLevel(
-            ((Long) record.getOrDefault("level", 0l)).intValue(),
-            ((Long) record.getOrDefault("pathLevel", 0l)).intValue(),
-            ((Long) record.getOrDefault("physicalDamage", 0l)).intValue(),
-            ((Long) record.getOrDefault("magicDamage", 0l)).intValue(),
-            ((Long) record.getOrDefault("fireDamage", 0l)).intValue(),
-            ((Long) record.getOrDefault("lightningDamage", 0l)).intValue(),
+            ((Number) record.getOrDefault("level", 0)).intValue(),
+            ((Number) record.getOrDefault("pathLevel", 0)).intValue(),
+            ((Number) record.getOrDefault("physicalDamage", 0)).intValue(),
+            ((Number) record.getOrDefault("magicDamage", 0)).intValue(),
+            ((Number) record.getOrDefault("fireDamage", 0)).intValue(),
+            ((Number) record.getOrDefault("lightningDamage", 0)).intValue(),
             String.valueOf(record.getOrDefault("strengthBonus", "")),
             String.valueOf(record.getOrDefault("dexterityBonus", "")),
             String.valueOf(record.getOrDefault("intelligenceBonus", "")),
             String.valueOf(record.getOrDefault("faithBonus", "")),
-            ((Long) record.getOrDefault("physicalReduction", 0l)).floatValue(),
-            ((Long) record.getOrDefault("magicReduction", 0l)).floatValue(),
-            ((Long) record.getOrDefault("fireReduction", 0l)).floatValue(),
-            ((Long) record.getOrDefault("lightningReduction", 0l))
+            ((Number) record.getOrDefault("physicalReduction", 0)).floatValue(),
+            ((Number) record.getOrDefault("magicReduction", 0)).floatValue(),
+            ((Number) record.getOrDefault("fireReduction", 0)).floatValue(),
+            ((Number) record.getOrDefault("lightningReduction", 0))
                 .floatValue());
     }
 
