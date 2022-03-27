@@ -8,49 +8,49 @@ import lombok.NonNull;
 public final class ImmutableArmorLevel implements ArmorLevel {
 
     @NonNull
-    private final Integer bleedProtection;
+    private final Float   bleedProtection;
 
     @NonNull
-    private final Integer curseProtection;
+    private final Float   curseProtection;
 
     @NonNull
-    private final Integer fireProtection;
+    private final Float   fireProtection;
 
     @NonNull
     private final Integer level;
 
     @NonNull
-    private final Integer lightningProtection;
+    private final Float   lightningProtection;
 
     @NonNull
-    private final Integer magicProtection;
+    private final Float   magicProtection;
 
     @NonNull
-    private final Integer poisonProtection;
+    private final Float   poisonProtection;
 
     @NonNull
-    private final Integer regularProtection;
+    private final Float   regularProtection;
 
     @NonNull
-    private final Integer slashProtection;
+    private final Float   slashProtection;
 
     @NonNull
-    private final Integer strikeProtection;
+    private final Float   strikeProtection;
 
     @NonNull
-    private final Integer thrustProtection;
+    private final Float   thrustProtection;
 
     public ImmutableArmorLevel(@NonNull final Integer level,
-            @NonNull final Integer regularProtection,
-            @NonNull final Integer strikeProtection,
-            @NonNull final Integer slashProtection,
-            @NonNull final Integer thrustProtection,
-            @NonNull final Integer magicProtection,
-            @NonNull final Integer fireProtection,
-            @NonNull final Integer lightningProtection,
-            @NonNull final Integer bleedProtection,
-            @NonNull final Integer poisonProtection,
-            @NonNull final Integer curseProtection) {
+            @NonNull final Float regularProtection,
+            @NonNull final Float strikeProtection,
+            @NonNull final Float slashProtection,
+            @NonNull final Float thrustProtection,
+            @NonNull final Float magicProtection,
+            @NonNull final Float fireProtection,
+            @NonNull final Float lightningProtection,
+            @NonNull final Float bleedProtection,
+            @NonNull final Float poisonProtection,
+            @NonNull final Float curseProtection) {
         super();
 
         this.level = level;

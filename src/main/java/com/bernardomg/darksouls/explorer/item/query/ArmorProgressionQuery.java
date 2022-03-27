@@ -61,16 +61,17 @@ public final class ArmorProgressionQuery
     private final ArmorLevel toArmorLevel(final Map<String, Object> record) {
         return new ImmutableArmorLevel(
             ((Long) record.getOrDefault("level", 0l)).intValue(),
-            ((Long) record.getOrDefault("regularProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("strikeProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("slashProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("thrustProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("magicProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("fireProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("lightningProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("bleedProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("poisonProtection", 0l)).intValue(),
-            ((Long) record.getOrDefault("curseProtection", 0l)).intValue());
+            ((Long) record.getOrDefault("regularProtection", 0l)).floatValue(),
+            ((Long) record.getOrDefault("strikeProtection", 0l)).floatValue(),
+            ((Long) record.getOrDefault("slashProtection", 0l)).floatValue(),
+            ((Long) record.getOrDefault("thrustProtection", 0l)).floatValue(),
+            ((Long) record.getOrDefault("magicProtection", 0l)).floatValue(),
+            ((Long) record.getOrDefault("fireProtection", 0l)).floatValue(),
+            ((Long) record.getOrDefault("lightningProtection", 0l))
+                .floatValue(),
+            ((Long) record.getOrDefault("bleedProtection", 0l)).floatValue(),
+            ((Long) record.getOrDefault("poisonProtection", 0l)).floatValue(),
+            ((Long) record.getOrDefault("curseProtection", 0l)).floatValue());
     }
 
     private final ArmorProgression
