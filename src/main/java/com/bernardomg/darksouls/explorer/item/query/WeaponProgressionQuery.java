@@ -81,10 +81,11 @@ public final class WeaponProgressionQuery
             String.valueOf(record.getOrDefault("dexterityBonus", "")),
             String.valueOf(record.getOrDefault("intelligenceBonus", "")),
             String.valueOf(record.getOrDefault("faithBonus", "")),
-            ((Long) record.getOrDefault("physicalReduction", 0l)).intValue(),
-            ((Long) record.getOrDefault("magicReduction", 0l)).intValue(),
-            ((Long) record.getOrDefault("fireReduction", 0l)).intValue(),
-            ((Long) record.getOrDefault("lightningReduction", 0l)).intValue());
+            ((Long) record.getOrDefault("physicalReduction", 0l)).floatValue(),
+            ((Long) record.getOrDefault("magicReduction", 0l)).floatValue(),
+            ((Long) record.getOrDefault("fireReduction", 0l)).floatValue(),
+            ((Long) record.getOrDefault("lightningReduction", 0l))
+                .floatValue());
     }
 
     private final WeaponProgression

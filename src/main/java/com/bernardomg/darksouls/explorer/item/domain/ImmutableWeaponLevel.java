@@ -17,7 +17,7 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     private final Integer fireDamage;
 
     @NonNull
-    private final Integer fireReduction;
+    private final Float   fireReduction;
 
     @NonNull
     private final String  intelligenceBonus;
@@ -29,13 +29,13 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     private final Integer lightningDamage;
 
     @NonNull
-    private final Integer lightningReduction;
+    private final Float   lightningReduction;
 
     @NonNull
     private final Integer magicDamage;
 
     @NonNull
-    private final Integer magicReduction;
+    private final Float   magicReduction;
 
     @NonNull
     private final Integer pathLevel;
@@ -44,7 +44,7 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     private final Integer physicalDamage;
 
     @NonNull
-    private final Integer physicalReduction;
+    private final Float   physicalReduction;
 
     @NonNull
     private final String  strengthBonus;
@@ -59,10 +59,10 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
             @NonNull final String dexterityBonus,
             @NonNull final String intelligenceBonus,
             @NonNull final String faithBonus,
-            @NonNull final Integer physicalReduction,
-            @NonNull final Integer magicReduction,
-            @NonNull final Integer fireReduction,
-            @NonNull final Integer lightningReduction) {
+            @NonNull final Float physicalReduction,
+            @NonNull final Float magicReduction,
+            @NonNull final Float fireReduction,
+            @NonNull final Float lightningReduction) {
         super();
 
         this.fireDamage = fireDamage;
