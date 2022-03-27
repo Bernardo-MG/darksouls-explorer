@@ -37,13 +37,14 @@ public final class WeaponProgressionQuery
         query =
         // @formatter:off
           "MATCH" + System.lineSeparator()
-        + "   (w:Weapon)-[HAS_LEVEL]->(l:Level) " + System.lineSeparator()
+        + "   (w)-[HAS_LEVEL]->(l:Level) " + System.lineSeparator()
         + "WHERE" + System.lineSeparator()
-        + "  id(w) = $id" + System.lineSeparator()
+        + "   id(w) = $id" + System.lineSeparator()
+        + "   AND (w:Weapon OR w:Shield)" + System.lineSeparator()
         + "OPTIONAL MATCH " + System.lineSeparator()
         + "   (p:Level)-[NEXT]->(l) " + System.lineSeparator()
         + "RETURN" + System.lineSeparator()
-        + "   l.weapon AS weapon," + System.lineSeparator()
+        + "   l.target AS weapon," + System.lineSeparator()
         + "   l.path AS path," + System.lineSeparator()
         + "   l.level AS level," + System.lineSeparator()
         + "   COALESCE(p.level, -1) + 1 AS pathLevel," + System.lineSeparator()

@@ -52,18 +52,30 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     @Override
     public final Collection<DataProblem> findDuplicated(final String node) {
         final Function<Iterable<Map<String, Object>>, List<DataProblem>> mapper;
-        final String template;
         final String query;
+        final Map<String, Object> params;
 
         mapper = (records) -> StreamSupport.stream(records.spliterator(), false)
             .map((record) -> toProblem("duplicated", node, record))
             .collect(Collectors.toList());
 
-        // TODO: Use query parameters
-        template = "MATCH (n:%s) WITH n.name AS id, count(n) AS count WHERE count > 1 RETURN id";
-        query = String.format(template, node);
+        params = new HashMap<>();
+        params.put("node", node);
 
-        return queryExecutor.fetch(query, mapper);
+        // TODO: Use query parameters
+        // @formatter:off
+        query = "MATCH" + System.lineSeparator()
+                 + "  (n)" + System.lineSeparator()
+                 + "WHERE" + System.lineSeparator()
+                 + "  $node IN LABELS(n)" + System.lineSeparator()
+                 + "WITH" + System.lineSeparator()
+                 + "  n.name AS id," + System.lineSeparator()
+                 + "  count(n) AS count" + System.lineSeparator()
+                 + "WHERE" + System.lineSeparator()
+                 + "  count > 1 RETURN id";
+        // @formatter:on
+
+        return queryExecutor.fetch(query, mapper, params);
     }
 
     @Override
@@ -72,16 +84,28 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
         final Function<Iterable<Map<String, Object>>, List<DataProblem>> mapper;
         final String template;
         final String query;
+        final Map<String, Object> params;
 
         mapper = (records) -> StreamSupport.stream(records.spliterator(), false)
             .map((record) -> toProblem("no_description", node, record))
             .collect(Collectors.toList());
 
-        // TODO: Use query parameters
-        template = "MATCH (n:%1$s) WHERE (n.%2$s = '' OR n.%2$s IS NULL) RETURN n.name AS id";
-        query = String.format(template, node, field);
+        params = new HashMap<>();
+        params.put("node", node);
 
-        return queryExecutor.fetch(query, mapper);
+        // TODO: Use query parameters
+        // @formatter:off
+        template = "MATCH" + System.lineSeparator()
+                 + "  (n) " + System.lineSeparator()
+                 + "WHERE" + System.lineSeparator()
+                 + "  $node IN LABELS(n) " + System.lineSeparator()
+                 + "  AND (n.%1$s = '' OR n.%1$s IS NULL) " + System.lineSeparator()
+                 + "RETURN" + System.lineSeparator()
+                 + "  n.name AS id";
+        // @formatter:on
+        query = String.format(template, field);
+
+        return queryExecutor.fetch(query, mapper, params);
     }
 
     @Override
