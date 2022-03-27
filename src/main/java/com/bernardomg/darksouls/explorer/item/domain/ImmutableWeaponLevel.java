@@ -49,12 +49,12 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     @NonNull
     private final String  strengthBonus;
 
-    public ImmutableWeaponLevel(@NonNull final Integer fireDamage,
-            @NonNull final Integer level,
-            @NonNull final Integer lightningDamage,
-            @NonNull final Integer magicDamage,
+    public ImmutableWeaponLevel(@NonNull final Integer level,
             @NonNull final Integer pathLevel,
             @NonNull final Integer physicalDamage,
+            @NonNull final Integer magicDamage,
+            @NonNull final Integer fireDamage,
+            @NonNull final Integer lightningDamage,
             @NonNull final String strengthBonus,
             @NonNull final String dexterityBonus,
             @NonNull final String intelligenceBonus,
