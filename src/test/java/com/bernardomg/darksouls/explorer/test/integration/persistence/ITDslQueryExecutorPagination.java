@@ -217,12 +217,6 @@ public class ITDslQueryExecutorPagination {
                 .as("description"));
     }
 
-    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
-        return StreamSupport.stream(data.spliterator(), false)
-            .map(this::toItem)
-            .collect(Collectors.toList());
-    }
-
     private final Item toItem(final Map<String, Object> record) {
         final Long id;
         final String name;
@@ -237,6 +231,12 @@ public class ITDslQueryExecutorPagination {
             Collections.emptyList());
 
         return new ImmutableItem(id, name, description, tags);
+    }
+
+    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
+        return StreamSupport.stream(data.spliterator(), false)
+            .map(this::toItem)
+            .collect(Collectors.toList());
     }
 
 }

@@ -188,12 +188,6 @@ public class ITTextQueryExecutorPagination {
         return "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
     }
 
-    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
-        return StreamSupport.stream(data.spliterator(), false)
-            .map(this::toItem)
-            .collect(Collectors.toList());
-    }
-
     private final Item toItem(final Map<String, Object> record) {
         final Long id;
         final String name;
@@ -208,6 +202,12 @@ public class ITTextQueryExecutorPagination {
             Collections.emptyList());
 
         return new ImmutableItem(id, name, description, tags);
+    }
+
+    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
+        return StreamSupport.stream(data.spliterator(), false)
+            .map(this::toItem)
+            .collect(Collectors.toList());
     }
 
 }

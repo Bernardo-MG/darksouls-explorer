@@ -84,6 +84,28 @@ public class ITItemServiceGetArmorLevels {
     }
 
     @Test
+    @DisplayName("Returns the levels in order")
+    public void testGetArmorLevels_LevelsOrder() {
+        final ArmorProgression data;
+        final Iterator<ArmorLevel> levels;
+        final Long id;
+        ArmorLevel level;
+
+        id = getId();
+
+        data = service.getArmorLevels(id);
+
+        levels = data.getLevels()
+            .iterator();
+
+        level = levels.next();
+        Assertions.assertEquals(0, level.getLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(1, level.getLevel());
+    }
+
+    @Test
     @DisplayName("Returns the levels protections")
     public void testGetArmorLevels_LevelsProtection() {
         final ArmorProgression data;
@@ -121,28 +143,6 @@ public class ITItemServiceGetArmorLevels {
         Assertions.assertEquals(27, level.getBleedProtection());
         Assertions.assertEquals(28, level.getPoisonProtection());
         Assertions.assertEquals(29, level.getCurseProtection());
-    }
-
-    @Test
-    @DisplayName("Returns the levels in order")
-    public void testGetArmorLevels_LevelsOrder() {
-        final ArmorProgression data;
-        final Iterator<ArmorLevel> levels;
-        final Long id;
-        ArmorLevel level;
-
-        id = getId();
-
-        data = service.getArmorLevels(id);
-
-        levels = data.getLevels()
-            .iterator();
-
-        level = levels.next();
-        Assertions.assertEquals(0, level.getLevel());
-
-        level = levels.next();
-        Assertions.assertEquals(1, level.getLevel());
     }
 
     @Test

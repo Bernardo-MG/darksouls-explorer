@@ -86,6 +86,34 @@ public class ITItemServiceGetWeaponLevels {
     }
 
     @Test
+    @DisplayName("Returns the levels bonuses")
+    public void testGetWeaponLevels_LevelsBonus() {
+        final WeaponProgression data;
+        final Iterator<WeaponLevel> levels;
+        final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponProgressionPath path;
+        WeaponLevel level;
+
+        id = getId();
+
+        data = service.getWeaponLevels(id);
+
+        itr = data.getPaths()
+            .iterator();
+        itr.next();
+        path = itr.next();
+        levels = path.getLevels()
+            .iterator();
+
+        level = levels.next();
+        Assertions.assertEquals("A", level.getStrengthBonus());
+        Assertions.assertEquals("B", level.getDexterityBonus());
+        Assertions.assertEquals("C", level.getIntelligenceBonus());
+        Assertions.assertEquals("D", level.getFaithBonus());
+    }
+
+    @Test
     @DisplayName("Returns the levels damage")
     public void testGetWeaponLevels_LevelsDamage() {
         final WeaponProgression data;
@@ -172,6 +200,34 @@ public class ITItemServiceGetWeaponLevels {
 
         level = levels.next();
         Assertions.assertEquals(4, level.getLevel());
+    }
+
+    @Test
+    @DisplayName("Returns the levels reductions")
+    public void testGetWeaponLevels_LevelsReductions() {
+        final WeaponProgression data;
+        final Iterator<WeaponLevel> levels;
+        final Long id;
+        final Iterator<WeaponProgressionPath> itr;
+        WeaponProgressionPath path;
+        WeaponLevel level;
+
+        id = getId();
+
+        data = service.getWeaponLevels(id);
+
+        itr = data.getPaths()
+            .iterator();
+        itr.next();
+        path = itr.next();
+        levels = path.getLevels()
+            .iterator();
+
+        level = levels.next();
+        Assertions.assertEquals(0.1f, level.getPhysicalReduction());
+        Assertions.assertEquals(0.2f, level.getMagicReduction());
+        Assertions.assertEquals(0.3f, level.getFireReduction());
+        Assertions.assertEquals(0.4f, level.getLightningReduction());
     }
 
     @Test
