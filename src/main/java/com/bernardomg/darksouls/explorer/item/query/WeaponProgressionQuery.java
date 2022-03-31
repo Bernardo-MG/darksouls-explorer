@@ -47,7 +47,7 @@ public final class WeaponProgressionQuery
         + "   l.target AS weapon," + System.lineSeparator()
         + "   l.path AS path," + System.lineSeparator()
         + "   l.level AS level," + System.lineSeparator()
-        + "   COALESCE(p.level, -1) + 1 AS pathLevel," + System.lineSeparator()
+        + "   l.pathLevel AS pathLevel," + System.lineSeparator()
         + "   l.physicalDamage AS physicalDamage," + System.lineSeparator()
         + "   l.magicDamage AS magicDamage," + System.lineSeparator()
         + "   l.fireDamage AS fireDamage," + System.lineSeparator()
