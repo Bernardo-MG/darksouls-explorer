@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.response;
+package com.bernardomg.darksouls.explorer.response.model;
 
 import lombok.Data;
 import lombok.NonNull;
@@ -34,13 +34,7 @@ public class DefaultResponse<T> implements Response<T> {
      * Response content.
      */
     @NonNull
-    private T              content;
-
-    /**
-     * Response status.
-     */
-    @NonNull
-    private ResponseStatus status = ResponseStatus.SUCCESS;
+    private T content;
 
     /**
      * Default constructor.
@@ -59,22 +53,6 @@ public class DefaultResponse<T> implements Response<T> {
         super();
 
         content = cont;
-    }
-
-    /**
-     * Constructs a response with the specified content and status.
-     *
-     * @param cont
-     *            content
-     * @param stat
-     *            status
-     */
-    public DefaultResponse(@NonNull final T cont,
-            @NonNull final ResponseStatus stat) {
-        super();
-
-        content = cont;
-        status = stat;
     }
 
 }

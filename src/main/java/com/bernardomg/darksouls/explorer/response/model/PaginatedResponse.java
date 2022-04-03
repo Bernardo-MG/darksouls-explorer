@@ -13,8 +13,31 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-/**
- * Response classes.
- */
 
-package com.bernardomg.darksouls.explorer.response;
+package com.bernardomg.darksouls.explorer.response.model;
+
+/**
+ * Paginated response to the frontend.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ * @param <T>
+ *            response content type
+ */
+public interface PaginatedResponse<T> extends Response<T> {
+
+    public Boolean getFirst();
+
+    public Boolean getLast();
+
+    public Integer getPageNumber();
+
+    public Integer getElementsInPage();
+
+    public Integer getSize();
+
+    public Long getTotalElements();
+
+    public Integer getTotalPages();
+
+}

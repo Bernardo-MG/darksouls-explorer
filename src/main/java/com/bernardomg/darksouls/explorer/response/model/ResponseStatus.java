@@ -14,30 +14,34 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.response;
+package com.bernardomg.darksouls.explorer.response.model;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Response to the frontend.
+ * Response status.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
- * @param <T>
- *            response content type
  */
-public interface Response<T> {
+public enum ResponseStatus {
 
     /**
-     * Returns the response content.
-     *
-     * @return the response content
+     * The request failed.
      */
-    public T getContent();
-
+    FAILURE,
     /**
-     * Returns the response status.
-     *
-     * @return the response status
+     * The request was a success.
      */
-    public ResponseStatus getStatus();
+    SUCCESS,
+    /**
+     * The request generated warnings.
+     */
+    WARNING;
+
+    @JsonValue
+    public final String getValue() {
+        return toString().toLowerCase();
+    }
 
 }
