@@ -155,6 +155,56 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             .all();
     }
 
+    @Override
+    public <T> Optional<T> fetchOne(final String query,
+            final Function<Iterable<Map<String, Object>>, T> mapper) {
+        final Iterable<Map<String, Object>> read;
+        final T mapped;
+
+        LOGGER.debug("Query:\n{}", query);
+
+        // Data is fetched and mapped
+        read = client.query(query)
+            .fetch()
+            .first()
+            .stream()
+            .collect(Collectors.toList());
+        mapped = mapper.apply(read);
+        return Optional.ofNullable(mapped);
+    }
+
+    @Override
+    public <T> Optional<T> fetchOne(final String query,
+            final Function<Iterable<Map<String, Object>>, T> mapper,
+            final Map<String, Object> parameters) {
+        final Iterable<Map<String, Object>> read;
+        final T mapped;
+
+        LOGGER.debug("Query:\n{}", query);
+
+        // Data is fetched and mapped
+        read = client.query(query)
+            .bindAll(parameters)
+            .fetch()
+            .first()
+            .stream()
+            .collect(Collectors.toList());
+        mapped = mapper.apply(read);
+        return Optional.ofNullable(mapped);
+    }
+
+    @Override
+    public Optional<Map<String, Object>> fetchOne(final String query,
+            final Map<String, Object> parameters) {
+        LOGGER.debug("Query:\n{}", query);
+
+        // Data is fetched and mapped
+        return client.query(query)
+            .bindAll(parameters)
+            .fetch()
+            .first();
+    }
+
     private final Long count(final Statement statement) {
         final String countQuery;
 

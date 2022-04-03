@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.query.AllItemsQuery;
 import com.bernardomg.darksouls.explorer.item.query.ArmorProgressionQuery;
+import com.bernardomg.darksouls.explorer.item.query.ItemQuery;
 import com.bernardomg.darksouls.explorer.item.query.ItemSourcesQuery;
 import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
@@ -71,6 +73,19 @@ public final class DefaultItemService implements ItemService {
         }
 
         return result;
+    }
+
+    @Override
+    public Optional<Item> getOne(final Long id) {
+        final Map<String, Object> params;
+        final Query<Item> query;
+
+        query = new ItemQuery();
+
+        params = new HashMap<>();
+        params.put("id", id);
+
+        return queryExecutor.fetchOne(query, params);
     }
 
     @Override

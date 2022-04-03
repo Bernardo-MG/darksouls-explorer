@@ -40,6 +40,12 @@ public class ItemController {
         return service.getArmorLevels(id);
     }
 
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Item readOne(@PathVariable("id") final Long id) {
+        return service.getOne(id)
+            .orElse(null);
+    }
+
     @GetMapping(path = "/{id}/sources",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<ItemSource> readSources(@PathVariable("id") final Long id,

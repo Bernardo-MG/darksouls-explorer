@@ -19,24 +19,19 @@ package com.bernardomg.darksouls.explorer.persistence;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
-import org.neo4j.cypherdsl.core.ResultStatement;
-import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
 
-    private final QueryExecutor<BuildableStatement<ResultStatement>> dslExecutor;
+    private final QueryExecutor<String> textExecutor;
 
-    private final QueryExecutor<String>                              textExecutor;
-
-    public DefaultQueryCommandExecutor(final QueryExecutor<String> textExec,
-            final QueryExecutor<BuildableStatement<ResultStatement>> dslExec) {
+    public DefaultQueryCommandExecutor(final QueryExecutor<String> textExec) {
         super();
 
         textExecutor = Objects.requireNonNull(textExec);
-        dslExecutor = Objects.requireNonNull(dslExec);
     }
 
     @Override
@@ -62,6 +57,18 @@ public final class DefaultQueryCommandExecutor implements QueryCommandExecutor {
     public final <T> Page<T> fetch(final Query<List<T>> query,
             final Pageable page) {
         return textExecutor.fetch(query.getStatement(), query::getOutput, page);
+    }
+
+    @Override
+    public final <T> Optional<T> fetchOne(final Query<T> query) {
+        return textExecutor.fetchOne(query.getStatement(), query::getOutput);
+    }
+
+    @Override
+    public final <T> Optional<T> fetchOne(final Query<T> query,
+            final Map<String, Object> parameters) {
+        return textExecutor.fetchOne(query.getStatement(), query::getOutput,
+            parameters);
     }
 
 }

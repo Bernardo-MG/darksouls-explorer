@@ -1,6 +1,8 @@
 
 package com.bernardomg.darksouls.explorer.item.service;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +17,8 @@ public interface ItemService {
     public Page<Item> getAll(final ItemRequest request, final Pageable page);
 
     public ArmorProgression getArmorLevels(final Long id);
+
+    public Optional<Item> getOne(final Long id);
 
     public Page<ItemSource> getSources(final Long id, final Pageable page);
 

@@ -16,15 +16,12 @@
 
 package com.bernardomg.darksouls.explorer.config;
 
-import org.neo4j.cypherdsl.core.ResultStatement;
-import org.neo4j.cypherdsl.core.StatementBuilder.BuildableStatement;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.bernardomg.darksouls.explorer.persistence.DefaultQueryCommandExecutor;
-import com.bernardomg.darksouls.explorer.persistence.DslQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
 import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.TextQueryExecutor;
@@ -46,16 +43,10 @@ public class PersistenceConfig {
         super();
     }
 
-    @Bean("dslQueryExecutor")
-    public DslQueryExecutor getDslQueryExecutor(final Neo4jClient clnt) {
-        return new DslQueryExecutor(clnt);
-    }
-
     @Bean("queryCommandExecutor")
-    public QueryCommandExecutor getQueryCommandExecutor(
-            final QueryExecutor<String> exec,
-            final QueryExecutor<BuildableStatement<ResultStatement>> dslExec) {
-        return new DefaultQueryCommandExecutor(exec, dslExec);
+    public QueryCommandExecutor
+            getQueryCommandExecutor(final QueryExecutor<String> exec) {
+        return new DefaultQueryCommandExecutor(exec);
     }
 
     @Bean("queryExecutor")
