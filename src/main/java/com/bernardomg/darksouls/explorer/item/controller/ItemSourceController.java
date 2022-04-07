@@ -9,31 +9,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.domain.Item;
-import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
+import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
 
 @RestController
 @RequestMapping("/items")
-public class ItemController {
+public class ItemSourceController {
 
     private final ItemService service;
 
-    public ItemController(final ItemService service) {
+    public ItemSourceController(final ItemService service) {
         super();
 
         this.service = service;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<Item> read(final DefaultItemRequest request,
+    @GetMapping(path = "/{id}/sources",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<ItemSource> readSources(@PathVariable("id") final Long id,
             final Pageable page) {
-        return service.getAll(request, page);
-    }
-
-    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Item readOne(@PathVariable("id") final Long id) {
-        return service.getOne(id);
+        return service.getSources(id, page);
     }
 
 }

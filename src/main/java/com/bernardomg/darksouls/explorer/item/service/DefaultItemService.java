@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -76,7 +75,7 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public Optional<Item> getOne(final Long id) {
+    public Item getOne(final Long id) {
         final Map<String, Object> params;
         final Query<Item> query;
 
@@ -85,7 +84,8 @@ public final class DefaultItemService implements ItemService {
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetchOne(query, params);
+        return queryExecutor.fetchOne(query, params)
+            .orElse(null);
     }
 
     @Override

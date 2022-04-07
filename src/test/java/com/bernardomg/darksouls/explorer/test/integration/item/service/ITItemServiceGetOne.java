@@ -19,7 +19,6 @@ package com.bernardomg.darksouls.explorer.test.integration.item.service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -83,17 +82,12 @@ public class ITItemServiceGetOne {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final Optional<Item> read;
         final Item data;
         final Long id;
 
         id = getId();
 
-        read = service.getOne(id);
-
-        Assertions.assertTrue(read.isPresent());
-
-        data = read.get();
+        data = service.getOne(id);
 
         Assertions.assertEquals("Item name", data.getName());
         Assertions.assertEquals(Arrays.asList("Description"),
