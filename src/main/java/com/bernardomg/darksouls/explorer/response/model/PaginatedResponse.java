@@ -26,13 +26,13 @@ package com.bernardomg.darksouls.explorer.response.model;
  */
 public interface PaginatedResponse<T> extends Response<T> {
 
+    public Integer getElementsInPage();
+
     public Boolean getFirst();
 
     public Boolean getLast();
 
     public Integer getPageNumber();
-
-    public Integer getElementsInPage();
 
     public Integer getSize();
 

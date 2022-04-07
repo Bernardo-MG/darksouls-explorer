@@ -13,13 +13,13 @@ public final class DefaultPaginatedResponse<T> implements PaginatedResponse<T> {
     @NonNull
     private T       content;
 
+    private Integer elementsInPage;
+
     private Boolean first;
 
     private Boolean last;
 
     private Integer pageNumber;
-
-    private Integer elementsInPage;
 
     private Integer size;
 
