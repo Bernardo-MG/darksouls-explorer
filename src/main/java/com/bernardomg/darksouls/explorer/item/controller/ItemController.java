@@ -1,12 +1,15 @@
 
 package com.bernardomg.darksouls.explorer.item.controller;
 
+import java.util.Collection;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.domain.Item;
@@ -26,8 +29,17 @@ public class ItemController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<Item> read(final DefaultItemRequest request,
+    public Page<Item> read(
+            @RequestParam(name = "name", defaultValue = "") final String name,
+            @RequestParam(name = "selectors",
+                    defaultValue = "") final Collection<String> selectors,
             final Pageable page) {
+        final DefaultItemRequest request;
+
+        request = new DefaultItemRequest();
+        request.setName(name);
+        request.setSelectors(selectors);
+
         return service.getAll(request, page);
     }
 

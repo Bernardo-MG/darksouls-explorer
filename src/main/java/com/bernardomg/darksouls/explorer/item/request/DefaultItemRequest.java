@@ -1,8 +1,8 @@
 
 package com.bernardomg.darksouls.explorer.item.request;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +13,9 @@ import lombok.NonNull;
 public final class DefaultItemRequest implements ItemRequest {
 
     @NonNull
-    private String       name = "";
+    private String             name      = "";
 
     @NonNull
-    private List<String> tags = Collections.emptyList();
+    private Collection<String> selectors = new ArrayList<>();
 
 }

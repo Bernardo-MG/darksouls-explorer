@@ -1,10 +1,12 @@
 
 package com.bernardomg.darksouls.explorer.item.request;
 
+import java.util.Collection;
+
 public interface ItemRequest {
 
     public String getName();
 
-    public Iterable<String> getTags();
+    public Collection<String> getSelectors();
 
 }

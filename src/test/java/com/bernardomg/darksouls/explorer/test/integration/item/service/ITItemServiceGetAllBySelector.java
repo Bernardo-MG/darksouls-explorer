@@ -17,6 +17,7 @@
 package com.bernardomg.darksouls.explorer.test.integration.item.service;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -41,9 +42,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITItemServiceGetAllByTags.Initializer.class })
-@DisplayName("Reading all the items")
-public class ITItemServiceGetAllByTags {
+        initializers = { ITItemServiceGetAllBySelector.Initializer.class })
+@DisplayName("Reading items by selector")
+public class ITItemServiceGetAllBySelector {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -73,18 +74,21 @@ public class ITItemServiceGetAllByTags {
     /**
      * Default constructor.
      */
-    public ITItemServiceGetAllByTags() {
+    public ITItemServiceGetAllBySelector() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data")
-    public void testGetAll_Count() {
+    @DisplayName("Filtering by item returns all the data")
+    public void testGetAll_ByItem_Count() {
         final Iterable<Item> data;
         final DefaultItemRequest request;
+        final Collection<String> selectors;
 
         request = new DefaultItemRequest();
-        request.setTags(Arrays.asList("Tag"));
+
+        selectors = Arrays.asList("item");
+        request.setSelectors(selectors);
 
         data = service.getAll(request, Pageable.unpaged());
 
@@ -92,13 +96,16 @@ public class ITItemServiceGetAllByTags {
     }
 
     @Test
-    @DisplayName("Returns the correct data")
-    public void testGetAll_Data() {
+    @DisplayName("Filtering by item returns all the data")
+    public void testGetAll_ByItem_Data() {
         final Item data;
         final DefaultItemRequest request;
+        final Collection<String> selectors;
 
         request = new DefaultItemRequest();
-        request.setTags(Arrays.asList("Tag"));
+
+        selectors = Arrays.asList("item");
+        request.setSelectors(selectors);
 
         data = service.getAll(request, Pageable.unpaged())
             .iterator()
@@ -108,6 +115,23 @@ public class ITItemServiceGetAllByTags {
         Assertions.assertEquals(Arrays.asList("Description"),
             data.getDescription());
         Assertions.assertEquals(Arrays.asList("Item", "Tag"), data.getTags());
+    }
+
+    @Test
+    @DisplayName("Filtering by weapon returns no data")
+    public void testGetAll_ByWeapon_Count() {
+        final Iterable<Item> data;
+        final DefaultItemRequest request;
+        final Collection<String> selectors;
+
+        request = new DefaultItemRequest();
+
+        selectors = Arrays.asList("weapon");
+        request.setSelectors(selectors);
+
+        data = service.getAll(request, Pageable.unpaged());
+
+        Assertions.assertEquals(0, IterableUtils.size(data));
     }
 
 }

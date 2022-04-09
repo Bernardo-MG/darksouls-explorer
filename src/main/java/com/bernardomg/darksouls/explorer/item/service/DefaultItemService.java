@@ -1,16 +1,19 @@
 
 package com.bernardomg.darksouls.explorer.item.service;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorProgression;
@@ -43,8 +46,15 @@ public final class DefaultItemService implements ItemService {
     public final Page<Item> getAll(final ItemRequest request,
             final Pageable page) {
         final Query<List<Item>> query;
+        final Collection<String> tags;
 
-        query = new AllItemsQuery(request.getName(), request.getTags());
+        tags = request.getSelectors()
+            .stream()
+            .map(String::toLowerCase)
+            .map(StringUtils::capitalize)
+            .collect(Collectors.toList());
+
+        query = new AllItemsQuery(request.getName(), tags);
 
         return queryExecutor.fetch(query, page);
     }
