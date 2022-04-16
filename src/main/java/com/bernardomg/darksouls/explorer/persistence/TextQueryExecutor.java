@@ -156,7 +156,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public <T> Optional<T> fetchOne(final String query,
+    public final <T> Optional<T> fetchOne(final String query,
             final Function<Iterable<Map<String, Object>>, T> mapper) {
         final Iterable<Map<String, Object>> read;
         final T mapped;
@@ -174,7 +174,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public <T> Optional<T> fetchOne(final String query,
+    public final <T> Optional<T> fetchOne(final String query,
             final Function<Iterable<Map<String, Object>>, T> mapper,
             final Map<String, Object> parameters) {
         final Iterable<Map<String, Object>> read;
@@ -194,7 +194,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public Optional<Map<String, Object>> fetchOne(final String query,
+    public final Optional<Map<String, Object>> fetchOne(final String query,
             final Map<String, Object> parameters) {
         LOGGER.debug("Query:\n{}", query);
 

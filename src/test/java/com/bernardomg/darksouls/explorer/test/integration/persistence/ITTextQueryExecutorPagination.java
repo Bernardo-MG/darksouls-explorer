@@ -188,6 +188,7 @@ public class ITTextQueryExecutorPagination {
         return "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
     }
 
+    @SuppressWarnings("unchecked")
     private final Item toItem(final Map<String, Object> record) {
         final Long id;
         final String name;
