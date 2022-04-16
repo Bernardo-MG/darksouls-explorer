@@ -11,133 +11,134 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.request.argument.PaginationArgumentResolver;
+import com.bernardomg.darksouls.explorer.persistence.model.Direction;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.darksouls.explorer.request.argument.SortArgumentResolver;
 
-@DisplayName("Pagination argument resolver")
-public class TestPaginationArgumentResolver {
+@DisplayName("Order argument resolver")
+public class TestOrderArgumentResolver {
 
-    private final HandlerMethodArgumentResolver resolver = new PaginationArgumentResolver();
+    private final HandlerMethodArgumentResolver resolver = new SortArgumentResolver();
 
-    public TestPaginationArgumentResolver() {
+    public TestOrderArgumentResolver() {
         super();
     }
 
     @Test
-    @DisplayName("The pagination is paged when receiving all values")
-    public void testResolve_FullPagination_Paged() throws Exception {
+    @DisplayName("The sort is sorted when receiving all values")
+    public void testResolve_FullSort_Sorted() throws Exception {
         final MethodParameter parameter;
         final ModelAndViewContainer mavContainer;
         final NativeWebRequest webRequest;
         final WebDataBinderFactory binderFactory;
-        final Pagination pagination;
+        final Sort sort;
 
         parameter = Mockito.mock(MethodParameter.class);
         mavContainer = Mockito.mock(ModelAndViewContainer.class);
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        Mockito.when(webRequest.getParameter("page"))
-            .thenReturn("1");
-        Mockito.when(webRequest.getParameter("size"))
-            .thenReturn("10");
+        Mockito.when(webRequest.getParameter("property"))
+            .thenReturn("field");
+        Mockito.when(webRequest.getParameter("direction"))
+            .thenReturn("asc");
 
-        pagination = (Pagination) resolver.resolveArgument(parameter,
-            mavContainer, webRequest, binderFactory);
+        sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
+            webRequest, binderFactory);
 
-        Assertions.assertTrue(pagination.isPaged());
+        Assertions.assertTrue(sort.isSorted());
     }
 
     @Test
-    @DisplayName("Returns pagination when receiving all the arguments")
-    public void testResolve_FullPagination_Values() throws Exception {
+    @DisplayName("Returns order when receiving all the arguments")
+    public void testResolve_FullSort_Values() throws Exception {
         final MethodParameter parameter;
         final ModelAndViewContainer mavContainer;
         final NativeWebRequest webRequest;
         final WebDataBinderFactory binderFactory;
-        final Pagination pagination;
+        final Sort sort;
 
         parameter = Mockito.mock(MethodParameter.class);
         mavContainer = Mockito.mock(ModelAndViewContainer.class);
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        Mockito.when(webRequest.getParameter("page"))
-            .thenReturn("1");
-        Mockito.when(webRequest.getParameter("size"))
-            .thenReturn("10");
+        Mockito.when(webRequest.getParameter("property"))
+            .thenReturn("field");
+        Mockito.when(webRequest.getParameter("direction"))
+            .thenReturn("asc");
 
-        pagination = (Pagination) resolver.resolveArgument(parameter,
-            mavContainer, webRequest, binderFactory);
+        sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
+            webRequest, binderFactory);
 
-        Assertions.assertEquals(1, pagination.getPage());
-        Assertions.assertEquals(10, pagination.getSize());
+        Assertions.assertEquals("field", sort.getProperty());
+        Assertions.assertEquals(Direction.ASC, sort.getDirection());
     }
 
     @Test
-    @DisplayName("The pagination is not paged when receiving no parameters")
-    public void testResolve_NoPagination_NotPaged() throws Exception {
+    @DisplayName("Returns the default direction when no direction is received")
+    public void testResolve_NoDirection_DefaultDirection() throws Exception {
         final MethodParameter parameter;
         final ModelAndViewContainer mavContainer;
         final NativeWebRequest webRequest;
         final WebDataBinderFactory binderFactory;
-        final Pagination pagination;
+        final Sort sort;
 
         parameter = Mockito.mock(MethodParameter.class);
         mavContainer = Mockito.mock(ModelAndViewContainer.class);
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        pagination = (Pagination) resolver.resolveArgument(parameter,
-            mavContainer, webRequest, binderFactory);
+        Mockito.when(webRequest.getParameter("property"))
+            .thenReturn("field");
 
-        Assertions.assertFalse(pagination.isPaged());
+        sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
+            webRequest, binderFactory);
+
+        Assertions.assertEquals(Direction.ASC, sort.getDirection());
     }
 
     @Test
-    @DisplayName("Returns the default size when no size is received")
-    public void testResolve_NoSize_DefaultSize() throws Exception {
+    @DisplayName("The sort is sorted when receiving no direction")
+    public void testResolve_NoDirection_Sorted() throws Exception {
         final MethodParameter parameter;
         final ModelAndViewContainer mavContainer;
         final NativeWebRequest webRequest;
         final WebDataBinderFactory binderFactory;
-        final Pagination pagination;
+        final Sort sort;
 
         parameter = Mockito.mock(MethodParameter.class);
         mavContainer = Mockito.mock(ModelAndViewContainer.class);
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        Mockito.when(webRequest.getParameter("page"))
-            .thenReturn("1");
+        Mockito.when(webRequest.getParameter("property"))
+            .thenReturn("field");
 
-        pagination = (Pagination) resolver.resolveArgument(parameter,
-            mavContainer, webRequest, binderFactory);
+        sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
+            webRequest, binderFactory);
 
-        Assertions.assertEquals(20, pagination.getSize());
+        Assertions.assertTrue(sort.isSorted());
     }
 
     @Test
-    @DisplayName("The pagination is paged when receiving no size")
-    public void testResolve_NoSize_Paged() throws Exception {
+    @DisplayName("The pagination is not sorted when receiving no parameters")
+    public void testResolve_NoSort_NotSorted() throws Exception {
         final MethodParameter parameter;
         final ModelAndViewContainer mavContainer;
         final NativeWebRequest webRequest;
         final WebDataBinderFactory binderFactory;
-        final Pagination pagination;
+        final Sort sort;
 
         parameter = Mockito.mock(MethodParameter.class);
         mavContainer = Mockito.mock(ModelAndViewContainer.class);
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        Mockito.when(webRequest.getParameter("page"))
-            .thenReturn("1");
+        sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
+            webRequest, binderFactory);
 
-        pagination = (Pagination) resolver.resolveArgument(parameter,
-            mavContainer, webRequest, binderFactory);
-
-        Assertions.assertTrue(pagination.isPaged());
+        Assertions.assertFalse(sort.isSorted());
     }
 
 }
