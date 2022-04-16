@@ -41,7 +41,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
-import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;

@@ -9,7 +9,7 @@ import java.util.stream.StreamSupport;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
-import com.bernardomg.darksouls.explorer.persistence.Query;
+import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
 public final class ItemQuery implements Query<Item> {
 

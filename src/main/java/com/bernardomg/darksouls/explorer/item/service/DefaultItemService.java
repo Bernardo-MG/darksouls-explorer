@@ -27,8 +27,8 @@ import com.bernardomg.darksouls.explorer.item.query.ItemQuery;
 import com.bernardomg.darksouls.explorer.item.query.ItemSourcesQuery;
 import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
-import com.bernardomg.darksouls.explorer.persistence.Query;
-import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
 @Service
 public final class DefaultItemService implements ItemService {
@@ -87,7 +87,7 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public Item getOne(final Long id) {
+    public final Item getOne(final Long id) {
         final Map<String, Object> params;
         final Query<Item> query;
 

@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.TextQueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
 
 /**
  * Persistence configuration.

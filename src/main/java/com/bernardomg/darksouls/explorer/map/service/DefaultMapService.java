@@ -12,8 +12,8 @@ import com.bernardomg.darksouls.explorer.map.domain.Map;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
 import com.bernardomg.darksouls.explorer.map.query.AllIMapsQuery;
 import com.bernardomg.darksouls.explorer.map.query.AllMapConnectionsQuery;
-import com.bernardomg.darksouls.explorer.persistence.Query;
-import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
 @Component
 public final class DefaultMapService implements MapService {

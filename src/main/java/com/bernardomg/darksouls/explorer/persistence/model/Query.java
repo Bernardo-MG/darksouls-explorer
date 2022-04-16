@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.persistence;
+package com.bernardomg.darksouls.explorer.persistence.model;
 
 import java.util.Map;
 

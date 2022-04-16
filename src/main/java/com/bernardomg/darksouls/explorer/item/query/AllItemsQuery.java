@@ -17,7 +17,7 @@ import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingWithoutWhere;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
-import com.bernardomg.darksouls.explorer.persistence.Query;
+import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
 public final class AllItemsQuery implements Query<List<Item>> {
 

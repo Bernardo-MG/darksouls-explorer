@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.persistence;
+package com.bernardomg.darksouls.explorer.persistence.executor;
 
 import java.util.Collection;
 import java.util.Collections;
