@@ -38,10 +38,20 @@ public final class SortArgumentResolver
         } else {
             sortPieces = sortText.split(",");
             property = sortPieces[0];
+
             if (sortPieces.length == 1) {
                 direction = Direction.ASC;
             } else {
-                direction = Direction.valueOf(sortPieces[1].toUpperCase());
+                switch (sortPieces[1].toLowerCase()) {
+                    case "asc":
+                        direction = Direction.ASC;
+                        break;
+                    case "desc":
+                        direction = Direction.DESC;
+                        break;
+                    default:
+                        direction = Direction.ASC;
+                }
             }
 
             sort = new DefaultSort(property, direction);
