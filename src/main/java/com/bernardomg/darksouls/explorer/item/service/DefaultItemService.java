@@ -28,15 +28,15 @@ import com.bernardomg.darksouls.explorer.item.query.ItemSourcesQuery;
 import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 import com.bernardomg.darksouls.explorer.persistence.Query;
-import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
+import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 
 @Service
 public final class DefaultItemService implements ItemService {
 
-    private final QueryCommandExecutor queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     @Autowired
-    public DefaultItemService(final QueryCommandExecutor queryExec) {
+    public DefaultItemService(final QueryExecutor<String> queryExec) {
         super();
 
         queryExecutor = Objects.requireNonNull(queryExec);
@@ -56,7 +56,8 @@ public final class DefaultItemService implements ItemService {
 
         query = new AllItemsQuery(request.getName(), tags);
 
-        return queryExecutor.fetch(query, page);
+        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+            page);
     }
 
     @Override
@@ -71,7 +72,8 @@ public final class DefaultItemService implements ItemService {
 
         query = new ArmorProgressionQuery();
 
-        data = queryExecutor.fetch(query, params);
+        data = queryExecutor.fetch(query.getStatement(), query::getOutput,
+            params);
 
         if (data.iterator()
             .hasNext()) {
@@ -94,7 +96,8 @@ public final class DefaultItemService implements ItemService {
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetchOne(query, params)
+        return queryExecutor
+            .fetchOne(query.getStatement(), query::getOutput, params)
             .orElse(null);
     }
 
@@ -109,7 +112,8 @@ public final class DefaultItemService implements ItemService {
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetch(query, params, page);
+        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+            params, page);
     }
 
     @Override
@@ -124,7 +128,8 @@ public final class DefaultItemService implements ItemService {
 
         query = new WeaponProgressionQuery();
 
-        data = queryExecutor.fetch(query, params);
+        data = queryExecutor.fetch(query.getStatement(), query::getOutput,
+            params);
 
         if (data.iterator()
             .hasNext()) {

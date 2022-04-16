@@ -13,14 +13,14 @@ import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
 import com.bernardomg.darksouls.explorer.map.query.AllIMapsQuery;
 import com.bernardomg.darksouls.explorer.map.query.AllMapConnectionsQuery;
 import com.bernardomg.darksouls.explorer.persistence.Query;
-import com.bernardomg.darksouls.explorer.persistence.QueryCommandExecutor;
+import com.bernardomg.darksouls.explorer.persistence.QueryExecutor;
 
 @Component
 public final class DefaultMapService implements MapService {
 
-    private final QueryCommandExecutor queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
-    public DefaultMapService(final QueryCommandExecutor queryExec) {
+    public DefaultMapService(final QueryExecutor<String> queryExec) {
         super();
 
         queryExecutor = Objects.requireNonNull(queryExec);
@@ -32,7 +32,8 @@ public final class DefaultMapService implements MapService {
 
         query = new AllIMapsQuery();
 
-        return queryExecutor.fetch(query, page);
+        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+            page);
     }
 
     @Override
@@ -41,7 +42,8 @@ public final class DefaultMapService implements MapService {
 
         query = new AllMapConnectionsQuery();
 
-        return queryExecutor.fetch(query, page);
+        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+            page);
     }
 
 }
