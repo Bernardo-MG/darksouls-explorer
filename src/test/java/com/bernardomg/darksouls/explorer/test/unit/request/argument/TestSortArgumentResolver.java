@@ -15,12 +15,12 @@ import com.bernardomg.darksouls.explorer.persistence.model.Direction;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 import com.bernardomg.darksouls.explorer.request.argument.SortArgumentResolver;
 
-@DisplayName("Order argument resolver")
-public class TestOrderArgumentResolver {
+@DisplayName("Sort argument resolver")
+public class TestSortArgumentResolver {
 
     private final HandlerMethodArgumentResolver resolver = new SortArgumentResolver();
 
-    public TestOrderArgumentResolver() {
+    public TestSortArgumentResolver() {
         super();
     }
 
@@ -38,10 +38,8 @@ public class TestOrderArgumentResolver {
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        Mockito.when(webRequest.getParameter("property"))
-            .thenReturn("field");
-        Mockito.when(webRequest.getParameter("direction"))
-            .thenReturn("asc");
+        Mockito.when(webRequest.getParameter("sort"))
+            .thenReturn("field,asc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
             webRequest, binderFactory);
@@ -63,10 +61,8 @@ public class TestOrderArgumentResolver {
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        Mockito.when(webRequest.getParameter("property"))
-            .thenReturn("field");
-        Mockito.when(webRequest.getParameter("direction"))
-            .thenReturn("asc");
+        Mockito.when(webRequest.getParameter("sort"))
+            .thenReturn("field,asc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
             webRequest, binderFactory);
@@ -89,7 +85,7 @@ public class TestOrderArgumentResolver {
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        Mockito.when(webRequest.getParameter("property"))
+        Mockito.when(webRequest.getParameter("sort"))
             .thenReturn("field");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
@@ -112,7 +108,7 @@ public class TestOrderArgumentResolver {
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
-        Mockito.when(webRequest.getParameter("property"))
+        Mockito.when(webRequest.getParameter("sort"))
             .thenReturn("field");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer,

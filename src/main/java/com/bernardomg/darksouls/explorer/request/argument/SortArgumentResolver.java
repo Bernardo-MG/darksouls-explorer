@@ -25,21 +25,23 @@ public final class SortArgumentResolver
             final ModelAndViewContainer mavContainer,
             final NativeWebRequest webRequest,
             final WebDataBinderFactory binderFactory) throws Exception {
+        final String sortText;
         final String property;
-        final String directionText;
+        final String[] sortPieces;
         final Direction direction;
         final Sort sort;
 
-        property = webRequest.getParameter("property");
-        directionText = webRequest.getParameter("direction");
+        sortText = webRequest.getParameter("sort");
 
-        if (property == null) {
+        if (sortText == null) {
             sort = new DisabledSort();
         } else {
-            if (directionText == null) {
+            sortPieces = sortText.split(",");
+            property = sortPieces[0];
+            if (sortPieces.length == 1) {
                 direction = Direction.ASC;
             } else {
-                direction = Direction.valueOf(directionText.toUpperCase());
+                direction = Direction.valueOf(sortPieces[1].toUpperCase());
             }
 
             sort = new DefaultSort(property, direction);
