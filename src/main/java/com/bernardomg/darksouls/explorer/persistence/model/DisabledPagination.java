@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class DisabledPagination implements Pagination {
+public final class DisabledPagination implements Pagination {
 
     @NonNull
     private final Integer page = -1;

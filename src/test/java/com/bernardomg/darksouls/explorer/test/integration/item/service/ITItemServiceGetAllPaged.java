@@ -26,8 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -36,6 +34,10 @@ import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
+import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
+import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -87,9 +89,10 @@ public class ITItemServiceGetAllPaged {
 
         request = new DefaultItemRequest();
 
-        data = service.getAll(request, Pageable.ofSize(1));
+        data = service.getAll(request, new DefaultPagination(0, 1),
+            new DisabledSort());
 
-        Assertions.assertInstanceOf(Page.class, data);
+        Assertions.assertInstanceOf(PageIterable.class, data);
     }
 
     @Test
@@ -100,7 +103,8 @@ public class ITItemServiceGetAllPaged {
 
         request = new DefaultItemRequest();
 
-        data = service.getAll(request, Pageable.ofSize(1));
+        data = service.getAll(request, new DefaultPagination(0, 1),
+            new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -113,7 +117,8 @@ public class ITItemServiceGetAllPaged {
 
         request = new DefaultItemRequest();
 
-        data = service.getAll(request, Pageable.unpaged());
+        data = service.getAll(request, new DisabledPagination(),
+            new DisabledSort());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }

@@ -26,13 +26,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
 import com.bernardomg.darksouls.explorer.map.service.MapService;
+import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
+import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -81,7 +82,8 @@ public class ITMapServiceGetAllConnections {
     public void testFindAll_Count() {
         final Iterable<MapConnection> data;
 
-        data = service.getAllConnections(Pageable.unpaged());
+        data = service.getAllConnections(new DisabledPagination(),
+            new DisabledSort());
 
         Assertions.assertEquals(2, IterableUtils.size(data));
     }

@@ -7,8 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 public interface QueryExecutor<Q> {
 
@@ -19,13 +20,14 @@ public interface QueryExecutor<Q> {
             final Function<Iterable<Map<String, Object>>, List<T>> mapper,
             final Map<String, Object> parameters);
 
-    public <T> Page<T> fetch(final Q query,
+    public <T> PageIterable<T> fetch(final Q query,
             final Function<Iterable<Map<String, Object>>, List<T>> mapper,
-            final Map<String, Object> parameters, final Pageable page);
+            final Map<String, Object> parameters, final Pagination pagination,
+            final Iterable<Sort> sort);
 
-    public <T> Page<T> fetch(final Q query,
+    public <T> PageIterable<T> fetch(final Q query,
             final Function<Iterable<Map<String, Object>>, List<T>> mapper,
-            final Pageable page);
+            final Pagination pagination, final Iterable<Sort> sort);
 
     public Collection<Map<String, Object>> fetch(final Q query,
             final Map<String, Object> parameters);

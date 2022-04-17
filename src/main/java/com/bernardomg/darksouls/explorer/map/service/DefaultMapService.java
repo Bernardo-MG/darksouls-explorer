@@ -1,11 +1,10 @@
 
 package com.bernardomg.darksouls.explorer.map.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.map.domain.Map;
@@ -13,7 +12,10 @@ import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
 import com.bernardomg.darksouls.explorer.map.query.AllIMapsQuery;
 import com.bernardomg.darksouls.explorer.map.query.AllMapConnectionsQuery;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 @Component
 public final class DefaultMapService implements MapService {
@@ -27,23 +29,25 @@ public final class DefaultMapService implements MapService {
     }
 
     @Override
-    public final Page<Map> getAll(final Pageable page) {
+    public final PageIterable<Map> getAll(final Pagination pagination,
+            final Sort sort) {
         final Query<List<Map>> query;
 
         query = new AllIMapsQuery();
 
         return queryExecutor.fetch(query.getStatement(), query::getOutput,
-            page);
+            pagination, Arrays.asList(sort));
     }
 
     @Override
-    public final Page<MapConnection> getAllConnections(final Pageable page) {
+    public final PageIterable<MapConnection>
+            getAllConnections(final Pagination pagination, final Sort sort) {
         final Query<List<MapConnection>> query;
 
         query = new AllMapConnectionsQuery();
 
         return queryExecutor.fetch(query.getStatement(), query::getOutput,
-            page);
+            pagination, Arrays.asList(sort));
     }
 
 }

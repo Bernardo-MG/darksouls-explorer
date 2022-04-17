@@ -1,6 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.item.service;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,8 +11,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -28,7 +27,10 @@ import com.bernardomg.darksouls.explorer.item.query.ItemSourcesQuery;
 import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 @Service
 public final class DefaultItemService implements ItemService {
@@ -43,8 +45,8 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final Page<Item> getAll(final ItemRequest request,
-            final Pageable page) {
+    public final PageIterable<Item> getAll(final ItemRequest request,
+            final Pagination pagination, final Sort sort) {
         final Query<List<Item>> query;
         final Collection<String> tags;
 
@@ -57,7 +59,7 @@ public final class DefaultItemService implements ItemService {
         query = new AllItemsQuery(request.getName(), tags);
 
         return queryExecutor.fetch(query.getStatement(), query::getOutput,
-            page);
+            pagination, Arrays.asList(sort));
     }
 
     @Override
@@ -102,8 +104,8 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final Page<ItemSource> getSources(final Long id,
-            final Pageable page) {
+    public final PageIterable<ItemSource> getSources(final Long id,
+            final Pagination pagination, final Sort sort) {
         final Map<String, Object> params;
         final Query<List<ItemSource>> query;
 
@@ -113,7 +115,7 @@ public final class DefaultItemService implements ItemService {
         params.put("id", id);
 
         return queryExecutor.fetch(query.getStatement(), query::getOutput,
-            params, page);
+            params, pagination, Arrays.asList(sort));
     }
 
     @Override

@@ -31,10 +31,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -42,6 +38,14 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
+import com.bernardomg.darksouls.explorer.persistence.model.DefaultSort;
+import com.bernardomg.darksouls.explorer.persistence.model.Direction;
+import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
+import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -50,7 +54,7 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 @IntegrationTest
 @ContextConfiguration(
         initializers = { ITTextQueryExecutorPagination.Initializer.class })
-@DisplayName("Text Query Executor")
+@DisplayName("Query executor paginated")
 public class ITTextQueryExecutorPagination {
 
     public static class Initializer implements
@@ -83,81 +87,79 @@ public class ITTextQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Returns all the data when not paginated through a query")
-    public void testFetch_Query_NoPagination() {
-        final Page<Item> data;
-        final Pageable page;
+    @DisplayName("Reads the content for a page covering all the data")
+    public void testFetch_AllElementsPage_Content() {
+        final Iterator<Item> data;
+        final Pagination pagination;
+        final Sort sort;
 
-        page = Pageable.unpaged();
+        pagination = new DefaultPagination(0, 5);
+        sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, page);
+        data = queryExecutor
+            .fetch(getQuery(), this::toItems, pagination, Arrays.asList(sort))
+            .iterator();
+
+        Assertions.assertEquals("Item1", data.next()
+            .getName());
+        Assertions.assertEquals("Item2", data.next()
+            .getName());
+        Assertions.assertEquals("Item3", data.next()
+            .getName());
+        Assertions.assertEquals("Item4", data.next()
+            .getName());
+        Assertions.assertEquals("Item5", data.next()
+            .getName());
+    }
+
+    @Test
+    @DisplayName("Reads the status for a page covering all the data")
+    public void testFetch_AllElementsPage_Status() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(0, 5);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertTrue(data.isFirst());
+        Assertions.assertTrue(data.isLast());
+    }
+
+    @Test
+    @DisplayName("Reads the values for a page covering all the data")
+    public void testFetch_AllElementsPage_Values() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(0, 5);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
 
         Assertions.assertEquals(5, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
         Assertions.assertEquals(1, data.getTotalPages());
-        Assertions.assertEquals(0, data.getNumber());
+        Assertions.assertEquals(0, data.getPageNumber());
     }
 
     @Test
-    @DisplayName("Sorts in ascending order through a query")
-    public void testFetch_Query_Order_Ascending() {
-        final Iterator<Item> data;
-        final Pageable page;
+    @DisplayName("Reads the first page content")
+    public void testFetch_FirstPage_Content() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
 
-        page = PageRequest.of(0, 5, Direction.ASC, "name");
+        pagination = new DefaultPagination(0, 1);
+        sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, page)
-            .iterator();
-
-        Assertions.assertEquals("Item1", data.next()
-            .getName());
-        Assertions.assertEquals("Item2", data.next()
-            .getName());
-        Assertions.assertEquals("Item3", data.next()
-            .getName());
-        Assertions.assertEquals("Item4", data.next()
-            .getName());
-        Assertions.assertEquals("Item5", data.next()
-            .getName());
-    }
-
-    @Test
-    @DisplayName("Sorts in descending order through a query")
-    public void testFetch_Query_Order_Descending() {
-        final Iterator<Item> data;
-        final Pageable page;
-
-        page = PageRequest.of(0, 5, Direction.DESC, "name");
-
-        data = queryExecutor.fetch(getQuery(), this::toItems, page)
-            .iterator();
-
-        Assertions.assertEquals("Item5", data.next()
-            .getName());
-        Assertions.assertEquals("Item4", data.next()
-            .getName());
-        Assertions.assertEquals("Item3", data.next()
-            .getName());
-        Assertions.assertEquals("Item2", data.next()
-            .getName());
-        Assertions.assertEquals("Item1", data.next()
-            .getName());
-    }
-
-    @Test
-    @DisplayName("Reads first page through a query")
-    public void testFetch_Query_Pagination_FirstPage() {
-        final Page<Item> data;
-        final Pageable page;
-
-        page = PageRequest.of(0, 1, Direction.ASC, "name");
-
-        data = queryExecutor.fetch(getQuery(), this::toItems, page);
-
-        Assertions.assertEquals(1, data.getSize());
-        Assertions.assertEquals(5, data.getTotalElements());
-        Assertions.assertEquals(5, data.getTotalPages());
-        Assertions.assertEquals(0, data.getNumber());
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
 
         Assertions.assertEquals("Item1", data.iterator()
             .next()
@@ -165,23 +167,166 @@ public class ITTextQueryExecutorPagination {
     }
 
     @Test
-    @DisplayName("Reads second page through a query")
-    public void testFetch_Query_Pagination_SecondPage() {
-        final Page<Item> data;
-        final Pageable page;
+    @DisplayName("Reads the first page status")
+    public void testFetch_FirstPage_Status() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
 
-        page = PageRequest.of(1, 1, Direction.ASC, "name");
+        pagination = new DefaultPagination(0, 1);
+        sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, page);
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertTrue(data.isFirst());
+        Assertions.assertFalse(data.isLast());
+    }
+
+    @Test
+    @DisplayName("Reads the first page values")
+    public void testFetch_FirstPage_Values() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(0, 1);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
 
         Assertions.assertEquals(1, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
         Assertions.assertEquals(5, data.getTotalPages());
-        Assertions.assertEquals(1, data.getNumber());
+        Assertions.assertEquals(0, data.getPageNumber());
+    }
+
+    @Test
+    @DisplayName("Reads the last page content")
+    public void testFetch_LastPage_Content() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(4, 1);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertEquals("Item5", data.iterator()
+            .next()
+            .getName());
+    }
+
+    @Test
+    @DisplayName("Reads the last page status")
+    public void testFetch_LastPage_Status() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(4, 1);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertFalse(data.isFirst());
+        Assertions.assertTrue(data.isLast());
+    }
+
+    @Test
+    @DisplayName("Reads the last page values")
+    public void testFetch_LastPage_Values() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(4, 1);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertEquals(1, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(5, data.getTotalPages());
+        Assertions.assertEquals(4, data.getPageNumber());
+    }
+
+    @Test
+    @DisplayName("Returns all the data when not paginated")
+    public void testFetch_NoPagination_Values() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DisabledPagination();
+        sort = new DisabledSort();
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertEquals(5, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(1, data.getTotalPages());
+        Assertions.assertEquals(0, data.getPageNumber());
+    }
+
+    @Test
+    @DisplayName("Reads the second page content")
+    public void testFetch_SecondPage_Content() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(1, 1);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
 
         Assertions.assertEquals("Item2", data.iterator()
             .next()
             .getName());
+    }
+
+    @Test
+    @DisplayName("Reads the second page status")
+    public void testFetch_SecondPage_Status() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(1, 1);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertFalse(data.isFirst());
+        Assertions.assertFalse(data.isLast());
+    }
+
+    @Test
+    @DisplayName("Reads the second page values")
+    public void testFetch_SecondPage_Values() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DefaultPagination(1, 1);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertEquals(1, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(5, data.getTotalPages());
+        Assertions.assertEquals(1, data.getPageNumber());
     }
 
     private final String getQuery() {

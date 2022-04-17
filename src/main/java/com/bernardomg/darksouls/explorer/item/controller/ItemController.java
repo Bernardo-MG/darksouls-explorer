@@ -3,8 +3,6 @@ package com.bernardomg.darksouls.explorer.item.controller;
 
 import java.util.Collection;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.request.DefaultItemRequest;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 @RestController
 @RequestMapping("/items")
@@ -29,18 +30,18 @@ public class ItemController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<Item> read(
+    public PageIterable<Item> read(
             @RequestParam(name = "name", defaultValue = "") final String name,
             @RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
-            final Pageable page) {
+            final Pagination pagination, final Sort sort) {
         final DefaultItemRequest request;
 
         request = new DefaultItemRequest();
         request.setName(name);
         request.setSelectors(selectors);
 
-        return service.getAll(request, page);
+        return service.getAll(request, pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

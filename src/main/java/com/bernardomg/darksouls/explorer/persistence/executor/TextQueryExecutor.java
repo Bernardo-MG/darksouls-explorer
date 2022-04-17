@@ -24,7 +24,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Statement;
@@ -33,11 +35,12 @@ import org.neo4j.cypherdsl.core.SymbolicName;
 import org.neo4j.cypherdsl.parser.CypherParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.neo4j.core.Neo4jClient;
-import org.springframework.data.support.PageableExecutionUtils;
+
+import com.bernardomg.darksouls.explorer.persistence.model.DefaultPageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 public final class TextQueryExecutor implements QueryExecutor<String> {
 
@@ -90,13 +93,14 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public final <T> Page<T> fetch(final String query,
+    public final <T> PageIterable<T> fetch(final String query,
             final Function<Iterable<Map<String, Object>>, List<T>> mapper,
-            final Map<String, Object> parameters, final Pageable page) {
+            final Map<String, Object> parameters, final Pagination pagination,
+            final Iterable<Sort> sort) {
         final List<T> data;
         final Collection<Map<String, Object>> read;
         final Statement baseStatement;
-        final Optional<String> sort;
+        final Optional<String> sortOptions;
         String finalQuery;
 
         baseStatement = CypherParser.parseStatement(query);
@@ -104,22 +108,19 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         finalQuery = query;
 
         // Sort
-        if (page.getSort()
-            .isSorted()) {
-            sort = page.getSort()
-                .stream()
-                .map(this::getOrder)
-                .reduce((a, b) -> a + ", " + b);
-            if (sort.isPresent()) {
-                finalQuery += " ORDER BY " + sort.get();
-            }
+        sortOptions = StreamSupport.stream(sort.spliterator(), false)
+            .filter(Sort::isSorted)
+            .map(this::getFieldSort)
+            .reduce((a, b) -> a + ", " + b);
+        if (sortOptions.isPresent()) {
+            finalQuery += " ORDER BY " + sortOptions.get();
         }
 
         // Pagination
-        if (page.isPaged()) {
+        if (pagination.isPaged()) {
             finalQuery += String.format(" SKIP %d",
-                page.getPageNumber() * page.getPageSize());
-            finalQuery += String.format(" LIMIT %d", page.getPageSize());
+                pagination.getPage() * pagination.getSize());
+            finalQuery += String.format(" LIMIT %d", pagination.getSize());
         }
 
         LOGGER.debug("Query: {}", finalQuery);
@@ -132,15 +133,14 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         data = mapper.apply(read.stream()
             .collect(Collectors.toList()));
 
-        return PageableExecutionUtils.getPage(data, page,
-            () -> count(baseStatement));
+        return getPage(data, pagination, count(baseStatement));
     }
 
     @Override
-    public final <T> Page<T> fetch(final String query,
+    public final <T> PageIterable<T> fetch(final String query,
             final Function<Iterable<Map<String, Object>>, List<T>> mapper,
-            final Pageable page) {
-        return fetch(query, mapper, Collections.emptyMap(), page);
+            final Pagination pagination, final Iterable<Sort> sort) {
+        return fetch(query, mapper, Collections.emptyMap(), pagination, sort);
     }
 
     @Override
@@ -232,9 +232,43 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             .getCypher();
     }
 
-    private final String getOrder(final Order order) {
-        return String.format("%s %s", order.getProperty(),
-            order.getDirection());
+    private final String getFieldSort(final Sort sort) {
+        return String.format("%s %s", sort.getProperty(), sort.getDirection());
+    }
+
+    private final <T> PageIterable<T> getPage(final List<T> data,
+            final Pagination pagination, final Long totalElements) {
+        final DefaultPageIterable<T> result;
+        final Integer totalPages;
+        final Boolean first;
+        final Boolean last;
+        final Integer size;
+        final Integer pageNumber;
+
+        result = new DefaultPageIterable<T>();
+        result.setIterable(data);
+
+        if (pagination.isPaged()) {
+            totalPages = (int) (totalElements / pagination.getSize());
+            size = pagination.getSize();
+            pageNumber = pagination.getPage();
+        } else {
+            totalPages = 1;
+            size = IterableUtils.size(result);
+            pageNumber = 0;
+        }
+        first = pagination.getPage() == 0;
+        last = pagination.getPage() == (totalPages.intValue() - 1);
+
+        result.setFirst(first);
+        result.setLast(last);
+        result.setElementsInPage(data.size());
+        result.setPageNumber(pageNumber);
+        result.setSize(size);
+        result.setTotalElements(totalElements);
+        result.setTotalPages(totalPages.intValue());
+
+        return result;
     }
 
 }

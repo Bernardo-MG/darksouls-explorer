@@ -1,8 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 @RestController
 @RequestMapping("/items")
@@ -26,9 +27,10 @@ public class ItemSourceController {
 
     @GetMapping(path = "/{id}/sources",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<ItemSource> readSources(@PathVariable("id") final Long id,
-            final Pageable page) {
-        return service.getSources(id, page);
+    public PageIterable<ItemSource> readSources(
+            @PathVariable("id") final Long id, final Pagination pagination,
+            final Sort sort) {
+        return service.getSources(id, pagination, sort);
     }
 
 }
