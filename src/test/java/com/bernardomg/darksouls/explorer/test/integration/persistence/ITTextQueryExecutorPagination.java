@@ -149,6 +149,25 @@ public class ITTextQueryExecutorPagination {
     }
 
     @Test
+    @DisplayName("Returns all the data when pagination is disabled")
+    public void testFetch_DisabledPagination_Values() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+
+        pagination = new DisabledPagination();
+        sort = new DisabledSort();
+
+        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+            Arrays.asList(sort));
+
+        Assertions.assertEquals(5, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(1, data.getTotalPages());
+        Assertions.assertEquals(0, data.getPageNumber());
+    }
+
+    @Test
     @DisplayName("Reads the first page content")
     public void testFetch_FirstPage_Content() {
         final PageIterable<Item> data;
@@ -254,25 +273,6 @@ public class ITTextQueryExecutorPagination {
         Assertions.assertEquals(5, data.getTotalElements());
         Assertions.assertEquals(5, data.getTotalPages());
         Assertions.assertEquals(4, data.getPageNumber());
-    }
-
-    @Test
-    @DisplayName("Returns all the data when not paginated")
-    public void testFetch_NoPagination_Values() {
-        final PageIterable<Item> data;
-        final Pagination pagination;
-        final Sort sort;
-
-        pagination = new DisabledPagination();
-        sort = new DisabledSort();
-
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
-            Arrays.asList(sort));
-
-        Assertions.assertEquals(5, data.getSize());
-        Assertions.assertEquals(5, data.getTotalElements());
-        Assertions.assertEquals(1, data.getTotalPages());
-        Assertions.assertEquals(0, data.getPageNumber());
     }
 
     @Test

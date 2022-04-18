@@ -35,6 +35,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
 import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
@@ -117,17 +118,31 @@ public class ITItemServiceGetSources {
         Assertions.assertEquals("Location", data.getLocation());
     }
 
+    @Test
+    @DisplayName("Returns all the data for an id when paginated")
+    public void testGetSources_Paged_Count() {
+        final Iterable<ItemSource> data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getSources(id, new DefaultPagination(0, 1),
+            new DisabledSort());
+
+        Assertions.assertEquals(1, IterableUtils.size(data));
+    }
+
     private final Long getId() {
         final Collection<Map<String, Object>> rows;
 
-        rows = client.query("MATCH (n) RETURN n")
+        rows = client.query("MATCH (n) RETURN id(n) AS id")
             .fetch()
             .all();
 
         return (Long) rows.stream()
             .findFirst()
             .get()
-            .getOrDefault("id", 0l);
+            .get("id");
     }
 
 }

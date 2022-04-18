@@ -42,7 +42,7 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 @IntegrationTest
 @ContextConfiguration(
         initializers = { ITMapServiceGetAllConnectionsNoCon.Initializer.class })
-@DisplayName("Reading all the map connections with no connectios")
+@DisplayName("Reading all the map connections with no connections")
 public class ITMapServiceGetAllConnectionsNoCon {
 
     public static class Initializer implements
