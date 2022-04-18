@@ -34,7 +34,7 @@ public final class AllMapConnectionsQuery
             "MATCH" + System.lineSeparator()
           + "  (m:Map)-[:CONNECTS_TO]->(n:Map)" + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
-          + "  ID(m) AS id, ID(n) AS connection";
+          + "  id(m) AS id, id(n) AS connection";
         // @formatter:on;
 
         return query;

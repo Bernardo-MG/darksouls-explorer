@@ -16,6 +16,7 @@
 
 package com.bernardomg.darksouls.explorer.persistence.executor;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.LongSupplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -133,7 +135,8 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         data = mapper.apply(read.stream()
             .collect(Collectors.toList()));
 
-        return getPage(data, pagination, count(baseStatement));
+        return getPage(data, pagination,
+            () -> count(baseStatement, parameters));
     }
 
     @Override
@@ -205,10 +208,11 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             .first();
     }
 
-    private final Long count(final Statement statement) {
+    private final Long count(final Statement statement,
+            final Map<String, Object> parameters) {
         final String countQuery;
 
-        countQuery = getCountQuery(statement.getCypher());
+        countQuery = getCountQuery(statement.getCypher(), parameters);
 
         LOGGER.debug("Count: {}", countQuery);
 
@@ -218,15 +222,25 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             .get();
     }
 
-    private final String getCountQuery(final String subquery) {
+    private final String getCountQuery(final String subquery,
+            final Map<String, Object> parameters) {
         final SymbolicName name;
         final OngoingReadingAndReturn call;
+        final Collection<Object> params;
+
+        params = parameters.entrySet()
+            .stream()
+            .map(e -> Arrays.asList(e.getKey(), Cypher.literalOf(e.getValue())))
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
 
         name = Cypher.name("value");
         call = Cypher.call("apoc.cypher.run")
-            .withArgs(Cypher.literalOf(subquery), Cypher.mapOf())
+            .withArgs(Cypher.literalOf(subquery),
+                Cypher.mapOf(params.toArray()))
             .yield(name)
-            .returning(Functions.count(name));
+            .returning(Functions.count(name)
+                .as("count"));
 
         return call.build()
             .getCypher();
@@ -237,24 +251,28 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     private final <T> PageIterable<T> getPage(final List<T> data,
-            final Pagination pagination, final Long totalElements) {
+            final Pagination pagination,
+            final LongSupplier totalElementsSupplier) {
         final DefaultPageIterable<T> result;
         final Integer totalPages;
         final Boolean first;
         final Boolean last;
         final Integer size;
         final Integer pageNumber;
+        final long totalElements;
 
         result = new DefaultPageIterable<T>();
         result.setIterable(data);
 
         if (pagination.isPaged()) {
+            totalElements = totalElementsSupplier.getAsLong();
             totalPages = (int) (totalElements / pagination.getSize());
             size = pagination.getSize();
             pageNumber = pagination.getPage();
         } else {
             totalPages = 1;
             size = IterableUtils.size(result);
+            totalElements = size;
             pageNumber = 0;
         }
         first = pagination.getPage() == 0;

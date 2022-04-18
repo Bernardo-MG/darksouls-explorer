@@ -33,7 +33,7 @@ public final class AllIMapsQuery implements
             "MATCH" + System.lineSeparator()
           + "  (m:Map)" + System.lineSeparator()
           + "RETURN" + System.lineSeparator()
-          + "  m.name AS name, ID(m) AS id";
+          + "  m.name AS name, id(m) AS id";
         // @formatter:on;
 
         return query;
