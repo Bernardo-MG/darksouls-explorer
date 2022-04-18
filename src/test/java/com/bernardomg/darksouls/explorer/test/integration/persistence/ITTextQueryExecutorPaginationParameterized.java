@@ -86,7 +86,7 @@ public class ITTextQueryExecutorPaginationParameterized {
     }
 
     @Test
-    @DisplayName("Reads the content for a page covering all the data")
+    @DisplayName("Reads the content for a page returning a single value")
     public void testFetch_AllElementsPage_Content() {
         final Iterator<Item> data;
         final Pagination pagination;
@@ -109,7 +109,7 @@ public class ITTextQueryExecutorPaginationParameterized {
     }
 
     @Test
-    @DisplayName("Reads the status for a page covering all the data")
+    @DisplayName("Reads the status for a page returning a single value")
     public void testFetch_AllElementsPage_Status() {
         final PageIterable<Item> data;
         final Pagination pagination;
@@ -130,7 +130,7 @@ public class ITTextQueryExecutorPaginationParameterized {
     }
 
     @Test
-    @DisplayName("Reads the values for a page covering all the data")
+    @DisplayName("Reads the values for a page returning a single value")
     public void testFetch_AllElementsPage_Values() {
         final PageIterable<Item> data;
         final Pagination pagination;
@@ -146,7 +146,7 @@ public class ITTextQueryExecutorPaginationParameterized {
         data = queryExecutor.fetch(getQuery(), this::toItems, parameters,
             pagination, Arrays.asList(sort));
 
-        Assertions.assertEquals(1, data.getSize());
+        Assertions.assertEquals(5, data.getSize());
         Assertions.assertEquals(1, data.getTotalElements());
         Assertions.assertEquals(1, data.getTotalPages());
         Assertions.assertEquals(0, data.getPageNumber());

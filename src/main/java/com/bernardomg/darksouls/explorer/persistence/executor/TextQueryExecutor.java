@@ -266,7 +266,11 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
 
         if (pagination.isPaged()) {
             totalElements = totalElementsSupplier.getAsLong();
-            totalPages = (int) (totalElements / pagination.getSize());
+            if (pagination.getSize() > totalElements) {
+                totalPages = 1;
+            } else {
+                totalPages = (int) (totalElements / pagination.getSize());
+            }
             size = pagination.getSize();
             pageNumber = pagination.getPage();
         } else {
@@ -275,8 +279,8 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             totalElements = size;
             pageNumber = 0;
         }
-        first = pagination.getPage() == 0;
-        last = pagination.getPage() == (totalPages.intValue() - 1);
+        first = pagination.getPage() <= 0;
+        last = pagination.getPage() >= (totalPages.intValue() - 1);
 
         result.setFirst(first);
         result.setLast(last);
