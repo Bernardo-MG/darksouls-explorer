@@ -41,6 +41,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemRequirements;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemStats;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
@@ -135,7 +136,9 @@ public class ITTextQueryExecutorParameterized {
             Collections.emptyList());
 
         return new ImmutableItem(id, name,
-            new ImmutableItemRequirements(0, 0, 0, 0), description, tags);
+            new ImmutableItemRequirements(0, 0, 0, 0),
+            new ImmutableItemStats("", 0l, 0, Collections.emptyList()),
+            description, tags);
     }
 
     private final List<Item> toItems(final Iterable<Map<String, Object>> data) {

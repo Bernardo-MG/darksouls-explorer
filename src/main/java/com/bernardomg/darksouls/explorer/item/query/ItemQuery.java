@@ -1,6 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.item.query;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
@@ -9,8 +10,10 @@ import java.util.stream.StreamSupport;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemRequirements;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemStats;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemRequirements;
+import com.bernardomg.darksouls.explorer.item.domain.ItemStats;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
 public final class ItemQuery implements Query<Item> {
@@ -45,6 +48,8 @@ public final class ItemQuery implements Query<Item> {
         + "   i.faith AS faith," + System.lineSeparator()
         + "   i.strength AS strength," + System.lineSeparator()
         + "   i.intelligence AS intelligence," + System.lineSeparator()
+        + "   i.durability AS durability," + System.lineSeparator()
+        + "   i.weight AS weight," + System.lineSeparator()
         + "   labels(i) AS labels" + System.lineSeparator();
         // @formatter:on;
 
@@ -58,8 +63,9 @@ public final class ItemQuery implements Query<Item> {
         final Iterable<String> tags;
         final Iterable<String> tagsSorted;
         final ItemRequirements itemRequirements;
+        final ItemStats itemStats;
 
-        id = (Long) record.getOrDefault("id", Long.valueOf(-1));
+        id = (Long) record.getOrDefault("id", -1l);
         name = (String) record.getOrDefault("name", "");
         description = Arrays.asList(
             ((String) record.getOrDefault("description", "")).split("\\|"));
@@ -68,10 +74,12 @@ public final class ItemQuery implements Query<Item> {
         tagsSorted = StreamSupport.stream(tags.spliterator(), false)
             .sorted()
             .collect(Collectors.toList());
-        itemRequirements = getItemRequirements(record);
 
-        return new ImmutableItem(id, name, itemRequirements, description,
-            tagsSorted);
+        itemRequirements = getItemRequirements(record);
+        itemStats = getItemStats(record);
+
+        return new ImmutableItem(id, name, itemRequirements, itemStats,
+            description, tagsSorted);
     }
 
     private final ItemRequirements
@@ -81,13 +89,28 @@ public final class ItemQuery implements Query<Item> {
         final Integer strength;
         final Integer intelligence;
 
-        dexterity = (Integer) record.getOrDefault("dexterity", -1);
-        faith = (Integer) record.getOrDefault("faith", -1);
-        strength = (Integer) record.getOrDefault("strength", -1);
-        intelligence = (Integer) record.getOrDefault("intelligence", -1);
+        dexterity = ((Long) record.getOrDefault("dexterity", -1l)).intValue();
+        faith = ((Long) record.getOrDefault("faith", -1l)).intValue();
+        strength = ((Long) record.getOrDefault("strength", -1l)).intValue();
+        intelligence = ((Long) record.getOrDefault("intelligence", -1l))
+            .intValue();
 
         return new ImmutableItemRequirements(dexterity, faith, strength,
             intelligence);
+    }
+
+    private final ItemStats getItemStats(final Map<String, Object> record) {
+        final String type;
+        final Long weight;
+        final Integer durability;
+        final Iterable<String> attacks;
+
+        type = (String) record.getOrDefault("type", "");
+        weight = (Long) record.getOrDefault("weight", -1l);
+        durability = ((Long) record.getOrDefault("durability", -1l)).intValue();
+        attacks = new ArrayList<>();
+
+        return new ImmutableItemStats(type, weight, durability, attacks);
     }
 
 }

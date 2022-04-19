@@ -11,6 +11,8 @@ public interface Item {
 
     public ItemRequirements getRequirements();
 
+    public ItemStats getStats();
+
     public Iterable<String> getTags();
 
 }

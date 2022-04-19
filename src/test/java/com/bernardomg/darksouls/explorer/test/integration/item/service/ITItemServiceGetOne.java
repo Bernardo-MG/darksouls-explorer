@@ -115,6 +115,22 @@ public class ITItemServiceGetOne {
             .getStrength());
     }
 
+    @Test
+    @DisplayName("Returns the correct requirements")
+    public void testGetAll_Stats() {
+        final Item data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getOne(id);
+
+        Assertions.assertEquals(5, data.getStats()
+            .getDurability());
+        Assertions.assertEquals(6, data.getStats()
+            .getWeight());
+    }
+
     private final Long getId() {
         final Collection<Map<String, Object>> rows;
 
