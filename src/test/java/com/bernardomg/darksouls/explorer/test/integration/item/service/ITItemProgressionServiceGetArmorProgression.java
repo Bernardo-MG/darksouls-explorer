@@ -36,17 +36,17 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
-import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.item.service.ItemProgressionService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITItemServiceGetArmorLevels.Initializer.class })
-@DisplayName("Reading weapon levels")
-public class ITItemServiceGetArmorLevels {
+@ContextConfiguration(initializers = {
+        ITItemProgressionServiceGetArmorProgression.Initializer.class })
+@DisplayName("Reading armor progression")
+public class ITItemProgressionServiceGetArmorProgression {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -71,21 +71,21 @@ public class ITItemServiceGetArmorLevels {
     }
 
     @Autowired
-    private Neo4jClient client;
+    private Neo4jClient            client;
 
     @Autowired
-    private ItemService service;
+    private ItemProgressionService service;
 
     /**
      * Default constructor.
      */
-    public ITItemServiceGetArmorLevels() {
+    public ITItemProgressionServiceGetArmorProgression() {
         super();
     }
 
     @Test
     @DisplayName("Returns the levels in order")
-    public void testGetArmorLevels_LevelsOrder() {
+    public void testGetArmorProgression_LevelsOrder() {
         final ArmorProgression data;
         final Iterator<ArmorLevel> levels;
         final Long id;
@@ -93,7 +93,8 @@ public class ITItemServiceGetArmorLevels {
 
         id = getId();
 
-        data = service.getArmorLevels(id);
+        data = service.getArmorProgression(id)
+            .get();
 
         levels = data.getLevels()
             .iterator();
@@ -107,7 +108,7 @@ public class ITItemServiceGetArmorLevels {
 
     @Test
     @DisplayName("Returns the levels protections")
-    public void testGetArmorLevels_LevelsProtection() {
+    public void testGetArmorProgression_LevelsProtection() {
         final ArmorProgression data;
         final Iterator<ArmorLevel> levels;
         final Long id;
@@ -115,7 +116,8 @@ public class ITItemServiceGetArmorLevels {
 
         id = getId();
 
-        data = service.getArmorLevels(id);
+        data = service.getArmorProgression(id)
+            .get();
 
         levels = data.getLevels()
             .iterator();
@@ -147,13 +149,14 @@ public class ITItemServiceGetArmorLevels {
 
     @Test
     @DisplayName("Returns the expected structure")
-    public void testGetArmorLevels_Structure() {
+    public void testGetArmorProgression_Structure() {
         final ArmorProgression data;
         final Long id;
 
         id = getId();
 
-        data = service.getArmorLevels(id);
+        data = service.getArmorProgression(id)
+            .get();
 
         Assertions.assertEquals("Chain Armor", data.getArmor());
         Assertions.assertEquals(2, IterableUtils.size(data.getLevels()));

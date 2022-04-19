@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.item.controller;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +24,10 @@ public class ItemController {
 
     private final ItemService service;
 
-    public ItemController(final ItemService service) {
+    public ItemController(final ItemService srvc) {
         super();
 
-        this.service = service;
+        service = Objects.requireNonNull(srvc);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,6 +1,8 @@
 
 package com.bernardomg.darksouls.explorer.item.controller;
 
+import java.util.Objects;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +21,10 @@ public class ItemSourceController {
 
     private final ItemService service;
 
-    public ItemSourceController(final ItemService service) {
+    public ItemSourceController(final ItemService srvc) {
         super();
 
-        this.service = service;
+        service = Objects.requireNonNull(srvc);
     }
 
     @GetMapping(path = "/{id}/sources",

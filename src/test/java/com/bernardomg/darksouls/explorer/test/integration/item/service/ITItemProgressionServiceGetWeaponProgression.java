@@ -37,17 +37,17 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.item.service.ItemProgressionService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITItemServiceGetWeaponLevels.Initializer.class })
-@DisplayName("Reading weapon levels")
-public class ITItemServiceGetWeaponLevels {
+@ContextConfiguration(initializers = {
+        ITItemProgressionServiceGetWeaponProgression.Initializer.class })
+@DisplayName("Reading weapon progression")
+public class ITItemProgressionServiceGetWeaponProgression {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -73,21 +73,21 @@ public class ITItemServiceGetWeaponLevels {
     }
 
     @Autowired
-    private Neo4jClient client;
+    private Neo4jClient            client;
 
     @Autowired
-    private ItemService service;
+    private ItemProgressionService service;
 
     /**
      * Default constructor.
      */
-    public ITItemServiceGetWeaponLevels() {
+    public ITItemProgressionServiceGetWeaponProgression() {
         super();
     }
 
     @Test
     @DisplayName("Returns the levels bonuses")
-    public void testGetWeaponLevels_LevelsBonus() {
+    public void testGetWeaponProgression_LevelsBonus() {
         final WeaponProgression data;
         final Iterator<WeaponLevel> levels;
         final Long id;
@@ -97,7 +97,8 @@ public class ITItemServiceGetWeaponLevels {
 
         id = getId();
 
-        data = service.getWeaponLevels(id);
+        data = service.getWeaponProgression(id)
+            .get();
 
         itr = data.getPaths()
             .iterator();
@@ -115,7 +116,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the levels damage")
-    public void testGetWeaponLevels_LevelsDamage() {
+    public void testGetWeaponProgression_LevelsDamage() {
         final WeaponProgression data;
         final Iterator<WeaponLevel> levels;
         final Long id;
@@ -125,7 +126,8 @@ public class ITItemServiceGetWeaponLevels {
 
         id = getId();
 
-        data = service.getWeaponLevels(id);
+        data = service.getWeaponProgression(id)
+            .get();
 
         itr = data.getPaths()
             .iterator();
@@ -167,7 +169,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the levels in order")
-    public void testGetWeaponLevels_LevelsOrder() {
+    public void testGetWeaponProgression_LevelsOrder() {
         final WeaponProgression data;
         final Iterator<WeaponLevel> levels;
         final Long id;
@@ -177,7 +179,8 @@ public class ITItemServiceGetWeaponLevels {
 
         id = getId();
 
-        data = service.getWeaponLevels(id);
+        data = service.getWeaponProgression(id)
+            .get();
 
         itr = data.getPaths()
             .iterator();
@@ -204,7 +207,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the levels reductions")
-    public void testGetWeaponLevels_LevelsReductions() {
+    public void testGetWeaponProgression_LevelsReductions() {
         final WeaponProgression data;
         final Iterator<WeaponLevel> levels;
         final Long id;
@@ -214,7 +217,8 @@ public class ITItemServiceGetWeaponLevels {
 
         id = getId();
 
-        data = service.getWeaponLevels(id);
+        data = service.getWeaponProgression(id)
+            .get();
 
         itr = data.getPaths()
             .iterator();
@@ -232,7 +236,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the path level")
-    public void testGetWeaponLevels_PathLevel() {
+    public void testGetWeaponProgression_PathLevel() {
         final WeaponProgression data;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
@@ -241,7 +245,8 @@ public class ITItemServiceGetWeaponLevels {
 
         id = getId();
 
-        data = service.getWeaponLevels(id);
+        data = service.getWeaponProgression(id)
+            .get();
 
         itr = data.getPaths()
             .iterator();
@@ -263,7 +268,7 @@ public class ITItemServiceGetWeaponLevels {
 
     @Test
     @DisplayName("Returns the expected structure")
-    public void testGetWeaponLevels_Structure() {
+    public void testGetWeaponProgression_Structure() {
         final WeaponProgression data;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
@@ -271,7 +276,8 @@ public class ITItemServiceGetWeaponLevels {
 
         id = getId();
 
-        data = service.getWeaponLevels(id);
+        data = service.getWeaponProgression(id)
+            .get();
 
         Assertions.assertEquals("Sword", data.getWeapon());
         Assertions.assertEquals(2, IterableUtils.size(data.getPaths()));

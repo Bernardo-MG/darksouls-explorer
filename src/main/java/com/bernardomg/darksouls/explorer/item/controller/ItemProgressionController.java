@@ -1,6 +1,8 @@
 
 package com.bernardomg.darksouls.explorer.item.controller;
 
+import java.util.Objects;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,31 +11,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.item.service.ItemProgressionService;
 
 @RestController
 @RequestMapping("/items")
-public class ItemLevelController {
+public class ItemProgressionController {
 
-    private final ItemService service;
+    private final ItemProgressionService service;
 
-    public ItemLevelController(final ItemService service) {
+    public ItemProgressionController(final ItemProgressionService srvc) {
         super();
 
-        this.service = service;
+        service = Objects.requireNonNull(srvc);
     }
 
-    @GetMapping(path = "/{id}/levels/armors",
+    @GetMapping(path = "/{id}/progression/armors",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ArmorProgression readArmorLevels(@PathVariable("id") final Long id) {
-        return service.getArmorLevels(id);
+        return service.getArmorProgression(id)
+            .orElse(null);
     }
 
-    @GetMapping(path = "/{id}/levels/weapons",
+    @GetMapping(path = "/{id}/progression/weapons",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public WeaponProgression
             readWeaponLevels(@PathVariable("id") final Long id) {
-        return service.getWeaponLevels(id);
+        return service.getWeaponProgression(id)
+            .orElse(null);
     }
 
 }

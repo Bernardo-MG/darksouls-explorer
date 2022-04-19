@@ -3,7 +3,6 @@ package com.bernardomg.darksouls.explorer.item.service;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,17 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorProgression;
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.query.AllItemsQuery;
-import com.bernardomg.darksouls.explorer.item.query.ArmorProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.query.ItemQuery;
 import com.bernardomg.darksouls.explorer.item.query.ItemSourcesQuery;
-import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
 import com.bernardomg.darksouls.explorer.item.request.ItemRequest;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
@@ -63,32 +56,6 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final ArmorProgression getArmorLevels(final Long id) {
-        final Map<String, Object> params;
-        final Query<List<ArmorProgression>> query;
-        final Iterable<ArmorProgression> data;
-        final ArmorProgression result;
-
-        params = new HashMap<>();
-        params.put("id", id);
-
-        query = new ArmorProgressionQuery();
-
-        data = queryExecutor.fetch(query.getStatement(), query::getOutput,
-            params);
-
-        if (data.iterator()
-            .hasNext()) {
-            result = data.iterator()
-                .next();
-        } else {
-            result = new ImmutableArmorProgression("", Collections.emptyList());
-        }
-
-        return result;
-    }
-
-    @Override
     public final Item getOne(final Long id) {
         final Map<String, Object> params;
         final Query<Item> query;
@@ -117,33 +84,6 @@ public final class DefaultItemService implements ItemService {
 
         return queryExecutor.fetch(query.getStatement(), query::getOutput,
             params, pagination, Arrays.asList(sort));
-    }
-
-    @Override
-    public final WeaponProgression getWeaponLevels(final Long id) {
-        final Map<String, Object> params;
-        final Query<List<WeaponProgression>> query;
-        final Iterable<WeaponProgression> data;
-        final WeaponProgression result;
-
-        params = new HashMap<>();
-        params.put("id", id);
-
-        query = new WeaponProgressionQuery();
-
-        data = queryExecutor.fetch(query.getStatement(), query::getOutput,
-            params);
-
-        if (data.iterator()
-            .hasNext()) {
-            result = data.iterator()
-                .next();
-        } else {
-            result = new ImmutableWeaponProgression("",
-                Collections.emptyList());
-        }
-
-        return result;
     }
 
 }
