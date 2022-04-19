@@ -160,28 +160,34 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
 
     @Override
     public final <T> Optional<T> fetchOne(final String query,
-            final Function<Iterable<Map<String, Object>>, T> mapper) {
-        final Iterable<Map<String, Object>> read;
+            final Function<Map<String, Object>, T> mapper) {
+        final Optional<Map<String, Object>> read;
         final T mapped;
+        final Optional<T> result;
 
         LOGGER.debug("Query:\n{}", query);
 
         // Data is fetched and mapped
         read = client.query(query)
             .fetch()
-            .first()
-            .stream()
-            .collect(Collectors.toList());
-        mapped = mapper.apply(read);
-        return Optional.ofNullable(mapped);
+            .first();
+        if (read.isPresent()) {
+            mapped = mapper.apply(read.get());
+            result = Optional.ofNullable(mapped);
+        } else {
+            result = Optional.empty();
+        }
+
+        return result;
     }
 
     @Override
     public final <T> Optional<T> fetchOne(final String query,
-            final Function<Iterable<Map<String, Object>>, T> mapper,
+            final Function<Map<String, Object>, T> mapper,
             final Map<String, Object> parameters) {
-        final Iterable<Map<String, Object>> read;
+        final Optional<Map<String, Object>> read;
         final T mapped;
+        final Optional<T> result;
 
         LOGGER.debug("Query:\n{}", query);
 
@@ -189,11 +195,15 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         read = client.query(query)
             .bindAll(parameters)
             .fetch()
-            .first()
-            .stream()
-            .collect(Collectors.toList());
-        mapped = mapper.apply(read);
-        return Optional.ofNullable(mapped);
+            .first();
+        if (read.isPresent()) {
+            mapped = mapper.apply(read.get());
+            result = Optional.ofNullable(mapped);
+        } else {
+            result = Optional.empty();
+        }
+
+        return result;
     }
 
     @Override

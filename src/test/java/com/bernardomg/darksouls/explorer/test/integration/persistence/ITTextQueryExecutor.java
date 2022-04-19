@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -80,7 +81,7 @@ public class ITTextQueryExecutor {
     }
 
     @Test
-    @DisplayName("Reads the content for a page covering all the data")
+    @DisplayName("Reads the content for a query")
     public void testFetch_Content() {
         final Iterator<Item> data;
 
@@ -100,13 +101,23 @@ public class ITTextQueryExecutor {
     }
 
     @Test
-    @DisplayName("Reads the values for a page covering all the data")
+    @DisplayName("Reads the values for a query")
     public void testFetch_Values() {
         final Collection<Item> data;
 
         data = queryExecutor.fetch(getQuery(), this::toItems);
 
         Assertions.assertEquals(5, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("Reads the values for a query of a single value")
+    public void testFetchOne_Values() {
+        final Optional<Item> data;
+
+        data = queryExecutor.fetchOne(getQuery(), this::toItem);
+
+        Assertions.assertTrue(data.isPresent());
     }
 
     private final String getQuery() {

@@ -33,10 +33,10 @@ public interface QueryExecutor<Q> {
             final Map<String, Object> parameters);
 
     public <T> Optional<T> fetchOne(final Q query,
-            final Function<Iterable<Map<String, Object>>, T> mapper);
+            final Function<Map<String, Object>, T> mapper);
 
     public <T> Optional<T> fetchOne(final Q query,
-            final Function<Iterable<Map<String, Object>>, T> mapper,
+            final Function<Map<String, Object>, T> mapper,
             final Map<String, Object> parameters);
 
     public Optional<Map<String, Object>> fetchOne(final Q query,

@@ -99,7 +99,8 @@ public final class DefaultItemService implements ItemService {
         params.put("id", id);
 
         return queryExecutor
-            .fetchOne(query.getStatement(), query::getOutput, params)
+            .fetchOne(query.getStatement(),
+                (d) -> query.getOutput(Arrays.asList(d)), params)
             .orElse(null);
     }
 
