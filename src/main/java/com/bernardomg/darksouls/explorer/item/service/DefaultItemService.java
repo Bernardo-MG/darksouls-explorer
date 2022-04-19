@@ -30,6 +30,10 @@ public final class DefaultItemService implements ItemService {
 
     private final QueryExecutor<String> queryExecutor;
 
+    private final Query<Item> itemQuery = new ItemQuery();
+
+    private final Query<List<ItemSource>> itemSourceQuery = new ItemSourcesQuery();
+
     @Autowired
     public DefaultItemService(final QueryExecutor<String> queryExec) {
         super();
@@ -58,16 +62,13 @@ public final class DefaultItemService implements ItemService {
     @Override
     public final Item getOne(final Long id) {
         final Map<String, Object> params;
-        final Query<Item> query;
-
-        query = new ItemQuery();
 
         params = new HashMap<>();
         params.put("id", id);
 
         return queryExecutor
-            .fetchOne(query.getStatement(),
-                (d) -> query.getOutput(Arrays.asList(d)), params)
+            .fetchOne(itemQuery.getStatement(),
+                (d) -> itemQuery.getOutput(Arrays.asList(d)), params)
             .orElse(null);
     }
 
@@ -75,15 +76,13 @@ public final class DefaultItemService implements ItemService {
     public final PageIterable<ItemSource> getSources(final Long id,
             final Pagination pagination, final Sort sort) {
         final Map<String, Object> params;
-        final Query<List<ItemSource>> query;
-
-        query = new ItemSourcesQuery();
 
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
-            params, pagination, Arrays.asList(sort));
+        return queryExecutor.fetch(itemSourceQuery.getStatement(),
+            itemSourceQuery::getOutput, params, pagination,
+            Arrays.asList(sort));
     }
 
 }

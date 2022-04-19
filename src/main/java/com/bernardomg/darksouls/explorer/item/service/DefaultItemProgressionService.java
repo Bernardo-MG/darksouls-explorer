@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,11 @@ import com.bernardomg.darksouls.explorer.persistence.model.Query;
 public final class DefaultItemProgressionService
         implements ItemProgressionService {
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor<String>          queryExecutor;
+
+    private final Query<List<ArmorProgression>>  armorProgressionQuery  = new ArmorProgressionQuery();
+
+    private final Query<List<WeaponProgression>> weaponProgressionQuery = new WeaponProgressionQuery();
 
     @Autowired
     public DefaultItemProgressionService(
@@ -33,51 +38,29 @@ public final class DefaultItemProgressionService
 
     @Override
     public final Optional<ArmorProgression> getArmorProgression(final Long id) {
-        final Map<String, Object> params;
-        final Query<List<ArmorProgression>> query;
-        final Iterable<ArmorProgression> data;
-        final Optional<ArmorProgression> result;
-        final ArmorProgression progression;
-
-        params = new HashMap<>();
-        params.put("id", id);
-
-        query = new ArmorProgressionQuery();
-
-        data = queryExecutor.fetch(query.getStatement(), query::getOutput,
-            params);
-
-        if (data.iterator()
-            .hasNext()) {
-            progression = data.iterator()
-                .next();
-            result = Optional.of(progression);
-        } else {
-            result = Optional.empty();
-        }
-
-        return result;
+        return read(id, armorProgressionQuery);
     }
 
     @Override
     public final Optional<WeaponProgression>
             getWeaponProgression(final Long id) {
+        return read(id, weaponProgressionQuery);
+    }
+
+    private final <T> Optional<T> read(final Long id,
+            final Query<List<T>> query) {
         final Map<String, Object> params;
-        final Query<List<WeaponProgression>> query;
-        final Iterable<WeaponProgression> data;
-        final Optional<WeaponProgression> result;
-        final WeaponProgression progression;
+        final Iterable<T> data;
+        final Optional<T> result;
+        final T progression;
 
         params = new HashMap<>();
         params.put("id", id);
 
-        query = new WeaponProgressionQuery();
-
         data = queryExecutor.fetch(query.getStatement(), query::getOutput,
             params);
 
-        if (data.iterator()
-            .hasNext()) {
+        if (!IterableUtils.isEmpty(data)) {
             progression = data.iterator()
                 .next();
             result = Optional.of(progression);
