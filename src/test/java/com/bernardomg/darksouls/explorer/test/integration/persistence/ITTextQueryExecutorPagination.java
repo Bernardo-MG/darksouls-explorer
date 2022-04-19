@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -38,6 +39,7 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DefaultSort;
 import com.bernardomg.darksouls.explorer.persistence.model.Direction;
@@ -79,11 +81,13 @@ public class ITTextQueryExecutorPagination {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    @Autowired
     private QueryExecutor<String> queryExecutor;
 
-    public ITTextQueryExecutorPagination() {
+    @Autowired
+    public ITTextQueryExecutorPagination(final Neo4jClient clnt) {
         super();
+
+        queryExecutor = new TextQueryExecutor(clnt);
     }
 
     @Test

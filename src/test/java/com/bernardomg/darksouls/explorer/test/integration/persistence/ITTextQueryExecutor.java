@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -41,6 +42,7 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -73,11 +75,13 @@ public class ITTextQueryExecutor {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    @Autowired
     private QueryExecutor<String> queryExecutor;
 
-    public ITTextQueryExecutor() {
+    @Autowired
+    public ITTextQueryExecutor(final Neo4jClient clnt) {
         super();
+
+        queryExecutor = new TextQueryExecutor(clnt);
     }
 
     @Test
