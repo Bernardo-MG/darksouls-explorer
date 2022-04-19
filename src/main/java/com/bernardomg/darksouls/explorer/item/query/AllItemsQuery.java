@@ -16,7 +16,9 @@ import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingWithoutWhere;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemRequirements;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
+import com.bernardomg.darksouls.explorer.item.domain.ItemRequirements;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
 public final class AllItemsQuery implements Query<List<Item>> {
@@ -61,13 +63,20 @@ public final class AllItemsQuery implements Query<List<Item>> {
             ongoingBuilder.where(nameCondition);
         }
 
-        return ongoingBuilder
-            .returning(nodeName.as("name"), item.property("description")
+        return ongoingBuilder.returning(Functions.id(item)
+            .as("id"), nodeName.as("name"),
+            item.property("description")
                 .as("description"),
-                Functions.id(item)
-                    .as("id"),
-                Functions.labels(item)
-                    .as("labels"))
+            item.property("dexterity")
+                .as("dexterity"),
+            item.property("faith")
+                .as("faith"),
+            item.property("strength")
+                .as("strength"),
+            item.property("intelligence")
+                .as("intelligence"),
+            Functions.labels(item)
+                .as("labels"))
             .build()
             .getCypher();
     }
@@ -78,6 +87,7 @@ public final class AllItemsQuery implements Query<List<Item>> {
         final Iterable<String> description;
         final Iterable<String> tags;
         final Iterable<String> tagsSorted;
+        final ItemRequirements itemRequirements;
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");
@@ -88,8 +98,26 @@ public final class AllItemsQuery implements Query<List<Item>> {
         tagsSorted = StreamSupport.stream(tags.spliterator(), false)
             .sorted()
             .collect(Collectors.toList());
+        itemRequirements = getItemRequirements(record);
 
-        return new ImmutableItem(id, name, description, tagsSorted);
+        return new ImmutableItem(id, name, itemRequirements, description,
+            tagsSorted);
+    }
+
+    private final ItemRequirements
+            getItemRequirements(final Map<String, Object> record) {
+        final Integer dexterity;
+        final Integer faith;
+        final Integer strength;
+        final Integer intelligence;
+
+        dexterity = (Integer) record.getOrDefault("dexterity", -1);
+        faith = (Integer) record.getOrDefault("faith", -1);
+        strength = (Integer) record.getOrDefault("strength", -1);
+        intelligence = (Integer) record.getOrDefault("intelligence", -1);
+
+        return new ImmutableItemRequirements(dexterity, faith, strength,
+            intelligence);
     }
 
 }

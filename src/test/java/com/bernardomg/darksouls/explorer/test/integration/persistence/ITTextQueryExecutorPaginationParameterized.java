@@ -38,6 +38,7 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemRequirements;
 import com.bernardomg.darksouls.explorer.item.domain.Item;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
@@ -174,7 +175,8 @@ public class ITTextQueryExecutorPaginationParameterized {
         tags = (Iterable<String>) record.getOrDefault("labels",
             Collections.emptyList());
 
-        return new ImmutableItem(id, name, description, tags);
+        return new ImmutableItem(id, name,
+            new ImmutableItemRequirements(0, 0, 0, 0), description, tags);
     }
 
     private final List<Item> toItems(final Iterable<Map<String, Object>> data) {

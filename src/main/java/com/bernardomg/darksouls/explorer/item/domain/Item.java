@@ -9,6 +9,8 @@ public interface Item {
 
     public String getName();
 
+    public ItemRequirements getRequirements();
+
     public Iterable<String> getTags();
 
 }

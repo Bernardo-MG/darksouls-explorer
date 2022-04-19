@@ -17,9 +17,13 @@ public final class ImmutableItem implements Item {
     private final String           name;
 
     @NonNull
+    private final ItemRequirements requirements;
+
+    @NonNull
     private final Iterable<String> tags;
 
     public ImmutableItem(@NonNull final Long id, @NonNull final String name,
+            @NonNull final ItemRequirements requirements,
             @NonNull final Iterable<String> description,
             @NonNull final Iterable<String> tags) {
         super();
@@ -28,6 +32,7 @@ public final class ImmutableItem implements Item {
         this.name = name;
         this.description = description;
         this.tags = tags;
+        this.requirements = requirements;
     }
 
 }

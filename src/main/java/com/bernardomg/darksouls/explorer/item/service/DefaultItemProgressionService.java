@@ -22,9 +22,9 @@ import com.bernardomg.darksouls.explorer.persistence.model.Query;
 public final class DefaultItemProgressionService
         implements ItemProgressionService {
 
-    private final QueryExecutor<String>          queryExecutor;
-
     private final Query<List<ArmorProgression>>  armorProgressionQuery  = new ArmorProgressionQuery();
+
+    private final QueryExecutor<String>          queryExecutor;
 
     private final Query<List<WeaponProgression>> weaponProgressionQuery = new WeaponProgressionQuery();
 

@@ -28,11 +28,11 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 @Service
 public final class DefaultItemService implements ItemService {
 
-    private final QueryExecutor<String> queryExecutor;
-
-    private final Query<Item> itemQuery = new ItemQuery();
+    private final Query<Item>             itemQuery       = new ItemQuery();
 
     private final Query<List<ItemSource>> itemSourceQuery = new ItemSourcesQuery();
+
+    private final QueryExecutor<String>   queryExecutor;
 
     @Autowired
     public DefaultItemService(final QueryExecutor<String> queryExec) {

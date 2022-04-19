@@ -95,6 +95,26 @@ public class ITItemServiceGetOne {
         Assertions.assertEquals(Arrays.asList("Item"), data.getTags());
     }
 
+    @Test
+    @DisplayName("Returns the correct requirements")
+    public void testGetAll_Requirement() {
+        final Item data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getOne(id);
+
+        Assertions.assertEquals(1, data.getRequirements()
+            .getDexterity());
+        Assertions.assertEquals(2, data.getRequirements()
+            .getFaith());
+        Assertions.assertEquals(3, data.getRequirements()
+            .getIntelligence());
+        Assertions.assertEquals(4, data.getRequirements()
+            .getStrength());
+    }
+
     private final Long getId() {
         final Collection<Map<String, Object>> rows;
 
