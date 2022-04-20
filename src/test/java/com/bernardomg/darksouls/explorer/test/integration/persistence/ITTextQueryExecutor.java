@@ -20,11 +20,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -77,7 +74,7 @@ public class ITTextQueryExecutor {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    private QueryExecutor<String> queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     @Autowired
     public ITTextQueryExecutor(final Neo4jClient clnt) {
@@ -91,7 +88,7 @@ public class ITTextQueryExecutor {
     public void testFetch_Content() {
         final Iterator<Item> data;
 
-        data = queryExecutor.fetch(getQuery(), this::toItems)
+        data = queryExecutor.fetch(getQuery(), this::toItem)
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
@@ -111,7 +108,7 @@ public class ITTextQueryExecutor {
     public void testFetch_Values() {
         final Collection<Item> data;
 
-        data = queryExecutor.fetch(getQuery(), this::toItems);
+        data = queryExecutor.fetch(getQuery(), this::toItem);
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }
@@ -148,12 +145,6 @@ public class ITTextQueryExecutor {
             new ImmutableItemRequirements(0, 0, 0, 0),
             new ImmutableItemStats("", 0l, 0, Collections.emptyList()),
             description, tags);
-    }
-
-    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
-        return StreamSupport.stream(data.spliterator(), false)
-            .map(this::toItem)
-            .collect(Collectors.toList());
     }
 
 }

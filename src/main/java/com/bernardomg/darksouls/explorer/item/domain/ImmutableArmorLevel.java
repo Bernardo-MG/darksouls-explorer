@@ -8,6 +8,9 @@ import lombok.NonNull;
 public final class ImmutableArmorLevel implements ArmorLevel {
 
     @NonNull
+    private final String  armor;
+
+    @NonNull
     private final Float   bleedProtection;
 
     @NonNull
@@ -40,7 +43,8 @@ public final class ImmutableArmorLevel implements ArmorLevel {
     @NonNull
     private final Float   thrustProtection;
 
-    public ImmutableArmorLevel(@NonNull final Integer level,
+    public ImmutableArmorLevel(@NonNull final String armor,
+            @NonNull final Integer level,
             @NonNull final Float regularProtection,
             @NonNull final Float strikeProtection,
             @NonNull final Float slashProtection,
@@ -53,6 +57,7 @@ public final class ImmutableArmorLevel implements ArmorLevel {
             @NonNull final Float curseProtection) {
         super();
 
+        this.armor = armor;
         this.level = level;
         this.regularProtection = regularProtection;
         this.strikeProtection = strikeProtection;

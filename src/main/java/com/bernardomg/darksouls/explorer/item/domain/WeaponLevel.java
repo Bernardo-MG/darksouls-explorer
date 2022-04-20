@@ -23,6 +23,8 @@ public interface WeaponLevel {
 
     public Float getMagicReduction();
 
+    public String getPath();
+
     public Integer getPathLevel();
 
     public Integer getPhysicalDamage();
@@ -30,5 +32,7 @@ public interface WeaponLevel {
     public Float getPhysicalReduction();
 
     public String getStrengthBonus();
+
+    public String getWeapon();
 
 }

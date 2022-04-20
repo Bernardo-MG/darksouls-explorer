@@ -2,7 +2,6 @@
 package com.bernardomg.darksouls.explorer.map.service;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
@@ -31,7 +30,7 @@ public final class DefaultMapService implements MapService {
     @Override
     public final PageIterable<Map> getAll(final Pagination pagination,
             final Sort sort) {
-        final Query<List<Map>> query;
+        final Query<Map> query;
 
         query = new AllIMapsQuery();
 
@@ -42,7 +41,7 @@ public final class DefaultMapService implements MapService {
     @Override
     public final PageIterable<MapConnection>
             getAllConnections(final Pagination pagination, final Sort sort) {
-        final Query<List<MapConnection>> query;
+        final Query<MapConnection> query;
 
         query = new AllMapConnectionsQuery();
 

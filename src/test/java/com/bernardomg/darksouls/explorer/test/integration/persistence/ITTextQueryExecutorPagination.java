@@ -19,10 +19,7 @@ package com.bernardomg.darksouls.explorer.test.integration.persistence;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -83,7 +80,7 @@ public class ITTextQueryExecutorPagination {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    private QueryExecutor<String> queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     @Autowired
     public ITTextQueryExecutorPagination(final Neo4jClient clnt) {
@@ -103,7 +100,7 @@ public class ITTextQueryExecutorPagination {
         sort = new DefaultSort("name", Direction.ASC);
 
         data = queryExecutor
-            .fetch(getQuery(), this::toItems, pagination, Arrays.asList(sort))
+            .fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
@@ -128,7 +125,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(0, 5);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertTrue(data.isFirst());
@@ -145,7 +142,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(0, 5);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertEquals(5, data.getSize());
@@ -164,7 +161,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DisabledPagination();
         sort = new DisabledSort();
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertEquals(5, data.getSize());
@@ -183,7 +180,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(0, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertEquals("Item1", data.iterator()
@@ -201,7 +198,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(0, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertTrue(data.isFirst());
@@ -218,7 +215,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(0, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertEquals(1, data.getSize());
@@ -237,7 +234,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(4, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertEquals("Item5", data.iterator()
@@ -255,7 +252,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(4, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertFalse(data.isFirst());
@@ -272,7 +269,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(4, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertEquals(1, data.getSize());
@@ -291,7 +288,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(1, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertEquals("Item2", data.iterator()
@@ -309,7 +306,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(1, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertFalse(data.isFirst());
@@ -326,7 +323,7 @@ public class ITTextQueryExecutorPagination {
         pagination = new DefaultPagination(1, 1);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, pagination,
+        data = queryExecutor.fetch(getQuery(), this::toItem, pagination,
             Arrays.asList(sort));
 
         Assertions.assertEquals(1, data.getSize());
@@ -357,12 +354,6 @@ public class ITTextQueryExecutorPagination {
             new ImmutableItemRequirements(0, 0, 0, 0),
             new ImmutableItemStats("", 0l, 0, Collections.emptyList()),
             description, tags);
-    }
-
-    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
-        return StreamSupport.stream(data.spliterator(), false)
-            .map(this::toItem)
-            .collect(Collectors.toList());
     }
 
 }

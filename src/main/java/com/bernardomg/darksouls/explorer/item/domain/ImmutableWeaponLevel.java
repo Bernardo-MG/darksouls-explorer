@@ -38,6 +38,9 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     private final Float   magicReduction;
 
     @NonNull
+    private final String  path;
+
+    @NonNull
     private final Integer pathLevel;
 
     @NonNull
@@ -49,7 +52,11 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
     @NonNull
     private final String  strengthBonus;
 
-    public ImmutableWeaponLevel(@NonNull final Integer level,
+    @NonNull
+    private final String  weapon;
+
+    public ImmutableWeaponLevel(@NonNull final String weapon,
+            @NonNull final String path, @NonNull final Integer level,
             @NonNull final Integer pathLevel,
             @NonNull final Integer physicalDamage,
             @NonNull final Integer magicDamage,
@@ -65,6 +72,8 @@ public final class ImmutableWeaponLevel implements WeaponLevel {
             @NonNull final Float lightningReduction) {
         super();
 
+        this.weapon = weapon;
+        this.path = path;
         this.fireDamage = fireDamage;
         this.level = level;
         this.lightningDamage = lightningDamage;

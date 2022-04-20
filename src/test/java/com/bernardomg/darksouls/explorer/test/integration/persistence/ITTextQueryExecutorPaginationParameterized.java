@@ -20,10 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -82,7 +79,7 @@ public class ITTextQueryExecutorPaginationParameterized {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    private QueryExecutor<String> queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     @Autowired
     public ITTextQueryExecutorPaginationParameterized(final Neo4jClient clnt) {
@@ -106,7 +103,7 @@ public class ITTextQueryExecutorPaginationParameterized {
         sort = new DefaultSort("name", Direction.ASC);
 
         data = queryExecutor
-            .fetch(getQuery(), this::toItems, parameters, pagination,
+            .fetch(getQuery(), this::toItem, parameters, pagination,
                 Arrays.asList(sort))
             .iterator();
 
@@ -128,7 +125,7 @@ public class ITTextQueryExecutorPaginationParameterized {
         pagination = new DefaultPagination(0, 5);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, parameters,
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters,
             pagination, Arrays.asList(sort));
 
         Assertions.assertTrue(data.isFirst());
@@ -149,7 +146,7 @@ public class ITTextQueryExecutorPaginationParameterized {
         pagination = new DefaultPagination(0, 5);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItems, parameters,
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters,
             pagination, Arrays.asList(sort));
 
         Assertions.assertEquals(5, data.getSize());
@@ -180,12 +177,6 @@ public class ITTextQueryExecutorPaginationParameterized {
             new ImmutableItemRequirements(0, 0, 0, 0),
             new ImmutableItemStats("", 0l, 0, Collections.emptyList()),
             description, tags);
-    }
-
-    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
-        return StreamSupport.stream(data.spliterator(), false)
-            .map(this::toItem)
-            .collect(Collectors.toList());
     }
 
 }

@@ -4,7 +4,6 @@ package com.bernardomg.darksouls.explorer.item.query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -24,7 +23,7 @@ import com.bernardomg.darksouls.explorer.item.domain.ItemRequirements;
 import com.bernardomg.darksouls.explorer.item.domain.ItemStats;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
-public final class AllItemsQuery implements Query<List<Item>> {
+public final class AllItemsQuery implements Query<Item> {
 
     private final String           name;
 
@@ -38,11 +37,29 @@ public final class AllItemsQuery implements Query<List<Item>> {
     }
 
     @Override
-    public final List<Item>
-            getOutput(final Iterable<Map<String, Object>> record) {
-        return StreamSupport.stream(record.spliterator(), false)
-            .map(this::toItem)
+    public final Item getOutput(final Map<String, Object> record) {
+        final Long id;
+        final String name;
+        final Iterable<String> description;
+        final Iterable<String> tags;
+        final Iterable<String> tagsSorted;
+        final ItemRequirements itemRequirements;
+        final ItemStats itemStats;
+
+        id = (Long) record.getOrDefault("id", Long.valueOf(-1));
+        name = (String) record.getOrDefault("name", "");
+        description = Arrays.asList(
+            ((String) record.getOrDefault("description", "")).split("\\|"));
+        tags = (Iterable<String>) record.getOrDefault("labels",
+            Collections.emptyList());
+        tagsSorted = StreamSupport.stream(tags.spliterator(), false)
+            .sorted()
             .collect(Collectors.toList());
+        itemRequirements = getItemRequirements(record);
+        itemStats = getItemStats(record);
+
+        return new ImmutableItem(id, name, itemRequirements, itemStats,
+            description, tagsSorted);
     }
 
     @Override
@@ -86,31 +103,6 @@ public final class AllItemsQuery implements Query<List<Item>> {
                 .as("labels"))
             .build()
             .getCypher();
-    }
-
-    public final Item toItem(final Map<String, Object> record) {
-        final Long id;
-        final String name;
-        final Iterable<String> description;
-        final Iterable<String> tags;
-        final Iterable<String> tagsSorted;
-        final ItemRequirements itemRequirements;
-        final ItemStats itemStats;
-
-        id = (Long) record.getOrDefault("id", Long.valueOf(-1));
-        name = (String) record.getOrDefault("name", "");
-        description = Arrays.asList(
-            ((String) record.getOrDefault("description", "")).split("\\|"));
-        tags = (Iterable<String>) record.getOrDefault("labels",
-            Collections.emptyList());
-        tagsSorted = StreamSupport.stream(tags.spliterator(), false)
-            .sorted()
-            .collect(Collectors.toList());
-        itemRequirements = getItemRequirements(record);
-        itemStats = getItemStats(record);
-
-        return new ImmutableItem(id, name, itemRequirements, itemStats,
-            description, tagsSorted);
     }
 
     private final ItemRequirements

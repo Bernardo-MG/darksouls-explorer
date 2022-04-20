@@ -4,7 +4,6 @@ package com.bernardomg.darksouls.explorer.item.service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,11 +27,11 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 @Service
 public final class DefaultItemService implements ItemService {
 
-    private final Query<Item>             itemQuery       = new ItemQuery();
+    private final Query<Item>           itemQuery       = new ItemQuery();
 
-    private final Query<List<ItemSource>> itemSourceQuery = new ItemSourcesQuery();
+    private final Query<ItemSource>     itemSourceQuery = new ItemSourcesQuery();
 
-    private final QueryExecutor<String>   queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     @Autowired
     public DefaultItemService(final QueryExecutor<String> queryExec) {
@@ -44,7 +43,7 @@ public final class DefaultItemService implements ItemService {
     @Override
     public final PageIterable<Item> getAll(final ItemRequest request,
             final Pagination pagination, final Sort sort) {
-        final Query<List<Item>> query;
+        final Query<Item> query;
         final Collection<String> tags;
 
         tags = request.getSelectors()
@@ -67,8 +66,7 @@ public final class DefaultItemService implements ItemService {
         params.put("id", id);
 
         return queryExecutor
-            .fetchOne(itemQuery.getStatement(),
-                (d) -> itemQuery.getOutput(Arrays.asList(d)), params)
+            .fetchOne(itemQuery.getStatement(), itemQuery::getOutput, params)
             .orElse(null);
     }
 

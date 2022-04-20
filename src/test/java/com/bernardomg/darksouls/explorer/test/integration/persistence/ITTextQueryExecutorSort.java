@@ -19,10 +19,7 @@ package com.bernardomg.darksouls.explorer.test.integration.persistence;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -80,7 +77,7 @@ public class ITTextQueryExecutorSort {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    private QueryExecutor<String> queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
     @Autowired
     public ITTextQueryExecutorSort(final Neo4jClient clnt) {
@@ -100,7 +97,7 @@ public class ITTextQueryExecutorSort {
         sort = new DefaultSort("name", Direction.ASC);
 
         data = queryExecutor
-            .fetch(getQuery(), this::toItems, pagination, Arrays.asList(sort))
+            .fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
@@ -126,7 +123,7 @@ public class ITTextQueryExecutorSort {
         sort = new DefaultSort("name", Direction.DESC);
 
         data = queryExecutor
-            .fetch(getQuery(), this::toItems, pagination, Arrays.asList(sort))
+            .fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
             .iterator();
 
         Assertions.assertEquals("Item5", data.next()
@@ -163,12 +160,6 @@ public class ITTextQueryExecutorSort {
             new ImmutableItemRequirements(0, 0, 0, 0),
             new ImmutableItemStats("", 0l, 0, Collections.emptyList()),
             description, tags);
-    }
-
-    private final List<Item> toItems(final Iterable<Map<String, Object>> data) {
-        return StreamSupport.stream(data.spliterator(), false)
-            .map(this::toItem)
-            .collect(Collectors.toList());
     }
 
 }

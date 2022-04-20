@@ -1,32 +1,42 @@
 
 package com.bernardomg.darksouls.explorer.item.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.item.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableArmorProgression;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.query.ArmorProgressionQuery;
-import com.bernardomg.darksouls.explorer.item.query.WeaponProgressionQuery;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.query.ArmorLevelQuery;
+import com.bernardomg.darksouls.explorer.item.query.WeaponLevelQuery;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
+
+import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 
 @Service
 public final class DefaultItemProgressionService
         implements ItemProgressionService {
 
-    private final Query<List<ArmorProgression>>  armorProgressionQuery  = new ArmorProgressionQuery();
+    private final Query<ArmorLevel>     armorLevelQuery  = new ArmorLevelQuery();
 
-    private final QueryExecutor<String>          queryExecutor;
+    private final QueryExecutor<String> queryExecutor;
 
-    private final Query<List<WeaponProgression>> weaponProgressionQuery = new WeaponProgressionQuery();
+    private final Query<WeaponLevel>    weaponLevelQuery = new WeaponLevelQuery();
 
     @Autowired
     public DefaultItemProgressionService(
@@ -38,37 +48,91 @@ public final class DefaultItemProgressionService
 
     @Override
     public final Optional<ArmorProgression> getArmorProgression(final Long id) {
-        return read(id, armorProgressionQuery);
+        final Iterable<ArmorLevel> levels;
+        final Optional<ArmorProgression> result;
+
+        final Map<String, Object> params;
+
+        params = new HashMap<>();
+        params.put("id", id);
+
+        levels = queryExecutor.fetch(armorLevelQuery.getStatement(),
+            armorLevelQuery::getOutput, params);
+
+        if (IterableUtils.isEmpty(levels)) {
+            result = Optional.empty();
+        } else {
+            result = Optional.of(toArmorProgression(levels));
+        }
+
+        return result;
     }
 
     @Override
     public final Optional<WeaponProgression>
             getWeaponProgression(final Long id) {
-        return read(id, weaponProgressionQuery);
-    }
+        final Iterable<WeaponLevel> levels;
+        final Optional<WeaponProgression> result;
 
-    private final <T> Optional<T> read(final Long id,
-            final Query<List<T>> query) {
         final Map<String, Object> params;
-        final Iterable<T> data;
-        final Optional<T> result;
-        final T progression;
 
         params = new HashMap<>();
         params.put("id", id);
 
-        data = queryExecutor.fetch(query.getStatement(), query::getOutput,
-            params);
+        levels = queryExecutor.fetch(weaponLevelQuery.getStatement(),
+            weaponLevelQuery::getOutput, params);
 
-        if (!IterableUtils.isEmpty(data)) {
-            progression = data.iterator()
-                .next();
-            result = Optional.of(progression);
-        } else {
+        if (IterableUtils.isEmpty(levels)) {
             result = Optional.empty();
+        } else {
+            result = Optional.of(toWeaponProgression(levels));
         }
 
         return result;
+    }
+
+    private final ArmorProgression
+            toArmorProgression(final Iterable<ArmorLevel> levels) {
+        final String name;
+
+        name = StreamSupport.stream(levels.spliterator(), false)
+            .map(ArmorLevel::getArmor)
+            .findAny()
+            .orElse("");
+
+        return new ImmutableArmorProgression(name, levels);
+    }
+
+    private final WeaponProgression
+            toWeaponProgression(final Iterable<WeaponLevel> levels) {
+        final String name;
+        final Collection<WeaponProgressionPath> paths;
+        final Collection<String> pathNames;
+        Collection<WeaponLevel> currentLevels;
+        WeaponProgressionPath path;
+
+        pathNames = StreamSupport.stream(levels.spliterator(), false)
+            .map(WeaponLevel::getPath)
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
+
+        paths = new ArrayList<>();
+        for (final String pathName : pathNames) {
+            currentLevels = StreamSupport.stream(levels.spliterator(), false)
+                .filter((l) -> pathName.equals(l.getPath()))
+                .collect(Collectors.toList());
+
+            path = new ImmutableWeaponProgressionPath(pathName, currentLevels);
+            paths.add(path);
+        }
+
+        name = StreamSupport.stream(levels.spliterator(), false)
+            .map(WeaponLevel::getWeapon)
+            .findAny()
+            .orElse("");
+
+        return new ImmutableWeaponProgression(name, paths);
     }
 
 }

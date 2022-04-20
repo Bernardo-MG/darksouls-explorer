@@ -62,45 +62,42 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
 
     @Override
     public final <T> Collection<T> fetch(final String query,
-            final Function<Iterable<Map<String, Object>>, List<T>> mapper) {
-        final Iterable<Map<String, Object>> read;
+            final Function<Map<String, Object>, T> mapper) {
 
         LOGGER.debug("Query:\n{}", query);
 
         // Data is fetched and mapped
-        read = client.query(query)
+        return client.query(query)
             .fetch()
             .all()
             .stream()
+            .map(mapper)
             .collect(Collectors.toList());
-        return mapper.apply(read);
     }
 
     @Override
     public final <T> Collection<T> fetch(final String query,
-            final Function<Iterable<Map<String, Object>>, List<T>> mapper,
+            final Function<Map<String, Object>, T> mapper,
             final Map<String, Object> parameters) {
-        final Iterable<Map<String, Object>> read;
 
         LOGGER.debug("Query:\n{}", query);
 
         // Data is fetched and mapped
-        read = client.query(query)
+        return client.query(query)
             .bindAll(parameters)
             .fetch()
             .all()
             .stream()
+            .map(mapper)
             .collect(Collectors.toList());
-        return mapper.apply(read);
     }
 
     @Override
     public final <T> PageIterable<T> fetch(final String query,
-            final Function<Iterable<Map<String, Object>>, List<T>> mapper,
+            final Function<Map<String, Object>, T> mapper,
             final Map<String, Object> parameters, final Pagination pagination,
             final Iterable<Sort> sort) {
         final List<T> data;
-        final Collection<Map<String, Object>> read;
         final Statement baseStatement;
         final Optional<String> sortOptions;
         String finalQuery;
@@ -128,12 +125,13 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         LOGGER.debug("Query: {}", finalQuery);
 
         // Data is fetched and mapped
-        read = client.query(finalQuery)
+        data = client.query(finalQuery)
             .bindAll(parameters)
             .fetch()
-            .all();
-        data = mapper.apply(read.stream()
-            .collect(Collectors.toList()));
+            .all()
+            .stream()
+            .map(mapper)
+            .collect(Collectors.toList());
 
         return getPage(data, pagination,
             () -> count(baseStatement, parameters));
@@ -141,21 +139,9 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
 
     @Override
     public final <T> PageIterable<T> fetch(final String query,
-            final Function<Iterable<Map<String, Object>>, List<T>> mapper,
+            final Function<Map<String, Object>, T> mapper,
             final Pagination pagination, final Iterable<Sort> sort) {
         return fetch(query, mapper, Collections.emptyMap(), pagination, sort);
-    }
-
-    @Override
-    public final Collection<Map<String, Object>> fetch(final String query,
-            final Map<String, Object> parameters) {
-        LOGGER.debug("Query:\n{}", query);
-
-        // Data is fetched and mapped
-        return client.query(query)
-            .bindAll(parameters)
-            .fetch()
-            .all();
     }
 
     @Override
@@ -196,6 +182,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             .bindAll(parameters)
             .fetch()
             .first();
+
         if (read.isPresent()) {
             mapped = mapper.apply(read.get());
             result = Optional.ofNullable(mapped);
@@ -204,18 +191,6 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         }
 
         return result;
-    }
-
-    @Override
-    public final Optional<Map<String, Object>> fetchOne(final String query,
-            final Map<String, Object> parameters) {
-        LOGGER.debug("Query:\n{}", query);
-
-        // Data is fetched and mapped
-        return client.query(query)
-            .bindAll(parameters)
-            .fetch()
-            .first();
     }
 
     private final Long count(final Statement statement,

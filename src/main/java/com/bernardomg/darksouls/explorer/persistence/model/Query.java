@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface Query<T> {
 
-    public T getOutput(final Iterable<Map<String, Object>> record);
+    public T getOutput(final Map<String, Object> record);
 
     public String getStatement();
 
