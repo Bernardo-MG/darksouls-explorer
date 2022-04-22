@@ -7,6 +7,6 @@ public interface Sort {
 
     public String getProperty();
 
-    public Boolean isSorted();
+    public Boolean getSorted();
 
 }

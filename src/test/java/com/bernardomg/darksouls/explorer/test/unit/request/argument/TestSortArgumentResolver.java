@@ -69,7 +69,7 @@ public class TestSortArgumentResolver {
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
             webRequest, binderFactory);
 
-        Assertions.assertTrue(sort.isSorted());
+        Assertions.assertTrue(sort.getSorted());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class TestSortArgumentResolver {
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
             webRequest, binderFactory);
 
-        Assertions.assertTrue(sort.isSorted());
+        Assertions.assertTrue(sort.getSorted());
     }
 
     @Test
@@ -159,7 +159,7 @@ public class TestSortArgumentResolver {
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
             webRequest, binderFactory);
 
-        Assertions.assertFalse(sort.isSorted());
+        Assertions.assertFalse(sort.getSorted());
     }
 
 }

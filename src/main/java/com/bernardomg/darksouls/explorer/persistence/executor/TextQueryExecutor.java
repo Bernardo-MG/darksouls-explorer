@@ -108,7 +108,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
 
         // Sort
         sortOptions = StreamSupport.stream(sort.spliterator(), false)
-            .filter(Sort::isSorted)
+            .filter(Sort::getSorted)
             .map(this::getFieldSort)
             .reduce((a, b) -> a + ", " + b);
         if (sortOptions.isPresent()) {

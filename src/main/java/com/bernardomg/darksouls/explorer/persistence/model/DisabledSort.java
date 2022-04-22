@@ -10,9 +10,6 @@ public final class DisabledSort implements Sort {
 
     private final String    property  = "";
 
-    @Override
-    public final Boolean isSorted() {
-        return false;
-    }
+    private final Boolean   sorted    = false;
 
 }
