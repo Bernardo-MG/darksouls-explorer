@@ -60,6 +60,14 @@ For the backend:
 docker-compose -f docker/docker-compose.yml up
 ```
 
+### Running with Spring Boot
+
+This requires running the database Docker image first.
+
+```
+mvn clean spring-boot:run
+```
+
 ### Running the tests
 
 The project requires a database and a server for being able to run the integration tests.
