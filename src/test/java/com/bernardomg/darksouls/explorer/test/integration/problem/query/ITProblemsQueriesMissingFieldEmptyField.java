@@ -96,7 +96,7 @@ public class ITProblemsQueriesMissingFieldEmptyField {
 
         Assertions.assertEquals("Item name", data.getName());
         Assertions.assertEquals("Item", data.getSource());
-        Assertions.assertEquals("no_description", data.getProblem());
+        Assertions.assertEquals("missing_field", data.getProblem());
     }
 
 }

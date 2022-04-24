@@ -39,9 +39,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(initializers = {
-        ITProblemsQueriesMissingFieldNoField.Initializer.class })
-@DisplayName("Query for nodes without description using a node with no description")
-public class ITProblemsQueriesMissingFieldNoField {
+        ITProblemsQueriesMissingFieldWithField.Initializer.class })
+@DisplayName("Query for nodes without description using a node with description")
+public class ITProblemsQueriesMissingFieldWithField {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -62,7 +62,7 @@ public class ITProblemsQueriesMissingFieldNoField {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
             dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/no_description.cypher"));
+            Arrays.asList("classpath:db/queries/item/single.cypher"));
     }
 
     @Autowired
@@ -71,32 +71,18 @@ public class ITProblemsQueriesMissingFieldNoField {
     /**
      * Default constructor.
      */
-    public ITProblemsQueriesMissingFieldNoField() {
+    public ITProblemsQueriesMissingFieldWithField() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data")
+    @DisplayName("Returns no problem")
     public void testFindMissingField_Count() {
         final Iterable<? extends DataProblem> data;
 
         data = queries.findMissingField("Item", "description");
 
-        Assertions.assertEquals(1, IterableUtils.size(data));
-    }
-
-    @Test
-    @DisplayName("Returns the correct data")
-    public void testFindMissingField_Data() {
-        final DataProblem data;
-
-        data = queries.findMissingField("Item", "description")
-            .iterator()
-            .next();
-
-        Assertions.assertEquals("Item name", data.getName());
-        Assertions.assertEquals("Item", data.getSource());
-        Assertions.assertEquals("missing_field", data.getProblem());
+        Assertions.assertEquals(0, IterableUtils.size(data));
     }
 
 }
