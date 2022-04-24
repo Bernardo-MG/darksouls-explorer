@@ -83,7 +83,7 @@ public class ITPaginationSort {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/items")
-            .param("sort", "field,asc");
+            .param("sort", "name,asc");
 
         mockMvc.perform(request)
             .andExpect(MockMvcResultMatchers.content()
