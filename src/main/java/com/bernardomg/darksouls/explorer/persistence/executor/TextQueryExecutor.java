@@ -99,7 +99,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             final Iterable<Sort> sort) {
         final List<T> data;
         final Statement baseStatement;
-        final String sortOptions;
+        final Optional<String> sortOptions;
         String finalQuery;
 
         baseStatement = CypherParser.parseStatement(query);
@@ -110,9 +110,9 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         sortOptions = StreamSupport.stream(sort.spliterator(), false)
             .filter(Sort::getSorted)
             .map(this::getFieldSort)
-            .reduce("", this::mergeSort);
-        if (!sortOptions.isBlank()) {
-            finalQuery += " ORDER BY " + sortOptions;
+            .reduce(this::mergeSort);
+        if (sortOptions.isPresent()) {
+            finalQuery += " ORDER BY " + sortOptions.get();
         }
 
         // Pagination
