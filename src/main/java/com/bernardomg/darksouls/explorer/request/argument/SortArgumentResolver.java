@@ -10,7 +10,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.bernardomg.darksouls.explorer.persistence.model.DefaultSort;
 import com.bernardomg.darksouls.explorer.persistence.model.Direction;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 public final class SortArgumentResolver
@@ -62,7 +61,7 @@ public final class SortArgumentResolver
 
     @Override
     public final boolean supportsParameter(final MethodParameter parameter) {
-        return Pagination.class.equals(parameter.getParameterType());
+        return Sort.class.equals(parameter.getParameterType());
     }
 
 }

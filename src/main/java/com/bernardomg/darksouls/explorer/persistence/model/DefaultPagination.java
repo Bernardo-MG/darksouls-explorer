@@ -11,6 +11,9 @@ public final class DefaultPagination implements Pagination {
     private final Integer page;
 
     @NonNull
+    private final Boolean paged = true;
+
+    @NonNull
     private final Integer size;
 
     public DefaultPagination(@NonNull final Integer page,
@@ -19,11 +22,6 @@ public final class DefaultPagination implements Pagination {
 
         this.page = page;
         this.size = size;
-    }
-
-    @Override
-    public final Boolean isPaged() {
-        return true;
     }
 
 }

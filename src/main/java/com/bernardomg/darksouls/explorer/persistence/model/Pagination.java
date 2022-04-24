@@ -5,8 +5,8 @@ public interface Pagination {
 
     public Integer getPage();
 
-    public Integer getSize();
+    public Boolean getPaged();
 
-    public Boolean isPaged();
+    public Integer getSize();
 
 }

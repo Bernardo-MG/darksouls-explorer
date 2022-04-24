@@ -45,7 +45,7 @@ public class TestPaginationArgumentResolver {
         pagination = (Pagination) resolver.resolveArgument(parameter,
             mavContainer, webRequest, binderFactory);
 
-        Assertions.assertTrue(pagination.isPaged());
+        Assertions.assertTrue(pagination.getPaged());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class TestPaginationArgumentResolver {
         pagination = (Pagination) resolver.resolveArgument(parameter,
             mavContainer, webRequest, binderFactory);
 
-        Assertions.assertFalse(pagination.isPaged());
+        Assertions.assertFalse(pagination.getPaged());
     }
 
     @Test
@@ -137,7 +137,7 @@ public class TestPaginationArgumentResolver {
         pagination = (Pagination) resolver.resolveArgument(parameter,
             mavContainer, webRequest, binderFactory);
 
-        Assertions.assertTrue(pagination.isPaged());
+        Assertions.assertTrue(pagination.getPaged());
     }
 
 }

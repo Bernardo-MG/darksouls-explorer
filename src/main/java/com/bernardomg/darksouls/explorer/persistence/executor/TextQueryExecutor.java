@@ -99,7 +99,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
             final Iterable<Sort> sort) {
         final List<T> data;
         final Statement baseStatement;
-        final Optional<String> sortOptions;
+        final String sortOptions;
         String finalQuery;
 
         baseStatement = CypherParser.parseStatement(query);
@@ -110,13 +110,13 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         sortOptions = StreamSupport.stream(sort.spliterator(), false)
             .filter(Sort::getSorted)
             .map(this::getFieldSort)
-            .reduce((a, b) -> a + ", " + b);
-        if (sortOptions.isPresent()) {
-            finalQuery += " ORDER BY " + sortOptions.get();
+            .reduce("", this::mergeSort);
+        if (!sortOptions.isBlank()) {
+            finalQuery += " ORDER BY " + sortOptions;
         }
 
         // Pagination
-        if (pagination.isPaged()) {
+        if (pagination.getPaged()) {
             finalQuery += String.format(" SKIP %d",
                 pagination.getPage() * pagination.getSize());
             finalQuery += String.format(" LIMIT %d", pagination.getSize());
@@ -249,7 +249,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         result = new DefaultPageIterable<T>();
         result.setIterable(data);
 
-        if (pagination.isPaged()) {
+        if (pagination.getPaged()) {
             totalElements = totalElementsSupplier.getAsLong();
             if (pagination.getSize() > totalElements) {
                 totalPages = 1;
@@ -276,6 +276,10 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         result.setTotalPages(totalPages.intValue());
 
         return result;
+    }
+
+    private final String mergeSort(final String a, final String b) {
+        return a + ", " + b;
     }
 
 }

@@ -8,14 +8,12 @@ import lombok.NonNull;
 public final class DisabledPagination implements Pagination {
 
     @NonNull
-    private final Integer page = -1;
+    private final Integer page  = -1;
 
     @NonNull
-    private final Integer size = -1;
+    private final Boolean paged = false;
 
-    @Override
-    public final Boolean isPaged() {
-        return false;
-    }
+    @NonNull
+    private final Integer size  = -1;
 
 }
