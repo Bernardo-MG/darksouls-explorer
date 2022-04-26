@@ -32,4 +32,6 @@ public interface PageIterable<T> extends Iterable<T> {
 
     public Boolean isLast();
 
+    public Iterable<T> getContent();
+
 }

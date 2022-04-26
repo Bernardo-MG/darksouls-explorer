@@ -18,6 +18,7 @@ package com.bernardomg.darksouls.explorer.test.integration.persistence.request;
 
 import java.util.Arrays;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 @IntegrationTest
 @AutoConfigureMockMvc
 @ContextConfiguration(initializers = { ITRequest.Initializer.class })
-@DisplayName("Request")
+@DisplayName("Default request")
 public class ITRequest {
 
     public static class Initializer implements
@@ -64,15 +65,12 @@ public class ITRequest {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
             dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/single.cypher"));
+            Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
     @Autowired
     private MockMvc mockMvc;
 
-    /**
-     * Default constructor.
-     */
     public ITRequest() {
         super();
     }
@@ -88,7 +86,9 @@ public class ITRequest {
             .andExpect(MockMvcResultMatchers.content()
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status()
-                .isOk());
+                .isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
+                Matchers.is("Item1")));
     }
 
 }

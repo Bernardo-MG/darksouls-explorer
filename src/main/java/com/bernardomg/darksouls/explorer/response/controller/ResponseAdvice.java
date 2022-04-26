@@ -75,7 +75,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
             toPaginatedResponse(final PageIterable<?> page) {
         final DefaultPaginatedResponse<?> paginatedResponse;
 
-        paginatedResponse = new DefaultPaginatedResponse<>(page);
+        paginatedResponse = new DefaultPaginatedResponse<>(page.getContent());
         paginatedResponse.setElementsInPage(page.getElementsInPage());
         paginatedResponse.setTotalElements(page.getTotalElements());
         paginatedResponse.setTotalPages(page.getTotalPages());

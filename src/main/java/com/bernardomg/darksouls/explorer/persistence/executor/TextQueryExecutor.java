@@ -247,7 +247,7 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         final long totalElements;
 
         result = new DefaultPageIterable<T>();
-        result.setIterable(data);
+        result.setContent(data);
 
         if (pagination.getPaged()) {
             totalElements = totalElementsSupplier.getAsLong();

@@ -18,6 +18,7 @@ package com.bernardomg.darksouls.explorer.test.integration.persistence.request;
 
 import java.util.Arrays;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ public class ITPaginationRequest {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
             dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/single.cypher"));
+            Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
     @Autowired
@@ -78,8 +79,32 @@ public class ITPaginationRequest {
     }
 
     @Test
-    @DisplayName("Handles pagination parameters")
-    public void requestPaginated() throws Exception {
+    @DisplayName("Handles pagination parameters for the first page")
+    public void requestPaginated_First() throws Exception {
+        final RequestBuilder request;
+
+        request = MockMvcRequestBuilders.get("/items")
+            .param("page", "0")
+            .param("size", "10");
+
+        mockMvc.perform(request)
+            .andExpect(MockMvcResultMatchers.content()
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status()
+                .isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
+                Matchers.is("Item1")))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath("$.size", Matchers.is(10)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage",
+                Matchers.is(5)));
+    }
+
+    @Test
+    @DisplayName("Handles pagination parameters for the not existing page page")
+    public void requestPaginated_NotExisting() throws Exception {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/items")
@@ -90,7 +115,13 @@ public class ITPaginationRequest {
             .andExpect(MockMvcResultMatchers.content()
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status()
-                .isOk());
+                .isOk())
+            .andExpect(
+                MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(1)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath("$.size", Matchers.is(10)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage",
+                Matchers.is(0)));
     }
 
 }

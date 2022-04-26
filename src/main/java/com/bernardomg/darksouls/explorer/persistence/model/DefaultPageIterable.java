@@ -18,7 +18,7 @@ public final class DefaultPageIterable<T> implements PageIterable<T> {
     private Boolean     first;
 
     @NonNull
-    private Iterable<T> iterable;
+    private Iterable<T> content;
 
     @NonNull
     private Boolean     last;
@@ -47,7 +47,7 @@ public final class DefaultPageIterable<T> implements PageIterable<T> {
 
     @Override
     public final Iterator<T> iterator() {
-        return iterable.iterator();
+        return content.iterator();
     }
 
 }

@@ -18,6 +18,7 @@ package com.bernardomg.darksouls.explorer.test.integration.persistence.request;
 
 import java.util.Arrays;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ public class ITPaginationSort {
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j",
             dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/single.cypher"));
+            Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
     @Autowired
@@ -78,8 +79,8 @@ public class ITPaginationSort {
     }
 
     @Test
-    @DisplayName("Handles sort parameters")
-    public void requestSorted() throws Exception {
+    @DisplayName("Handles sort parameters with ascending order")
+    public void requestSorted_Ascending() throws Exception {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/items")
@@ -89,7 +90,26 @@ public class ITPaginationSort {
             .andExpect(MockMvcResultMatchers.content()
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status()
-                .isOk());
+                .isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
+                Matchers.is("Item1")));
+    }
+
+    @Test
+    @DisplayName("Handles sort parameters with descending order")
+    public void requestSorted_Descending() throws Exception {
+        final RequestBuilder request;
+
+        request = MockMvcRequestBuilders.get("/items")
+            .param("sort", "name,desc");
+
+        mockMvc.perform(request)
+            .andExpect(MockMvcResultMatchers.content()
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status()
+                .isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
+                Matchers.is("Item5")));
     }
 
 }
