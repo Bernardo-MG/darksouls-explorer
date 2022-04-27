@@ -16,6 +16,6 @@ services:
             - spring.datasource.username=user
             - spring.datasource.password=password
             # Neo4J
+            - spring.neo4j.uri=bolt://graph-db:7687
             - spring.neo4j.authentication.username=neo4j
             - spring.neo4j.authentication.password=secret
-            - spring.neo4j.uri=bolt://graph-db:7687
