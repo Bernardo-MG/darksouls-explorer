@@ -18,6 +18,8 @@ package com.bernardomg.darksouls.explorer.persistence.model;
 
 public interface PageIterable<T> extends Iterable<T> {
 
+    public Iterable<T> getContent();
+
     public Integer getElementsInPage();
 
     public Integer getPageNumber();
@@ -31,7 +33,5 @@ public interface PageIterable<T> extends Iterable<T> {
     public Boolean isFirst();
 
     public Boolean isLast();
-
-    public Iterable<T> getContent();
 
 }

@@ -12,13 +12,13 @@ import lombok.NonNull;
 public final class DefaultPageIterable<T> implements PageIterable<T> {
 
     @NonNull
+    private Iterable<T> content;
+
+    @NonNull
     private Integer     elementsInPage;
 
     @NonNull
     private Boolean     first;
-
-    @NonNull
-    private Iterable<T> content;
 
     @NonNull
     private Boolean     last;
