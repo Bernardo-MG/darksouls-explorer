@@ -34,9 +34,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.domain.ArmorLevel;
-import com.bernardomg.darksouls.explorer.item.domain.ArmorProgression;
-import com.bernardomg.darksouls.explorer.item.service.ItemProgressionService;
+import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
+import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
+import com.bernardomg.darksouls.explorer.item.itemdata.service.ItemProgressionService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;

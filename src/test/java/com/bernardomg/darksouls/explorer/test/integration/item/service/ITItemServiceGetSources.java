@@ -33,8 +33,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.domain.ItemSource;
-import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.item.itemdata.domain.ItemSource;
+import com.bernardomg.darksouls.explorer.item.itemdata.service.ItemService;
 import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;

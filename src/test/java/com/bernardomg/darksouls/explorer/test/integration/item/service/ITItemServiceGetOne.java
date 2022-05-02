@@ -32,8 +32,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.domain.Item;
-import com.bernardomg.darksouls.explorer.item.service.ItemService;
+import com.bernardomg.darksouls.explorer.item.itemdata.domain.Item;
+import com.bernardomg.darksouls.explorer.item.itemdata.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -81,7 +81,7 @@ public class ITItemServiceGetOne {
 
     @Test
     @DisplayName("Returns the correct data")
-    public void testGetAll_Data() {
+    public void testGetOne_Data() {
         final Item data;
         final Long id;
 
@@ -97,7 +97,7 @@ public class ITItemServiceGetOne {
 
     @Test
     @DisplayName("Returns the correct requirements")
-    public void testGetAll_Requirement() {
+    public void testGetOne_Requirement() {
         final Item data;
         final Long id;
 
@@ -117,7 +117,7 @@ public class ITItemServiceGetOne {
 
     @Test
     @DisplayName("Returns the correct requirements")
-    public void testGetAll_Stats() {
+    public void testGetOne_Stats() {
         final Item data;
         final Long id;
 

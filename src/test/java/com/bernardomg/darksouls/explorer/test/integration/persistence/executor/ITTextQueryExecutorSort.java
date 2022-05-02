@@ -33,10 +33,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableItem;
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemRequirements;
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableItemStats;
-import com.bernardomg.darksouls.explorer.item.domain.Item;
+import com.bernardomg.darksouls.explorer.item.itemdata.domain.ImmutableItem;
+import com.bernardomg.darksouls.explorer.item.itemdata.domain.ImmutableItemRequirements;
+import com.bernardomg.darksouls.explorer.item.itemdata.domain.ImmutableItemStats;
+import com.bernardomg.darksouls.explorer.item.itemdata.domain.Item;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.DefaultSort;
@@ -158,8 +158,7 @@ public class ITTextQueryExecutorSort {
 
         return new ImmutableItem(id, name,
             new ImmutableItemRequirements(0, 0, 0, 0),
-            new ImmutableItemStats("", 0l, 0, Collections.emptyList()),
-            description, tags);
+            new ImmutableItemStats(0l, 0), description, tags);
     }
 
 }
