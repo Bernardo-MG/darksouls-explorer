@@ -19,6 +19,7 @@ package com.bernardomg.darksouls.explorer.test.integration.item.armor.service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,9 +41,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(initializers = { ITArmorServiceGetOne.Initializer.class })
+@ContextConfiguration(
+        initializers = { ITArmorServiceGetOneSingle.Initializer.class })
 @DisplayName("Reading single armor from id")
-public class ITArmorServiceGetOne {
+public class ITArmorServiceGetOneSingle {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -75,7 +77,7 @@ public class ITArmorServiceGetOne {
     /**
      * Default constructor.
      */
-    public ITArmorServiceGetOne() {
+    public ITArmorServiceGetOneSingle() {
         super();
     }
 
@@ -93,6 +95,16 @@ public class ITArmorServiceGetOne {
         Assertions.assertEquals("Armor name", data.getName());
         Assertions.assertEquals(Arrays.asList("Description"),
             data.getDescription());
+    }
+
+    @Test
+    @DisplayName("Returns no data for a not existing id")
+    public void testGetOne_NotExisting() {
+        final Optional<Armor> data;
+
+        data = service.getOne(-1l);
+
+        Assertions.assertTrue(data.isEmpty());
     }
 
     @Test

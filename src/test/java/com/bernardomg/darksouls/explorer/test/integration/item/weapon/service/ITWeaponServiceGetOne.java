@@ -19,6 +19,7 @@ package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -94,6 +95,16 @@ public class ITWeaponServiceGetOne {
         Assertions.assertEquals("Weapon name", data.getName());
         Assertions.assertEquals(Arrays.asList("Description"),
             data.getDescription());
+    }
+
+    @Test
+    @DisplayName("Returns no data for a not existing id")
+    public void testGetOne_NotExisting() {
+        final Optional<Weapon> data;
+
+        data = service.getOne(-1l);
+
+        Assertions.assertTrue(data.isEmpty());
     }
 
     @Test
