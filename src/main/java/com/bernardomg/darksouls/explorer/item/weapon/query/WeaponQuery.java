@@ -39,7 +39,7 @@ public final class WeaponQuery implements Query<Weapon> {
     }
 
     @Override
-    public final String getStatement() {
+    public final String getStatement(final Map<String, Object> params) {
         final String query;
 
         query =

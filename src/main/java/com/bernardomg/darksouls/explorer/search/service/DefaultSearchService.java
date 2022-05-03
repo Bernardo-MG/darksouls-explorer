@@ -18,10 +18,10 @@ import com.bernardomg.darksouls.explorer.search.query.SearchQuery;
 @Service
 public final class DefaultSearchService implements SearchService {
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor queryExecutor;
 
     @Autowired
-    public DefaultSearchService(final QueryExecutor<String> queryExec) {
+    public DefaultSearchService(final QueryExecutor queryExec) {
         super();
 
         queryExecutor = Objects.requireNonNull(queryExec);
@@ -34,7 +34,7 @@ public final class DefaultSearchService implements SearchService {
 
         query = new SearchQuery(search.getName());
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
             pagination, Arrays.asList(sort));
     }
 

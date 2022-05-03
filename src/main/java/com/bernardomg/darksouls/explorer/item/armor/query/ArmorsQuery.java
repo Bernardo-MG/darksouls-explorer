@@ -17,14 +17,10 @@ import com.bernardomg.darksouls.explorer.item.itemdata.domain.ImmutableItemStats
 import com.bernardomg.darksouls.explorer.item.itemdata.domain.ItemStats;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
-public final class AllArmorsQuery implements Query<Armor> {
+public final class ArmorsQuery implements Query<Armor> {
 
-    private final String name;
-
-    public AllArmorsQuery(final String name) {
+    public ArmorsQuery() {
         super();
-
-        this.name = name;
     }
 
     @Override
@@ -32,51 +28,64 @@ public final class AllArmorsQuery implements Query<Armor> {
         final Long id;
         final String name;
         final Iterable<String> description;
-        final ItemStats itemStats;
+        final ItemStats stats;
 
-        id = (Long) record.getOrDefault("id", Long.valueOf(-1));
+        id = (Long) record.getOrDefault("id", -1l);
         name = (String) record.getOrDefault("name", "");
         description = Arrays.asList(
             ((String) record.getOrDefault("description", "")).split("\\|"));
-        itemStats = getStats(record);
 
-        return new ImmutableArmor(id, name, itemStats, description);
+        stats = getStats(record);
+
+        return new ImmutableArmor(id, name, stats, description);
     }
 
     @Override
-    public final String getStatement() {
+    public final String getStatement(final Map<String, Object> params) {
         final Node item;
         final Expression nodeName;
-        final OngoingReadingWithoutWhere ongoingBuilder;
+        final Expression nodeId;
+        final OngoingReadingWithoutWhere builder;
         final Condition nameCondition;
+        final Condition idCondition;
+        final String name;
 
+        // Root
         item = Cypher.node("Armor")
             .named("s");
         nodeName = item.property("name");
+        nodeId = Functions.id(item);
 
-        ongoingBuilder = Cypher.match(item);
+        builder = Cypher.match(item);
 
-        if (!name.isBlank()) {
+        if (params.containsKey("name")) {
+            name = String.valueOf(params.get("name"));
             nameCondition = nodeName.matches("(?i).*" + name + ".*");
-            ongoingBuilder.where(nameCondition);
+            builder.where(nameCondition);
         }
 
-        return ongoingBuilder.returning(Functions.id(item)
-            .as("id"), nodeName.as("name"),
-            item.property("description")
-                .as("description"),
-            item.property("dexterity")
-                .as("dexterity"),
-            item.property("faith")
-                .as("faith"),
-            item.property("strength")
-                .as("strength"),
-            item.property("intelligence")
-                .as("intelligence"),
-            item.property("durability")
-                .as("durability"),
-            item.property("weight")
-                .as("weight"))
+        if (params.containsKey("id")) {
+            idCondition = nodeId.eq(Cypher.parameter("id"));
+            // TODO: combine
+            builder.where(idCondition);
+        }
+
+        return builder
+            .returning(nodeId.as("id"), nodeName.as("name"),
+                item.property("description")
+                    .as("description"),
+                item.property("dexterity")
+                    .as("dexterity"),
+                item.property("faith")
+                    .as("faith"),
+                item.property("strength")
+                    .as("strength"),
+                item.property("intelligence")
+                    .as("intelligence"),
+                item.property("durability")
+                    .as("durability"),
+                item.property("weight")
+                    .as("weight"))
             .build()
             .getCypher();
     }

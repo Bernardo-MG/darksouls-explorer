@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -75,7 +76,7 @@ public class ITTextQueryExecutorParameterized {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor queryExecutor;
 
     @Autowired
     public ITTextQueryExecutorParameterized(final Neo4jClient clnt) {
@@ -114,8 +115,8 @@ public class ITTextQueryExecutorParameterized {
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
 
-    private final String getQuery() {
-        return "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")

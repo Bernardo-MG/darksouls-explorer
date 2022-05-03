@@ -81,7 +81,7 @@ public final class ItemSourcesQuery implements Query<ItemSource> {
     }
 
     @Override
-    public final String getStatement() {
+    public final String getStatement(final Map<String, Object> params) {
         final Collection<String> rels;
         final String joinedRels;
         final String queryTemplate;

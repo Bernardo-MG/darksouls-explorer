@@ -25,7 +25,7 @@ public final class AllMapConnectionsQuery implements Query<MapConnection> {
     }
 
     @Override
-    public final String getStatement() {
+    public final String getStatement(final Map<String, Object> params) {
         final String query;
 
         query =

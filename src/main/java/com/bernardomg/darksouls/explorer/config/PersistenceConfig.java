@@ -42,7 +42,7 @@ public class PersistenceConfig {
     }
 
     @Bean("queryExecutor")
-    public QueryExecutor<String> getQueryExecutor(final Neo4jClient clnt) {
+    public QueryExecutor getQueryExecutor(final Neo4jClient clnt) {
         return new TextQueryExecutor(clnt);
     }
 

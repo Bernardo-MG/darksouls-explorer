@@ -16,8 +16,7 @@ import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
-import com.bernardomg.darksouls.explorer.item.armor.query.AllArmorsQuery;
-import com.bernardomg.darksouls.explorer.item.armor.query.ArmorQuery;
+import com.bernardomg.darksouls.explorer.item.armor.query.ArmorsQuery;
 import com.bernardomg.darksouls.explorer.item.itemdata.query.ArmorLevelQuery;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
@@ -30,14 +29,14 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 @Service
 public final class DefaultArmorService implements ArmorService {
 
-    private final Query<ArmorLevel>     armorLevelQuery = new ArmorLevelQuery();
+    private final Query<Armor>      allQuery        = new ArmorsQuery();
 
-    private final Query<Armor>          armorQuery      = new ArmorQuery();
+    private final Query<ArmorLevel> armorLevelQuery = new ArmorLevelQuery();
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor     queryExecutor;
 
     @Autowired
-    public DefaultArmorService(final QueryExecutor<String> queryExec) {
+    public DefaultArmorService(final QueryExecutor queryExec) {
         super();
 
         queryExecutor = Objects.requireNonNull(queryExec);
@@ -46,11 +45,12 @@ public final class DefaultArmorService implements ArmorService {
     @Override
     public final PageIterable<Armor> getAll(final ArmorRequest request,
             final Pagination pagination, final Sort sort) {
-        final Query<Armor> query;
+        final Map<String, Object> params;
 
-        query = new AllArmorsQuery(request.getName());
+        params = new HashMap<>();
+        params.put("name", request.getName());
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(allQuery::getStatement, allQuery::getOutput,
             pagination, Arrays.asList(sort));
     }
 
@@ -61,8 +61,8 @@ public final class DefaultArmorService implements ArmorService {
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetchOne(armorQuery.getStatement(),
-            armorQuery::getOutput, params);
+        return queryExecutor.fetchOne(allQuery::getStatement,
+            allQuery::getOutput, params);
     }
 
     @Override
@@ -74,7 +74,7 @@ public final class DefaultArmorService implements ArmorService {
         params = new HashMap<>();
         params.put("id", id);
 
-        levels = queryExecutor.fetch(armorLevelQuery.getStatement(),
+        levels = queryExecutor.fetch(armorLevelQuery::getStatement,
             armorLevelQuery::getOutput, params);
 
         if (IterableUtils.isEmpty(levels)) {

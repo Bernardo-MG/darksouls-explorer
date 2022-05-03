@@ -19,9 +19,9 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 @Component
 public final class DefaultMapService implements MapService {
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor queryExecutor;
 
-    public DefaultMapService(final QueryExecutor<String> queryExec) {
+    public DefaultMapService(final QueryExecutor queryExec) {
         super();
 
         queryExecutor = Objects.requireNonNull(queryExec);
@@ -34,7 +34,7 @@ public final class DefaultMapService implements MapService {
 
         query = new AllIMapsQuery();
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
             pagination, Arrays.asList(sort));
     }
 
@@ -45,7 +45,7 @@ public final class DefaultMapService implements MapService {
 
         query = new AllMapConnectionsQuery();
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
             pagination, Arrays.asList(sort));
     }
 

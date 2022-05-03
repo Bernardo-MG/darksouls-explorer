@@ -48,24 +48,24 @@ public final class AllWeaponsQuery implements Query<Weapon> {
     }
 
     @Override
-    public final String getStatement() {
+    public final String getStatement(final Map<String, Object> params) {
         final Node item;
         final Expression nodeName;
-        final OngoingReadingWithoutWhere ongoingBuilder;
+        final OngoingReadingWithoutWhere builder;
         final Condition nameCondition;
 
         item = Cypher.node("Weapon")
             .named("s");
         nodeName = item.property("name");
 
-        ongoingBuilder = Cypher.match(item);
+        builder = Cypher.match(item);
 
         if (!name.isBlank()) {
             nameCondition = nodeName.matches("(?i).*" + name + ".*");
-            ongoingBuilder.where(nameCondition);
+            builder.where(nameCondition);
         }
 
-        return ongoingBuilder.returning(Functions.id(item)
+        return builder.returning(Functions.id(item)
             .as("id"), nodeName.as("name"),
             item.property("description")
                 .as("description"),

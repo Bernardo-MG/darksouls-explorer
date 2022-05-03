@@ -186,7 +186,7 @@
       <lombok.version>1.18.22</lombok.version>
       <mockito.version>4.2.0</mockito.version>
       <mysql.version>8.0.28</mysql.version>
-      <neo4j.dsl.version>2022.0.0</neo4j.dsl.version>
+      <neo4j.dsl.version>2022.3.0</neo4j.dsl.version>
       <neo4j.test.version>4.4.3</neo4j.test.version>
       <reactiveStreams.version>1.0.3</reactiveStreams.version>
       <reactor.version>3.4.9</reactor.version>

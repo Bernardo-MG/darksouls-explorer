@@ -35,14 +35,14 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 @Service
 public final class DefaultWeaponService implements WeaponService {
 
-    private final Query<Weapon>         itemQuery        = new WeaponQuery();
+    private final Query<Weapon>      idQuery          = new WeaponQuery();
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor      queryExecutor;
 
-    private final Query<WeaponLevel>    weaponLevelQuery = new WeaponLevelQuery();
+    private final Query<WeaponLevel> weaponLevelQuery = new WeaponLevelQuery();
 
     @Autowired
-    public DefaultWeaponService(final QueryExecutor<String> queryExec) {
+    public DefaultWeaponService(final QueryExecutor queryExec) {
         super();
 
         queryExecutor = Objects.requireNonNull(queryExec);
@@ -55,7 +55,7 @@ public final class DefaultWeaponService implements WeaponService {
 
         query = new AllWeaponsQuery(request.getName());
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
             pagination, Arrays.asList(sort));
     }
 
@@ -66,8 +66,8 @@ public final class DefaultWeaponService implements WeaponService {
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetchOne(itemQuery.getStatement(),
-            itemQuery::getOutput, params);
+        return queryExecutor.fetchOne(idQuery::getStatement, idQuery::getOutput,
+            params);
     }
 
     @Override
@@ -80,7 +80,7 @@ public final class DefaultWeaponService implements WeaponService {
         params = new HashMap<>();
         params.put("id", id);
 
-        levels = queryExecutor.fetch(weaponLevelQuery.getStatement(),
+        levels = queryExecutor.fetch(weaponLevelQuery::getStatement,
             weaponLevelQuery::getOutput, params);
 
         if (IterableUtils.isEmpty(levels)) {

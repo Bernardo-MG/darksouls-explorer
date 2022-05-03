@@ -27,14 +27,14 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 @Service
 public final class DefaultItemService implements ItemService {
 
-    private final Query<Item>           itemQuery       = new ItemQuery();
+    private final Query<Item>       itemQuery       = new ItemQuery();
 
-    private final Query<ItemSource>     itemSourceQuery = new ItemSourcesQuery();
+    private final Query<ItemSource> itemSourceQuery = new ItemSourcesQuery();
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor     queryExecutor;
 
     @Autowired
-    public DefaultItemService(final QueryExecutor<String> queryExec) {
+    public DefaultItemService(final QueryExecutor queryExec) {
         super();
 
         queryExecutor = Objects.requireNonNull(queryExec);
@@ -54,7 +54,7 @@ public final class DefaultItemService implements ItemService {
 
         query = new AllItemsQuery(request.getName(), tags);
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
             pagination, Arrays.asList(sort));
     }
 
@@ -66,7 +66,7 @@ public final class DefaultItemService implements ItemService {
         params.put("id", id);
 
         return queryExecutor
-            .fetchOne(itemQuery.getStatement(), itemQuery::getOutput, params)
+            .fetchOne(itemQuery::getStatement, itemQuery::getOutput, params)
             .orElse(null);
     }
 
@@ -78,7 +78,7 @@ public final class DefaultItemService implements ItemService {
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetch(itemSourceQuery.getStatement(),
+        return queryExecutor.fetch(itemSourceQuery::getStatement,
             itemSourceQuery::getOutput, params, pagination,
             Arrays.asList(sort));
     }

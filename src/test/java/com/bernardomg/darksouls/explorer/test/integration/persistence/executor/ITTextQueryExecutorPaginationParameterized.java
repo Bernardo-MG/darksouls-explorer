@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -79,7 +80,7 @@ public class ITTextQueryExecutorPaginationParameterized {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor queryExecutor;
 
     @Autowired
     public ITTextQueryExecutorPaginationParameterized(final Neo4jClient clnt) {
@@ -155,8 +156,8 @@ public class ITTextQueryExecutorPaginationParameterized {
         Assertions.assertEquals(0, data.getPageNumber());
     }
 
-    private final String getQuery() {
-        return "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")

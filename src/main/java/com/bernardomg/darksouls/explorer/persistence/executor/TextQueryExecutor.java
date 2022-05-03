@@ -44,7 +44,7 @@ import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
-public final class TextQueryExecutor implements QueryExecutor<String> {
+public final class TextQueryExecutor implements QueryExecutor {
 
     /**
      * Logger.
@@ -61,8 +61,12 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public final <T> Collection<T> fetch(final String query,
+    public final <T> Collection<T> fetch(
+            final Function<Map<String, Object>, String> queryGenerator,
             final Function<Map<String, Object>, T> mapper) {
+        final String query;
+
+        query = queryGenerator.apply(Collections.emptyMap());
 
         LOGGER.debug("Query:\n{}", query);
 
@@ -76,9 +80,13 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public final <T> Collection<T> fetch(final String query,
+    public final <T> Collection<T> fetch(
+            final Function<Map<String, Object>, String> queryGenerator,
             final Function<Map<String, Object>, T> mapper,
             final Map<String, Object> parameters) {
+        final String query;
+
+        query = queryGenerator.apply(parameters);
 
         LOGGER.debug("Query:\n{}", query);
 
@@ -93,7 +101,8 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public final <T> PageIterable<T> fetch(final String query,
+    public final <T> PageIterable<T> fetch(
+            final Function<Map<String, Object>, String> queryGenerator,
             final Function<Map<String, Object>, T> mapper,
             final Map<String, Object> parameters, final Pagination pagination,
             final Iterable<Sort> sort) {
@@ -101,6 +110,9 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
         final Statement baseStatement;
         final Optional<String> sortOptions;
         String finalQuery;
+        final String query;
+
+        query = queryGenerator.apply(parameters);
 
         baseStatement = CypherParser.parseStatement(query);
 
@@ -138,18 +150,24 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public final <T> PageIterable<T> fetch(final String query,
+    public final <T> PageIterable<T> fetch(
+            final Function<Map<String, Object>, String> queryGenerator,
             final Function<Map<String, Object>, T> mapper,
             final Pagination pagination, final Iterable<Sort> sort) {
-        return fetch(query, mapper, Collections.emptyMap(), pagination, sort);
+        return fetch(queryGenerator, mapper, Collections.emptyMap(), pagination,
+            sort);
     }
 
     @Override
-    public final <T> Optional<T> fetchOne(final String query,
+    public final <T> Optional<T> fetchOne(
+            final Function<Map<String, Object>, String> queryGenerator,
             final Function<Map<String, Object>, T> mapper) {
         final Optional<Map<String, Object>> read;
         final T mapped;
         final Optional<T> result;
+        final String query;
+
+        query = queryGenerator.apply(Collections.emptyMap());
 
         LOGGER.debug("Query:\n{}", query);
 
@@ -168,12 +186,16 @@ public final class TextQueryExecutor implements QueryExecutor<String> {
     }
 
     @Override
-    public final <T> Optional<T> fetchOne(final String query,
+    public final <T> Optional<T> fetchOne(
+            final Function<Map<String, Object>, String> queryGenerator,
             final Function<Map<String, Object>, T> mapper,
             final Map<String, Object> parameters) {
         final Optional<Map<String, Object>> read;
         final T mapped;
         final Optional<T> result;
+        final String query;
+
+        query = queryGenerator.apply(parameters);
 
         LOGGER.debug("Query:\n{}", query);
 

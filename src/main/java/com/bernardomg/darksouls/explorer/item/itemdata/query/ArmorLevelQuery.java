@@ -32,7 +32,7 @@ public final class ArmorLevelQuery implements Query<ArmorLevel> {
     }
 
     @Override
-    public final String getStatement() {
+    public final String getStatement(final Map<String, Object> params) {
         final String query;
 
         query =

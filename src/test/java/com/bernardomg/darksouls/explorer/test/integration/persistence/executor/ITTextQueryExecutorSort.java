@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -77,7 +78,7 @@ public class ITTextQueryExecutorSort {
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor queryExecutor;
 
     @Autowired
     public ITTextQueryExecutorSort(final Neo4jClient clnt) {
@@ -138,8 +139,8 @@ public class ITTextQueryExecutorSort {
             .getName());
     }
 
-    private final String getQuery() {
-        return "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")

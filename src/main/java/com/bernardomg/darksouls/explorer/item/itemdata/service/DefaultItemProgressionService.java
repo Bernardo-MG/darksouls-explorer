@@ -32,15 +32,14 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 public final class DefaultItemProgressionService
         implements ItemProgressionService {
 
-    private final Query<ArmorLevel>     armorLevelQuery  = new ArmorLevelQuery();
+    private final Query<ArmorLevel>  armorLevelQuery  = new ArmorLevelQuery();
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor      queryExecutor;
 
-    private final Query<WeaponLevel>    weaponLevelQuery = new WeaponLevelQuery();
+    private final Query<WeaponLevel> weaponLevelQuery = new WeaponLevelQuery();
 
     @Autowired
-    public DefaultItemProgressionService(
-            final QueryExecutor<String> queryExec) {
+    public DefaultItemProgressionService(final QueryExecutor queryExec) {
         super();
 
         queryExecutor = Objects.requireNonNull(queryExec);
@@ -56,7 +55,7 @@ public final class DefaultItemProgressionService
         params = new HashMap<>();
         params.put("id", id);
 
-        levels = queryExecutor.fetch(armorLevelQuery.getStatement(),
+        levels = queryExecutor.fetch(armorLevelQuery::getStatement,
             armorLevelQuery::getOutput, params);
 
         if (IterableUtils.isEmpty(levels)) {
@@ -79,7 +78,7 @@ public final class DefaultItemProgressionService
         params = new HashMap<>();
         params.put("id", id);
 
-        levels = queryExecutor.fetch(weaponLevelQuery.getStatement(),
+        levels = queryExecutor.fetch(weaponLevelQuery::getStatement,
             weaponLevelQuery::getOutput, params);
 
         if (IterableUtils.isEmpty(levels)) {

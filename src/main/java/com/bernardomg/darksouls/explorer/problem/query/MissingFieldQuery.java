@@ -29,7 +29,7 @@ public final class MissingFieldQuery implements Query<DataProblem> {
     }
 
     @Override
-    public final String getStatement() {
+    public final String getStatement(final Map<String, Object> params) {
         final String template;
         final String query;
 

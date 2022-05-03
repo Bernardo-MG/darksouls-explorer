@@ -20,7 +20,7 @@ import com.bernardomg.darksouls.explorer.problem.query.MissingRelationshipQuery;
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {
 
-    private final QueryExecutor<String> queryExecutor;
+    private final QueryExecutor queryExecutor;
 
     @Autowired
     public DefaultProblemsQueries(final Neo4jClient clnt) {
@@ -39,7 +39,7 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
         query = new DuplicatedProblemQuery(node);
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
             params);
     }
 
@@ -54,7 +54,7 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
         query = new MissingFieldQuery(node, field);
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
             params);
     }
 
@@ -73,7 +73,7 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
         query = new MissingRelationshipQuery(node, relationships);
 
-        return queryExecutor.fetch(query.getStatement(), query::getOutput,
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
             params);
     }
 

@@ -62,7 +62,7 @@ public final class AllItemsQuery implements Query<Item> {
     }
 
     @Override
-    public final String getStatement() {
+    public final String getStatement(final Map<String, Object> params) {
         final Node item;
         final Expression nodeName;
         final OngoingReadingWithoutWhere ongoingBuilder;
