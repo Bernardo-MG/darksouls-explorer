@@ -1,37 +1,35 @@
 
-package com.bernardomg.darksouls.explorer.item.armor.query;
+package com.bernardomg.darksouls.explorer.item.spell.query;
 
 import java.util.Arrays;
 import java.util.Map;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
-import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmor;
 import com.bernardomg.darksouls.explorer.item.itemdata.domain.ImmutableItemStats;
 import com.bernardomg.darksouls.explorer.item.itemdata.domain.ItemStats;
 import com.bernardomg.darksouls.explorer.item.persistence.GenericQuery;
+import com.bernardomg.darksouls.explorer.item.spell.domain.ImmutableSpell;
+import com.bernardomg.darksouls.explorer.item.spell.domain.Spell;
 
-public final class ArmorsQuery extends GenericQuery<Armor> {
+public final class SpellsQuery extends GenericQuery<Spell> {
 
-    public ArmorsQuery() {
-        super("Armor",
-            Arrays.asList("id", "name", "description", "durability", "weight"));
+    public SpellsQuery() {
+        super("Spell", Arrays.asList("id", "name", "description"));
     }
 
     @Override
-    public final Armor getOutput(final Map<String, Object> record) {
+    public final Spell getOutput(final Map<String, Object> record) {
         final Long id;
         final String name;
         final Iterable<String> description;
-        final ItemStats stats;
+        final ItemStats itemStats;
 
-        id = (Long) record.getOrDefault("id", -1l);
+        id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");
         description = Arrays.asList(
             ((String) record.getOrDefault("description", "")).split("\\|"));
+        itemStats = getStats(record);
 
-        stats = getStats(record);
-
-        return new ImmutableArmor(id, name, stats, description);
+        return new ImmutableSpell(id, name, itemStats, description);
     }
 
     private final ItemStats getStats(final Map<String, Object> record) {

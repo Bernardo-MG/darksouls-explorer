@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
 import com.bernardomg.darksouls.explorer.item.spell.domain.Spell;
-import com.bernardomg.darksouls.explorer.item.spell.query.AllSpellsQuery;
-import com.bernardomg.darksouls.explorer.item.spell.query.SpellQuery;
+import com.bernardomg.darksouls.explorer.item.spell.query.SpellsQuery;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -23,7 +22,7 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 @Service
 public final class DefaultSpellService implements SpellService {
 
-    private final Query<Spell>  idQuery = new SpellQuery();
+    private final Query<Spell>  allQuery = new SpellsQuery();
 
     private final QueryExecutor queryExecutor;
 
@@ -37,11 +36,7 @@ public final class DefaultSpellService implements SpellService {
     @Override
     public final PageIterable<Spell> getAll(final ArmorRequest request,
             final Pagination pagination, final Sort sort) {
-        final Query<Spell> query;
-
-        query = new AllSpellsQuery(request.getName());
-
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
+        return queryExecutor.fetch(allQuery::getStatement, allQuery::getOutput,
             pagination, Arrays.asList(sort));
     }
 
@@ -52,8 +47,8 @@ public final class DefaultSpellService implements SpellService {
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetchOne(idQuery::getStatement, idQuery::getOutput,
-            params);
+        return queryExecutor.fetchOne(allQuery::getStatement,
+            allQuery::getOutput, params);
     }
 
 }
