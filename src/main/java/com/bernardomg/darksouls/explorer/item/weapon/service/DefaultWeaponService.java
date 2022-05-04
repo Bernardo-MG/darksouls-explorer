@@ -21,9 +21,8 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.request.WeaponRequest;
-import com.bernardomg.darksouls.explorer.item.weapon.query.AllWeaponsQuery;
 import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
-import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponQuery;
+import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponsQuery;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -35,7 +34,7 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 @Service
 public final class DefaultWeaponService implements WeaponService {
 
-    private final Query<Weapon>      idQuery          = new WeaponQuery();
+    private final Query<Weapon>      allQuery         = new WeaponsQuery();
 
     private final QueryExecutor      queryExecutor;
 
@@ -51,11 +50,7 @@ public final class DefaultWeaponService implements WeaponService {
     @Override
     public final PageIterable<Weapon> getAll(final WeaponRequest request,
             final Pagination pagination, final Sort sort) {
-        final Query<Weapon> query;
-
-        query = new AllWeaponsQuery(request.getName());
-
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
+        return queryExecutor.fetch(allQuery::getStatement, allQuery::getOutput,
             pagination, Arrays.asList(sort));
     }
 
@@ -66,8 +61,8 @@ public final class DefaultWeaponService implements WeaponService {
         params = new HashMap<>();
         params.put("id", id);
 
-        return queryExecutor.fetchOne(idQuery::getStatement, idQuery::getOutput,
-            params);
+        return queryExecutor.fetchOne(allQuery::getStatement,
+            allQuery::getOutput, params);
     }
 
     @Override

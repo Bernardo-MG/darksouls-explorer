@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
-import com.bernardomg.darksouls.explorer.item.itemdata.query.ArmorLevelQuery;
+import com.bernardomg.darksouls.explorer.item.armor.query.ArmorLevelQuery;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponLevel;

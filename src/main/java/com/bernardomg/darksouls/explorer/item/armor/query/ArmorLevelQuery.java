@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.itemdata.query;
+package com.bernardomg.darksouls.explorer.item.armor.query;
 
 import java.util.Map;
 
