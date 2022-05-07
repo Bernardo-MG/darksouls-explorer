@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.loader.armor;
+package com.bernardomg.darksouls.explorer.item.armor.batch;
 
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;

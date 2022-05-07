@@ -22,12 +22,6 @@ databaseChangeLog:
                   name: description
                   type: varchar(200)
               - column:
-                  name: type
-                  type: varchar(50)
-              - column:
-                  name: set
-                  type: varchar(50)
-              - column:
                   name: weight
                   type: int
               - column:

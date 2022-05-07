@@ -3,13 +3,14 @@ package com.bernardomg.darksouls.explorer.loader;
 
 import org.springframework.batch.item.ItemProcessor;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
+import lombok.extern.slf4j.Slf4j;
 
-public class DBLogProcessor implements ItemProcessor<DtoArmor, DtoArmor> {
+@Slf4j
+public final class DBLogProcessor<I> implements ItemProcessor<I, I> {
 
     @Override
-    public DtoArmor process(DtoArmor data) throws Exception {
-        System.out.println("Inserting data: " + data);
+    public final I process(final I data) throws Exception {
+        log.debug("Inserting data: {}", data);
         return data;
     }
 

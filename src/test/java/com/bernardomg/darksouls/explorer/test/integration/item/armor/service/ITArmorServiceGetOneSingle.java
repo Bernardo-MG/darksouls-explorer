@@ -118,10 +118,8 @@ public class ITArmorServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(5, data.getStats()
-            .getDurability());
-        Assertions.assertEquals(6, data.getStats()
-            .getWeight());
+        Assertions.assertEquals(5, data.getDurability());
+        Assertions.assertEquals(6, data.getWeight());
     }
 
     private final Long getId() {

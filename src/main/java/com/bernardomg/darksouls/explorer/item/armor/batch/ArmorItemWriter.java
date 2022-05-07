@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.loader.armor;
+package com.bernardomg.darksouls.explorer.item.armor.batch;
 
 import javax.sql.DataSource;
 
@@ -14,7 +14,8 @@ public class ArmorItemWriter extends JdbcBatchItemWriter<DtoArmor> {
         super();
 
         setDataSource(datasource);
-        setSql("INSERT INTO armors (name) VALUES (:name)");
+        setSql(
+            "INSERT INTO armors (name, description, weight, durability) VALUES (:name, :description, :weight, :durability)");
         setItemSqlParameterSourceProvider(
             new BeanPropertyItemSqlParameterSourceProvider<DtoArmor>());
     }

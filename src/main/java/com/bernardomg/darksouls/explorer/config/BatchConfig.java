@@ -15,14 +15,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
+import com.bernardomg.darksouls.explorer.item.armor.batch.ArmorItemReader;
+import com.bernardomg.darksouls.explorer.item.armor.batch.ArmorItemWriter;
 import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
 import com.bernardomg.darksouls.explorer.loader.DBLogProcessor;
-import com.bernardomg.darksouls.explorer.loader.armor.ArmorItemReader;
-import com.bernardomg.darksouls.explorer.loader.armor.ArmorItemWriter;
 
 @Configuration
 @EnableBatchProcessing
 public class BatchConfig {
+
+    @Autowired
+    private DataSource         datasource;
 
     @Value("classPath:/data/armors.csv")
     private Resource           inputResource;
@@ -32,9 +35,6 @@ public class BatchConfig {
 
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
-
-    @Autowired
-    private DataSource         datasource;
 
     public BatchConfig() {
         super();
@@ -53,7 +53,7 @@ public class BatchConfig {
         return stepBuilderFactory.get("step")
             .<DtoArmor, DtoArmor> chunk(5)
             .reader(new ArmorItemReader(inputResource))
-            .processor(new DBLogProcessor())
+            .processor(new DBLogProcessor<>())
             .writer(new ArmorItemWriter(datasource))
             .build();
     }
