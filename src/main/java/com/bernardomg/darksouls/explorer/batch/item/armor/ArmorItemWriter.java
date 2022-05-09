@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.armor.batch;
+package com.bernardomg.darksouls.explorer.batch.item.armor;
 
 import javax.sql.DataSource;
 

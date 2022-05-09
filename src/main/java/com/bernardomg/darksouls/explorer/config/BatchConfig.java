@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-import com.bernardomg.darksouls.explorer.item.armor.batch.ArmorItemReader;
-import com.bernardomg.darksouls.explorer.item.armor.batch.ArmorItemWriter;
+import com.bernardomg.darksouls.explorer.batch.DBLogProcessor;
+import com.bernardomg.darksouls.explorer.batch.item.armor.ArmorItemReader;
+import com.bernardomg.darksouls.explorer.batch.item.armor.ArmorItemWriter;
 import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
-import com.bernardomg.darksouls.explorer.loader.DBLogProcessor;
 
 @Configuration
 @EnableBatchProcessing

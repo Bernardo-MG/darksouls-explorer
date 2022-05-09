@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.loader;
+package com.bernardomg.darksouls.explorer.batch;
 
 import org.springframework.batch.item.ItemProcessor;
 

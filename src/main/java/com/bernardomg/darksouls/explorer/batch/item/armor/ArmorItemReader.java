@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.armor.batch;
+package com.bernardomg.darksouls.explorer.batch.item.armor;
 
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.core.io.Resource;
