@@ -1,18 +1,17 @@
 
-package com.bernardomg.darksouls.explorer.config;
+package com.bernardomg.darksouls.explorer.batch.config;
 
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -29,8 +28,7 @@ import com.bernardomg.darksouls.explorer.batch.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.batch.model.ArmorBatchData;
 
 @Configuration
-@EnableBatchProcessing
-public class BatchConfig {
+public class ArmorBatchConfig {
 
     @Value("classPath:/data/armors.csv")
     private Resource           armorsData;
@@ -44,7 +42,7 @@ public class BatchConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-    public BatchConfig() {
+    public ArmorBatchConfig() {
         super();
     }
 
@@ -73,17 +71,13 @@ public class BatchConfig {
 
     @Bean("armorItemWriter")
     public ItemWriter<ArmorBatchData> getArmorItemWriter() {
-        final JdbcBatchItemWriter<ArmorBatchData> itemWriter;
-
-        itemWriter = new JdbcBatchItemWriter<ArmorBatchData>();
-
-        itemWriter.setDataSource(datasource);
-        itemWriter.setSql(
-            "INSERT INTO armors (name, description, weight, durability) VALUES (:name, :description, :weight, :durability)");
-        itemWriter.setItemSqlParameterSourceProvider(
-            new BeanPropertyItemSqlParameterSourceProvider<ArmorBatchData>());
-
-        return itemWriter;
+        return new JdbcBatchItemWriterBuilder<ArmorBatchData>()
+            .itemSqlParameterSourceProvider(
+                new BeanPropertyItemSqlParameterSourceProvider<ArmorBatchData>())
+            .sql(
+                "INSERT INTO armors (name, description, weight, durability) VALUES (:name, :description, :weight, :durability)")
+            .dataSource(datasource)
+            .build();
     }
 
     @Bean("armorLineMapper")
@@ -110,7 +104,7 @@ public class BatchConfig {
     @Bean("armorLoaderStep")
     public Step getArmorLoaderStep(final ItemReader<ArmorBatchData> reader,
             final ItemWriter<ArmorBatchData> writer) {
-        return stepBuilderFactory.get("step")
+        return stepBuilderFactory.get("armorLoaderStep")
             .<ArmorBatchData, ArmorBatchData> chunk(5)
             .reader(reader)
             .processor(new DBLogProcessor<>())
