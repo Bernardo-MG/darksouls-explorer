@@ -25,12 +25,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import com.bernardomg.darksouls.explorer.batch.DBLogProcessor;
-import com.bernardomg.darksouls.explorer.batch.model.ArmorBatchData;
+import com.bernardomg.darksouls.explorer.batch.model.WeaponBatchData;
 
 @Configuration
-public class ArmorBatchConfig {
+public class WeaponBatchConfig {
 
-    @Value("classPath:/data/armors.csv")
+    @Value("classPath:/data/weapons.csv")
     private Resource           data;
 
     @Autowired
@@ -42,49 +42,50 @@ public class ArmorBatchConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-    public ArmorBatchConfig() {
+    public WeaponBatchConfig() {
         super();
     }
 
-    @Bean("armorItemReader")
-    public ItemReader<ArmorBatchData>
-            getArmorItemReader(final LineMapper<ArmorBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<ArmorBatchData>()
-            .name("armorItemReader")
+    @Bean("weaponItemReader")
+    public ItemReader<WeaponBatchData>
+            getWeaponItemReader(final LineMapper<WeaponBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<WeaponBatchData>()
+            .name("weaponItemReader")
             .resource(data)
             .delimited()
-            .names(
-                new String[] { "name", "description", "weight", "durability" })
+            .names(new String[] { "name", "description", "weight", "durability",
+                    "strength", "dexterity", "intelligence", "faith" })
             .linesToSkip(1)
             .lineMapper(lineMapper)
             .build();
     }
 
-    @Bean("armorItemWriter")
-    public ItemWriter<ArmorBatchData> getArmorItemWriter() {
-        return new JdbcBatchItemWriterBuilder<ArmorBatchData>()
+    @Bean("weaponItemWriter")
+    public ItemWriter<WeaponBatchData> getWeaponItemWriter() {
+        return new JdbcBatchItemWriterBuilder<WeaponBatchData>()
             .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<ArmorBatchData>())
+                new BeanPropertyItemSqlParameterSourceProvider<WeaponBatchData>())
             .sql(
-                "INSERT INTO armors (name, description, weight, durability) VALUES (:name, :description, :weight, :durability)")
+                "INSERT INTO weapons (name, description, weight, durability, strength, dexterity, intelligence, faith) VALUES (:name, :description, :weight, :durability, :strength, :dexterity, :intelligence, :faith)")
             .dataSource(datasource)
             .build();
     }
 
-    @Bean("armorLineMapper")
-    public LineMapper<ArmorBatchData> getArmorLineMapper() {
+    @Bean("weaponLineMapper")
+    public LineMapper<WeaponBatchData> getWeaponLineMapper() {
         final DelimitedLineTokenizer lineTokenizer;
-        final BeanWrapperFieldSetMapper<ArmorBatchData> fieldSetMapper;
-        final DefaultLineMapper<ArmorBatchData> lineMapper;
+        final BeanWrapperFieldSetMapper<WeaponBatchData> fieldSetMapper;
+        final DefaultLineMapper<WeaponBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<ArmorBatchData>();
+        lineMapper = new DefaultLineMapper<WeaponBatchData>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(
-            new String[] { "name", "description", "weight", "durability" });
-        lineTokenizer.setIncludedFields(new int[] { 0, 2, 3, 4 });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<ArmorBatchData>();
-        fieldSetMapper.setTargetType(ArmorBatchData.class);
+            new String[] { "name", "description", "weight", "durability",
+                    "strength", "dexterity", "intelligence", "faith" });
+        lineTokenizer.setIncludedFields(new int[] { 0, 2, 3, 4, 6, 7, 8, 9 });
+        fieldSetMapper = new BeanWrapperFieldSetMapper<WeaponBatchData>();
+        fieldSetMapper.setTargetType(WeaponBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(fieldSetMapper);
@@ -92,20 +93,20 @@ public class ArmorBatchConfig {
         return lineMapper;
     }
 
-    @Bean("armorLoaderJob")
-    public Job getArmorLoaderJob(
-            @Qualifier("armorLoaderStep") final Step armorLoaderStep) {
-        return jobBuilderFactory.get("armorLoaderJob")
+    @Bean("weaponLoaderJob")
+    public Job getWeaponLoaderJob(
+            @Qualifier("weaponLoaderStep") final Step armorLoaderStep) {
+        return jobBuilderFactory.get("weaponLoaderJob")
             .incrementer(new RunIdIncrementer())
             .start(armorLoaderStep)
             .build();
     }
 
-    @Bean("armorLoaderStep")
-    public Step getArmorLoaderStep(final ItemReader<ArmorBatchData> reader,
-            final ItemWriter<ArmorBatchData> writer) {
-        return stepBuilderFactory.get("armorLoaderStep")
-            .<ArmorBatchData, ArmorBatchData> chunk(5)
+    @Bean("weaponLoaderStep")
+    public Step getWeaponLoaderStep(final ItemReader<WeaponBatchData> reader,
+            final ItemWriter<WeaponBatchData> writer) {
+        return stepBuilderFactory.get("weaponLoaderStep")
+            .<WeaponBatchData, WeaponBatchData> chunk(5)
             .reader(reader)
             .processor(new DBLogProcessor<>())
             .writer(writer)

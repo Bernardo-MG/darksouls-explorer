@@ -11,6 +11,7 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponRequirements;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponRequirements;
+import com.bernardomg.darksouls.explorer.persistence.utils.Maps;
 
 public final class WeaponsQuery extends GenericQuery<Weapon> {
 
@@ -27,10 +28,10 @@ public final class WeaponsQuery extends GenericQuery<Weapon> {
         final WeaponRequirements requirements;
         final ItemStats stats;
 
-        id = (Long) record.getOrDefault("id", Long.valueOf(-1));
-        name = (String) record.getOrDefault("name", "");
-        description = Arrays.asList(
-            ((String) record.getOrDefault("description", "")).split("\\|"));
+        id = Maps.getOrDefault(record, "id", -1l);
+        name = Maps.getOrDefault(record, "name", "");
+        description = Arrays.asList(Maps.getOrDefault(record, "description", "")
+            .split("\\|"));
         requirements = getRequirements(record);
         stats = getStats(record);
 
@@ -44,10 +45,13 @@ public final class WeaponsQuery extends GenericQuery<Weapon> {
         final Integer strength;
         final Integer intelligence;
 
-        dexterity = ((Long) record.getOrDefault("dexterity", -1l)).intValue();
-        faith = ((Long) record.getOrDefault("faith", -1l)).intValue();
-        strength = ((Long) record.getOrDefault("strength", -1l)).intValue();
-        intelligence = ((Long) record.getOrDefault("intelligence", -1l))
+        dexterity = Maps.getOrDefault(record, "dexterity", -1l)
+            .intValue();
+        faith = Maps.getOrDefault(record, "faith", -1l)
+            .intValue();
+        strength = Maps.getOrDefault(record, "strength", -1l)
+            .intValue();
+        intelligence = Maps.getOrDefault(record, "intelligence", -1l)
             .intValue();
 
         return new ImmutableWeaponRequirements(dexterity, faith, strength,
@@ -58,8 +62,9 @@ public final class WeaponsQuery extends GenericQuery<Weapon> {
         final Long weight;
         final Integer durability;
 
-        weight = (Long) record.getOrDefault("weight", -1l);
-        durability = ((Long) record.getOrDefault("durability", -1l)).intValue();
+        weight = Maps.getOrDefault(record, "weight", -1l);
+        durability = Maps.getOrDefault(record, "durability", -1l)
+            .intValue();
 
         return new ImmutableItemStats(weight, durability);
     }

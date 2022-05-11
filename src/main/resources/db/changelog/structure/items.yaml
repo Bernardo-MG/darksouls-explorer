@@ -20,7 +20,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: description
-                  type: varchar(500)
+                  type: varchar(1200)
               - column:
                   name: weight
                   type: int
@@ -44,7 +44,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: description
-                  type: varchar(200)
+                  type: varchar(1200)
               - column:
                   name: type
                   type: varchar(50)
@@ -83,7 +83,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: description
-                  type: varchar(200)
+                  type: varchar(1200)
               - column:
                   name: school
                   type: varchar(50)
