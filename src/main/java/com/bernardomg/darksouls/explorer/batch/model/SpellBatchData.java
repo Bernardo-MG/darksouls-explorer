@@ -1,0 +1,30 @@
+
+package com.bernardomg.darksouls.explorer.batch.model;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+
+@Data
+@NoArgsConstructor
+public final class SpellBatchData {
+
+    @NonNull
+    private String  description  = "";
+
+    @NonNull
+    private String  name         = "";
+
+    @NonNull
+    private Integer intelligence = 0;
+
+    @NonNull
+    private Integer faith        = 0;
+
+    @NonNull
+    private Integer slots        = 0;
+
+    @NonNull
+    private Integer uses         = 0;
+
+}
