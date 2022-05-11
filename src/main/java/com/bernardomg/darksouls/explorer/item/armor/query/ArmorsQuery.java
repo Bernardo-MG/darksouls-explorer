@@ -7,6 +7,7 @@ import java.util.Map;
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
 import com.bernardomg.darksouls.explorer.item.persistence.GenericQuery;
+import com.bernardomg.darksouls.explorer.persistence.utils.Maps;
 
 public final class ArmorsQuery extends GenericQuery<Armor> {
 
@@ -24,13 +25,14 @@ public final class ArmorsQuery extends GenericQuery<Armor> {
         final Long weight;
         final Integer durability;
 
-        id = (Long) record.getOrDefault("id", -1l);
-        name = (String) record.getOrDefault("name", "");
-        description = Arrays.asList(
-            ((String) record.getOrDefault("description", "")).split("\\|"));
+        id = Maps.getOrDefault(record, "id", -1l);
+        name = Maps.getOrDefault(record, "name", "");
+        description = Arrays.asList(Maps.getOrDefault(record, "description", "")
+            .split("\\|"));
 
-        weight = (Long) record.getOrDefault("weight", -1l);
-        durability = ((Long) record.getOrDefault("durability", -1l)).intValue();
+        weight = Maps.getOrDefault(record, "weight", -1l);
+        durability = Maps.getOrDefault(record, "durability", -1l)
+            .intValue();
 
         armor = new DtoArmor();
         armor.setId(id);
