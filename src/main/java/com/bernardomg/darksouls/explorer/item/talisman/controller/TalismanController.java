@@ -18,7 +18,7 @@ import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 @RestController
-@RequestMapping("/catalysts")
+@RequestMapping("/talismans")
 public class TalismanController {
 
     private final CatalystService service;
