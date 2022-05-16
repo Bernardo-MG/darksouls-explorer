@@ -552,6 +552,12 @@
          <scope>test</scope>
       </dependency>
       <dependency>
+         <!-- Test Containers MySQL -->
+         <groupId>org.testcontainers</groupId>
+         <artifactId>mysql</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <!-- Hamcrest -->
          <groupId>org.hamcrest</groupId>
          <artifactId>hamcrest-core</artifactId>

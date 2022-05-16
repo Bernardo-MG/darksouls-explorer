@@ -3,7 +3,7 @@ package com.bernardomg.darksouls.explorer.item.armor.domain;
 
 public interface Armor {
 
-    public Iterable<String> getDescription();
+    public String getDescription();
 
     public Integer getDurability();
 

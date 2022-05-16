@@ -1,8 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.armor.domain;
 
-import java.util.Collections;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -12,18 +10,18 @@ import lombok.NonNull;
 public final class DtoArmor implements Armor {
 
     @NonNull
-    private Iterable<String> description = Collections.emptyList();
+    private String  description = "";
 
     @NonNull
-    private Integer          durability  = 0;
+    private Integer durability  = 0;
 
     @NonNull
-    private Long             id          = -1l;
+    private Long    id          = -1l;
 
     @NonNull
-    private String           name        = "";
+    private String  name        = "";
 
     @NonNull
-    private Long             weight      = 0l;
+    private Long    weight      = 0l;
 
 }

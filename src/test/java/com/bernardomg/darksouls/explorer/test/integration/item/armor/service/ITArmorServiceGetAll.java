@@ -16,17 +16,18 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.item.armor.service;
 
-import java.util.Arrays;
-
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
@@ -39,12 +40,26 @@ import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
 @ContextConfiguration(initializers = { ITArmorServiceGetAll.Initializer.class })
 @DisplayName("Reading all the armors")
+@Sql({ "/db/queries/armor/single.sql" })
 public class ITArmorServiceGetAll {
+
+    @Container
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
+        .getMysqlContainer();
+
+    @DynamicPropertySource
+    public static void
+            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.password",
+            mysqlContainer::getPassword);
+        registry.add("spring.datasource.username",
+            mysqlContainer::getUsername);
+    }
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -52,24 +67,17 @@ public class ITArmorServiceGetAll {
         @Override
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
+            new Neo4jApplicationContextInitializer(neo4jContainer)
                 .initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
         .getNeo4jContainer();
 
-    @BeforeAll
-    private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/armor/single.cypher"));
-    }
-
     @Autowired
-    private ArmorService service;
+    private ArmorService                   service;
 
     /**
      * Default constructor.
@@ -81,7 +89,7 @@ public class ITArmorServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<Armor> data;
+        final Iterable<? extends Armor> data;
         final ArmorRequest request;
 
         request = new DefaultArmorRequest();
@@ -106,8 +114,7 @@ public class ITArmorServiceGetAll {
             .next();
 
         Assertions.assertEquals("Armor name", data.getName());
-        Assertions.assertEquals(Arrays.asList("Description"),
-            data.getDescription());
+        Assertions.assertEquals("Description", data.getDescription());
     }
 
 }
