@@ -30,7 +30,7 @@ public class CatalystsController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Catalyst> read(
+    public Iterable<? extends Catalyst> read(
             @RequestParam(name = "name", defaultValue = "") final String name,
             @RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,

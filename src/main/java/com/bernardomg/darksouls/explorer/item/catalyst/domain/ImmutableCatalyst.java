@@ -10,15 +10,21 @@ import lombok.NonNull;
 public final class ImmutableCatalyst implements Catalyst {
 
     @NonNull
-    private final Iterable<String> description;
+    private final String    description;
 
     @NonNull
-    private final Long             id;
+    private Integer         durability = 0;
 
     @NonNull
-    private final String           name;
+    private final Long      id;
 
     @NonNull
-    private final ItemStats        stats;
+    private final String    name;
+
+    @NonNull
+    private final ItemStats stats;
+
+    @NonNull
+    private Long            weight     = 0l;
 
 }

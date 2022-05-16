@@ -100,7 +100,7 @@ public class ITWeaponServiceGetOne {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<Weapon> data;
+        final Optional<? extends Weapon> data;
 
         data = service.getOne(-1l);
 
@@ -118,14 +118,10 @@ public class ITWeaponServiceGetOne {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(1, data.getRequirements()
-            .getDexterity());
-        Assertions.assertEquals(2, data.getRequirements()
-            .getFaith());
-        Assertions.assertEquals(3, data.getRequirements()
-            .getIntelligence());
-        Assertions.assertEquals(4, data.getRequirements()
-            .getStrength());
+        Assertions.assertEquals(1, data.getDexterity());
+        Assertions.assertEquals(2, data.getFaith());
+        Assertions.assertEquals(3, data.getIntelligence());
+        Assertions.assertEquals(4, data.getStrength());
     }
 
     @Test
@@ -139,10 +135,8 @@ public class ITWeaponServiceGetOne {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(5, data.getStats()
-            .getDurability());
-        Assertions.assertEquals(6, data.getStats()
-            .getWeight());
+        Assertions.assertEquals(5, data.getDurability());
+        Assertions.assertEquals(6, data.getWeight());
     }
 
     private final Long getId() {

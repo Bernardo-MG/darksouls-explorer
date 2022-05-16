@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.armor.domain;
+package com.bernardomg.darksouls.explorer.item.spell.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,9 +14,9 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "Armor")
-@Table(name = "armors")
-public final class PersistentArmor implements Armor {
+@Entity(name = "Spell")
+@Table(name = "spells")
+public final class PersistentSpell implements Spell {
 
     @NonNull
     @Column(name = "description", nullable = false)

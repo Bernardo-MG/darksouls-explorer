@@ -82,7 +82,7 @@ public class ITWeaponServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<Weapon> data;
+        final Iterable<? extends Weapon> data;
         final WeaponRequest request;
 
         request = new DefaultWeaponRequest();

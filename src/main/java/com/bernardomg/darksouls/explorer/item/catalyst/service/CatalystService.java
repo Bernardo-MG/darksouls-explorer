@@ -10,9 +10,9 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 public interface CatalystService {
 
-    public Iterable<Catalyst> getAll(final CatalystRequest request,
+    public Iterable<? extends Catalyst> getAll(final CatalystRequest request,
             final Pagination pagination, final Sort sort);
 
-    public Optional<Catalyst> getOne(final Long id);
+    public Optional<? extends Catalyst> getOne(final Long id);
 
 }

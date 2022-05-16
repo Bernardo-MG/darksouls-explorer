@@ -13,13 +13,13 @@ public final class SpellBatchData {
     private String  description  = "";
 
     @NonNull
-    private String  name         = "";
+    private Integer faith        = 0;
 
     @NonNull
     private Integer intelligence = 0;
 
     @NonNull
-    private Integer faith        = 0;
+    private String  name         = "";
 
     @NonNull
     private Integer slots        = 0;

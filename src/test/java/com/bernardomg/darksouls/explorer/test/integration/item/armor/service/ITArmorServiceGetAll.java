@@ -47,20 +47,6 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 @Sql({ "/db/queries/armor/single.sql" })
 public class ITArmorServiceGetAll {
 
-    @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
-
-    @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
-        registry.add("spring.datasource.password",
-            mysqlContainer::getPassword);
-        registry.add("spring.datasource.username",
-            mysqlContainer::getUsername);
-    }
-
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
@@ -73,11 +59,23 @@ public class ITArmorServiceGetAll {
     }
 
     @Container
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
+        .getMysqlContainer();
+
+    @Container
     private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
         .getNeo4jContainer();
 
+    @DynamicPropertySource
+    public static void
+            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
+    }
+
     @Autowired
-    private ArmorService                   service;
+    private ArmorService service;
 
     /**
      * Default constructor.

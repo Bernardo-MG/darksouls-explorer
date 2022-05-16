@@ -1,18 +1,24 @@
 
 package com.bernardomg.darksouls.explorer.item.weapon.domain;
 
-import com.bernardomg.darksouls.explorer.item.itemdata.domain.ItemStats;
-
 public interface Weapon {
 
-    public Iterable<String> getDescription();
+    public String getDescription();
+
+    public Integer getDexterity();
+
+    public Integer getDurability();
+
+    public Integer getFaith();
 
     public Long getId();
 
+    public Integer getIntelligence();
+
     public String getName();
 
-    public WeaponRequirements getRequirements();
+    public Integer getStrength();
 
-    public ItemStats getStats();
+    public Long getWeight();
 
 }

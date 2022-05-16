@@ -31,7 +31,7 @@ public class WeaponController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Weapon> read(
+    public Iterable<? extends Weapon> read(
             @RequestParam(name = "name", defaultValue = "") final String name,
             @RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,

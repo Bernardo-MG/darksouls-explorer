@@ -10,9 +10,9 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 public interface SpellService {
 
-    public Iterable<Spell> getAll(final ArmorRequest request,
+    public Iterable<? extends Spell> getAll(final ArmorRequest request,
             final Pagination pagination, final Sort sort);
 
-    public Optional<Spell> getOne(final Long id);
+    public Optional<? extends Spell> getOne(final Long id);
 
 }

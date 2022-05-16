@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.armor.domain;
+package com.bernardomg.darksouls.explorer.item.catalyst.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,30 +14,30 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "Armor")
-@Table(name = "armors")
-public final class PersistentArmor implements Armor {
+@Entity(name = "Catalyst")
+@Table(name = "catalysts")
+public final class PersistentCatalyst implements Catalyst {
 
     @NonNull
     @Column(name = "description", nullable = false)
-    private String  description = "";
+    private String  description;
 
     @NonNull
     @Column(name = "durability", nullable = false)
-    private Integer durability  = 0;
+    private Integer durability = 0;
 
     @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Long    id          = -1l;
+    private Long    id         = -1l;
 
     @NonNull
     @Column(name = "name", nullable = false)
-    private String  name        = "";
+    private String  name;
 
     @NonNull
     @Column(name = "weight", nullable = false)
-    private Long    weight      = 0l;
+    private Long    weight     = 0l;
 
 }

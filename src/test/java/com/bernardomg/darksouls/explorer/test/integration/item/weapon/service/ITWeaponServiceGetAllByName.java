@@ -81,7 +81,7 @@ public class ITWeaponServiceGetAllByName {
     @Test
     @DisplayName("Returns all the data when searching by full name")
     public void testGetByName_FullName_Count() {
-        final Iterable<Weapon> data;
+        final Iterable<? extends Weapon> data;
         final DefaultWeaponRequest request;
 
         request = new DefaultWeaponRequest();
@@ -115,7 +115,7 @@ public class ITWeaponServiceGetAllByName {
     @Test
     @DisplayName("Returns all the data when searching by partial name")
     public void testGetByName_PartialName_Count() {
-        final Iterable<Weapon> data;
+        final Iterable<? extends Weapon> data;
         final DefaultWeaponRequest request;
 
         request = new DefaultWeaponRequest();

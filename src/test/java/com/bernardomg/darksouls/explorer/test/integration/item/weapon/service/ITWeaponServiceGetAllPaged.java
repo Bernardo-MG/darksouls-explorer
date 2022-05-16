@@ -84,7 +84,7 @@ public class ITWeaponServiceGetAllPaged {
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<Weapon> data;
+        final Iterable<? extends Weapon> data;
         final WeaponRequest request;
 
         request = new DefaultWeaponRequest();
@@ -98,7 +98,7 @@ public class ITWeaponServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<Weapon> data;
+        final Iterable<? extends Weapon> data;
         final WeaponRequest request;
 
         request = new DefaultWeaponRequest();
@@ -112,7 +112,7 @@ public class ITWeaponServiceGetAllPaged {
     @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
-        final Iterable<Weapon> data;
+        final Iterable<? extends Weapon> data;
         final WeaponRequest request;
 
         request = new DefaultWeaponRequest();

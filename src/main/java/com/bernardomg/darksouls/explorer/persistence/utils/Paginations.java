@@ -8,10 +8,6 @@ import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 
 public final class Paginations {
 
-    private Paginations() {
-        super();
-    }
-
     public static final <T> PageIterable<T> fromSpring(final Page<T> page) {
         final DefaultPageIterable<T> result;
 
@@ -26,6 +22,10 @@ public final class Paginations {
         result.setTotalPages(page.getTotalPages());
 
         return result;
+    }
+
+    private Paginations() {
+        super();
     }
 
 }

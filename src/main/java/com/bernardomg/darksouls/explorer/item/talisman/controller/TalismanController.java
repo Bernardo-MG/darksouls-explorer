@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.catalyst.domain.Catalyst;
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.request.DefaultCatalystRequest;
-import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystService;
+import com.bernardomg.darksouls.explorer.item.talisman.domain.Talisman;
+import com.bernardomg.darksouls.explorer.item.talisman.service.TalismanService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
@@ -21,16 +21,16 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 @RequestMapping("/talismans")
 public class TalismanController {
 
-    private final CatalystService service;
+    private final TalismanService service;
 
-    public TalismanController(final CatalystService srvc) {
+    public TalismanController(final TalismanService srvc) {
         super();
 
         service = Objects.requireNonNull(srvc);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Catalyst> read(
+    public Iterable<? extends Talisman> read(
             @RequestParam(name = "name", defaultValue = "") final String name,
             @RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
@@ -44,7 +44,7 @@ public class TalismanController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Catalyst readOne(@PathVariable("id") final Long id) {
+    public Talisman readOne(@PathVariable("id") final Long id) {
         return service.getOne(id)
             .orElse(null);
     }
