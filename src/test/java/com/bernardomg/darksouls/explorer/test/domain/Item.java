@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.itemdata.domain;
+package com.bernardomg.darksouls.explorer.test.domain;
 
 public interface Item {
 
@@ -8,10 +8,6 @@ public interface Item {
     public Long getId();
 
     public String getName();
-
-    public ItemRequirements getRequirements();
-
-    public ItemStats getStats();
 
     public Iterable<String> getTags();
 

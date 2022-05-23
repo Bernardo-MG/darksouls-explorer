@@ -1,8 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.weapon.domain;
 
-import com.bernardomg.darksouls.explorer.item.itemdata.domain.ItemStats;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -12,33 +10,30 @@ import lombok.NonNull;
 public final class DtoWeapon implements Weapon {
 
     @NonNull
-    private String    description;
+    private String  description;
 
     @NonNull
-    private Integer   dexterity;
+    private Integer dexterity;
 
     @NonNull
-    private Integer   durability = 0;
+    private Integer durability = 0;
 
     @NonNull
-    private Integer   faith;
+    private Integer faith;
 
     @NonNull
-    private Long      id;
+    private Long    id;
 
     @NonNull
-    private Integer   intelligence;
+    private Integer intelligence;
 
     @NonNull
-    private String    name;
+    private String  name;
 
     @NonNull
-    private ItemStats stats;
+    private Integer strength;
 
     @NonNull
-    private Integer   strength;
-
-    @NonNull
-    private Long      weight     = 0l;
+    private Long    weight     = 0l;
 
 }

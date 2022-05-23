@@ -35,10 +35,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.itemdata.domain.ImmutableItem;
-import com.bernardomg.darksouls.explorer.item.itemdata.domain.ImmutableItemRequirements;
-import com.bernardomg.darksouls.explorer.item.itemdata.domain.ImmutableItemStats;
-import com.bernardomg.darksouls.explorer.item.itemdata.domain.Item;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
@@ -51,6 +47,8 @@ import com.bernardomg.darksouls.explorer.test.configuration.annotation.Integrati
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
+import com.bernardomg.darksouls.explorer.test.domain.ImmutableItem;
+import com.bernardomg.darksouls.explorer.test.domain.Item;
 
 @IntegrationTest
 @ContextConfiguration(initializers = {
@@ -174,9 +172,7 @@ public class ITTextQueryExecutorPaginationParameterized {
         tags = (Iterable<String>) record.getOrDefault("labels",
             Collections.emptyList());
 
-        return new ImmutableItem(id, name,
-            new ImmutableItemRequirements(0, 0, 0, 0),
-            new ImmutableItemStats(0l, 0), description, tags);
+        return new ImmutableItem(id, name, description, tags);
     }
 
 }
