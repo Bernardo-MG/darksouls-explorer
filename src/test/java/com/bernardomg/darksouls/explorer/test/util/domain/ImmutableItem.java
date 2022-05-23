@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.test.domain;
+package com.bernardomg.darksouls.explorer.test.util.domain;
 
 import lombok.Data;
 import lombok.NonNull;

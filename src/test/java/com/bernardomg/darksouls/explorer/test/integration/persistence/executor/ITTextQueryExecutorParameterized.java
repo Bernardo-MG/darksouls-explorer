@@ -43,8 +43,8 @@ import com.bernardomg.darksouls.explorer.test.configuration.annotation.Integrati
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.bernardomg.darksouls.explorer.test.domain.ImmutableItem;
-import com.bernardomg.darksouls.explorer.test.domain.Item;
+import com.bernardomg.darksouls.explorer.test.util.domain.ImmutableItem;
+import com.bernardomg.darksouls.explorer.test.util.domain.Item;
 
 @IntegrationTest
 @ContextConfiguration(
