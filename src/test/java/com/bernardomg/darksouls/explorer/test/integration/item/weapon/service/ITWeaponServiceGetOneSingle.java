@@ -16,35 +16,35 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITWeaponServiceGetOne.Initializer.class })
+        initializers = { ITWeaponServiceGetOneSingle.Initializer.class })
 @DisplayName("Reading single weapon from id")
-public class ITWeaponServiceGetOne {
+@Sql({ "/db/queries/weapon/single.sql" })
+public class ITWeaponServiceGetOneSingle {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -52,32 +52,37 @@ public class ITWeaponServiceGetOne {
         @Override
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
+            new Neo4jApplicationContextInitializer(neo4jContainer)
                 .initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
+        .getMysqlContainer();
+
+    @Container
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
         .getNeo4jContainer();
 
-    @BeforeAll
-    private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/weapon/single.cypher"));
+    @DynamicPropertySource
+    public static void
+            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
     }
 
     @Autowired
-    private Neo4jClient   client;
+    private WeaponRepository repository;
 
     @Autowired
-    private WeaponService service;
+    private WeaponService    service;
 
     /**
      * Default constructor.
      */
-    public ITWeaponServiceGetOne() {
+    public ITWeaponServiceGetOneSingle() {
         super();
     }
 
@@ -93,8 +98,7 @@ public class ITWeaponServiceGetOne {
             .get();
 
         Assertions.assertEquals("Weapon name", data.getName());
-        Assertions.assertEquals(Arrays.asList("Description"),
-            data.getDescription());
+        Assertions.assertEquals("Description", data.getDescription());
     }
 
     @Test
@@ -118,10 +122,10 @@ public class ITWeaponServiceGetOne {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(1, data.getDexterity());
-        Assertions.assertEquals(2, data.getFaith());
+        Assertions.assertEquals(0, data.getDexterity());
+        Assertions.assertEquals(1, data.getFaith());
+        Assertions.assertEquals(2, data.getStrength());
         Assertions.assertEquals(3, data.getIntelligence());
-        Assertions.assertEquals(4, data.getStrength());
     }
 
     @Test
@@ -135,21 +139,15 @@ public class ITWeaponServiceGetOne {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(5, data.getDurability());
-        Assertions.assertEquals(6, data.getWeight());
+        Assertions.assertEquals(4, data.getDurability());
+        Assertions.assertEquals(5, data.getWeight());
     }
 
     private final Long getId() {
-        final Collection<Map<String, Object>> rows;
-
-        rows = client.query("MATCH (n:Weapon) RETURN n")
-            .fetch()
-            .all();
-
-        return (Long) rows.stream()
-            .findFirst()
-            .get()
-            .getOrDefault("id", 0l);
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }
