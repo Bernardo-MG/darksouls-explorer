@@ -39,42 +39,34 @@ The verify phase is required, otherwise some of the reports won't be generated.
 
 ## Usage
 
-The application is coded in Java, using Maven to manage the project.
-
-### Profiles
-
-Maven profiles are included for setting up the database.
-
-| Profile     | Server                   |
-|-------------|--------------------------|
-| development | Development settings     |
-| production  | Production settings      |
-
 ### Database
 
-Before running, start a local Neo4j database. This will be populated with the dataset.
-
-The database should accept the username neo4j with password secret.
-
-### Running
-
-To run the project locally use the following Maven command:
-
-```
-mvn spring-boot:run -P development
-```
-
-It will be accessible at [http://localhost:8080/](http://localhost:8080/).
+The application requires a Neo4j database. Use the provided docker image for development.
 
 ### Docker image
 
-Alternatively, a Docker compose file is included.
+For the database:
 
 ```
-docker-compose -f docker/docker-compose.yml --profile backend up
+docker-compose -f docker/docker-compose.db.yml up
 ```
 
 This will start a Neo4j database, with the dashboard available at [http://localhost:7474/](http://localhost:7474/). And the backend, available at http://localhost:8080.
+
+
+For the backend:
+
+```
+docker-compose -f docker/docker-compose.yml up
+```
+
+### Running with Spring Boot
+
+This requires running the database Docker image first.
+
+```
+mvn clean spring-boot:run
+```
 
 ### Running the tests
 

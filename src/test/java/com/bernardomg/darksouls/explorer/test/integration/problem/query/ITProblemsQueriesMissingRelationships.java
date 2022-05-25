@@ -96,7 +96,7 @@ public class ITProblemsQueriesMissingRelationships {
 
         Assertions.assertEquals("Item name", data.getName());
         Assertions.assertEquals("Item", data.getSource());
-        Assertions.assertEquals("no_relationships", data.getProblem());
+        Assertions.assertEquals("missing_relationship", data.getProblem());
     }
 
 }

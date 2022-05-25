@@ -4,6 +4,7 @@ package com.bernardomg.darksouls.explorer.problem.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
+import com.bernardomg.darksouls.explorer.problem.model.PersistentDataProblem;
+import com.bernardomg.darksouls.explorer.problem.persistence.DataProblemRepository;
 import com.bernardomg.darksouls.explorer.problem.persistence.ProblemsQueries;
 
 @Service
@@ -21,21 +24,25 @@ public final class DefaultProblemService implements ProblemService {
     /**
      * Logger.
      */
-    private static final Logger   LOGGER = LoggerFactory
+    private static final Logger         LOGGER = LoggerFactory
         .getLogger(DefaultProblemService.class);
 
-    private final ProblemsQueries queries;
+    private final ProblemsQueries       queries;
+
+    private final DataProblemRepository repository;
 
     @Autowired
-    public DefaultProblemService(final ProblemsQueries queries) {
+    public DefaultProblemService(final DataProblemRepository repo,
+            final ProblemsQueries queries) {
         super();
 
+        repository = Objects.requireNonNull(repo);
         this.queries = queries;
     }
 
     @Override
     public final Page<? extends DataProblem> getAll(final Pageable page) {
-        return queries.findAll(page);
+        return repository.findAll(page);
     }
 
     @Override
@@ -44,7 +51,7 @@ public final class DefaultProblemService implements ProblemService {
 
         data = recollect();
 
-        queries.save(data);
+        save(data);
     }
 
     private final Iterable<DataProblem> recollect() {
@@ -54,7 +61,7 @@ public final class DefaultProblemService implements ProblemService {
         final Collection<? extends DataProblem> actorsDuplicated;
         final Collection<? extends DataProblem> itemsWithoutSource;
 
-        queries.deleteAll();
+        repository.deleteAll();
 
         itemNoDescription = queries.findMissingField("Item", "description");
         itemsDuplicated = queries.findDuplicated("Item");
@@ -76,6 +83,23 @@ public final class DefaultProblemService implements ProblemService {
         data.addAll(itemsWithoutSource);
 
         return data;
+    }
+
+    private final void save(final Iterable<? extends DataProblem> data) {
+        final Collection<PersistentDataProblem> entities;
+        PersistentDataProblem entity;
+
+        entities = new ArrayList<>();
+        for (final DataProblem dataProblem : data) {
+            entity = new PersistentDataProblem();
+            entity.setName(dataProblem.getName());
+            entity.setProblem(dataProblem.getProblem());
+            entity.setSource(dataProblem.getSource());
+
+            entities.add(entity);
+        }
+
+        repository.saveAll(entities);
     }
 
 }

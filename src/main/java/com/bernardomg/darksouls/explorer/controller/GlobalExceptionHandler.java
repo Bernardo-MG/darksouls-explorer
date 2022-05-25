@@ -29,9 +29,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.bernardomg.darksouls.explorer.response.DefaultResponse;
-import com.bernardomg.darksouls.explorer.response.Response;
-import com.bernardomg.darksouls.explorer.response.ResponseStatus;
+import com.bernardomg.darksouls.explorer.response.model.DefaultResponse;
+import com.bernardomg.darksouls.explorer.response.model.Response;
 
 /**
  * Captures and handles exceptions for all the controllers.
@@ -75,7 +74,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             message = ex.getMessage();
         }
 
-        response = new DefaultResponse<>(message, ResponseStatus.FAILURE);
+        response = new DefaultResponse<>(message);
 
         return super.handleExceptionInternal(ex, response, headers, status,
             request);
@@ -94,7 +93,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             .map(x -> x.getDefaultMessage())
             .collect(Collectors.toList());
 
-        response = new DefaultResponse<>(errors, ResponseStatus.WARNING);
+        response = new DefaultResponse<>(errors);
 
         return super.handleExceptionInternal(ex, response, headers, status,
             request);

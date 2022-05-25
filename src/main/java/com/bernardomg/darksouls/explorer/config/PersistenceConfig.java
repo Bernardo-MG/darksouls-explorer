@@ -16,8 +16,13 @@
 
 package com.bernardomg.darksouls.explorer.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
 
 /**
  * Persistence configuration.
@@ -34,6 +39,11 @@ public class PersistenceConfig {
      */
     public PersistenceConfig() {
         super();
+    }
+
+    @Bean("queryExecutor")
+    public QueryExecutor getQueryExecutor(final Neo4jClient clnt) {
+        return new TextQueryExecutor(clnt);
     }
 
 }

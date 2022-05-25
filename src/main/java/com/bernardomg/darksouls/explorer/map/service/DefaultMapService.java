@@ -1,33 +1,52 @@
 
 package com.bernardomg.darksouls.explorer.map.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.Arrays;
+import java.util.Objects;
+
 import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.map.domain.Map;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
-import com.bernardomg.darksouls.explorer.map.query.MapQueries;
+import com.bernardomg.darksouls.explorer.map.query.AllIMapsQuery;
+import com.bernardomg.darksouls.explorer.map.query.AllMapConnectionsQuery;
+import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
+import com.bernardomg.darksouls.explorer.persistence.model.Query;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 @Component
 public final class DefaultMapService implements MapService {
 
-    private final MapQueries queries;
+    private final QueryExecutor queryExecutor;
 
-    public DefaultMapService(final MapQueries queries) {
+    public DefaultMapService(final QueryExecutor queryExec) {
         super();
 
-        this.queries = queries;
+        queryExecutor = Objects.requireNonNull(queryExec);
     }
 
     @Override
-    public final Page<Map> getAll(final Pageable page) {
-        return queries.findAll(page);
+    public final PageIterable<Map> getAll(final Pagination pagination,
+            final Sort sort) {
+        final Query<Map> query;
+
+        query = new AllIMapsQuery();
+
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
+            pagination, Arrays.asList(sort));
     }
 
     @Override
-    public final Page<MapConnection> getAllConnections(final Pageable page) {
-        return queries.findAllConnections(page);
+    public final PageIterable<MapConnection>
+            getAllConnections(final Pagination pagination, final Sort sort) {
+        final Query<MapConnection> query;
+
+        query = new AllMapConnectionsQuery();
+
+        return queryExecutor.fetch(query::getStatement, query::getOutput,
+            pagination, Arrays.asList(sort));
     }
 
 }
