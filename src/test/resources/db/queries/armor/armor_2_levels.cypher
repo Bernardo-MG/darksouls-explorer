@@ -1,4 +1,4 @@
-CREATE (i:Item:Armor {name: 'Chain Armor', description: 'Description'});
+CREATE (i:Item:Armor {name: 'Chain Armor'});
 CREATE (l:Level {name: 'Chain Armor', armor: 'Chain Armor', level: 0, regularProtection: 10, strikeProtection: 11, slashProtection: 12, thrustProtection: 13, magicProtection: 14, fireProtection: 15, lightningProtection: 16, bleedProtection: 17, poisonProtection: 18, curseProtection: 19});
 CREATE (l:Level {name: 'Chain Armor 1', armor: 'Chain Armor', level: 1, regularProtection: 20, strikeProtection: 21, slashProtection: 22, thrustProtection: 23, magicProtection: 24, fireProtection: 25, lightningProtection: 26, bleedProtection: 27, poisonProtection: 28, curseProtection: 29});
 MATCH (l:Level), (m:Level) WHERE l.armor = m.armor AND m.level = l.level + 1 MERGE (l)-[:NEXT]->(m);

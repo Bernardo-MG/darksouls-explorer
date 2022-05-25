@@ -358,6 +358,12 @@
          <artifactId>spring-boot-starter-data-jpa</artifactId>
          <version>${spring.boot.version}</version>
       </dependency>
+      <dependency>
+         <!-- Spring Boot Starter: Batch -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-batch</artifactId>
+         <version>${spring.boot.version}</version>
+      </dependency>
       <!-- ============================================== -->
       <!-- ================== MYSQL ===================== -->
       <!-- ============================================== -->
@@ -543,6 +549,12 @@
          <!-- Test Containers Neo4j -->
          <groupId>org.testcontainers</groupId>
          <artifactId>neo4j</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- Test Containers MySQL -->
+         <groupId>org.testcontainers</groupId>
+         <artifactId>mysql</artifactId>
          <scope>test</scope>
       </dependency>
       <dependency>

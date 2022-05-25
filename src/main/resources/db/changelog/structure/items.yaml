@@ -1,0 +1,105 @@
+databaseChangeLog:
+  - changeSet:
+      id: items_structure
+      author: Bernardo
+      changes:
+        - createTable:
+            tableName: armors
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1200)
+              - column:
+                  name: weight
+                  type: int
+              - column:
+                  name: durability
+                  type: int
+        - createTable:
+            tableName: weapons
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1200)
+              - column:
+                  name: type
+                  type: varchar(50)
+              - column:
+                  name: weight
+                  type: int
+              - column:
+                  name: durability
+                  type: int
+              - column:
+                  name: strength
+                  type: int
+              - column:
+                  name: dexterity
+                  type: int
+              - column:
+                  name: intelligence
+                  type: int
+              - column:
+                  name: faith
+                  type: int
+        - createTable:
+            tableName: spells
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1200)
+              - column:
+                  name: school
+                  type: varchar(50)
+              - column:
+                  name: intelligence
+                  type: int
+              - column:
+                  name: faith
+                  type: int
+              - column:
+                  name: slots
+                  type: int
+              - column:
+                  name: uses
+                  type: int
+      modifySql:
+        - append:
+            dbms: mysql
+            value: ' ENGINE=InnoDB DEFAULT CHARSET=latin1'

@@ -18,22 +18,22 @@ import lombok.NonNull;
 @Table(name = "problems")
 public final class PersistentDataProblem implements DataProblem {
 
+    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    @NonNull
     private Integer id;
 
-    @Column(name = "name", nullable = false)
     @NonNull
+    @Column(name = "name", nullable = false)
     private String  name;
 
-    @Column(name = "problem", nullable = false)
     @NonNull
+    @Column(name = "problem", nullable = false)
     private String  problem;
 
-    @Column(name = "source", nullable = false)
     @NonNull
+    @Column(name = "source", nullable = false)
     private String  source;
 
 }

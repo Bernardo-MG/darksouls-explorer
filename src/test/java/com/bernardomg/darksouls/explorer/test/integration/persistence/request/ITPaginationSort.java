@@ -16,10 +16,7 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.persistence.request;
 
-import java.util.Arrays;
-
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +25,31 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
 @AutoConfigureMockMvc
 @ContextConfiguration(initializers = { ITPaginationSort.Initializer.class })
 @DisplayName("Sorted request")
+@Sql({ "/db/queries/weapon/multiple.sql" })
 public class ITPaginationSort {
+
+    @Container
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+        .getNeo4jContainer();
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -52,20 +57,21 @@ public class ITPaginationSort {
         @Override
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
+            new Neo4jApplicationContextInitializer(neo4jContainer)
                 .initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
+        .getMysqlContainer();
 
-    @BeforeAll
-    private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/item/multiple.cypher"));
+    @DynamicPropertySource
+    public static void
+            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
     }
 
     @Autowired
@@ -83,7 +89,7 @@ public class ITPaginationSort {
     public void requestSorted_Ascending() throws Exception {
         final RequestBuilder request;
 
-        request = MockMvcRequestBuilders.get("/items")
+        request = MockMvcRequestBuilders.get("/weapons")
             .param("sort", "name,asc");
 
         mockMvc.perform(request)
@@ -92,7 +98,7 @@ public class ITPaginationSort {
             .andExpect(MockMvcResultMatchers.status()
                 .isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
-                Matchers.is("Item1")));
+                Matchers.is("Weapon 1")));
     }
 
     @Test
@@ -100,7 +106,7 @@ public class ITPaginationSort {
     public void requestSorted_Descending() throws Exception {
         final RequestBuilder request;
 
-        request = MockMvcRequestBuilders.get("/items")
+        request = MockMvcRequestBuilders.get("/weapons")
             .param("sort", "name,desc");
 
         mockMvc.perform(request)
@@ -109,7 +115,7 @@ public class ITPaginationSort {
             .andExpect(MockMvcResultMatchers.status()
                 .isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
-                Matchers.is("Item5")));
+                Matchers.is("Weapon 5")));
     }
 
 }

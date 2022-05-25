@@ -1,35 +1,27 @@
 
 package com.bernardomg.darksouls.explorer.item.spell.domain;
 
-import com.bernardomg.darksouls.explorer.item.itemdata.domain.ItemStats;
-
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
+@NoArgsConstructor
 public final class ImmutableSpell implements Spell {
 
     @NonNull
-    private final Iterable<String> description;
+    private String  description = "";
 
     @NonNull
-    private final Long             id;
+    private Integer durability  = 0;
 
     @NonNull
-    private final String           name;
+    private Long    id          = -1l;
 
     @NonNull
-    private final ItemStats        stats;
+    private String  name        = "";
 
-    public ImmutableSpell(@NonNull final Long id, @NonNull final String name,
-            @NonNull final ItemStats stats,
-            @NonNull final Iterable<String> description) {
-        super();
-
-        this.id = id;
-        this.name = name;
-        this.stats = stats;
-        this.description = description;
-    }
+    @NonNull
+    private Long    weight      = 0l;
 
 }

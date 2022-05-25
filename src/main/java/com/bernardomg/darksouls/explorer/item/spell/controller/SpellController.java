@@ -29,7 +29,7 @@ public class SpellController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Spell> read(
+    public Iterable<? extends Spell> read(
             @RequestParam(name = "name", defaultValue = "") final String name,
             final Pagination pagination, final Sort sort) {
         final DefaultArmorRequest request;

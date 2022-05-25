@@ -11,10 +11,10 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 public interface ArmorService {
 
-    public Iterable<Armor> getAll(final ArmorRequest request,
+    public Iterable<? extends Armor> getAll(final ArmorRequest request,
             final Pagination pagination, final Sort sort);
 
-    public Optional<Armor> getOne(final Long id);
+    public Optional<? extends Armor> getOne(final Long id);
 
     public Optional<ArmorProgression> getProgression(final Long id);
 

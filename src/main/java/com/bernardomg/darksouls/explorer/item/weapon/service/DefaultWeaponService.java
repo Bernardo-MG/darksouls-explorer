@@ -2,7 +2,6 @@
 package com.bernardomg.darksouls.explorer.item.weapon.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,57 +11,77 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.request.WeaponRequest;
 import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
-import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponsQuery;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.darksouls.explorer.persistence.model.Direction;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
 
 import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 
 @Service
 public final class DefaultWeaponService implements WeaponService {
 
-    private final Query<Weapon>      allQuery         = new WeaponsQuery();
-
     private final QueryExecutor      queryExecutor;
+
+    private final WeaponRepository   repository;
 
     private final Query<WeaponLevel> weaponLevelQuery = new WeaponLevelQuery();
 
     @Autowired
-    public DefaultWeaponService(final QueryExecutor queryExec) {
+    public DefaultWeaponService(final WeaponRepository repo,
+            final QueryExecutor queryExec) {
         super();
 
+        repository = Objects.requireNonNull(repo);
         queryExecutor = Objects.requireNonNull(queryExec);
     }
 
     @Override
-    public final PageIterable<Weapon> getAll(final WeaponRequest request,
-            final Pagination pagination, final Sort sort) {
-        return queryExecutor.fetch(allQuery::getStatement, allQuery::getOutput,
-            pagination, Arrays.asList(sort));
+    public final PageIterable<? extends Weapon> getAll(
+            final WeaponRequest request, final Pagination pagination,
+            final Sort sort) {
+        final Pageable pageable;
+        final Page<PersistentWeapon> page;
+
+        if (pagination.getPaged()) {
+            pageable = PageRequest.of(pagination.getPage(),
+                pagination.getSize());
+        } else if (pagination.getPaged()) {
+            pageable = PageRequest.of(pagination.getPage(),
+                pagination.getSize());
+        } else if (sort.getSorted()) {
+            pageable = PageRequest.of(0, 10,
+                toSpringDirection(sort.getDirection()), sort.getProperty());
+        } else {
+            pageable = Pageable.unpaged();
+        }
+
+        page = repository.findAll(pageable);
+
+        return Paginations.fromSpring(page);
     }
 
     @Override
-    public final Optional<Weapon> getOne(final Long id) {
-        final Map<String, Object> params;
-
-        params = new HashMap<>();
-        params.put("id", id);
-
-        return queryExecutor.fetchOne(allQuery::getStatement,
-            allQuery::getOutput, params);
+    public final Optional<? extends Weapon> getOne(final Long id) {
+        return repository.findById(id);
     }
 
     @Override
@@ -82,6 +101,19 @@ public final class DefaultWeaponService implements WeaponService {
             result = Optional.empty();
         } else {
             result = Optional.of(toWeaponProgression(levels));
+        }
+
+        return result;
+    }
+
+    private final org.springframework.data.domain.Sort.Direction
+            toSpringDirection(final Direction direction) {
+        final org.springframework.data.domain.Sort.Direction result;
+
+        if (Direction.ASC.equals(direction)) {
+            result = org.springframework.data.domain.Sort.Direction.ASC;
+        } else {
+            result = org.springframework.data.domain.Sort.Direction.DESC;
         }
 
         return result;

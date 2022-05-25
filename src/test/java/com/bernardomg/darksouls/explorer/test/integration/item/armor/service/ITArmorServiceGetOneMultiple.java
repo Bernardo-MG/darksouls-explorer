@@ -16,33 +16,32 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.item.armor.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
+import com.bernardomg.darksouls.explorer.item.armor.repository.ArmorRepository;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
 @ContextConfiguration(
         initializers = { ITArmorServiceGetOneMultiple.Initializer.class })
 @DisplayName("Reading single armor from id with multiple data")
+@Sql({ "/db/queries/armor/multiple.sql" })
 public class ITArmorServiceGetOneMultiple {
 
     public static class Initializer implements
@@ -51,27 +50,32 @@ public class ITArmorServiceGetOneMultiple {
         @Override
         public void initialize(
                 final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
+            new Neo4jApplicationContextInitializer(neo4jContainer)
                 .initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
+        .getMysqlContainer();
+
+    @Container
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
         .getNeo4jContainer();
 
-    @BeforeAll
-    private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/armor/multiple.cypher"));
+    @DynamicPropertySource
+    public static void
+            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
     }
 
     @Autowired
-    private Neo4jClient  client;
+    private ArmorRepository repository;
 
     @Autowired
-    private ArmorService service;
+    private ArmorService    service;
 
     /**
      * Default constructor.
@@ -92,8 +96,7 @@ public class ITArmorServiceGetOneMultiple {
             .get();
 
         Assertions.assertEquals("Armor 1", data.getName());
-        Assertions.assertEquals(Arrays.asList("Description1"),
-            data.getDescription());
+        Assertions.assertEquals("Description 1", data.getDescription());
     }
 
     @Test
@@ -107,23 +110,15 @@ public class ITArmorServiceGetOneMultiple {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(5, data.getStats()
-            .getDurability());
-        Assertions.assertEquals(6, data.getStats()
-            .getWeight());
+        Assertions.assertEquals(5, data.getDurability());
+        Assertions.assertEquals(6, data.getWeight());
     }
 
     private final Long getId() {
-        final Collection<Map<String, Object>> rows;
-
-        rows = client.query("MATCH (n:Item) RETURN n")
-            .fetch()
-            .all();
-
-        return (Long) rows.stream()
-            .findFirst()
-            .get()
-            .getOrDefault("id", 0l);
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }
