@@ -2,12 +2,13 @@
 package com.bernardomg.darksouls.explorer.problem.controller;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 import com.bernardomg.darksouls.explorer.problem.service.ProblemService;
 
@@ -24,8 +25,9 @@ public class ProblemsController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<? extends DataProblem> read(final Pageable page) {
-        return service.getAll(page);
+    public Page<? extends DataProblem> read(final Pagination pagination,
+            final Sort sort) {
+        return service.getAll(pagination, sort);
     }
 
 }

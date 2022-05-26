@@ -13,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
+import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 import com.bernardomg.darksouls.explorer.problem.model.PersistentDataProblem;
 import com.bernardomg.darksouls.explorer.problem.persistence.DataProblemRepository;
@@ -41,8 +44,13 @@ public final class DefaultProblemService implements ProblemService {
     }
 
     @Override
-    public final Page<? extends DataProblem> getAll(final Pageable page) {
-        return repository.findAll(page);
+    public final Page<? extends DataProblem> getAll(final Pagination pagination,
+            final Sort sort) {
+        final Pageable pageable;
+
+        pageable = Paginations.toSpring(pagination, sort);
+
+        return repository.findAll(pageable);
     }
 
     @Override
