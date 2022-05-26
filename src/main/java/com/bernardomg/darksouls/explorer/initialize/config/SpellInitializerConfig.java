@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.batch.config;
+package com.bernardomg.darksouls.explorer.initialize.config;
 
 import javax.sql.DataSource;
 
@@ -25,14 +25,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-import com.bernardomg.darksouls.explorer.batch.DBLogProcessor;
-import com.bernardomg.darksouls.explorer.batch.model.WeaponBatchData;
+import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
+import com.bernardomg.darksouls.explorer.initialize.model.SpellBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "weapon")
-public class WeaponBatchConfig {
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "spell",
+        havingValue = "true")
+public class SpellInitializerConfig {
 
-    @Value("classPath:/data/weapons.csv")
+    @Value("classPath:/data/spells.csv")
     private Resource           data;
 
     @Autowired
@@ -44,50 +45,49 @@ public class WeaponBatchConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-    public WeaponBatchConfig() {
+    public SpellInitializerConfig() {
         super();
     }
 
-    @Bean("weaponItemReader")
-    public ItemReader<WeaponBatchData>
-            getWeaponItemReader(final LineMapper<WeaponBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<WeaponBatchData>()
-            .name("weaponItemReader")
+    @Bean("spellItemReader")
+    public ItemReader<SpellBatchData>
+            getWeaponItemReader(final LineMapper<SpellBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<SpellBatchData>()
+            .name("spellItemReader")
             .resource(data)
             .delimited()
-            .names(new String[] { "name", "description", "weight", "durability",
-                    "strength", "dexterity", "intelligence", "faith" })
+            .names(new String[] { "name", "description", "intelligence",
+                    "faith", "slots", "uses" })
             .linesToSkip(1)
             .lineMapper(lineMapper)
             .build();
     }
 
-    @Bean("weaponItemWriter")
-    public ItemWriter<WeaponBatchData> getWeaponItemWriter() {
-        return new JdbcBatchItemWriterBuilder<WeaponBatchData>()
+    @Bean("spellItemWriter")
+    public ItemWriter<SpellBatchData> getWeaponItemWriter() {
+        return new JdbcBatchItemWriterBuilder<SpellBatchData>()
             .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<WeaponBatchData>())
+                new BeanPropertyItemSqlParameterSourceProvider<SpellBatchData>())
             .sql(
-                "INSERT INTO weapons (name, description, weight, durability, strength, dexterity, intelligence, faith) VALUES (:name, :description, :weight, :durability, :strength, :dexterity, :intelligence, :faith)")
+                "INSERT INTO spells (name, description, intelligence, faith, slots, uses) VALUES (:name, :description, :intelligence, :faith, :slots, :uses)")
             .dataSource(datasource)
             .build();
     }
 
-    @Bean("weaponLineMapper")
-    public LineMapper<WeaponBatchData> getWeaponLineMapper() {
+    @Bean("spellLineMapper")
+    public LineMapper<SpellBatchData> getWeaponLineMapper() {
         final DelimitedLineTokenizer lineTokenizer;
-        final BeanWrapperFieldSetMapper<WeaponBatchData> fieldSetMapper;
-        final DefaultLineMapper<WeaponBatchData> lineMapper;
+        final BeanWrapperFieldSetMapper<SpellBatchData> fieldSetMapper;
+        final DefaultLineMapper<SpellBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<WeaponBatchData>();
+        lineMapper = new DefaultLineMapper<SpellBatchData>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(
-            new String[] { "name", "description", "weight", "durability",
-                    "strength", "dexterity", "intelligence", "faith" });
-        lineTokenizer.setIncludedFields(new int[] { 0, 2, 3, 4, 6, 7, 8, 9 });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<WeaponBatchData>();
-        fieldSetMapper.setTargetType(WeaponBatchData.class);
+        lineTokenizer.setNames(new String[] { "name", "description",
+                "intelligence", "faith", "slots", "uses" });
+        lineTokenizer.setIncludedFields(new int[] { 0, 2, 3, 4, 6 });
+        fieldSetMapper = new BeanWrapperFieldSetMapper<SpellBatchData>();
+        fieldSetMapper.setTargetType(SpellBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(fieldSetMapper);
@@ -95,20 +95,20 @@ public class WeaponBatchConfig {
         return lineMapper;
     }
 
-    @Bean("weaponLoaderJob")
+    @Bean("spellLoaderJob")
     public Job getWeaponLoaderJob(
-            @Qualifier("weaponLoaderStep") final Step armorLoaderStep) {
-        return jobBuilderFactory.get("weaponLoaderJob")
+            @Qualifier("spellLoaderStep") final Step armorLoaderStep) {
+        return jobBuilderFactory.get("spellLoaderJob")
             .incrementer(new RunIdIncrementer())
             .start(armorLoaderStep)
             .build();
     }
 
-    @Bean("weaponLoaderStep")
-    public Step getWeaponLoaderStep(final ItemReader<WeaponBatchData> reader,
-            final ItemWriter<WeaponBatchData> writer) {
-        return stepBuilderFactory.get("weaponLoaderStep")
-            .<WeaponBatchData, WeaponBatchData> chunk(5)
+    @Bean("spellLoaderStep")
+    public Step getWeaponLoaderStep(final ItemReader<SpellBatchData> reader,
+            final ItemWriter<SpellBatchData> writer) {
+        return stepBuilderFactory.get("spellLoaderStep")
+            .<SpellBatchData, SpellBatchData> chunk(5)
             .reader(reader)
             .processor(new DBLogProcessor<>())
             .writer(writer)

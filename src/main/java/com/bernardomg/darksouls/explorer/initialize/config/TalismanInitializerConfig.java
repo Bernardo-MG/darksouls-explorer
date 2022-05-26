@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.batch.config;
+package com.bernardomg.darksouls.explorer.initialize.config;
 
 import javax.sql.DataSource;
 
@@ -25,12 +25,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-import com.bernardomg.darksouls.explorer.batch.DBLogProcessor;
-import com.bernardomg.darksouls.explorer.batch.model.TalismanBatchData;
+import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
+import com.bernardomg.darksouls.explorer.initialize.model.TalismanBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "talisman")
-public class TalismanBatchConfig {
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "talisman",
+        havingValue = "true")
+public class TalismanInitializerConfig {
 
     @Value("classPath:/data/talismans.csv")
     private Resource           data;
@@ -44,7 +45,7 @@ public class TalismanBatchConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-    public TalismanBatchConfig() {
+    public TalismanInitializerConfig() {
         super();
     }
 

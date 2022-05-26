@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.batch.model;
+package com.bernardomg.darksouls.explorer.initialize.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public final class CatalystBatchData {
+public final class WeaponBatchData {
 
     @NonNull
     private String  description  = "";

@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.batch.model;
+package com.bernardomg.darksouls.explorer.initialize.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,23 +1,19 @@
 
-package com.bernardomg.darksouls.explorer.problem.initializer;
+package com.bernardomg.darksouls.explorer.initialize.listener;
 
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
 
 import com.bernardomg.darksouls.explorer.problem.service.ProblemService;
 
-@Component
-public final class ProblemsInitializer
+public final class ProblemsInitializerListener
         implements ApplicationListener<ContextRefreshedEvent> {
 
     private final ProblemService service;
 
-    @Autowired
-    public ProblemsInitializer(final ProblemService svc) {
+    public ProblemsInitializerListener(final ProblemService svc) {
         super();
 
         service = Objects.requireNonNull(svc);

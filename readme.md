@@ -65,7 +65,7 @@ docker-compose -f docker/docker-compose.yml up
 This requires running the database Docker image first.
 
 ```
-mvn clean spring-boot:run
+mvn clean spring-boot:run -Dspring-boot.run.profiles=initialize
 ```
 
 ### Running the tests

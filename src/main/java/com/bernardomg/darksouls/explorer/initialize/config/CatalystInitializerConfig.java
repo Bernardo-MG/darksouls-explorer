@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.batch.config;
+package com.bernardomg.darksouls.explorer.initialize.config;
 
 import javax.sql.DataSource;
 
@@ -25,12 +25,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-import com.bernardomg.darksouls.explorer.batch.DBLogProcessor;
-import com.bernardomg.darksouls.explorer.batch.model.CatalystBatchData;
+import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
+import com.bernardomg.darksouls.explorer.initialize.model.CatalystBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "catalyst")
-public class CatalystBatchConfig {
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "catalyst",
+        havingValue = "true")
+public class CatalystInitializerConfig {
 
     @Value("classPath:/data/catalysts.csv")
     private Resource           data;
@@ -44,7 +45,7 @@ public class CatalystBatchConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-    public CatalystBatchConfig() {
+    public CatalystInitializerConfig() {
         super();
     }
 
