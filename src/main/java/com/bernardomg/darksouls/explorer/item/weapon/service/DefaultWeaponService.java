@@ -12,7 +12,6 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,6 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.request.WeaponReques
 import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.model.Direction;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
@@ -61,18 +59,7 @@ public final class DefaultWeaponService implements WeaponService {
         final Pageable pageable;
         final Page<PersistentWeapon> page;
 
-        if (pagination.getPaged()) {
-            pageable = PageRequest.of(pagination.getPage(),
-                pagination.getSize());
-        } else if (pagination.getPaged()) {
-            pageable = PageRequest.of(pagination.getPage(),
-                pagination.getSize());
-        } else if (sort.getSorted()) {
-            pageable = PageRequest.of(0, 10,
-                toSpringDirection(sort.getDirection()), sort.getProperty());
-        } else {
-            pageable = Pageable.unpaged();
-        }
+        pageable = Paginations.toSpring(pagination, sort);
 
         page = repository.findAll(pageable);
 
@@ -101,19 +88,6 @@ public final class DefaultWeaponService implements WeaponService {
             result = Optional.empty();
         } else {
             result = Optional.of(toWeaponProgression(levels));
-        }
-
-        return result;
-    }
-
-    private final org.springframework.data.domain.Sort.Direction
-            toSpringDirection(final Direction direction) {
-        final org.springframework.data.domain.Sort.Direction result;
-
-        if (Direction.ASC.equals(direction)) {
-            result = org.springframework.data.domain.Sort.Direction.ASC;
-        } else {
-            result = org.springframework.data.domain.Sort.Direction.DESC;
         }
 
         return result;
