@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +37,7 @@ public final class DefaultTalismanService implements TalismanService {
         final Pageable pageable;
         final Page<PersistentTalisman> page;
 
-        if (pagination.getPaged()) {
-            pageable = PageRequest.of(pagination.getPage(),
-                pagination.getSize());
-        } else {
-            pageable = Pageable.unpaged();
-        }
+        pageable = Paginations.toSpring(pagination, sort);
 
         page = repository.findAll(pageable);
 
