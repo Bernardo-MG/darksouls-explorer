@@ -161,12 +161,12 @@ public class TestPaginationsToSpring {
             .iterator()
             .next()
             .getProperty());
-        Assertions
-            .assertEquals(org.springframework.data.domain.Sort.Direction.ASC,
-                result.getSort()
-                    .iterator()
-                    .next()
-                    .getDirection());
+        Assertions.assertEquals(
+            org.springframework.data.domain.Sort.Direction.DESC,
+            result.getSort()
+                .iterator()
+                .next()
+                .getDirection());
     }
 
     @Test

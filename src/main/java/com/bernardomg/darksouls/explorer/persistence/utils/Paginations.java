@@ -32,16 +32,20 @@ public final class Paginations {
     public static final Pageable toSpring(final Pagination pagination,
             final Sort sort) {
         final Pageable pageable;
+        final org.springframework.data.domain.Sort.Direction direction;
 
-        if (pagination.getPaged()) {
+        if ((pagination.getSize() <= 0) || (pagination.getPage() < 0)) {
+            pageable = Pageable.unpaged();
+        } else if ((pagination.getPaged()) && (sort.getSorted())) {
+            direction = toSpringDirection(sort.getDirection());
             pageable = PageRequest.of(pagination.getPage(),
-                pagination.getSize());
+                pagination.getSize(), direction, sort.getProperty());
         } else if (pagination.getPaged()) {
             pageable = PageRequest.of(pagination.getPage(),
                 pagination.getSize());
         } else if (sort.getSorted()) {
-            pageable = PageRequest.of(0, 10,
-                toSpringDirection(sort.getDirection()), sort.getProperty());
+            direction = toSpringDirection(sort.getDirection());
+            pageable = PageRequest.of(0, 10, direction, sort.getProperty());
         } else {
             pageable = Pageable.unpaged();
         }
