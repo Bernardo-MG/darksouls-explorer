@@ -22,6 +22,9 @@ public final class SpellBatchData {
     private String  name         = "";
 
     @NonNull
+    private String  school       = "";
+
+    @NonNull
     private Integer slots        = 0;
 
     @NonNull

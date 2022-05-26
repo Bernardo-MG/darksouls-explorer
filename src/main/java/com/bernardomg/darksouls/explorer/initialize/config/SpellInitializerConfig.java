@@ -56,8 +56,8 @@ public class SpellInitializerConfig {
             .name("spellItemReader")
             .resource(data)
             .delimited()
-            .names(new String[] { "name", "description", "intelligence",
-                    "faith", "slots", "uses" })
+            .names(new String[] { "name", "school", "description",
+                    "intelligence", "faith", "slots", "uses" })
             .linesToSkip(1)
             .lineMapper(lineMapper)
             .build();
@@ -83,9 +83,8 @@ public class SpellInitializerConfig {
         lineMapper = new DefaultLineMapper<SpellBatchData>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "description",
+        lineTokenizer.setNames(new String[] { "name", "school", "description",
                 "intelligence", "faith", "slots", "uses" });
-        lineTokenizer.setIncludedFields(new int[] { 0, 2, 3, 4, 6 });
         fieldSetMapper = new BeanWrapperFieldSetMapper<SpellBatchData>();
         fieldSetMapper.setTargetType(SpellBatchData.class);
 

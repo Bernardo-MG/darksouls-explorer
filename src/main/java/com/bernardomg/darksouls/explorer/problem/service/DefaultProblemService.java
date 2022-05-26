@@ -71,10 +71,10 @@ public final class DefaultProblemService implements ProblemService {
                 "CHOSEN_FROM", "ASCENDS", "LOOT", "DROPS_IN_COMBAT"));
         // TODO: Items with no location
 
-        LOGGER.debug("Duplicated items: {}", itemsDuplicated);
-        LOGGER.debug("Items without description: {}", itemNoDescription);
-        LOGGER.debug("Actors without description: {}", actorsDuplicated);
-        LOGGER.debug("Items without source: {}", itemsWithoutSource);
+        LOGGER.trace("Duplicated items: {}", itemsDuplicated);
+        LOGGER.trace("Items without description: {}", itemNoDescription);
+        LOGGER.trace("Actors without description: {}", actorsDuplicated);
+        LOGGER.trace("Items without source: {}", itemsWithoutSource);
 
         data = new ArrayList<>();
         data.addAll(itemsDuplicated);

@@ -57,7 +57,10 @@ public class TalismanInitializerConfig {
             .resource(data)
             .delimited()
             .names(new String[] { "name", "description", "weight", "durability",
-                    "strength", "dexterity", "intelligence", "faith" })
+                    "attacks", "strength", "dexterity", "intelligence", "faith",
+                    "physical_dmg", "magic_dmg", "fire_dmg", "lightning_dmg",
+                    "critical_dmg", "physical_reduction", "magic_reduction",
+                    "fire_reduction", "lightning_reduction", "stability" })
             .linesToSkip(1)
             .lineMapper(lineMapper)
             .build();
@@ -69,7 +72,7 @@ public class TalismanInitializerConfig {
             .itemSqlParameterSourceProvider(
                 new BeanPropertyItemSqlParameterSourceProvider<TalismanBatchData>())
             .sql(
-                "INSERT INTO catalysts (name, description, weight, durability, strength, dexterity, intelligence, faith) VALUES (:name, :description, :weight, :durability, :strength, :dexterity, :intelligence, :faith)")
+                "INSERT INTO talismans (name, description, weight, durability, strength, dexterity, intelligence, faith, physical_dmg, magic_dmg, fire_dmg, lightning_dmg, critical_dmg, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, :weight, :durability, :strength, :dexterity, :intelligence, :faith, :physical_dmg, :magic_dmg, :fire_dmg, :lightning_dmg, :critical_dmg, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
             .dataSource(datasource)
             .build();
     }
@@ -85,8 +88,10 @@ public class TalismanInitializerConfig {
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(
             new String[] { "name", "description", "weight", "durability",
-                    "strength", "dexterity", "intelligence", "faith" });
-        lineTokenizer.setIncludedFields(new int[] { 0, 2, 3, 4, 6, 7, 8, 9 });
+                    "attacks", "strength", "dexterity", "intelligence", "faith",
+                    "physical_dmg", "magic_dmg", "fire_dmg", "lightning_dmg",
+                    "critical_dmg", "physical_reduction", "magic_reduction",
+                    "fire_reduction", "lightning_reduction", "stability" });
         fieldSetMapper = new BeanWrapperFieldSetMapper<TalismanBatchData>();
         fieldSetMapper.setTargetType(TalismanBatchData.class);
 
