@@ -10,18 +10,27 @@ import lombok.NonNull;
 public final class ImmutableSpell implements Spell {
 
     @NonNull
-    private String  description = "";
+    private String  description  = "";
 
     @NonNull
-    private Integer durability  = 0;
+    private Integer faith        = 0;
 
     @NonNull
-    private Long    id          = -1l;
+    private Long    id           = -1l;
 
     @NonNull
-    private String  name        = "";
+    private Integer intelligence = 0;
 
     @NonNull
-    private Long    weight      = 0l;
+    private String  name         = "";
+
+    @NonNull
+    private String  school       = "";
+
+    @NonNull
+    private Integer slots        = 0;
+
+    @NonNull
+    private Integer uses         = 0;
 
 }

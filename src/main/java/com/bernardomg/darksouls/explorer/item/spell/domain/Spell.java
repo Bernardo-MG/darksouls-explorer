@@ -5,12 +5,18 @@ public interface Spell {
 
     public String getDescription();
 
-    public Integer getDurability();
+    public Integer getFaith();
 
     public Long getId();
 
+    public Integer getIntelligence();
+
     public String getName();
 
-    public Long getWeight();
+    public String getSchool();
+
+    public Integer getSlots();
+
+    public Integer getUses();
 
 }
