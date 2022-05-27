@@ -33,14 +33,16 @@ public final class Paginations {
             final Sort sort) {
         final Pageable pageable;
         final org.springframework.data.domain.Sort.Direction direction;
+        final Boolean paged;
 
-        if ((pagination.getSize() <= 0) || (pagination.getPage() < 0)) {
-            pageable = Pageable.unpaged();
-        } else if ((pagination.getPaged()) && (sort.getSorted())) {
+        paged = (pagination.getPaged()) && (pagination.getSize() > 0)
+                && (pagination.getPage() >= 0);
+
+        if ((paged) && (sort.getSorted())) {
             direction = toSpringDirection(sort.getDirection());
             pageable = PageRequest.of(pagination.getPage(),
                 pagination.getSize(), direction, sort.getProperty());
-        } else if (pagination.getPaged()) {
+        } else if (paged) {
             pageable = PageRequest.of(pagination.getPage(),
                 pagination.getSize());
         } else if (sort.getSorted()) {
