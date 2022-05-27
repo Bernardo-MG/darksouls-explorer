@@ -23,8 +23,24 @@ public final class PersistentTalisman implements Talisman {
     private String  description;
 
     @NonNull
+    @Column(name = "dexterity_bonus", nullable = false)
+    private String  dexterityBonus;
+
+    @NonNull
     @Column(name = "durability", nullable = false)
     private Integer durability = 0;
+
+    @NonNull
+    @Column(name = "faith_bonus", nullable = false)
+    private String  faithBonus;
+
+    @NonNull
+    @Column(name = "fire_dmg", nullable = false)
+    private Integer fireDamage;
+
+    @NonNull
+    @Column(name = "fire_reduction", nullable = false)
+    private Float   fireReduction;
 
     @NonNull
     @Id
@@ -33,8 +49,44 @@ public final class PersistentTalisman implements Talisman {
     private Long    id         = -1l;
 
     @NonNull
+    @Column(name = "intelligence_bonus", nullable = false)
+    private String  intelligenceBonus;
+
+    @NonNull
+    @Column(name = "lightning_dmg", nullable = false)
+    private Integer lightningDamage;
+
+    @NonNull
+    @Column(name = "lightning_reduction", nullable = false)
+    private Float   lightningReduction;
+
+    @NonNull
+    @Column(name = "magic_dmg", nullable = false)
+    private Integer magicDamage;
+
+    @NonNull
+    @Column(name = "magic_reduction", nullable = false)
+    private Float   magicReduction;
+
+    @NonNull
     @Column(name = "name", nullable = false)
     private String  name;
+
+    @NonNull
+    @Column(name = "physical_dmg", nullable = false)
+    private Integer physicalDamage;
+
+    @NonNull
+    @Column(name = "physical_reduction", nullable = false)
+    private Float   physicalReduction;
+
+    @NonNull
+    @Column(name = "strenght_bonus", nullable = false)
+    private String  strengthBonus;
+
+    @NonNull
+    @Column(name = "weapon", nullable = false)
+    private String  weapon;
 
     @NonNull
     @Column(name = "weight", nullable = false)

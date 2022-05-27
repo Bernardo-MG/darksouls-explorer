@@ -100,6 +100,87 @@ databaseChangeLog:
                   name: uses
                   type: int
         - createTable:
+            tableName: shields
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1200)
+              - column:
+                  name: type
+                  type: varchar(50)
+              - column:
+                  name: weight
+                  type: int
+              - column:
+                  name: durability
+                  type: int
+              - column:
+                  name: strength
+                  type: int
+              - column:
+                  name: dexterity
+                  type: int
+              - column:
+                  name: intelligence
+                  type: int
+              - column:
+                  name: faith
+                  type: int
+              - column:
+                  name: physical_dmg
+                  type: int
+              - column:
+                  name: magic_dmg
+                  type: int
+              - column:
+                  name: fire_dmg
+                  type: int
+              - column:
+                  name: lightning_dmg
+                  type: int
+              - column:
+                  name: critical_dmg
+                  type: int
+              - column:
+                  name: physical_reduction
+                  type: int
+              - column:
+                  name: magic_reduction
+                  type: int
+              - column:
+                  name: fire_reduction
+                  type: int
+              - column:
+                  name: lightning_reduction
+                  type: int
+              - column:
+                  name: stability
+                  type: int
+              - column:
+                  name: dexterity_bonus
+                  type: varchar(50)
+              - column:
+                  name: faith_bonus
+                  type: varchar(50)
+              - column:
+                  name: intelligence_bonus
+                  type: varchar(50)
+              - column:
+                  name: strength_bonus
+                  type: varchar(50)
+        - createTable:
             tableName: talismans
             columns:
               - column:
@@ -168,6 +249,18 @@ databaseChangeLog:
               - column:
                   name: stability
                   type: int
+              - column:
+                  name: dexterity_bonus
+                  type: varchar(50)
+              - column:
+                  name: faith_bonus
+                  type: varchar(50)
+              - column:
+                  name: intelligence_bonus
+                  type: varchar(50)
+              - column:
+                  name: strength_bonus
+                  type: varchar(50)
         - createTable:
             tableName: catalysts
             columns:
@@ -237,6 +330,18 @@ databaseChangeLog:
               - column:
                   name: stability
                   type: int
+              - column:
+                  name: dexterity_bonus
+                  type: varchar(50)
+              - column:
+                  name: faith_bonus
+                  type: varchar(50)
+              - column:
+                  name: intelligence_bonus
+                  type: varchar(50)
+              - column:
+                  name: strength_bonus
+                  type: varchar(50)
       modifySql:
         - append:
             dbms: mysql

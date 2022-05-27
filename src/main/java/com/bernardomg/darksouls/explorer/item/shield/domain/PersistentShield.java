@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.catalyst.domain;
+package com.bernardomg.darksouls.explorer.item.shield.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,9 +14,9 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "Catalyst")
-@Table(name = "catalysts")
-public final class PersistentCatalyst implements Catalyst {
+@Entity(name = "Shield")
+@Table(name = "shields")
+public final class PersistentShield implements Shield {
 
     @NonNull
     @Column(name = "description", nullable = false)
