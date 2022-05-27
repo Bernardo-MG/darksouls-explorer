@@ -47,10 +47,6 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 @Sql({ "/db/queries/weapon/multiple.sql" })
 public class ITPaginationRequest {
 
-    @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
-
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
@@ -65,6 +61,10 @@ public class ITPaginationRequest {
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
         .getMysqlContainer();
+
+    @Container
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+        .getNeo4jContainer();
 
     @DynamicPropertySource
     public static void

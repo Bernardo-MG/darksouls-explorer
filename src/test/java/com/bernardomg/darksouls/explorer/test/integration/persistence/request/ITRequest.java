@@ -47,10 +47,6 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 @Sql({ "/db/queries/weapon/multiple.sql" })
 public class ITRequest {
 
-    @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
-
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
@@ -65,6 +61,10 @@ public class ITRequest {
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
         .getMysqlContainer();
+
+    @Container
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+        .getNeo4jContainer();
 
     @DynamicPropertySource
     public static void
@@ -95,6 +95,25 @@ public class ITRequest {
                 .isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
                 Matchers.is("Weapon 1")));
+    }
+
+    @Test
+    @DisplayName("Returns default pagination structure")
+    public void request_DefaultPagination() throws Exception {
+        final RequestBuilder request;
+
+        request = MockMvcRequestBuilders.get("/weapons");
+
+        mockMvc.perform(request)
+            .andExpect(MockMvcResultMatchers.content()
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status()
+                .isOk())
+            .andExpect(
+                MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(5)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage",
+                Matchers.is(5)));
     }
 
 }
