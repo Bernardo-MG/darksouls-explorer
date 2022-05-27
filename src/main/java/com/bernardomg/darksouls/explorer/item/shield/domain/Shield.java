@@ -5,37 +5,19 @@ public interface Shield {
 
     public String getDescription();
 
-    public String getDexterityBonus();
+    public Integer getDexterity();
 
     public Integer getDurability();
 
-    public String getFaithBonus();
-
-    public Integer getFireDamage();
-
-    public Float getFireReduction();
+    public Integer getFaith();
 
     public Long getId();
 
-    public String getIntelligenceBonus();
-
-    public Integer getLightningDamage();
-
-    public Float getLightningReduction();
-
-    public Integer getMagicDamage();
-
-    public Float getMagicReduction();
+    public Integer getIntelligence();
 
     public String getName();
 
-    public Integer getPhysicalDamage();
-
-    public Float getPhysicalReduction();
-
-    public String getStrengthBonus();
-
-    public String getWeapon();
+    public Integer getStrength();
 
     public Long getWeight();
 

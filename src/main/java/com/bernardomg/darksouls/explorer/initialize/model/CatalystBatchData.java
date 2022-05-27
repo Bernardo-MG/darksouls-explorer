@@ -10,9 +10,6 @@ import lombok.NonNull;
 public final class CatalystBatchData {
 
     @NonNull
-    private String  attacks             = "";
-
-    @NonNull
     private Double  critical_dmg        = 0d;
 
     @NonNull
@@ -22,10 +19,16 @@ public final class CatalystBatchData {
     private Integer dexterity           = 0;
 
     @NonNull
+    private String  dexterity_bonus     = "";
+
+    @NonNull
     private Integer durability          = 0;
 
     @NonNull
     private Integer faith               = 0;
+
+    @NonNull
+    private String  faith_bonus         = "";
 
     @NonNull
     private Double  fire_dmg            = 0d;
@@ -35,6 +38,9 @@ public final class CatalystBatchData {
 
     @NonNull
     private Integer intelligence        = 0;
+
+    @NonNull
+    private String  intelligence_bonus  = "";
 
     @NonNull
     private Double  lightning_dmg       = 0d;
@@ -62,6 +68,9 @@ public final class CatalystBatchData {
 
     @NonNull
     private Integer strength            = 0;
+
+    @NonNull
+    private String  strength_bonus      = "";
 
     @NonNull
     private Double  weight              = 0d;
