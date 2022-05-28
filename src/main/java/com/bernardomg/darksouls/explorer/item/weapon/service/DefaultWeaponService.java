@@ -15,13 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponProgression;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponLevel;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.request.WeaponRequest;
 import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
@@ -37,11 +37,11 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 @Service
 public final class DefaultWeaponService implements WeaponService {
 
+    private final Query<WeaponLevel> levelQuery = new WeaponLevelQuery();
+
     private final QueryExecutor      queryExecutor;
 
     private final WeaponRepository   repository;
-
-    private final Query<WeaponLevel> weaponLevelQuery = new WeaponLevelQuery();
 
     @Autowired
     public DefaultWeaponService(final WeaponRepository repo,
@@ -81,8 +81,8 @@ public final class DefaultWeaponService implements WeaponService {
         params = new HashMap<>();
         params.put("id", id);
 
-        levels = queryExecutor.fetch(weaponLevelQuery::getStatement,
-            weaponLevelQuery::getOutput, params);
+        levels = queryExecutor.fetch(levelQuery::getStatement,
+            levelQuery::getOutput, params);
 
         if (IterableUtils.isEmpty(levels)) {
             result = Optional.empty();

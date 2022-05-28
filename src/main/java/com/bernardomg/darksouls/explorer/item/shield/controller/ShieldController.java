@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.DefaultShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
@@ -46,6 +47,14 @@ public class ShieldController {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Shield readOne(@PathVariable("id") final Long id) {
         return service.getOne(id)
+            .orElse(null);
+    }
+
+    @GetMapping(path = "/{id}/progression",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public WeaponProgression
+            readProgressions(@PathVariable("id") final Long id) {
+        return service.getProgression(id)
             .orElse(null);
     }
 

@@ -10,6 +10,9 @@ import lombok.NonNull;
 public final class TalismanBatchData {
 
     @NonNull
+    private String  attacks             = "";
+
+    @NonNull
     private Double  critical_dmg        = 0d;
 
     @NonNull
@@ -17,9 +20,6 @@ public final class TalismanBatchData {
 
     @NonNull
     private Integer dexterity           = 0;
-
-    @NonNull
-    private String  attacks             = "";
 
     @NonNull
     private String  dexterity_bonus     = "";

@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.weapon.query;
+package com.bernardomg.darksouls.explorer.item.shield.query;
 
 import java.util.Map;
 
@@ -7,9 +7,9 @@ import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
 
-public final class WeaponLevelQuery implements Query<WeaponLevel> {
+public final class ShieldLevelQuery implements Query<WeaponLevel> {
 
-    public WeaponLevelQuery() {
+    public ShieldLevelQuery() {
         super();
     }
 
@@ -45,7 +45,7 @@ public final class WeaponLevelQuery implements Query<WeaponLevel> {
         + "   (w)-[HAS_LEVEL]->(l:Level) " + System.lineSeparator()
         + "WHERE" + System.lineSeparator()
         + "   id(w) = $id" + System.lineSeparator()
-        + "   AND (w:Weapon)" + System.lineSeparator()
+        + "   AND (w:Shield)" + System.lineSeparator()
         + "OPTIONAL MATCH " + System.lineSeparator()
         + "   (p:Level)-[NEXT]->(l) " + System.lineSeparator()
         + "RETURN" + System.lineSeparator()

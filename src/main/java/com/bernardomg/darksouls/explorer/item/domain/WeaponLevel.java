@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.weapon.domain;
+package com.bernardomg.darksouls.explorer.item.domain;
 
 public interface WeaponLevel {
 

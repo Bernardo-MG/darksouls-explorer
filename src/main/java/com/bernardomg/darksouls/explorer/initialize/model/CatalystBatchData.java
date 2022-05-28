@@ -10,13 +10,13 @@ import lombok.NonNull;
 public final class CatalystBatchData {
 
     @NonNull
+    private String  attacks             = "";
+
+    @NonNull
     private Double  critical_dmg        = 0d;
 
     @NonNull
     private String  description         = "";
-
-    @NonNull
-    private String  attacks             = "";
 
     @NonNull
     private Integer dexterity           = 0;

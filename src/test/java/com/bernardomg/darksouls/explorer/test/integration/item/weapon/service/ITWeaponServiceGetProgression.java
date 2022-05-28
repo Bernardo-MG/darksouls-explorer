@@ -38,9 +38,9 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponLevel;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;

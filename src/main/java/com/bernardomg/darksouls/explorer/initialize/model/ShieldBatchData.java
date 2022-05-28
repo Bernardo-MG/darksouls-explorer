@@ -10,10 +10,10 @@ import lombok.NonNull;
 public final class ShieldBatchData {
 
     @NonNull
-    private String  description  = "";
+    private String  attacks      = "";
 
     @NonNull
-    private String  attacks      = "";
+    private String  description  = "";
 
     @NonNull
     private Integer dexterity    = 0;
