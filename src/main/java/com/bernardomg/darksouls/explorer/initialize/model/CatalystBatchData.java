@@ -16,6 +16,9 @@ public final class CatalystBatchData {
     private String  description         = "";
 
     @NonNull
+    private String  attacks             = "";
+
+    @NonNull
     private Integer dexterity           = 0;
 
     @NonNull

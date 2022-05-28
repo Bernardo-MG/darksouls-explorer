@@ -19,6 +19,9 @@ public final class TalismanBatchData {
     private Integer dexterity           = 0;
 
     @NonNull
+    private String  attacks             = "";
+
+    @NonNull
     private String  dexterity_bonus     = "";
 
     @NonNull

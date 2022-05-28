@@ -74,7 +74,7 @@ public class CatalystInitializerConfig {
             .itemSqlParameterSourceProvider(
                 new BeanPropertyItemSqlParameterSourceProvider<CatalystBatchData>())
             .sql(
-                "INSERT INTO catalysts (name, description, weight, durability, strength, dexterity, intelligence, faith, strength_bonus, dexterity_bonus, intelligence_bonus physical_dmg, physical_dmg, magic_dmg, fire_dmg, lightning_dmg, critical_dmg, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, :weight, :durability, :strength, :dexterity, :intelligence, :faith, :physical_dmg, :magic_dmg, :fire_dmg, :lightning_dmg, :critical_dmg, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
+                "INSERT INTO catalysts (name, description, weight, durability, strength, dexterity, intelligence, faith, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_dmg, magic_dmg, fire_dmg, lightning_dmg, critical_dmg, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, :weight, :durability, :strength, :dexterity, :intelligence, :faith, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_dmg, :magic_dmg, :fire_dmg, :lightning_dmg, :critical_dmg, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
             .dataSource(datasource)
             .build();
     }
@@ -88,13 +88,13 @@ public class CatalystInitializerConfig {
         lineMapper = new DefaultLineMapper<CatalystBatchData>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(
-            new String[] { "name", "description", "weight", "durability",
-                    "attacks", "strength", "dexterity", "intelligence", "faith",
-                    "strength_bonus", "dexterity_bonus", "intelligence_bonus",
-                    "physical_dmg", "magic_dmg", "fire_dmg", "lightning_dmg",
-                    "critical_dmg", "physical_reduction", "magic_reduction",
-                    "fire_reduction", "lightning_reduction", "stability" });
+        lineTokenizer.setNames(new String[] { "name", "description", "weight",
+                "durability", "attacks", "strength", "dexterity",
+                "intelligence", "faith", "strength_bonus", "dexterity_bonus",
+                "intelligence_bonus", "faith_bonus", "physical_dmg",
+                "magic_dmg", "fire_dmg", "lightning_dmg", "critical_dmg",
+                "physical_reduction", "magic_reduction", "fire_reduction",
+                "lightning_reduction", "stability" });
         fieldSetMapper = new BeanWrapperFieldSetMapper<CatalystBatchData>();
         fieldSetMapper.setTargetType(CatalystBatchData.class);
 
