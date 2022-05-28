@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.shield.service;
 
 import java.util.Optional;
 
@@ -32,19 +32,19 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
-import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
+import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
+import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
+import com.bernardomg.darksouls.explorer.item.shield.shield.ShieldRepository;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITWeaponServiceGetOneSingle.Initializer.class })
-@DisplayName("Reading single weapon from id")
-@Sql({ "/db/queries/weapon/single.sql" })
-public class ITWeaponServiceGetOneSingle {
+        initializers = { ITShieldServiceGetOneSingle.Initializer.class })
+@DisplayName("Reading single shield from id")
+@Sql({ "/db/queries/shield/single.sql" })
+public class ITShieldServiceGetOneSingle {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -74,22 +74,22 @@ public class ITWeaponServiceGetOneSingle {
     }
 
     @Autowired
-    private WeaponRepository repository;
+    private ShieldRepository repository;
 
     @Autowired
-    private WeaponService    service;
+    private ShieldService    service;
 
     /**
      * Default constructor.
      */
-    public ITWeaponServiceGetOneSingle() {
+    public ITShieldServiceGetOneSingle() {
         super();
     }
 
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
-        final Weapon data;
+        final Shield data;
         final Long id;
 
         id = getId();
@@ -97,14 +97,14 @@ public class ITWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals("Sword", data.getName());
+        Assertions.assertEquals("Shield", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Weapon> data;
+        final Optional<? extends Shield> data;
 
         data = service.getOne(-1l);
 
@@ -114,7 +114,7 @@ public class ITWeaponServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Requirement() {
-        final Weapon data;
+        final Shield data;
         final Long id;
 
         id = getId();
@@ -131,7 +131,7 @@ public class ITWeaponServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Stats() {
-        final Weapon data;
+        final Shield data;
         final Long id;
 
         id = getId();

@@ -14,10 +14,9 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.shield.service;
 
-import java.util.Optional;
-
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,19 +31,24 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
-import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
+import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
+import com.bernardomg.darksouls.explorer.item.shield.domain.request.DefaultShieldRequest;
+import com.bernardomg.darksouls.explorer.item.shield.domain.request.ShieldRequest;
+import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
+import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
+import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
+import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
 @ContextConfiguration(
-        initializers = { ITWeaponServiceGetOneSingle.Initializer.class })
-@DisplayName("Reading single weapon from id")
-@Sql({ "/db/queries/weapon/single.sql" })
-public class ITWeaponServiceGetOneSingle {
+        initializers = { ITShieldServiceGetAllPaged.Initializer.class })
+@DisplayName("Reading all the shields paginated")
+@Sql({ "/db/queries/shield/multiple.sql" })
+public class ITShieldServiceGetAllPaged {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -74,80 +78,55 @@ public class ITWeaponServiceGetOneSingle {
     }
 
     @Autowired
-    private WeaponRepository repository;
-
-    @Autowired
-    private WeaponService    service;
+    private ShieldService service;
 
     /**
      * Default constructor.
      */
-    public ITWeaponServiceGetOneSingle() {
+    public ITShieldServiceGetAllPaged() {
         super();
     }
 
     @Test
-    @DisplayName("Returns the correct data")
-    public void testGetOne_Data() {
-        final Weapon data;
-        final Long id;
+    @DisplayName("Returns a page")
+    public void testGetAll_Instance() {
+        final Iterable<? extends Shield> data;
+        final ShieldRequest request;
 
-        id = getId();
+        request = new DefaultShieldRequest();
 
-        data = service.getOne(id)
-            .get();
+        data = service.getAll(request, new DefaultPagination(0, 1),
+            new DisabledSort());
 
-        Assertions.assertEquals("Sword", data.getName());
-        Assertions.assertEquals("Description", data.getDescription());
+        Assertions.assertInstanceOf(PageIterable.class, data);
     }
 
     @Test
-    @DisplayName("Returns no data for a not existing id")
-    public void testGetOne_NotExisting() {
-        final Optional<? extends Weapon> data;
+    @DisplayName("Applies pagination size")
+    public void testGetAll_SingleResult() {
+        final Iterable<? extends Shield> data;
+        final ShieldRequest request;
 
-        data = service.getOne(-1l);
+        request = new DefaultShieldRequest();
 
-        Assertions.assertTrue(data.isEmpty());
+        data = service.getAll(request, new DefaultPagination(0, 1),
+            new DisabledSort());
+
+        Assertions.assertEquals(1, IterableUtils.size(data));
     }
 
     @Test
-    @DisplayName("Returns the correct requirements")
-    public void testGetOne_Requirement() {
-        final Weapon data;
-        final Long id;
+    @DisplayName("When unpaged returns all the data")
+    public void testGetAll_Unpaged() {
+        final Iterable<? extends Shield> data;
+        final ShieldRequest request;
 
-        id = getId();
+        request = new DefaultShieldRequest();
 
-        data = service.getOne(id)
-            .get();
+        data = service.getAll(request, new DisabledPagination(),
+            new DisabledSort());
 
-        Assertions.assertEquals(0, data.getDexterity());
-        Assertions.assertEquals(1, data.getFaith());
-        Assertions.assertEquals(2, data.getStrength());
-        Assertions.assertEquals(3, data.getIntelligence());
-    }
-
-    @Test
-    @DisplayName("Returns the correct requirements")
-    public void testGetOne_Stats() {
-        final Weapon data;
-        final Long id;
-
-        id = getId();
-
-        data = service.getOne(id)
-            .get();
-
-        Assertions.assertEquals(4, data.getDurability());
-        Assertions.assertEquals(5, data.getWeight());
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
+        Assertions.assertEquals(5, IterableUtils.size(data));
     }
 
 }

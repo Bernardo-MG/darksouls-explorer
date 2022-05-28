@@ -17,9 +17,8 @@
 package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -41,6 +39,7 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
@@ -90,16 +89,29 @@ public class ITWeaponServiceGetProgression {
     }
 
     @Autowired
-    private Neo4jClient   client;
+    private WeaponRepository repository;
 
     @Autowired
-    private WeaponService service;
+    private WeaponService    service;
 
     /**
      * Default constructor.
      */
     public ITWeaponServiceGetProgression() {
         super();
+    }
+
+    @Test
+    @DisplayName("Returns the levels progression")
+    public void testgetProgression_Data() {
+        final Optional<WeaponProgression> data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getProgression(id);
+
+        Assertions.assertTrue(data.isPresent());
     }
 
     @Test
@@ -313,16 +325,10 @@ public class ITWeaponServiceGetProgression {
     }
 
     private final Long getId() {
-        final Collection<Map<String, Object>> rows;
-
-        rows = client.query("MATCH (n:Weapon) RETURN n")
-            .fetch()
-            .all();
-
-        return (Long) rows.stream()
-            .findFirst()
-            .get()
-            .getOrDefault("id", 0l);
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

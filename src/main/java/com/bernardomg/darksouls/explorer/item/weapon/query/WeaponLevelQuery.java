@@ -44,7 +44,7 @@ public final class WeaponLevelQuery implements Query<WeaponLevel> {
           "MATCH" + System.lineSeparator()
         + "   (w)-[HAS_LEVEL]->(l:Level) " + System.lineSeparator()
         + "WHERE" + System.lineSeparator()
-        + "   id(w) = $id" + System.lineSeparator()
+        + "   l.target = $name" + System.lineSeparator()
         + "   AND (w:Weapon)" + System.lineSeparator()
         + "OPTIONAL MATCH " + System.lineSeparator()
         + "   (p:Level)-[NEXT]->(l) " + System.lineSeparator()

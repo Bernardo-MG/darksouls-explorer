@@ -14,12 +14,11 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.shield.service;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -41,7 +39,8 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
+import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
+import com.bernardomg.darksouls.explorer.item.shield.shield.ShieldRepository;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -49,10 +48,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(initializers = {
-        ITWeaponServiceGetProgressionShield.Initializer.class })
-@DisplayName("Reading weapon progression for shields")
-@Sql({ "/db/queries/weapon/single.sql" })
-public class ITWeaponServiceGetProgressionShield {
+        ITShieldServiceGetProgressionShield.Initializer.class })
+@DisplayName("Reading shield progression for shields")
+@Sql({ "/db/queries/shield/single.sql" })
+public class ITShieldServiceGetProgressionShield {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -90,16 +89,29 @@ public class ITWeaponServiceGetProgressionShield {
     }
 
     @Autowired
-    private Neo4jClient   client;
+    private ShieldRepository repository;
 
     @Autowired
-    private WeaponService service;
+    private ShieldService    service;
 
     /**
      * Default constructor.
      */
-    public ITWeaponServiceGetProgressionShield() {
+    public ITShieldServiceGetProgressionShield() {
         super();
+    }
+
+    @Test
+    @DisplayName("Returns the levels progression")
+    public void testgetProgression_Data() {
+        final Optional<WeaponProgression> data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getProgression(id);
+
+        Assertions.assertTrue(data.isPresent());
     }
 
     @Test
@@ -313,16 +325,10 @@ public class ITWeaponServiceGetProgressionShield {
     }
 
     private final Long getId() {
-        final Collection<Map<String, Object>> rows;
-
-        rows = client.query("MATCH (n:Shield) RETURN n")
-            .fetch()
-            .all();
-
-        return (Long) rows.stream()
-            .findFirst()
-            .get()
-            .getOrDefault("id", 0l);
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

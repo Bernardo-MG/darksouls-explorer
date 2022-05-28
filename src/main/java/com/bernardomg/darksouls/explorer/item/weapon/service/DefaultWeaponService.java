@@ -75,19 +75,26 @@ public final class DefaultWeaponService implements WeaponService {
     public final Optional<WeaponProgression> getProgression(final Long id) {
         final Iterable<WeaponLevel> levels;
         final Optional<WeaponProgression> result;
-
         final Map<String, Object> params;
+        final Optional<? extends Weapon> weapon;
 
-        params = new HashMap<>();
-        params.put("id", id);
+        weapon = getOne(id);
 
-        levels = queryExecutor.fetch(levelQuery::getStatement,
-            levelQuery::getOutput, params);
+        if (weapon.isPresent()) {
+            params = new HashMap<>();
+            params.put("name", weapon.get()
+                .getName());
 
-        if (IterableUtils.isEmpty(levels)) {
-            result = Optional.empty();
+            levels = queryExecutor.fetch(levelQuery::getStatement,
+                levelQuery::getOutput, params);
+
+            if (IterableUtils.isEmpty(levels)) {
+                result = Optional.empty();
+            } else {
+                result = Optional.of(toWeaponProgression(levels));
+            }
         } else {
-            result = Optional.of(toWeaponProgression(levels));
+            result = Optional.empty();
         }
 
         return result;

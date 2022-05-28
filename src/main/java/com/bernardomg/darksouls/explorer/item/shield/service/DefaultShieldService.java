@@ -23,8 +23,8 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.shield.domain.PersistentShield;
 import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.ShieldRequest;
+import com.bernardomg.darksouls.explorer.item.shield.query.ShieldLevelQuery;
 import com.bernardomg.darksouls.explorer.item.shield.shield.ShieldRepository;
-import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -37,7 +37,7 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 @Service
 public final class DefaultShieldService implements ShieldService {
 
-    private final Query<WeaponLevel> levelQuery = new WeaponLevelQuery();
+    private final Query<WeaponLevel> levelQuery = new ShieldLevelQuery();
 
     private final QueryExecutor      queryExecutor;
 
@@ -75,19 +75,26 @@ public final class DefaultShieldService implements ShieldService {
     public final Optional<WeaponProgression> getProgression(final Long id) {
         final Iterable<WeaponLevel> levels;
         final Optional<WeaponProgression> result;
-
         final Map<String, Object> params;
+        final Optional<? extends Shield> shield;
 
-        params = new HashMap<>();
-        params.put("id", id);
+        shield = getOne(id);
 
-        levels = queryExecutor.fetch(levelQuery::getStatement,
-            levelQuery::getOutput, params);
+        if (shield.isPresent()) {
+            params = new HashMap<>();
+            params.put("name", shield.get()
+                .getName());
 
-        if (IterableUtils.isEmpty(levels)) {
-            result = Optional.empty();
+            levels = queryExecutor.fetch(levelQuery::getStatement,
+                levelQuery::getOutput, params);
+
+            if (IterableUtils.isEmpty(levels)) {
+                result = Optional.empty();
+            } else {
+                result = Optional.of(toWeaponProgression(levels));
+            }
         } else {
-            result = Optional.of(toWeaponProgression(levels));
+            result = Optional.empty();
         }
 
         return result;
