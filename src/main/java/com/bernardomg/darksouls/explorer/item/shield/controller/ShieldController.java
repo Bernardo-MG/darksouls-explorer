@@ -18,7 +18,7 @@ import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
 @RestController
-@RequestMapping("/catalysts")
+@RequestMapping("/shields")
 public class ShieldController {
 
     private final ShieldService service;
