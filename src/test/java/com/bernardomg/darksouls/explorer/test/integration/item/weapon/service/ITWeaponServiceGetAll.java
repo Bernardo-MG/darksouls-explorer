@@ -112,7 +112,7 @@ public class ITWeaponServiceGetAll {
             .iterator()
             .next();
 
-        Assertions.assertEquals("Weapon name", data.getName());
+        Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 

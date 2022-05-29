@@ -106,14 +106,14 @@ public class ITWeaponServiceGetAllByName {
         final DefaultWeaponRequest request;
 
         request = new DefaultWeaponRequest();
-        request.setName("Weapon name");
+        request.setName("Sword");
 
         data = service
             .getAll(request, new DisabledPagination(), new DisabledSort())
             .iterator()
             .next();
 
-        Assertions.assertEquals("Weapon name", data.getName());
+        Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 
