@@ -18,8 +18,8 @@ public final class ImmutableWeaponProgression implements WeaponProgression {
     public ImmutableWeaponProgression() {
         super();
 
-        this.weapon = "";
-        this.paths = Collections.emptyList();
+        weapon = "";
+        paths = Collections.emptyList();
     }
 
     public ImmutableWeaponProgression(@NonNull final String weapon,

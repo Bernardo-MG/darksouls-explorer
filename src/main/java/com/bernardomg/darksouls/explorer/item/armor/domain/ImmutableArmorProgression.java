@@ -18,8 +18,8 @@ public final class ImmutableArmorProgression implements ArmorProgression {
     public ImmutableArmorProgression() {
         super();
 
-        this.armor = "";
-        this.levels = Collections.emptyList();
+        armor = "";
+        levels = Collections.emptyList();
     }
 
     public ImmutableArmorProgression(@NonNull final String armor,
