@@ -17,7 +17,10 @@ import com.bernardomg.darksouls.explorer.response.model.DefaultResponse;
 import com.bernardomg.darksouls.explorer.response.model.PaginatedResponse;
 import com.bernardomg.darksouls.explorer.response.model.Response;
 
+import lombok.extern.slf4j.Slf4j;
+
 @ControllerAdvice("com.bernardomg.darksouls.explorer")
+@Slf4j
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
     public ResponseAdvice() {
@@ -33,6 +36,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
             final ServerHttpResponse response) {
         final Object result;
 
+        log.trace("Received {} as response body", body);
         if (body instanceof ResponseEntity<?>) {
             // Avoid wrapping responses
             result = body;
@@ -43,6 +47,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
             result = toPaginatedResponse((Page<?>) body);
         } else if (body instanceof PageIterable<?>) {
             result = toPaginatedResponse((PageIterable<?>) body);
+        } else if (body == null) {
+            log.debug("Received null as response body");
+            result = new DefaultResponse<>();
         } else {
             result = new DefaultResponse<>(body);
         }
