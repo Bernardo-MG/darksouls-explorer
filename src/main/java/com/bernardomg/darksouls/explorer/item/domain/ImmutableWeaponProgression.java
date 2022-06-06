@@ -1,6 +1,8 @@
 
 package com.bernardomg.darksouls.explorer.item.domain;
 
+import java.util.Collections;
+
 import lombok.Data;
 import lombok.NonNull;
 
@@ -12,6 +14,13 @@ public final class ImmutableWeaponProgression implements WeaponProgression {
 
     @NonNull
     private final String                          weapon;
+
+    public ImmutableWeaponProgression() {
+        super();
+
+        this.weapon = "";
+        this.paths = Collections.emptyList();
+    }
 
     public ImmutableWeaponProgression(@NonNull final String weapon,
             @NonNull final Iterable<WeaponProgressionPath> paths) {

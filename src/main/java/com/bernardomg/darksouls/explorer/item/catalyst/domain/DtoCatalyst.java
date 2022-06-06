@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.talisman.domain;
+package com.bernardomg.darksouls.explorer.item.catalyst.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public final class ImmutableTalisman implements Talisman {
+public final class DtoCatalyst implements Catalyst {
 
     @NonNull
     private String  description;

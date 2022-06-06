@@ -3,6 +3,7 @@ package com.bernardomg.darksouls.explorer.item.weapon.controller;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.request.DefaultWeaponRequest;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
@@ -46,8 +49,17 @@ public class WeaponController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Weapon readOne(@PathVariable("id") final Long id) {
-        return service.getOne(id)
-            .orElse(null);
+        final Optional<? extends Weapon> read;
+        final Weapon result;
+
+        read = service.getOne(id);
+        if (read.isPresent()) {
+            result = read.get();
+        } else {
+            result = new DtoWeapon();
+        }
+
+        return result;
     }
 
     @GetMapping(path = "/{id}/progression",
@@ -55,7 +67,7 @@ public class WeaponController {
     public WeaponProgression
             readProgressions(@PathVariable("id") final Long id) {
         return service.getProgression(id)
-            .orElse(null);
+            .orElse(new ImmutableWeaponProgression());
     }
 
 }

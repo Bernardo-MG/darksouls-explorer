@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.item.ammunition.controller;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
+import com.bernardomg.darksouls.explorer.item.ammunition.domain.DtoAmmunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.service.AmmunitionService;
 import com.bernardomg.darksouls.explorer.item.armor.domain.request.DefaultArmorRequest;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -42,8 +44,17 @@ public class AmmunitionController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Ammunition readOne(@PathVariable("id") final Long id) {
-        return service.getOne(id)
-            .orElse(null);
+        final Optional<? extends Ammunition> read;
+        final Ammunition result;
+
+        read = service.getOne(id);
+        if (read.isPresent()) {
+            result = read.get();
+        } else {
+            result = new DtoAmmunition();
+        }
+
+        return result;
     }
 
 }

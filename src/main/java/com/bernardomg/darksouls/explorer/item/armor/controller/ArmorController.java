@@ -2,6 +2,7 @@
 package com.bernardomg.darksouls.explorer.item.armor.controller;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
+import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
+import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.request.DefaultArmorRequest;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -45,13 +48,22 @@ public class ArmorController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ArmorProgression readArmorLevels(@PathVariable("id") final Long id) {
         return service.getProgression(id)
-            .orElse(null);
+            .orElse(new ImmutableArmorProgression());
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Armor readOne(@PathVariable("id") final Long id) {
-        return service.getOne(id)
-            .orElse(null);
+        final Optional<? extends Armor> read;
+        final Armor result;
+
+        read = service.getOne(id);
+        if (read.isPresent()) {
+            result = read.get();
+        } else {
+            result = new DtoArmor();
+        }
+
+        return result;
     }
 
 }

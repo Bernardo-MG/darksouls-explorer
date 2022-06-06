@@ -3,6 +3,7 @@ package com.bernardomg.darksouls.explorer.item.catalyst.controller;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.Catalyst;
+import com.bernardomg.darksouls.explorer.item.catalyst.domain.DtoCatalyst;
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.request.DefaultCatalystRequest;
 import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -45,8 +47,17 @@ public class CatalystsController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Catalyst readOne(@PathVariable("id") final Long id) {
-        return service.getOne(id)
-            .orElse(null);
+        final Optional<? extends Catalyst> read;
+        final Catalyst result;
+
+        read = service.getOne(id);
+        if (read.isPresent()) {
+            result = read.get();
+        } else {
+            result = new DtoCatalyst();
+        }
+
+        return result;
     }
 
 }
