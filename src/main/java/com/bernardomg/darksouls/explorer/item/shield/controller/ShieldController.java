@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.shield.domain.DtoShield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
+import com.bernardomg.darksouls.explorer.item.shield.domain.DtoSpell;
+import com.bernardomg.darksouls.explorer.item.shield.domain.Spell;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.DefaultShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -34,7 +34,7 @@ public class ShieldController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Shield> read(
+    public Iterable<? extends Spell> read(
             @RequestParam(name = "name", defaultValue = "") final String name,
             @RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
@@ -48,15 +48,15 @@ public class ShieldController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Shield readOne(@PathVariable("id") final Long id) {
-        final Optional<? extends Shield> read;
-        final Shield result;
+    public Spell readOne(@PathVariable("id") final Long id) {
+        final Optional<? extends Spell> read;
+        final Spell result;
 
         read = service.getOne(id);
         if (read.isPresent()) {
             result = read.get();
         } else {
-            result = new DtoShield();
+            result = new DtoSpell();
         }
 
         return result;

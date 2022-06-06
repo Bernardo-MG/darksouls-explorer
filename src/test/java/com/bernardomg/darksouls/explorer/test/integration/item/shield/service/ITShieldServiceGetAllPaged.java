@@ -31,7 +31,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
+import com.bernardomg.darksouls.explorer.item.shield.domain.Spell;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.DefaultShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.ShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
@@ -90,7 +90,7 @@ public class ITShieldServiceGetAllPaged {
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<? extends Shield> data;
+        final Iterable<? extends Spell> data;
         final ShieldRequest request;
 
         request = new DefaultShieldRequest();
@@ -104,7 +104,7 @@ public class ITShieldServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<? extends Shield> data;
+        final Iterable<? extends Spell> data;
         final ShieldRequest request;
 
         request = new DefaultShieldRequest();
@@ -118,7 +118,7 @@ public class ITShieldServiceGetAllPaged {
     @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
-        final Iterable<? extends Shield> data;
+        final Iterable<? extends Spell> data;
         final ShieldRequest request;
 
         request = new DefaultShieldRequest();

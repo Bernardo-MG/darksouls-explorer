@@ -7,7 +7,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public final class DtoShield implements Shield {
+public final class DtoSpell implements Spell {
 
     @NonNull
     private String  description;

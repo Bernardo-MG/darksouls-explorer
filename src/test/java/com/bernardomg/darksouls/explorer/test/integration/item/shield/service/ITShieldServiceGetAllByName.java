@@ -31,7 +31,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
+import com.bernardomg.darksouls.explorer.item.shield.domain.Spell;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.DefaultShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
@@ -87,7 +87,7 @@ public class ITShieldServiceGetAllByName {
     @Test
     @DisplayName("Returns all the data when searching by full name")
     public void testGetByName_FullName_Count() {
-        final Iterable<? extends Shield> data;
+        final Iterable<? extends Spell> data;
         final DefaultShieldRequest request;
 
         request = new DefaultShieldRequest();
@@ -102,7 +102,7 @@ public class ITShieldServiceGetAllByName {
     @Test
     @DisplayName("Returns the correct data when searching by full name")
     public void testGetByName_FullName_Data() {
-        final Shield data;
+        final Spell data;
         final DefaultShieldRequest request;
 
         request = new DefaultShieldRequest();
@@ -120,7 +120,7 @@ public class ITShieldServiceGetAllByName {
     @Test
     @DisplayName("Returns all the data when searching by partial name")
     public void testGetByName_PartialName_Count() {
-        final Iterable<? extends Shield> data;
+        final Iterable<? extends Spell> data;
         final DefaultShieldRequest request;
 
         request = new DefaultShieldRequest();

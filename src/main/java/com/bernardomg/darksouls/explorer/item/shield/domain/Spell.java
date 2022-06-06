@@ -1,7 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.item.shield.domain;
 
-public interface Shield {
+public interface Spell {
 
     public String getDescription();
 
