@@ -31,7 +31,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.shield.domain.Spell;
+import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.DefaultShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.ShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
@@ -88,7 +88,7 @@ public class ITShieldServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends Spell> data;
+        final Iterable<? extends Shield> data;
         final ShieldRequest request;
 
         request = new DefaultShieldRequest();
@@ -102,7 +102,7 @@ public class ITShieldServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final Spell data;
+        final Shield data;
         final ShieldRequest request;
 
         request = new DefaultShieldRequest();

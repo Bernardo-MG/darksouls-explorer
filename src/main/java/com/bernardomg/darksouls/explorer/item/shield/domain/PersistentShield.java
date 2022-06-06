@@ -14,9 +14,9 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "Spell")
-@Table(name = "spells")
-public final class PersistentSpell implements Spell {
+@Entity(name = "Shield")
+@Table(name = "shields")
+public final class PersistentShield implements Shield {
 
     @NonNull
     @Column(name = "description", nullable = false)

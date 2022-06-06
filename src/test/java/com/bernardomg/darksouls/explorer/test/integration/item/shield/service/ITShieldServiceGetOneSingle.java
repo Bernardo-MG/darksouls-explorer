@@ -32,9 +32,9 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.shield.domain.Spell;
+import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
+import com.bernardomg.darksouls.explorer.item.shield.repository.ShieldRepository;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
-import com.bernardomg.darksouls.explorer.item.shield.shield.ShieldRepository;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -89,7 +89,7 @@ public class ITShieldServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
-        final Spell data;
+        final Shield data;
         final Long id;
 
         id = getId();
@@ -104,7 +104,7 @@ public class ITShieldServiceGetOneSingle {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Spell> data;
+        final Optional<? extends Shield> data;
 
         data = service.getOne(-1l);
 
@@ -114,7 +114,7 @@ public class ITShieldServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Requirement() {
-        final Spell data;
+        final Shield data;
         final Long id;
 
         id = getId();
@@ -131,7 +131,7 @@ public class ITShieldServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Stats() {
-        final Spell data;
+        final Shield data;
         final Long id;
 
         id = getId();

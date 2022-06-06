@@ -20,11 +20,11 @@ import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionP
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.shield.domain.PersistentSpell;
-import com.bernardomg.darksouls.explorer.item.shield.domain.Spell;
+import com.bernardomg.darksouls.explorer.item.shield.domain.PersistentShield;
+import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
 import com.bernardomg.darksouls.explorer.item.shield.domain.request.ShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.query.ShieldLevelQuery;
-import com.bernardomg.darksouls.explorer.item.shield.shield.ShieldRepository;
+import com.bernardomg.darksouls.explorer.item.shield.repository.ShieldRepository;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -53,11 +53,11 @@ public final class DefaultShieldService implements ShieldService {
     }
 
     @Override
-    public final PageIterable<? extends Spell> getAll(
+    public final PageIterable<? extends Shield> getAll(
             final ShieldRequest request, final Pagination pagination,
             final Sort sort) {
         final Pageable pageable;
-        final Page<PersistentSpell> page;
+        final Page<PersistentShield> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
@@ -67,7 +67,7 @@ public final class DefaultShieldService implements ShieldService {
     }
 
     @Override
-    public final Optional<? extends Spell> getOne(final Long id) {
+    public final Optional<? extends Shield> getOne(final Long id) {
         return repository.findById(id);
     }
 
@@ -76,7 +76,7 @@ public final class DefaultShieldService implements ShieldService {
         final Iterable<WeaponLevel> levels;
         final Optional<WeaponProgression> result;
         final Map<String, Object> params;
-        final Optional<? extends Spell> shield;
+        final Optional<? extends Shield> shield;
 
         shield = getOne(id);
 
