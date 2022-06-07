@@ -10,6 +10,9 @@ import lombok.NonNull;
 public final class DtoWeaponLevel implements WeaponLevel {
 
     @NonNull
+    private Integer critical;
+
+    @NonNull
     private String  dexterityBonus;
 
     @NonNull
@@ -50,6 +53,9 @@ public final class DtoWeaponLevel implements WeaponLevel {
 
     @NonNull
     private Float   physicalReduction;
+
+    @NonNull
+    private Integer stability;
 
     @NonNull
     private String  strengthBonus;

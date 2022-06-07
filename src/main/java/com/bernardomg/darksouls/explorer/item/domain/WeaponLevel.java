@@ -3,6 +3,8 @@ package com.bernardomg.darksouls.explorer.item.domain;
 
 public interface WeaponLevel {
 
+    public Integer getCritical();
+
     public String getDexterityBonus();
 
     public String getFaithBonus();
@@ -30,6 +32,8 @@ public interface WeaponLevel {
     public Integer getPhysicalDamage();
 
     public Float getPhysicalReduction();
+
+    public Integer getStability();
 
     public String getStrengthBonus();
 
