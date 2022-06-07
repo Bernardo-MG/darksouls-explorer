@@ -32,8 +32,6 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.DefaultArmorRequest;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
@@ -88,12 +86,8 @@ public class ITArmorServiceGetAll {
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
         final Iterable<? extends Armor> data;
-        final ArmorRequest request;
 
-        request = new DefaultArmorRequest();
-
-        data = service.getAll(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.getAll(new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -102,12 +96,8 @@ public class ITArmorServiceGetAll {
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
         final Armor data;
-        final ArmorRequest request;
 
-        request = new DefaultArmorRequest();
-
-        data = service
-            .getAll(request, new DisabledPagination(), new DisabledSort())
+        data = service.getAll(new DisabledPagination(), new DisabledSort())
             .iterator()
             .next();
 

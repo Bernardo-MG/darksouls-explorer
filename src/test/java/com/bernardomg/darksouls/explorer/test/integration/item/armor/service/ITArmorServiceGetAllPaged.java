@@ -32,8 +32,6 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.DefaultArmorRequest;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
@@ -91,12 +89,8 @@ public class ITArmorServiceGetAllPaged {
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
         final Iterable<? extends Armor> data;
-        final ArmorRequest request;
 
-        request = new DefaultArmorRequest();
-
-        data = service.getAll(request, new DefaultPagination(0, 1),
-            new DisabledSort());
+        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
 
         Assertions.assertInstanceOf(PageIterable.class, data);
     }
@@ -105,12 +99,8 @@ public class ITArmorServiceGetAllPaged {
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
         final Iterable<? extends Armor> data;
-        final ArmorRequest request;
 
-        request = new DefaultArmorRequest();
-
-        data = service.getAll(request, new DefaultPagination(0, 1),
-            new DisabledSort());
+        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -119,12 +109,8 @@ public class ITArmorServiceGetAllPaged {
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
         final Iterable<? extends Armor> data;
-        final ArmorRequest request;
 
-        request = new DefaultArmorRequest();
-
-        data = service.getAll(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.getAll(new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }

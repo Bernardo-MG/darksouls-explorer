@@ -32,8 +32,6 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.request.DefaultWeaponRequest;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.request.WeaponRequest;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
@@ -89,12 +87,8 @@ public class ITWeaponServiceGetAll {
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
         final Iterable<? extends Weapon> data;
-        final WeaponRequest request;
 
-        request = new DefaultWeaponRequest();
-
-        data = service.getAll(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.getAll(new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -103,12 +97,8 @@ public class ITWeaponServiceGetAll {
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
         final Weapon data;
-        final WeaponRequest request;
 
-        request = new DefaultWeaponRequest();
-
-        data = service
-            .getAll(request, new DisabledPagination(), new DisabledSort())
+        data = service.getAll(new DisabledPagination(), new DisabledSort())
             .iterator()
             .next();
 

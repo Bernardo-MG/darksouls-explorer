@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.catalyst.domain.request.DefaultCatalystRequest;
 import com.bernardomg.darksouls.explorer.item.talisman.domain.ImmutableTalisman;
 import com.bernardomg.darksouls.explorer.item.talisman.domain.Talisman;
 import com.bernardomg.darksouls.explorer.item.talisman.service.TalismanService;
@@ -32,17 +31,11 @@ public class TalismanController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Talisman> read(
-            @RequestParam(name = "name", defaultValue = "") final String name,
-            @RequestParam(name = "selectors",
+    public Iterable<? extends Talisman>
+            read(@RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
-            final Pagination pagination, final Sort sort) {
-        final DefaultCatalystRequest request;
-
-        request = new DefaultCatalystRequest();
-        request.setName(name);
-
-        return service.getAll(request, pagination, sort);
+                    final Pagination pagination, final Sort sort) {
+        return service.getAll(pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

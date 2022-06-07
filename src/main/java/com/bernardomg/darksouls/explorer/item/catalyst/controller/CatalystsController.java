@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.Catalyst;
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.DtoCatalyst;
-import com.bernardomg.darksouls.explorer.item.catalyst.domain.request.DefaultCatalystRequest;
 import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
@@ -32,17 +31,11 @@ public class CatalystsController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Catalyst> read(
-            @RequestParam(name = "name", defaultValue = "") final String name,
-            @RequestParam(name = "selectors",
+    public Iterable<? extends Catalyst>
+            read(@RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
-            final Pagination pagination, final Sort sort) {
-        final DefaultCatalystRequest request;
-
-        request = new DefaultCatalystRequest();
-        request.setName(name);
-
-        return service.getAll(request, pagination, sort);
+                    final Pagination pagination, final Sort sort) {
+        return service.getAll(pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

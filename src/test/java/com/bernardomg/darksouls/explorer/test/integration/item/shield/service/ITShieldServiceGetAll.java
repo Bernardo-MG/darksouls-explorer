@@ -32,8 +32,6 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.request.DefaultShieldRequest;
-import com.bernardomg.darksouls.explorer.item.shield.domain.request.ShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
@@ -89,12 +87,8 @@ public class ITShieldServiceGetAll {
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
         final Iterable<? extends Shield> data;
-        final ShieldRequest request;
 
-        request = new DefaultShieldRequest();
-
-        data = service.getAll(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.getAll(new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -103,12 +97,8 @@ public class ITShieldServiceGetAll {
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
         final Shield data;
-        final ShieldRequest request;
 
-        request = new DefaultShieldRequest();
-
-        data = service
-            .getAll(request, new DisabledPagination(), new DisabledSort())
+        data = service.getAll(new DisabledPagination(), new DisabledSort())
             .iterator()
             .next();
 

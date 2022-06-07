@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
 import com.bernardomg.darksouls.explorer.item.key.domain.KeyItem;
 import com.bernardomg.darksouls.explorer.item.key.domain.PersistentKeyItem;
 import com.bernardomg.darksouls.explorer.item.key.repository.KeyItemRepository;
@@ -31,9 +30,8 @@ public final class DefaultKeyItemService implements KeyItemService {
     }
 
     @Override
-    public final PageIterable<? extends KeyItem> getAll(
-            final ArmorRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends KeyItem>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentKeyItem> page;
 

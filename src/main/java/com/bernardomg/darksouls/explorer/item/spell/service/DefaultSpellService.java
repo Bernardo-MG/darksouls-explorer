@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
 import com.bernardomg.darksouls.explorer.item.spell.domain.PersistentSpell;
 import com.bernardomg.darksouls.explorer.item.spell.domain.Spell;
 import com.bernardomg.darksouls.explorer.item.spell.repository.SpellRepository;
@@ -31,9 +30,8 @@ public final class DefaultSpellService implements SpellService {
     }
 
     @Override
-    public final PageIterable<? extends Spell> getAll(
-            final ArmorRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends Spell>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentSpell> page;
 

@@ -22,7 +22,6 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.request.WeaponRequest;
 import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
@@ -53,9 +52,8 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final PageIterable<? extends Weapon> getAll(
-            final WeaponRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends Weapon>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentWeapon> page;
 

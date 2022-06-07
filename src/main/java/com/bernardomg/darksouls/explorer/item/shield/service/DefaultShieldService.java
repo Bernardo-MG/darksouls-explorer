@@ -22,7 +22,6 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.shield.domain.PersistentShield;
 import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.request.ShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.query.ShieldLevelQuery;
 import com.bernardomg.darksouls.explorer.item.shield.repository.ShieldRepository;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
@@ -53,9 +52,8 @@ public final class DefaultShieldService implements ShieldService {
     }
 
     @Override
-    public final PageIterable<? extends Shield> getAll(
-            final ShieldRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends Shield>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentShield> page;
 

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.PersistentAmmunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.repository.AmmunitionRepository;
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
@@ -31,9 +30,8 @@ public final class DefaultAmmunitionService implements AmmunitionService {
     }
 
     @Override
-    public final PageIterable<? extends Ammunition> getAll(
-            final ArmorRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends Ammunition>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentAmmunition> page;
 

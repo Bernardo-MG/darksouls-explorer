@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.catalyst.domain.request.CatalystRequest;
 import com.bernardomg.darksouls.explorer.item.talisman.domain.PersistentTalisman;
 import com.bernardomg.darksouls.explorer.item.talisman.domain.Talisman;
 import com.bernardomg.darksouls.explorer.item.talisman.repository.TalismanRepository;
@@ -31,9 +30,8 @@ public final class DefaultTalismanService implements TalismanService {
     }
 
     @Override
-    public final PageIterable<? extends Talisman> getAll(
-            final CatalystRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends Talisman>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentTalisman> page;
 

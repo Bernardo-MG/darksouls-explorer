@@ -8,10 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.DefaultArmorRequest;
 import com.bernardomg.darksouls.explorer.item.key.domain.DtoKeyItem;
 import com.bernardomg.darksouls.explorer.item.key.domain.KeyItem;
 import com.bernardomg.darksouls.explorer.item.key.service.KeyItemService;
@@ -31,15 +29,9 @@ public class KeyItemController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends KeyItem> read(
-            @RequestParam(name = "name", defaultValue = "") final String name,
-            final Pagination pagination, final Sort sort) {
-        final DefaultArmorRequest request;
-
-        request = new DefaultArmorRequest();
-        request.setName(name);
-
-        return service.getAll(request, pagination, sort);
+    public Iterable<? extends KeyItem> read(final Pagination pagination,
+            final Sort sort) {
+        return service.getAll(pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

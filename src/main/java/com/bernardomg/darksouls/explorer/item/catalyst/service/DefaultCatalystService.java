@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.Catalyst;
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.PersistentCatalyst;
-import com.bernardomg.darksouls.explorer.item.catalyst.domain.request.CatalystRequest;
 import com.bernardomg.darksouls.explorer.item.catalyst.repository.CatalystRepository;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -31,9 +30,8 @@ public final class DefaultCatalystService implements CatalystService {
     }
 
     @Override
-    public final PageIterable<? extends Catalyst> getAll(
-            final CatalystRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends Catalyst>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentCatalyst> page;
 

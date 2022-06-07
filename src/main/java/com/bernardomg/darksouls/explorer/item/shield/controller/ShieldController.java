@@ -16,7 +16,6 @@ import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.shield.domain.DtoShield;
 import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.request.DefaultShieldRequest;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
@@ -34,17 +33,11 @@ public class ShieldController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Shield> read(
-            @RequestParam(name = "name", defaultValue = "") final String name,
-            @RequestParam(name = "selectors",
+    public Iterable<? extends Shield>
+            read(@RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
-            final Pagination pagination, final Sort sort) {
-        final DefaultShieldRequest request;
-
-        request = new DefaultShieldRequest();
-        request.setName(name);
-
-        return service.getAll(request, pagination, sort);
+                    final Pagination pagination, final Sort sort) {
+        return service.getAll(pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

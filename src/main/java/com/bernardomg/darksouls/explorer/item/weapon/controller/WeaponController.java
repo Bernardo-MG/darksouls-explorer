@@ -16,7 +16,6 @@ import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.request.DefaultWeaponRequest;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
@@ -34,17 +33,11 @@ public class WeaponController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Weapon> read(
-            @RequestParam(name = "name", defaultValue = "") final String name,
-            @RequestParam(name = "selectors",
+    public Iterable<? extends Weapon>
+            read(@RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
-            final Pagination pagination, final Sort sort) {
-        final DefaultWeaponRequest request;
-
-        request = new DefaultWeaponRequest();
-        request.setName(name);
-
-        return service.getAll(request, pagination, sort);
+                    final Pagination pagination, final Sort sort) {
+        return service.getAll(pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

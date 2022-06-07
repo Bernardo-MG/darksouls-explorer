@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
 import com.bernardomg.darksouls.explorer.item.misc.domain.MiscItem;
 import com.bernardomg.darksouls.explorer.item.misc.domain.PersistentMiscItem;
 import com.bernardomg.darksouls.explorer.item.misc.repository.MiscItemRepository;
@@ -31,9 +30,8 @@ public final class DefaultMiscItemService implements MiscItemService {
     }
 
     @Override
-    public final PageIterable<? extends MiscItem> getAll(
-            final ArmorRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends MiscItem>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentMiscItem> page;
 

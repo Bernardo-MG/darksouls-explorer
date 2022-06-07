@@ -17,7 +17,6 @@ import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmor;
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
 import com.bernardomg.darksouls.explorer.item.armor.query.ArmorLevelQuery;
 import com.bernardomg.darksouls.explorer.item.armor.repository.ArmorRepository;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
@@ -48,9 +47,8 @@ public final class DefaultArmorService implements ArmorService {
     }
 
     @Override
-    public final PageIterable<? extends Armor> getAll(
-            final ArmorRequest request, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<? extends Armor>
+            getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<PersistentArmor> page;
 
