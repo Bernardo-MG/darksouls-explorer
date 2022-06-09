@@ -12,7 +12,7 @@ import com.bernardomg.darksouls.explorer.item.domain.PersistentWeaponLevel;
 public interface WeaponLevelRepository
         extends JpaRepository<PersistentWeaponLevel, Long> {
 
-    @Query("SELECT l FROM WeaponLevel l WHERE l.name IN :names")
+    @Query("SELECT l FROM WeaponLevel l WHERE l.name IN :names ORDER BY l.path ASC, l.level ASC")
     public Collection<PersistentWeaponLevel>
             findAllForNames(@Param("names") final Iterable<String> names);
 

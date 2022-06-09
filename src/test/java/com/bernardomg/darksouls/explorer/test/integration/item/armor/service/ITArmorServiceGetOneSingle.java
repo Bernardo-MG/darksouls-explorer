@@ -97,7 +97,7 @@ public class ITArmorServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals("Armor name", data.getName());
+        Assertions.assertEquals("Chain Armor", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 

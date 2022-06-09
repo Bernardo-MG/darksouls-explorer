@@ -1,8 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.armor.service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -17,12 +15,11 @@ import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmor;
-import com.bernardomg.darksouls.explorer.item.armor.query.ArmorLevelQuery;
+import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmorLevel;
+import com.bernardomg.darksouls.explorer.item.armor.repository.ArmorLevelRepository;
 import com.bernardomg.darksouls.explorer.item.armor.repository.ArmorRepository;
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
 
@@ -31,19 +28,17 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 @Service
 public final class DefaultArmorService implements ArmorService {
 
-    private final Query<ArmorLevel> armorLevelQuery = new ArmorLevelQuery();
+    private final ArmorLevelRepository levelRepository;
 
-    private final QueryExecutor     queryExecutor;
-
-    private final ArmorRepository   repository;
+    private final ArmorRepository      repository;
 
     @Autowired
     public DefaultArmorService(final ArmorRepository repo,
-            final QueryExecutor queryExec) {
+            final ArmorLevelRepository levelRepo) {
         super();
 
         repository = Objects.requireNonNull(repo);
-        queryExecutor = Objects.requireNonNull(queryExec);
+        levelRepository = Objects.requireNonNull(levelRepo);
     }
 
     @Override
@@ -66,31 +61,34 @@ public final class DefaultArmorService implements ArmorService {
 
     @Override
     public final Optional<ArmorProgression> getProgression(final Long id) {
-        final Iterable<ArmorLevel> levels;
+        final Iterable<PersistentArmorLevel> levels;
         final Optional<ArmorProgression> result;
-        final Map<String, Object> params;
+        final Optional<? extends Armor> armor;
 
-        params = new HashMap<>();
-        params.put("id", id);
+        armor = getOne(id);
 
-        levels = queryExecutor.fetch(armorLevelQuery::getStatement,
-            armorLevelQuery::getOutput, params);
+        if (armor.isPresent()) {
+            levels = levelRepository.findAllByName(armor.get()
+                .getName());
 
-        if (IterableUtils.isEmpty(levels)) {
-            result = Optional.empty();
+            if (IterableUtils.isEmpty(levels)) {
+                result = Optional.empty();
+            } else {
+                result = Optional.of(toArmorProgression(levels));
+            }
         } else {
-            result = Optional.of(toArmorProgression(levels));
+            result = Optional.empty();
         }
 
         return result;
     }
 
     private final ArmorProgression
-            toArmorProgression(final Iterable<ArmorLevel> levels) {
+            toArmorProgression(final Iterable<? extends ArmorLevel> levels) {
         final String name;
 
         name = StreamSupport.stream(levels.spliterator(), false)
-            .map(ArmorLevel::getArmor)
+            .map(ArmorLevel::getName)
             .findAny()
             .orElse("");
 

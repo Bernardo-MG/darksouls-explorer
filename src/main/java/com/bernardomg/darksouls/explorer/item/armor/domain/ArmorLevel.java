@@ -3,8 +3,6 @@ package com.bernardomg.darksouls.explorer.item.armor.domain;
 
 public interface ArmorLevel {
 
-    public String getArmor();
-
     public Float getBleedProtection();
 
     public Float getCurseProtection();
@@ -16,6 +14,8 @@ public interface ArmorLevel {
     public Float getLightningProtection();
 
     public Float getMagicProtection();
+
+    public String getName();
 
     public Float getPoisonProtection();
 

@@ -101,7 +101,7 @@ public class ITArmorServiceGetAll {
             .iterator()
             .next();
 
-        Assertions.assertEquals("Armor name", data.getName());
+        Assertions.assertEquals("Chain Armor", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 

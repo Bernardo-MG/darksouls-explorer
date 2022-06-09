@@ -393,9 +393,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: path
-                  type: varchar(50)
-              - column:
                   name: level
                   type: int
               - column:

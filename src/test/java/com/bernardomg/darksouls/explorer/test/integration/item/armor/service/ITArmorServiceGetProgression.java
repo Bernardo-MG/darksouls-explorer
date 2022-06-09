@@ -16,65 +16,31 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.item.armor.service;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.neo4j.core.Neo4jClient;
-import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.Neo4jContainer;
-import org.testcontainers.junit.jupiter.Container;
+import org.springframework.test.context.jdbc.Sql;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
+import com.bernardomg.darksouls.explorer.item.armor.repository.ArmorRepository;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
-import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
-import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITArmorServiceGetProgression.Initializer.class })
 @DisplayName("Reading armor progression")
+@Sql({ "/db/queries/armor/single.sql", "/db/queries/armor/armor_2_levels.sql" })
 public class ITArmorServiceGetProgression {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
-                .initialize(configurableApplicationContext);
-        }
-    }
-
-    @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
-        .getNeo4jContainer();
-
-    @BeforeAll
-    private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList("classpath:db/queries/armor/armor_2_levels.cypher"));
-    }
+    @Autowired
+    private ArmorRepository repository;
 
     @Autowired
-    private Neo4jClient  client;
-
-    @Autowired
-    private ArmorService service;
+    private ArmorService    service;
 
     /**
      * Default constructor.
@@ -85,9 +51,9 @@ public class ITArmorServiceGetProgression {
 
     @Test
     @DisplayName("Returns the levels in order")
-    public void testgetProgression_LevelsOrder() {
+    public void testGetProgression_LevelsOrder() {
         final ArmorProgression data;
-        final Iterator<ArmorLevel> levels;
+        final Iterator<? extends ArmorLevel> levels;
         final Long id;
         ArmorLevel level;
 
@@ -108,9 +74,9 @@ public class ITArmorServiceGetProgression {
 
     @Test
     @DisplayName("Returns the levels protections")
-    public void testgetProgression_LevelsProtection() {
+    public void testGetProgression_LevelsProtection() {
         final ArmorProgression data;
-        final Iterator<ArmorLevel> levels;
+        final Iterator<? extends ArmorLevel> levels;
         final Long id;
         ArmorLevel level;
 
@@ -149,7 +115,7 @@ public class ITArmorServiceGetProgression {
 
     @Test
     @DisplayName("Returns the expected structure")
-    public void testgetProgression_Structure() {
+    public void testGetProgression_Structure() {
         final ArmorProgression data;
         final Long id;
 
@@ -163,16 +129,10 @@ public class ITArmorServiceGetProgression {
     }
 
     private final Long getId() {
-        final Collection<Map<String, Object>> rows;
-
-        rows = client.query("MATCH (n:Armor) RETURN n")
-            .fetch()
-            .all();
-
-        return (Long) rows.stream()
-            .findFirst()
-            .get()
-            .getOrDefault("id", 0l);
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

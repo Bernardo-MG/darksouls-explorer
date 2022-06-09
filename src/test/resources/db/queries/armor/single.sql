@@ -1,2 +1,2 @@
 INSERT INTO armors (name, description, durability, weight) VALUES
-   ('Armor name', 'Description', 5, 6);
+   ('Chain Armor', 'Description', 5, 6);

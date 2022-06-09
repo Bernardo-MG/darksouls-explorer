@@ -5,6 +5,6 @@ public interface ArmorProgression {
 
     public String getArmor();
 
-    public Iterable<ArmorLevel> getLevels();
+    public Iterable<? extends ArmorLevel> getLevels();
 
 }
