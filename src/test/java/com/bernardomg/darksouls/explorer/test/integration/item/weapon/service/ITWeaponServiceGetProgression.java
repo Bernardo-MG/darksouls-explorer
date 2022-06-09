@@ -36,8 +36,8 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
@@ -50,7 +50,8 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 @ContextConfiguration(
         initializers = { ITWeaponServiceGetProgression.Initializer.class })
 @DisplayName("Reading weapon progression")
-@Sql({ "/db/queries/weapon/single.sql" })
+@Sql({ "/db/queries/weapon/single.sql",
+        "/db/queries/weapon/physical_5_levels.sql" })
 public class ITWeaponServiceGetProgression {
 
     public static class Initializer implements
@@ -118,11 +119,11 @@ public class ITWeaponServiceGetProgression {
     @DisplayName("Returns the levels bonuses")
     public void testgetProgression_LevelsBonus() {
         final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
+        final Iterator<WeaponProgressionLevel> levels;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
         WeaponProgressionPath path;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
 
         id = getId();
 
@@ -147,11 +148,11 @@ public class ITWeaponServiceGetProgression {
     @DisplayName("Returns the levels damage")
     public void testgetProgression_LevelsDamage() {
         final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
+        final Iterator<WeaponProgressionLevel> levels;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
         WeaponProgressionPath path;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
 
         id = getId();
 
@@ -200,11 +201,11 @@ public class ITWeaponServiceGetProgression {
     @DisplayName("Returns the levels in order")
     public void testgetProgression_LevelsOrder() {
         final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
+        final Iterator<WeaponProgressionLevel> levels;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
         WeaponProgressionPath path;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
 
         id = getId();
 
@@ -238,11 +239,11 @@ public class ITWeaponServiceGetProgression {
     @DisplayName("Returns the levels reductions")
     public void testgetProgression_LevelsReductions() {
         final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
+        final Iterator<WeaponProgressionLevel> levels;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
         WeaponProgressionPath path;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
 
         id = getId();
 
@@ -269,7 +270,7 @@ public class ITWeaponServiceGetProgression {
         final WeaponProgression data;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
         WeaponProgressionPath path;
 
         id = getId();
@@ -281,11 +282,6 @@ public class ITWeaponServiceGetProgression {
             .iterator();
 
         path = itr.next();
-
-        level = path.getLevels()
-            .iterator()
-            .next();
-        Assertions.assertEquals(5, level.getPathLevel());
 
         path = itr.next();
 
@@ -316,7 +312,7 @@ public class ITWeaponServiceGetProgression {
         path = itr.next();
 
         Assertions.assertEquals("Magic", path.getPath());
-        Assertions.assertEquals(1, IterableUtils.size(path.getLevels()));
+        Assertions.assertEquals(0, IterableUtils.size(path.getLevels()));
 
         path = itr.next();
 

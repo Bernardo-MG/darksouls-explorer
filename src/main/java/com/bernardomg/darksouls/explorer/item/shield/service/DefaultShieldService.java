@@ -10,20 +10,27 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponLevelNode;
+import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.domain.PersistentWeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponLevelNode;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.shield.domain.PersistentShield;
 import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
 import com.bernardomg.darksouls.explorer.item.shield.query.ShieldLevelQuery;
 import com.bernardomg.darksouls.explorer.item.shield.repository.ShieldRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -36,18 +43,22 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 @Service
 public final class DefaultShieldService implements ShieldService {
 
-    private final Query<WeaponLevel> levelQuery = new ShieldLevelQuery();
+    private final Query<DtoWeaponLevelNode> levelQuery = new ShieldLevelQuery();
 
-    private final QueryExecutor      queryExecutor;
+    private final WeaponLevelRepository     levelRepository;
 
-    private final ShieldRepository   repository;
+    private final QueryExecutor             queryExecutor;
+
+    private final ShieldRepository          repository;
 
     @Autowired
     public DefaultShieldService(final ShieldRepository repo,
+            final WeaponLevelRepository levelRepo,
             final QueryExecutor queryExec) {
         super();
 
         repository = Objects.requireNonNull(repo);
+        levelRepository = Objects.requireNonNull(levelRepo);
         queryExecutor = Objects.requireNonNull(queryExec);
     }
 
@@ -71,25 +82,32 @@ public final class DefaultShieldService implements ShieldService {
 
     @Override
     public final Optional<WeaponProgression> getProgression(final Long id) {
-        final Iterable<WeaponLevel> levels;
+        final Collection<WeaponLevelNode> levelNodes;
         final Optional<WeaponProgression> result;
         final Map<String, Object> params;
-        final Optional<? extends Shield> shield;
+        final Optional<? extends Shield> weapon;
+        final Iterable<String> names;
+        final Collection<PersistentWeaponLevel> levels;
 
-        shield = getOne(id);
+        weapon = getOne(id);
 
-        if (shield.isPresent()) {
+        if (weapon.isPresent()) {
             params = new HashMap<>();
-            params.put("name", shield.get()
+            params.put("name", weapon.get()
                 .getName());
 
-            levels = queryExecutor.fetch(levelQuery::getStatement,
+            levelNodes = queryExecutor.fetch(levelQuery::getStatement,
                 levelQuery::getOutput, params);
+
+            names = levelNodes.stream()
+                .map(WeaponLevelNode::getName)
+                .collect(Collectors.toList());
+            levels = levelRepository.findAllForNames(names);
 
             if (IterableUtils.isEmpty(levels)) {
                 result = Optional.empty();
             } else {
-                result = Optional.of(toWeaponProgression(levels));
+                result = Optional.of(toWeaponProgression(levelNodes, levels));
             }
         } else {
             result = Optional.empty();
@@ -98,16 +116,17 @@ public final class DefaultShieldService implements ShieldService {
         return result;
     }
 
-    private final WeaponProgression
-            toWeaponProgression(final Iterable<WeaponLevel> levels) {
+    private final WeaponProgression toWeaponProgression(
+            final Iterable<WeaponLevelNode> levelNodes,
+            final Collection<PersistentWeaponLevel> levels) {
         final String name;
         final Collection<WeaponProgressionPath> paths;
         final Collection<String> pathNames;
-        Collection<WeaponLevel> currentLevels;
+        Collection<WeaponProgressionLevel> currentLevels;
         WeaponProgressionPath path;
 
-        pathNames = StreamSupport.stream(levels.spliterator(), false)
-            .map(WeaponLevel::getPath)
+        pathNames = StreamSupport.stream(levelNodes.spliterator(), false)
+            .map(WeaponLevelNode::getPath)
             .distinct()
             .sorted()
             .collect(Collectors.toList());
@@ -116,6 +135,7 @@ public final class DefaultShieldService implements ShieldService {
         for (final String pathName : pathNames) {
             currentLevels = StreamSupport.stream(levels.spliterator(), false)
                 .filter((l) -> pathName.equals(l.getPath()))
+                .map((l) -> toWeaponProgressionLevel(l, levelNodes))
                 .collect(Collectors.toList());
 
             path = new ImmutableWeaponProgressionPath(pathName, currentLevels);
@@ -123,11 +143,39 @@ public final class DefaultShieldService implements ShieldService {
         }
 
         name = StreamSupport.stream(levels.spliterator(), false)
-            .map(WeaponLevel::getWeapon)
+            .map(WeaponLevel::getName)
             .findAny()
             .orElse("");
 
         return new ImmutableWeaponProgression(name, paths);
+    }
+
+    private final WeaponProgressionLevel toWeaponProgressionLevel(
+            final WeaponLevel level,
+            final Iterable<WeaponLevelNode> levelNodes) {
+        final Optional<WeaponLevelNode> levelNodeFound;
+        final WeaponLevelNode levelNode;
+        final DtoWeaponProgressionLevel result;
+
+        result = new DtoWeaponProgressionLevel();
+        BeanUtils.copyProperties(level, result);
+
+        levelNodeFound = StreamSupport.stream(levelNodes.spliterator(), false)
+            .filter(n -> n.getName()
+                .equals(level.getName())
+                    && n.getPath()
+                        .equals(level.getPath())
+                    && n.getLevel()
+                        .equals(level.getLevel()))
+            .findFirst();
+        if (levelNodeFound.isPresent()) {
+            levelNode = levelNodeFound.get();
+            result.setPathLevel(levelNode.getPathLevel());
+        } else {
+            // TODO: Error
+        }
+
+        return result;
     }
 
 }

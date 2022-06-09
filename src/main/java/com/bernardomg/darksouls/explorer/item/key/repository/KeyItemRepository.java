@@ -1,11 +1,11 @@
 
 package com.bernardomg.darksouls.explorer.item.key.repository;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.bernardomg.darksouls.explorer.item.key.domain.PersistentKeyItem;
 
 public interface KeyItemRepository
-        extends PagingAndSortingRepository<PersistentKeyItem, Long> {
+        extends JpaRepository<PersistentKeyItem, Long> {
 
 }

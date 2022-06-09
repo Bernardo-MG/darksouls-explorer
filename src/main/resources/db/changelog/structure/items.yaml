@@ -403,34 +403,34 @@ databaseChangeLog:
                   type: int
               - column:
                   name: bleed_protection
-                  type: int
+                  type: float
               - column:
                   name: curse_protection
-                  type: int
+                  type: float
               - column:
                   name: fire_protection
-                  type: int
+                  type: float
               - column:
                   name: lightning_protection
-                  type: int
+                  type: float
               - column:
                   name: magic_protection
-                  type: int
+                  type: float
               - column:
                   name: poison_protection
-                  type: int
+                  type: float
               - column:
                   name: regular_protection
-                  type: int
+                  type: float
               - column:
                   name: slash_protection
-                  type: int
+                  type: float
               - column:
                   name: strike_protection
-                  type: int
+                  type: float
               - column:
                   name: thrust_protection
-                  type: int
+                  type: float
         - createTable:
             tableName: weapon_levels
             columns:
@@ -475,16 +475,16 @@ databaseChangeLog:
                   type: int
               - column:
                   name: physical_reduction
-                  type: int
+                  type: float
               - column:
                   name: magic_reduction
-                  type: int
+                  type: float
               - column:
                   name: fire_reduction
-                  type: int
+                  type: float
               - column:
                   name: lightning_reduction
-                  type: int
+                  type: float
               - column:
                   name: dexterity_bonus
                   type: varchar(50)

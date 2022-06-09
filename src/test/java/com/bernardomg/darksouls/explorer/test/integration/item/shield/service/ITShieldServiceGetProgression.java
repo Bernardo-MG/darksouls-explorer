@@ -36,8 +36,8 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.shield.repository.ShieldRepository;
 import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
@@ -47,11 +47,12 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(initializers = {
-        ITShieldServiceGetProgressionShield.Initializer.class })
+@ContextConfiguration(
+        initializers = { ITShieldServiceGetProgression.Initializer.class })
 @DisplayName("Reading shield progression for shields")
-@Sql({ "/db/queries/shield/single.sql" })
-public class ITShieldServiceGetProgressionShield {
+@Sql({ "/db/queries/shield/single.sql",
+        "/db/queries/shield/physical_5_levels.sql" })
+public class ITShieldServiceGetProgression {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -97,7 +98,7 @@ public class ITShieldServiceGetProgressionShield {
     /**
      * Default constructor.
      */
-    public ITShieldServiceGetProgressionShield() {
+    public ITShieldServiceGetProgression() {
         super();
     }
 
@@ -118,11 +119,11 @@ public class ITShieldServiceGetProgressionShield {
     @DisplayName("Returns the levels bonuses")
     public void testgetProgression_LevelsBonus() {
         final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
+        final Iterator<WeaponProgressionLevel> levels;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
         WeaponProgressionPath path;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
 
         id = getId();
 
@@ -147,11 +148,11 @@ public class ITShieldServiceGetProgressionShield {
     @DisplayName("Returns the levels damage")
     public void testgetProgression_LevelsDamage() {
         final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
+        final Iterator<WeaponProgressionLevel> levels;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
         WeaponProgressionPath path;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
 
         id = getId();
 
@@ -200,11 +201,11 @@ public class ITShieldServiceGetProgressionShield {
     @DisplayName("Returns the levels in order")
     public void testgetProgression_LevelsOrder() {
         final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
+        final Iterator<WeaponProgressionLevel> levels;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
         WeaponProgressionPath path;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
 
         id = getId();
 
@@ -238,11 +239,11 @@ public class ITShieldServiceGetProgressionShield {
     @DisplayName("Returns the levels reductions")
     public void testgetProgression_LevelsReductions() {
         final WeaponProgression data;
-        final Iterator<WeaponLevel> levels;
+        final Iterator<WeaponProgressionLevel> levels;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
         WeaponProgressionPath path;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
 
         id = getId();
 
@@ -269,7 +270,7 @@ public class ITShieldServiceGetProgressionShield {
         final WeaponProgression data;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
-        WeaponLevel level;
+        WeaponProgressionLevel level;
         WeaponProgressionPath path;
 
         id = getId();
@@ -281,11 +282,6 @@ public class ITShieldServiceGetProgressionShield {
             .iterator();
 
         path = itr.next();
-
-        level = path.getLevels()
-            .iterator()
-            .next();
-        Assertions.assertEquals(5, level.getPathLevel());
 
         path = itr.next();
 
@@ -316,7 +312,7 @@ public class ITShieldServiceGetProgressionShield {
         path = itr.next();
 
         Assertions.assertEquals("Magic", path.getPath());
-        Assertions.assertEquals(1, IterableUtils.size(path.getLevels()));
+        Assertions.assertEquals(0, IterableUtils.size(path.getLevels()));
 
         path = itr.next();
 

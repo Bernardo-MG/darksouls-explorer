@@ -1,0 +1,19 @@
+
+package com.bernardomg.darksouls.explorer.item.weapon.repository;
+
+import java.util.Collection;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.bernardomg.darksouls.explorer.item.domain.PersistentWeaponLevel;
+
+public interface WeaponLevelRepository
+        extends JpaRepository<PersistentWeaponLevel, Long> {
+
+    @Query("SELECT l FROM WeaponLevel l WHERE l.name IN :names")
+    public Collection<PersistentWeaponLevel>
+            findAllForNames(@Param("names") final Iterable<String> names);
+
+}

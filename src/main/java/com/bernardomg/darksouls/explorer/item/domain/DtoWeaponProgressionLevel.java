@@ -7,7 +7,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public final class DtoWeaponLevel implements WeaponLevel {
+public final class DtoWeaponProgressionLevel implements WeaponProgressionLevel {
 
     @NonNull
     private Integer critical;
@@ -47,6 +47,9 @@ public final class DtoWeaponLevel implements WeaponLevel {
 
     @NonNull
     private String  path;
+
+    @NonNull
+    private Integer pathLevel;
 
     @NonNull
     private Integer physicalDamage;

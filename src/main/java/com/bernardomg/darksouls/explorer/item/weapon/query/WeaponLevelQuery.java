@@ -3,23 +3,23 @@ package com.bernardomg.darksouls.explorer.item.weapon.query;
 
 import java.util.Map;
 
-import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponLevel;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
+import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponLevelNode;
+import com.bernardomg.darksouls.explorer.item.domain.WeaponLevelNode;
 import com.bernardomg.darksouls.explorer.persistence.model.Query;
 import com.bernardomg.darksouls.explorer.persistence.utils.Maps;
 
-public final class WeaponLevelQuery implements Query<WeaponLevel> {
+public final class WeaponLevelQuery implements Query<WeaponLevelNode> {
 
     public WeaponLevelQuery() {
         super();
     }
 
     @Override
-    public final WeaponLevel getOutput(final Map<String, Object> record) {
-        final DtoWeaponLevel result;
+    public final WeaponLevelNode getOutput(final Map<String, Object> record) {
+        final DtoWeaponLevelNode result;
 
-        result = new DtoWeaponLevel();
-        result.setWeapon(Maps.getOrDefault(record, "name", ""));
+        result = new DtoWeaponLevelNode();
+        result.setName(Maps.getOrDefault(record, "name", ""));
         result.setPath(Maps.getOrDefault(record, "path", ""));
         result.setLevel(
             ((Number) Maps.getOrDefault(record, "level", 0)).intValue());

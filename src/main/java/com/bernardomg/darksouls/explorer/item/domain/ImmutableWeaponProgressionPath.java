@@ -9,13 +9,13 @@ public final class ImmutableWeaponProgressionPath
         implements WeaponProgressionPath {
 
     @NonNull
-    private Iterable<WeaponLevel> levels;
+    private Iterable<WeaponProgressionLevel> levels;
 
     @NonNull
-    private String                path;
+    private String                           path;
 
     public ImmutableWeaponProgressionPath(@NonNull final String path,
-            @NonNull final Iterable<WeaponLevel> levels) {
+            @NonNull final Iterable<WeaponProgressionLevel> levels) {
         super();
 
         this.path = path;
