@@ -22,48 +22,26 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
-import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITWeaponServiceGetOneSingle.Initializer.class })
 @DisplayName("Reading single weapon from id")
 @Sql({ "/db/queries/weapon/single.sql" })
 public class ITWeaponServiceGetOneSingle {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
-                .initialize(configurableApplicationContext);
-        }
-    }
-
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
         .getMysqlContainer();
-
-    @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
 
     @DynamicPropertySource
     public static void
@@ -122,14 +100,18 @@ public class ITWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(0, data.getDexterity());
-        Assertions.assertEquals(1, data.getFaith());
-        Assertions.assertEquals(2, data.getStrength());
-        Assertions.assertEquals(3, data.getIntelligence());
+        Assertions.assertEquals(1, data.getRequirements()
+            .getDexterity());
+        Assertions.assertEquals(2, data.getRequirements()
+            .getFaith());
+        Assertions.assertEquals(3, data.getRequirements()
+            .getStrength());
+        Assertions.assertEquals(4, data.getRequirements()
+            .getIntelligence());
     }
 
     @Test
-    @DisplayName("Returns the correct requirements")
+    @DisplayName("Returns the correct stats")
     public void testGetOne_Stats() {
         final Weapon data;
         final Long id;
@@ -139,8 +121,8 @@ public class ITWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(4, data.getDurability());
-        Assertions.assertEquals(5, data.getWeight());
+        Assertions.assertEquals(5, data.getDurability());
+        Assertions.assertEquals(6, data.getWeight());
     }
 
     private final Long getId() {

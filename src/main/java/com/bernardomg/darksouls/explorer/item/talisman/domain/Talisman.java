@@ -1,6 +1,8 @@
 
 package com.bernardomg.darksouls.explorer.item.talisman.domain;
 
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponRequirements;
+
 public interface Talisman {
 
     public String getDescription();
@@ -33,9 +35,9 @@ public interface Talisman {
 
     public Float getPhysicalReduction();
 
-    public String getStrengthBonus();
+    public WeaponRequirements getRequirements();
 
-    public String getWeapon();
+    public String getStrengthBonus();
 
     public Long getWeight();
 

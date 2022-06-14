@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.talisman.domain.ImmutableTalisman;
+import com.bernardomg.darksouls.explorer.item.talisman.domain.DtoTalisman;
 import com.bernardomg.darksouls.explorer.item.talisman.domain.Talisman;
+import com.bernardomg.darksouls.explorer.item.talisman.domain.TalismanSummary;
 import com.bernardomg.darksouls.explorer.item.talisman.service.TalismanService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
@@ -31,7 +32,7 @@ public class TalismanController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Talisman>
+    public Iterable<? extends TalismanSummary>
             read(@RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
                     final Pagination pagination, final Sort sort) {
@@ -47,7 +48,7 @@ public class TalismanController {
         if (read.isPresent()) {
             result = read.get();
         } else {
-            result = new ImmutableTalisman();
+            result = new DtoTalisman();
         }
 
         return result;

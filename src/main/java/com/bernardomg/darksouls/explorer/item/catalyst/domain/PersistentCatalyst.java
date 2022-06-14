@@ -16,7 +16,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "Catalyst")
 @Table(name = "catalysts")
-public final class PersistentCatalyst implements Catalyst {
+public final class PersistentCatalyst {
 
     @NonNull
     @Column(name = "description", nullable = false)
@@ -81,12 +81,8 @@ public final class PersistentCatalyst implements Catalyst {
     private Float   physicalReduction;
 
     @NonNull
-    @Column(name = "strenght_bonus", nullable = false)
+    @Column(name = "strength_bonus", nullable = false)
     private String  strengthBonus;
-
-    @NonNull
-    @Column(name = "weapon", nullable = false)
-    private String  weapon;
 
     @NonNull
     @Column(name = "weight", nullable = false)

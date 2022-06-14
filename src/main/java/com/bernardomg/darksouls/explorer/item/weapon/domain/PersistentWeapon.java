@@ -16,7 +16,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "Weapon")
 @Table(name = "weapons")
-public final class PersistentWeapon implements Weapon {
+public final class PersistentWeapon {
 
     @NonNull
     @Column(name = "description", nullable = false)

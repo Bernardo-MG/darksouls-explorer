@@ -16,7 +16,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "Ammunition")
 @Table(name = "ammunitions")
-public final class PersistentAmmunition implements Ammunition {
+public final class PersistentAmmunition {
 
     @NonNull
     @Column(name = "description", nullable = false)
@@ -31,5 +31,9 @@ public final class PersistentAmmunition implements Ammunition {
     @NonNull
     @Column(name = "name", nullable = false)
     private String name        = "";
+
+    @NonNull
+    @Column(name = "type", nullable = false)
+    private String type        = "";
 
 }

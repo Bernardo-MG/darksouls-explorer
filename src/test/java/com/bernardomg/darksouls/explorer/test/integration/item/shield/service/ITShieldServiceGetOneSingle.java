@@ -122,10 +122,14 @@ public class ITShieldServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(0, data.getDexterity());
-        Assertions.assertEquals(1, data.getFaith());
-        Assertions.assertEquals(2, data.getStrength());
-        Assertions.assertEquals(3, data.getIntelligence());
+        Assertions.assertEquals(0, data.getRequirements()
+            .getDexterity());
+        Assertions.assertEquals(1, data.getRequirements()
+            .getFaith());
+        Assertions.assertEquals(2, data.getRequirements()
+            .getStrength());
+        Assertions.assertEquals(3, data.getRequirements()
+            .getIntelligence());
     }
 
     @Test

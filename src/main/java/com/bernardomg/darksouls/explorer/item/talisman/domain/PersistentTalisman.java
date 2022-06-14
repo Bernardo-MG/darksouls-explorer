@@ -16,80 +16,76 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "Talisman")
 @Table(name = "talismans")
-public final class PersistentTalisman implements Talisman {
+public final class PersistentTalisman {
 
     @NonNull
     @Column(name = "description", nullable = false)
-    private String  description;
+    private String  description        = "";
 
     @NonNull
     @Column(name = "dexterity_bonus", nullable = false)
-    private String  dexterityBonus;
+    private String  dexterityBonus     = "";
 
     @NonNull
     @Column(name = "durability", nullable = false)
-    private Integer durability = 0;
+    private Integer durability         = 0;
 
     @NonNull
     @Column(name = "faith_bonus", nullable = false)
-    private String  faithBonus;
+    private String  faithBonus         = "";
 
     @NonNull
     @Column(name = "fire_dmg", nullable = false)
-    private Integer fireDamage;
+    private Integer fireDamage         = 0;
 
     @NonNull
     @Column(name = "fire_reduction", nullable = false)
-    private Float   fireReduction;
+    private Float   fireReduction      = 0f;
 
     @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Long    id         = -1l;
+    private Long    id                 = -1l;
 
     @NonNull
     @Column(name = "intelligence_bonus", nullable = false)
-    private String  intelligenceBonus;
+    private String  intelligenceBonus  = "";
 
     @NonNull
     @Column(name = "lightning_dmg", nullable = false)
-    private Integer lightningDamage;
+    private Integer lightningDamage    = 0;
 
     @NonNull
     @Column(name = "lightning_reduction", nullable = false)
-    private Float   lightningReduction;
+    private Float   lightningReduction = 0f;
 
     @NonNull
     @Column(name = "magic_dmg", nullable = false)
-    private Integer magicDamage;
+    private Integer magicDamage        = 0;
 
     @NonNull
     @Column(name = "magic_reduction", nullable = false)
-    private Float   magicReduction;
+    private Float   magicReduction     = 0f;
 
     @NonNull
     @Column(name = "name", nullable = false)
-    private String  name;
+    private String  name               = "";
 
     @NonNull
     @Column(name = "physical_dmg", nullable = false)
-    private Integer physicalDamage;
+    private Integer physicalDamage     = 0;
 
     @NonNull
     @Column(name = "physical_reduction", nullable = false)
-    private Float   physicalReduction;
+    private Float   physicalReduction  = 0f;
 
     @NonNull
-    @Column(name = "strenght_bonus", nullable = false)
-    private String  strengthBonus;
-
-    @NonNull
-    @Column(name = "weapon", nullable = false)
-    private String  weapon;
+    @Column(name = "strength_bonus", nullable = false)
+    private String  strengthBonus      = "";
 
     @NonNull
     @Column(name = "weight", nullable = false)
-    private Long    weight     = 0l;
+    private Long    weight             = 0l;
 
 }

@@ -1,6 +1,9 @@
 
 package com.bernardomg.darksouls.explorer.item.catalyst.domain;
 
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponRequirements;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -10,66 +13,57 @@ import lombok.NonNull;
 public final class DtoCatalyst implements Catalyst {
 
     @NonNull
-    private String  description;
+    private String             description;
 
     @NonNull
-    private String  dexterityBonus;
+    private String             dexterityBonus;
 
     @NonNull
-    private Integer durability = 0;
+    private Integer            durability   = 0;
 
     @NonNull
-    private String  faithBonus;
+    private String             faithBonus;
 
     @NonNull
-    private Integer fireDamage;
+    private Integer            fireDamage;
 
     @NonNull
-    private Float   fireReduction;
+    private Float              fireReduction;
 
     @NonNull
-    private Long    id;
+    private Long               id;
 
     @NonNull
-    private String  intelligenceBonus;
+    private String             intelligenceBonus;
 
     @NonNull
-    private Integer level;
+    private Integer            lightningDamage;
 
     @NonNull
-    private Integer lightningDamage;
+    private Float              lightningReduction;
 
     @NonNull
-    private Float   lightningReduction;
+    private Integer            magicDamage;
 
     @NonNull
-    private Integer magicDamage;
+    private Float              magicReduction;
 
     @NonNull
-    private Float   magicReduction;
+    private String             name;
 
     @NonNull
-    private String  name;
+    private Integer            physicalDamage;
 
     @NonNull
-    private String  path;
+    private Float              physicalReduction;
 
     @NonNull
-    private Integer pathLevel;
+    private WeaponRequirements requirements = new DtoWeaponRequirements();
 
     @NonNull
-    private Integer physicalDamage;
+    private String             strengthBonus;
 
     @NonNull
-    private Float   physicalReduction;
-
-    @NonNull
-    private String  strengthBonus;
-
-    @NonNull
-    private String  weapon;
-
-    @NonNull
-    private Long    weight     = 0l;
+    private Long               weight       = 0l;
 
 }

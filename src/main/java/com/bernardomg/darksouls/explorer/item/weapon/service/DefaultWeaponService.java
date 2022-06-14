@@ -25,8 +25,10 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponLevelNode;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
@@ -62,21 +64,38 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final PageIterable<? extends Weapon>
+    public final PageIterable<? extends WeaponSummary>
             getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
-        final Page<PersistentWeapon> page;
+        final Page<WeaponSummary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
-        page = repository.findAll(pageable);
+        page = repository.findAllSummaries(pageable);
 
         return Paginations.fromSpring(page);
     }
 
     @Override
     public final Optional<? extends Weapon> getOne(final Long id) {
-        return repository.findById(id);
+        final Optional<PersistentWeapon> read;
+        final Optional<? extends Weapon> result;
+        final DtoWeapon weapon;
+
+        read = repository.findById(id);
+
+        if (read.isPresent()) {
+            weapon = new DtoWeapon();
+
+            BeanUtils.copyProperties(read.get(), weapon);
+            BeanUtils.copyProperties(read.get(), weapon.getRequirements());
+
+            result = Optional.of(weapon);
+        } else {
+            result = Optional.empty();
+        }
+
+        return result;
     }
 
     @Override

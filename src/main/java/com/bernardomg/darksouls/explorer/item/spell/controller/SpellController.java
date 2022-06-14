@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.spell.domain.ImmutableSpell;
+import com.bernardomg.darksouls.explorer.item.spell.domain.DtoSpell;
 import com.bernardomg.darksouls.explorer.item.spell.domain.Spell;
+import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
 import com.bernardomg.darksouls.explorer.item.spell.service.SpellService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
@@ -29,7 +30,7 @@ public class SpellController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Spell> read(final Pagination pagination,
+    public Iterable<? extends SpellSummary> read(final Pagination pagination,
             final Sort sort) {
         return service.getAll(pagination, sort);
     }
@@ -43,7 +44,7 @@ public class SpellController {
         if (read.isPresent()) {
             result = read.get();
         } else {
-            result = new ImmutableSpell();
+            result = new DtoSpell();
         }
 
         return result;

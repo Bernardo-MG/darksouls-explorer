@@ -238,9 +238,6 @@ databaseChangeLog:
                   name: description
                   type: varchar(1200)
               - column:
-                  name: type
-                  type: varchar(50)
-              - column:
                   name: weight
                   type: int
               - column:
@@ -334,11 +331,6 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: type
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
                   name: name
                   type: varchar(50)
                   constraints:
@@ -355,11 +347,6 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
-              - column:
-                  name: type
-                  type: varchar(50)
-                  constraints:
                     nullable: false
               - column:
                   name: name

@@ -16,4 +16,7 @@ public final class DtoAmmunition implements Ammunition {
     @NonNull
     private String name        = "";
 
+    @NonNull
+    private String type        = "";
+
 }

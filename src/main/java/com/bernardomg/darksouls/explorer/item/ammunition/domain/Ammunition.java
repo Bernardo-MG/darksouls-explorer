@@ -9,4 +9,6 @@ public interface Ammunition {
 
     public String getName();
 
+    public String getType();
+
 }

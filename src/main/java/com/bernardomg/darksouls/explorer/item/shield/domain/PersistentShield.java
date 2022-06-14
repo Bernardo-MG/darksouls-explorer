@@ -16,44 +16,44 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "Shield")
 @Table(name = "shields")
-public final class PersistentShield implements Shield {
+public final class PersistentShield {
 
     @NonNull
     @Column(name = "description", nullable = false)
-    private String  description;
+    private String  description  = "";
 
     @NonNull
     @Column(name = "dexterity", nullable = false)
-    private Integer dexterity;
+    private Integer dexterity    = 0;
 
     @NonNull
     @Column(name = "durability", nullable = false)
-    private Integer durability = 0;
+    private Integer durability   = 0;
 
     @NonNull
     @Column(name = "faith", nullable = false)
-    private Integer faith;
+    private Integer faith        = 0;
 
     @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Long    id;
+    private Long    id           = -1l;
 
     @NonNull
     @Column(name = "intelligence", nullable = false)
-    private Integer intelligence;
+    private Integer intelligence = 0;
 
     @NonNull
     @Column(name = "name", nullable = false)
-    private String  name;
+    private String  name         = "";
 
     @NonNull
     @Column(name = "strength", nullable = false)
-    private Integer strength;
+    private Integer strength     = 0;
 
     @NonNull
     @Column(name = "weight", nullable = false)
-    private Long    weight     = 0l;
+    private Long    weight       = 0l;
 
 }

@@ -1,23 +1,19 @@
 
 package com.bernardomg.darksouls.explorer.item.shield.domain;
 
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponRequirements;
+
 public interface Shield {
 
     public String getDescription();
 
-    public Integer getDexterity();
-
-    public Integer getDurability();
-
-    public Integer getFaith();
+    public Long getDurability();
 
     public Long getId();
 
-    public Integer getIntelligence();
-
     public String getName();
 
-    public Integer getStrength();
+    public WeaponRequirements getRequirements();
 
     public Long getWeight();
 

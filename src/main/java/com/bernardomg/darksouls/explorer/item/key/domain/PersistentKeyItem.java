@@ -16,7 +16,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "KeyItem")
 @Table(name = "key_items")
-public final class PersistentKeyItem implements KeyItem {
+public final class PersistentKeyItem {
 
     @NonNull
     @Column(name = "description", nullable = false)

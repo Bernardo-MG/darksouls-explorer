@@ -21,49 +21,27 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
-import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITWeaponServiceGetAll.Initializer.class })
 @DisplayName("Reading all the weapons")
 @Sql({ "/db/queries/weapon/single.sql" })
 public class ITWeaponServiceGetAll {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
-                .initialize(configurableApplicationContext);
-        }
-    }
-
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
         .getMysqlContainer();
-
-    @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
 
     @DynamicPropertySource
     public static void
@@ -86,7 +64,7 @@ public class ITWeaponServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends Weapon> data;
+        final Iterable<? extends WeaponSummary> data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort());
 
@@ -96,7 +74,7 @@ public class ITWeaponServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final Weapon data;
+        final WeaponSummary data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort())
             .iterator()

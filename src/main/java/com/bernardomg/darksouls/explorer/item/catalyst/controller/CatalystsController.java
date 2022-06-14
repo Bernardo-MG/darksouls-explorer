@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.Catalyst;
+import com.bernardomg.darksouls.explorer.item.catalyst.domain.CatalystSummary;
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.DtoCatalyst;
 import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -31,7 +32,7 @@ public class CatalystsController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Catalyst>
+    public Iterable<? extends CatalystSummary>
             read(@RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
                     final Pagination pagination, final Sort sort) {

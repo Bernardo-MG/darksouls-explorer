@@ -4,11 +4,13 @@ package com.bernardomg.darksouls.explorer.item.key.service;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.item.key.domain.DtoKeyItem;
 import com.bernardomg.darksouls.explorer.item.key.domain.KeyItem;
 import com.bernardomg.darksouls.explorer.item.key.domain.PersistentKeyItem;
 import com.bernardomg.darksouls.explorer.item.key.repository.KeyItemRepository;
@@ -33,18 +35,34 @@ public final class DefaultKeyItemService implements KeyItemService {
     public final PageIterable<? extends KeyItem>
             getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
-        final Page<PersistentKeyItem> page;
+        final Page<KeyItem> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
-        page = repository.findAll(pageable);
+        page = repository.findAllSummaries(pageable);
 
         return Paginations.fromSpring(page);
     }
 
     @Override
     public final Optional<? extends KeyItem> getOne(final Long id) {
-        return repository.findById(id);
+        final Optional<PersistentKeyItem> read;
+        final Optional<? extends KeyItem> result;
+        final DtoKeyItem item;
+
+        read = repository.findById(id);
+
+        if (read.isPresent()) {
+            item = new DtoKeyItem();
+
+            BeanUtils.copyProperties(read.get(), item);
+
+            result = Optional.of(item);
+        } else {
+            result = Optional.empty();
+        }
+
+        return result;
     }
 
 }
