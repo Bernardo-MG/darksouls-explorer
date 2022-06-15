@@ -65,6 +65,50 @@ public class ITWeaponServiceGetOneSingle {
     }
 
     @Test
+    @DisplayName("Returns the correct damage")
+    public void testGetOne_Damage() {
+        final Weapon data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getOne(id)
+            .get();
+
+        Assertions.assertEquals(7, data.getDamage()
+            .getPhysical());
+        Assertions.assertEquals(8, data.getDamage()
+            .getMagic());
+        Assertions.assertEquals(9, data.getDamage()
+            .getFire());
+        Assertions.assertEquals(10, data.getDamage()
+            .getLightning());
+        Assertions.assertEquals(11, data.getDamage()
+            .getCritical());
+    }
+
+    @Test
+    @DisplayName("Returns the correct damage reduction")
+    public void testGetOne_DamageReduction() {
+        final Weapon data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getOne(id)
+            .get();
+
+        Assertions.assertEquals(12, data.getDamageReduction()
+            .getPhysical());
+        Assertions.assertEquals(13, data.getDamageReduction()
+            .getMagic());
+        Assertions.assertEquals(14, data.getDamageReduction()
+            .getFire());
+        Assertions.assertEquals(15, data.getDamageReduction()
+            .getLightning());
+    }
+
+    @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
         final Weapon data;
@@ -100,13 +144,13 @@ public class ITWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(1, data.getRequirements()
-            .getDexterity());
-        Assertions.assertEquals(2, data.getRequirements()
-            .getFaith());
         Assertions.assertEquals(3, data.getRequirements()
-            .getStrength());
+            .getDexterity());
         Assertions.assertEquals(4, data.getRequirements()
+            .getFaith());
+        Assertions.assertEquals(5, data.getRequirements()
+            .getStrength());
+        Assertions.assertEquals(6, data.getRequirements()
             .getIntelligence());
     }
 
@@ -121,8 +165,8 @@ public class ITWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(5, data.getDurability());
-        Assertions.assertEquals(6, data.getWeight());
+        Assertions.assertEquals(1, data.getDurability());
+        Assertions.assertEquals(2, data.getWeight());
     }
 
     private final Long getId() {

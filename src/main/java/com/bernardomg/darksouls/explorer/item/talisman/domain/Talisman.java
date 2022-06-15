@@ -1,43 +1,28 @@
 
 package com.bernardomg.darksouls.explorer.item.talisman.domain;
 
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamageReduction;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponRequirements;
 
 public interface Talisman {
 
-    public String getDescription();
+    public WeaponBonus getBonus();
 
-    public String getDexterityBonus();
+    public WeaponDamage getDamage();
+
+    public WeaponDamageReduction getDamageReduction();
+
+    public String getDescription();
 
     public Integer getDurability();
 
-    public String getFaithBonus();
-
-    public Integer getFireDamage();
-
-    public Float getFireReduction();
-
     public Long getId();
-
-    public String getIntelligenceBonus();
-
-    public Integer getLightningDamage();
-
-    public Float getLightningReduction();
-
-    public Integer getMagicDamage();
-
-    public Float getMagicReduction();
 
     public String getName();
 
-    public Integer getPhysicalDamage();
-
-    public Float getPhysicalReduction();
-
     public WeaponRequirements getRequirements();
-
-    public String getStrengthBonus();
 
     public Long getWeight();
 

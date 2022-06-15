@@ -1,7 +1,13 @@
 
 package com.bernardomg.darksouls.explorer.item.catalyst.domain;
 
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduction;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamageReduction;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponRequirements;
 
 import lombok.Data;
@@ -13,57 +19,30 @@ import lombok.NonNull;
 public final class DtoCatalyst implements Catalyst {
 
     @NonNull
-    private String             description;
+    private WeaponBonus           bonus           = new DtoWeaponBonus();
 
     @NonNull
-    private String             dexterityBonus;
+    private WeaponDamage          damage          = new DtoWeaponDamage();
 
     @NonNull
-    private Integer            durability   = 0;
+    private WeaponDamageReduction damageReduction = new DtoWeaponDamageReduction();
 
     @NonNull
-    private String             faithBonus;
+    private String                description;
 
     @NonNull
-    private Integer            fireDamage;
+    private Integer               durability      = 0;
 
     @NonNull
-    private Float              fireReduction;
+    private Long                  id;
 
     @NonNull
-    private Long               id;
+    private String                name;
 
     @NonNull
-    private String             intelligenceBonus;
+    private WeaponRequirements    requirements    = new DtoWeaponRequirements();
 
     @NonNull
-    private Integer            lightningDamage;
-
-    @NonNull
-    private Float              lightningReduction;
-
-    @NonNull
-    private Integer            magicDamage;
-
-    @NonNull
-    private Float              magicReduction;
-
-    @NonNull
-    private String             name;
-
-    @NonNull
-    private Integer            physicalDamage;
-
-    @NonNull
-    private Float              physicalReduction;
-
-    @NonNull
-    private WeaponRequirements requirements = new DtoWeaponRequirements();
-
-    @NonNull
-    private String             strengthBonus;
-
-    @NonNull
-    private Long               weight       = 0l;
+    private Long                  weight          = 0l;
 
 }

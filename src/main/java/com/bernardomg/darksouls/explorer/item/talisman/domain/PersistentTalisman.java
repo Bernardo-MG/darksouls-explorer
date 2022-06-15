@@ -19,8 +19,16 @@ import lombok.NonNull;
 public final class PersistentTalisman {
 
     @NonNull
+    @Column(name = "critical_dmg", nullable = false)
+    private Integer criticalDamage     = 0;
+
+    @NonNull
     @Column(name = "description", nullable = false)
-    private String  description        = "";
+    private String  description;
+
+    @NonNull
+    @Column(name = "dexterity", nullable = false)
+    private Integer dexterity;
 
     @NonNull
     @Column(name = "dexterity_bonus", nullable = false)
@@ -29,6 +37,10 @@ public final class PersistentTalisman {
     @NonNull
     @Column(name = "durability", nullable = false)
     private Integer durability         = 0;
+
+    @NonNull
+    @Column(name = "faith", nullable = false)
+    private Integer faith;
 
     @NonNull
     @Column(name = "faith_bonus", nullable = false)
@@ -46,7 +58,11 @@ public final class PersistentTalisman {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Long    id                 = -1l;
+    private Long    id;
+
+    @NonNull
+    @Column(name = "intelligence", nullable = false)
+    private Integer intelligence;
 
     @NonNull
     @Column(name = "intelligence_bonus", nullable = false)
@@ -70,7 +86,7 @@ public final class PersistentTalisman {
 
     @NonNull
     @Column(name = "name", nullable = false)
-    private String  name               = "";
+    private String  name;
 
     @NonNull
     @Column(name = "physical_dmg", nullable = false)
@@ -79,6 +95,10 @@ public final class PersistentTalisman {
     @NonNull
     @Column(name = "physical_reduction", nullable = false)
     private Float   physicalReduction  = 0f;
+
+    @NonNull
+    @Column(name = "strength", nullable = false)
+    private Integer strength;
 
     @NonNull
     @Column(name = "strength_bonus", nullable = false)

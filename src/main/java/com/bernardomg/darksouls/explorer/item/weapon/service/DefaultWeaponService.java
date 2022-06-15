@@ -26,6 +26,10 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduction;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
@@ -79,16 +83,50 @@ public final class DefaultWeaponService implements WeaponService {
     @Override
     public final Optional<? extends Weapon> getOne(final Long id) {
         final Optional<PersistentWeapon> read;
+        final PersistentWeapon entity;
         final Optional<? extends Weapon> result;
         final DtoWeapon weapon;
+        final DtoWeaponRequirements requirements;
+        final DtoWeaponDamage damage;
+        final DtoWeaponDamageReduction damageReduction;
+        final DtoWeaponBonus bonus;
 
         read = repository.findById(id);
 
         if (read.isPresent()) {
             weapon = new DtoWeapon();
+            entity = read.get();
 
-            BeanUtils.copyProperties(read.get(), weapon);
-            BeanUtils.copyProperties(read.get(), weapon.getRequirements());
+            BeanUtils.copyProperties(entity, weapon);
+
+            requirements = new DtoWeaponRequirements();
+            requirements.setDexterity(entity.getDexterity());
+            requirements.setFaith(entity.getFaith());
+            requirements.setIntelligence(entity.getIntelligence());
+            requirements.setStrength(entity.getStrength());
+            weapon.setRequirements(requirements);
+
+            damage = new DtoWeaponDamage();
+            damage.setFire(entity.getFireDamage());
+            damage.setLightning(entity.getLightningDamage());
+            damage.setMagic(entity.getMagicDamage());
+            damage.setPhysical(entity.getPhysicalDamage());
+            damage.setCritical(entity.getCriticalDamage());
+            weapon.setDamage(damage);
+
+            damageReduction = new DtoWeaponDamageReduction();
+            damageReduction.setFire(entity.getFireReduction());
+            damageReduction.setLightning(entity.getLightningReduction());
+            damageReduction.setMagic(entity.getMagicReduction());
+            damageReduction.setPhysical(entity.getPhysicalReduction());
+            weapon.setDamageReduction(damageReduction);
+
+            bonus = new DtoWeaponBonus();
+            bonus.setDexterity(entity.getDexterityBonus());
+            bonus.setFaith(entity.getFaithBonus());
+            bonus.setIntelligence(entity.getIntelligenceBonus());
+            bonus.setStrength(entity.getStrengthBonus());
+            weapon.setBonus(bonus);
 
             result = Optional.of(weapon);
         } else {

@@ -87,6 +87,50 @@ public class ITShieldServiceGetOneSingle {
     }
 
     @Test
+    @DisplayName("Returns the correct damage")
+    public void testGetOne_Damage() {
+        final Shield data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getOne(id)
+            .get();
+
+        Assertions.assertEquals(7, data.getDamage()
+            .getPhysical());
+        Assertions.assertEquals(8, data.getDamage()
+            .getMagic());
+        Assertions.assertEquals(9, data.getDamage()
+            .getFire());
+        Assertions.assertEquals(10, data.getDamage()
+            .getLightning());
+        Assertions.assertEquals(11, data.getDamage()
+            .getCritical());
+    }
+
+    @Test
+    @DisplayName("Returns the correct damage reduction")
+    public void testGetOne_DamageReduction() {
+        final Shield data;
+        final Long id;
+
+        id = getId();
+
+        data = service.getOne(id)
+            .get();
+
+        Assertions.assertEquals(12, data.getDamageReduction()
+            .getPhysical());
+        Assertions.assertEquals(13, data.getDamageReduction()
+            .getMagic());
+        Assertions.assertEquals(14, data.getDamageReduction()
+            .getFire());
+        Assertions.assertEquals(15, data.getDamageReduction()
+            .getLightning());
+    }
+
+    @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
         final Shield data;
@@ -122,18 +166,18 @@ public class ITShieldServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(0, data.getRequirements()
-            .getDexterity());
-        Assertions.assertEquals(1, data.getRequirements()
-            .getFaith());
-        Assertions.assertEquals(2, data.getRequirements()
-            .getStrength());
         Assertions.assertEquals(3, data.getRequirements()
+            .getDexterity());
+        Assertions.assertEquals(4, data.getRequirements()
+            .getFaith());
+        Assertions.assertEquals(5, data.getRequirements()
+            .getStrength());
+        Assertions.assertEquals(6, data.getRequirements()
             .getIntelligence());
     }
 
     @Test
-    @DisplayName("Returns the correct requirements")
+    @DisplayName("Returns the correct stats")
     public void testGetOne_Stats() {
         final Shield data;
         final Long id;
@@ -143,8 +187,8 @@ public class ITShieldServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(4, data.getDurability());
-        Assertions.assertEquals(5, data.getWeight());
+        Assertions.assertEquals(1, data.getDurability());
+        Assertions.assertEquals(2, data.getWeight());
     }
 
     private final Long getId() {

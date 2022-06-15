@@ -15,6 +15,10 @@ import com.bernardomg.darksouls.explorer.item.catalyst.domain.CatalystSummary;
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.DtoCatalyst;
 import com.bernardomg.darksouls.explorer.item.catalyst.domain.PersistentCatalyst;
 import com.bernardomg.darksouls.explorer.item.catalyst.repository.CatalystRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduction;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
@@ -48,18 +52,52 @@ public final class DefaultCatalystService implements CatalystService {
     @Override
     public final Optional<? extends Catalyst> getOne(final Long id) {
         final Optional<PersistentCatalyst> read;
+        final PersistentCatalyst entity;
         final Optional<? extends Catalyst> result;
-        final DtoCatalyst talisman;
+        final DtoCatalyst weapon;
+        final DtoWeaponRequirements requirements;
+        final DtoWeaponDamage damage;
+        final DtoWeaponDamageReduction damageReduction;
+        final DtoWeaponBonus bonus;
 
         read = repository.findById(id);
 
         if (read.isPresent()) {
-            talisman = new DtoCatalyst();
+            weapon = new DtoCatalyst();
+            entity = read.get();
 
-            BeanUtils.copyProperties(read.get(), talisman);
-            BeanUtils.copyProperties(read.get(), talisman.getRequirements());
+            BeanUtils.copyProperties(entity, weapon);
 
-            result = Optional.of(talisman);
+            requirements = new DtoWeaponRequirements();
+            requirements.setDexterity(entity.getDexterity());
+            requirements.setFaith(entity.getFaith());
+            requirements.setIntelligence(entity.getIntelligence());
+            requirements.setStrength(entity.getStrength());
+            weapon.setRequirements(requirements);
+
+            damage = new DtoWeaponDamage();
+            damage.setFire(entity.getFireDamage());
+            damage.setLightning(entity.getLightningDamage());
+            damage.setMagic(entity.getMagicDamage());
+            damage.setPhysical(entity.getPhysicalDamage());
+            damage.setCritical(entity.getCriticalDamage());
+            weapon.setDamage(damage);
+
+            damageReduction = new DtoWeaponDamageReduction();
+            damageReduction.setFire(entity.getFireReduction());
+            damageReduction.setLightning(entity.getLightningReduction());
+            damageReduction.setMagic(entity.getMagicReduction());
+            damageReduction.setPhysical(entity.getPhysicalReduction());
+            weapon.setDamageReduction(damageReduction);
+
+            bonus = new DtoWeaponBonus();
+            bonus.setDexterity(entity.getDexterityBonus());
+            bonus.setFaith(entity.getFaithBonus());
+            bonus.setIntelligence(entity.getIntelligenceBonus());
+            bonus.setStrength(entity.getStrengthBonus());
+            weapon.setBonus(bonus);
+
+            result = Optional.of(weapon);
         } else {
             result = Optional.empty();
         }

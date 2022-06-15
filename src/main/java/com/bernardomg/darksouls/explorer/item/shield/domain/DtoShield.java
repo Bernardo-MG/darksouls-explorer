@@ -1,7 +1,13 @@
 
 package com.bernardomg.darksouls.explorer.item.shield.domain;
 
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduction;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamageReduction;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponRequirements;
 
 import lombok.Data;
@@ -13,21 +19,30 @@ import lombok.NonNull;
 public final class DtoShield implements Shield {
 
     @NonNull
-    private String             description  = "";
+    private WeaponBonus           bonus           = new DtoWeaponBonus();
 
     @NonNull
-    private Long               durability   = 0l;
+    private WeaponDamage          damage          = new DtoWeaponDamage();
 
     @NonNull
-    private Long               id           = -1l;
+    private WeaponDamageReduction damageReduction = new DtoWeaponDamageReduction();
 
     @NonNull
-    private String             name         = "";
+    private String                description     = "";
 
     @NonNull
-    private WeaponRequirements requirements = new DtoWeaponRequirements();
+    private Long                  durability      = 0l;
 
     @NonNull
-    private Long               weight       = 0l;
+    private Long                  id              = -1l;
+
+    @NonNull
+    private String                name            = "";
+
+    @NonNull
+    private WeaponRequirements    requirements    = new DtoWeaponRequirements();
+
+    @NonNull
+    private Long                  weight          = 0l;
 
 }
