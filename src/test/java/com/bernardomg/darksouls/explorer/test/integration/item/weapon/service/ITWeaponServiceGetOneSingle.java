@@ -121,6 +121,7 @@ public class ITWeaponServiceGetOneSingle {
 
         Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
+        Assertions.assertEquals("Type", data.getType());
     }
 
     @Test

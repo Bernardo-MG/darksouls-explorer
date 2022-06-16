@@ -31,6 +31,9 @@ public final class DtoWeapon implements Weapon {
     private String                name            = "";
 
     @NonNull
+    private String                type            = "";
+
+    @NonNull
     private WeaponRequirements    requirements    = new DtoWeaponRequirements();
 
     @NonNull

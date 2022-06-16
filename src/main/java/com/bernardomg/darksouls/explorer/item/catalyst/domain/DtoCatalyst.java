@@ -31,6 +31,9 @@ public final class DtoCatalyst implements Catalyst {
     private String                description;
 
     @NonNull
+    private String                type            = "";
+
+    @NonNull
     private Integer               durability      = 0;
 
     @NonNull

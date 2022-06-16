@@ -121,6 +121,7 @@ public class ITTalismanServiceGetOneSingle {
 
         Assertions.assertEquals("Talisman", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
+        Assertions.assertEquals("Type", data.getType());
     }
 
     @Test

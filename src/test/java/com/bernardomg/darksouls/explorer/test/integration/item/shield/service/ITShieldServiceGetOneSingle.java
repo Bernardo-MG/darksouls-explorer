@@ -143,6 +143,7 @@ public class ITShieldServiceGetOneSingle {
 
         Assertions.assertEquals("Shield", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
+        Assertions.assertEquals("Type", data.getType());
     }
 
     @Test

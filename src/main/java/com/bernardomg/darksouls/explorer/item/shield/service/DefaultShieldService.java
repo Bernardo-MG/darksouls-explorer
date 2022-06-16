@@ -103,6 +103,7 @@ public final class DefaultShieldService implements ShieldService {
             weapon.setDescription(entity.getDescription());
             weapon.setDurability(entity.getDurability());
             weapon.setWeight(entity.getWeight());
+            weapon.setType(entity.getType());
 
             requirements = new DtoWeaponRequirements();
             requirements.setDexterity(entity.getDexterity());

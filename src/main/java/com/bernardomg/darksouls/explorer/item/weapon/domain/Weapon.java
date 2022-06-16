@@ -17,6 +17,8 @@ public interface Weapon {
 
     public String getName();
 
+    public String getType();
+
     public WeaponRequirements getRequirements();
 
     public Long getWeight();

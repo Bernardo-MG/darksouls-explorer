@@ -27,6 +27,10 @@ public final class PersistentTalisman {
     private String  description;
 
     @NonNull
+    @Column(name = "type", nullable = false)
+    private String  type;
+
+    @NonNull
     @Column(name = "dexterity", nullable = false)
     private Integer dexterity;
 

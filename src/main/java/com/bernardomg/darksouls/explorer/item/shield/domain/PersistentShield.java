@@ -35,6 +35,10 @@ public final class PersistentShield {
     private String  dexterityBonus     = "";
 
     @NonNull
+    @Column(name = "type", nullable = false)
+    private String  type;
+
+    @NonNull
     @Column(name = "durability", nullable = false)
     private Integer durability         = 0;
 

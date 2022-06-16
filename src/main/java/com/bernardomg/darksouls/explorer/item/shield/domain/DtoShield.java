@@ -40,6 +40,9 @@ public final class DtoShield implements Shield {
     private String                name            = "";
 
     @NonNull
+    private String                type            = "";
+
+    @NonNull
     private WeaponRequirements    requirements    = new DtoWeaponRequirements();
 
     @NonNull

@@ -89,6 +89,10 @@ public final class PersistentWeapon {
     private String  name;
 
     @NonNull
+    @Column(name = "type", nullable = false)
+    private String  type;
+
+    @NonNull
     @Column(name = "physical_dmg", nullable = false)
     private Integer physicalDamage     = 0;
 

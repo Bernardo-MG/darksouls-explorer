@@ -26,4 +26,6 @@ public interface Catalyst {
 
     public Long getWeight();
 
+    public String getType();
+
 }

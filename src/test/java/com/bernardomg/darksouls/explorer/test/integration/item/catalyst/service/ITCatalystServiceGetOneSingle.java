@@ -121,6 +121,7 @@ public class ITCatalystServiceGetOneSingle {
 
         Assertions.assertEquals("Catalyst", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
+        Assertions.assertEquals("Type", data.getType());
     }
 
     @Test

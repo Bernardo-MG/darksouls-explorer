@@ -28,16 +28,19 @@ public final class DtoTalisman implements Talisman {
     private WeaponDamageReduction damageReduction = new DtoWeaponDamageReduction();
 
     @NonNull
-    private String                description;
+    private String                description     = "";
+
+    @NonNull
+    private String                type            = "";
 
     @NonNull
     private Integer               durability      = 0;
 
     @NonNull
-    private Long                  id;
+    private Long                  id              = -1l;
 
     @NonNull
-    private String                name;
+    private String                name            = "";
 
     @NonNull
     private WeaponRequirements    requirements    = new DtoWeaponRequirements();

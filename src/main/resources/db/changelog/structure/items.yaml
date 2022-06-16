@@ -316,6 +316,9 @@ databaseChangeLog:
                   name: description
                   type: varchar(1200)
               - column:
+                  name: type
+                  type: varchar(50)
+              - column:
                   name: weight
                   type: int
               - column:
