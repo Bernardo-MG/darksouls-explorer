@@ -16,7 +16,7 @@ public interface Shield {
 
     public String getDescription();
 
-    public Long getDurability();
+    public Integer getDurability();
 
     public Long getId();
 

@@ -31,7 +31,7 @@ public final class DtoShield implements Shield {
     private String                description     = "";
 
     @NonNull
-    private Long                  durability      = 0l;
+    private Integer               durability      = 0;
 
     @NonNull
     private Long                  id              = -1l;

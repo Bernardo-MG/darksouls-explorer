@@ -4,7 +4,6 @@ package com.bernardomg.darksouls.explorer.item.catalyst.service;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,7 +65,11 @@ public final class DefaultCatalystService implements CatalystService {
             weapon = new DtoCatalyst();
             entity = read.get();
 
-            BeanUtils.copyProperties(entity, weapon);
+            weapon.setId(id);
+            weapon.setName(entity.getName());
+            weapon.setDescription(entity.getDescription());
+            weapon.setDurability(entity.getDurability());
+            weapon.setWeight(entity.getWeight());
 
             requirements = new DtoWeaponRequirements();
             requirements.setDexterity(entity.getDexterity());
