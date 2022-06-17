@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.talisman.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
 import java.util.Optional;
 
@@ -28,16 +28,16 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.talisman.domain.Talisman;
-import com.bernardomg.darksouls.explorer.item.talisman.repository.TalismanRepository;
-import com.bernardomg.darksouls.explorer.item.talisman.service.TalismanService;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.service.DefaultWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@DisplayName("Reading single talisman from id")
-@Sql({ "/db/queries/talisman/single.sql" })
-public class ITTalismanServiceGetOneSingle {
+@DisplayName("Reading single weapon from id")
+@Sql({ "/db/queries/weapon/single.sql" })
+public class ITDefaultWeaponServiceGetOneSingle {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
@@ -52,22 +52,22 @@ public class ITTalismanServiceGetOneSingle {
     }
 
     @Autowired
-    private TalismanRepository repository;
+    private WeaponRepository     repository;
 
     @Autowired
-    private TalismanService    service;
+    private DefaultWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITTalismanServiceGetOneSingle() {
+    public ITDefaultWeaponServiceGetOneSingle() {
         super();
     }
 
     @Test
     @DisplayName("Returns the correct damage")
     public void testGetOne_Damage() {
-        final Talisman data;
+        final Weapon data;
         final Long id;
 
         id = getId();
@@ -90,7 +90,7 @@ public class ITTalismanServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct damage reduction")
     public void testGetOne_DamageReduction() {
-        final Talisman data;
+        final Weapon data;
         final Long id;
 
         id = getId();
@@ -111,7 +111,7 @@ public class ITTalismanServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
-        final Talisman data;
+        final Weapon data;
         final Long id;
 
         id = getId();
@@ -119,15 +119,16 @@ public class ITTalismanServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals("Talisman", data.getName());
+        Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
-        Assertions.assertEquals("Type", data.getType());
+        Assertions.assertEquals("Weapon", data.getType());
+        Assertions.assertEquals("Subtype", data.getSubtype());
     }
 
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Talisman> data;
+        final Optional<? extends Weapon> data;
 
         data = service.getOne(-1l);
 
@@ -137,7 +138,7 @@ public class ITTalismanServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Requirement() {
-        final Talisman data;
+        final Weapon data;
         final Long id;
 
         id = getId();
@@ -158,7 +159,7 @@ public class ITTalismanServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct stats")
     public void testGetOne_Stats() {
-        final Talisman data;
+        final Weapon data;
         final Long id;
 
         id = getId();

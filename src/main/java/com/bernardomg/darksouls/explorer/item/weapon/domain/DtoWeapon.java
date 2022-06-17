@@ -31,10 +31,13 @@ public final class DtoWeapon implements Weapon {
     private String                name            = "";
 
     @NonNull
-    private String                type            = "";
+    private WeaponRequirements    requirements    = new DtoWeaponRequirements();
 
     @NonNull
-    private WeaponRequirements    requirements    = new DtoWeaponRequirements();
+    private String                subtype         = "";
+
+    @NonNull
+    private String                type            = "";
 
     @NonNull
     private Long                  weight          = 0l;

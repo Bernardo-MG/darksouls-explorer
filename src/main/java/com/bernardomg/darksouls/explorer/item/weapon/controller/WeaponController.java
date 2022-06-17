@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,8 @@ public class WeaponController {
 
     private final WeaponService service;
 
-    public WeaponController(final WeaponService srvc) {
+    public WeaponController(
+            @Qualifier("BasicWeaponService") final WeaponService srvc) {
         super();
 
         service = Objects.requireNonNull(srvc);

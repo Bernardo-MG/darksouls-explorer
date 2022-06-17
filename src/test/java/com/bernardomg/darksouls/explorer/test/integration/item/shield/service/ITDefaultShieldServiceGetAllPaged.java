@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.catalyst.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.shield.service;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,17 +27,19 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.catalyst.domain.CatalystSummary;
-import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystService;
+import com.bernardomg.darksouls.explorer.item.shield.service.ShieldWeaponService;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
+import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@DisplayName("Reading all the catalysts")
-@Sql({ "/db/queries/catalyst/single.sql" })
-public class ITCatalystServiceGetAll {
+@DisplayName("Reading all the shields paginated")
+@Sql({ "/db/queries/shield/multiple.sql" })
+public class ITDefaultShieldServiceGetAllPaged {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
@@ -52,36 +54,43 @@ public class ITCatalystServiceGetAll {
     }
 
     @Autowired
-    private CatalystService service;
+    private ShieldWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITCatalystServiceGetAll() {
+    public ITDefaultShieldServiceGetAllPaged() {
         super();
     }
 
     @Test
-    @DisplayName("Returns all the data")
-    public void testGetAll_Count() {
-        final Iterable<? extends CatalystSummary> data;
+    @DisplayName("Returns a page")
+    public void testGetAll_Instance() {
+        final Iterable<? extends WeaponSummary> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
+
+        Assertions.assertInstanceOf(PageIterable.class, data);
+    }
+
+    @Test
+    @DisplayName("Applies pagination size")
+    public void testGetAll_SingleResult() {
+        final Iterable<? extends WeaponSummary> data;
+
+        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
 
     @Test
-    @DisplayName("Returns the correct data")
-    public void testGetAll_Data() {
-        final CatalystSummary data;
+    @DisplayName("When unpaged returns all the data")
+    public void testGetAll_Unpaged() {
+        final Iterable<? extends WeaponSummary> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort())
-            .iterator()
-            .next();
+        data = service.getAll(new DisabledPagination(), new DisabledSort());
 
-        Assertions.assertEquals("Catalyst", data.getName());
-        Assertions.assertEquals("Description", data.getDescription());
+        Assertions.assertEquals(5, IterableUtils.size(data));
     }
 
 }

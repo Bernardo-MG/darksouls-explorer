@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.shield.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.talisman.service;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,17 +27,17 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.shield.domain.ShieldSummary;
-import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
+import com.bernardomg.darksouls.explorer.item.talisman.service.TalismanWeaponService;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@DisplayName("Reading all the shields")
-@Sql({ "/db/queries/shield/single.sql" })
-public class ITShieldServiceGetAll {
+@DisplayName("Reading all the talismans")
+@Sql({ "/db/queries/talisman/single.sql" })
+public class ITTalismanWeaponServiceGetAll {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
@@ -52,19 +52,19 @@ public class ITShieldServiceGetAll {
     }
 
     @Autowired
-    private ShieldService service;
+    private TalismanWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITShieldServiceGetAll() {
+    public ITTalismanWeaponServiceGetAll() {
         super();
     }
 
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends ShieldSummary> data;
+        final Iterable<? extends WeaponSummary> data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort());
 
@@ -74,13 +74,13 @@ public class ITShieldServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final ShieldSummary data;
+        final WeaponSummary data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort())
             .iterator()
             .next();
 
-        Assertions.assertEquals("Shield", data.getName());
+        Assertions.assertEquals("Talisman A", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 

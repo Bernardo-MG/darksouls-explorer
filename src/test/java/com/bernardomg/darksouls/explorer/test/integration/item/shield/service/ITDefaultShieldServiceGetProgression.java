@@ -39,20 +39,20 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.shield.repository.ShieldRepository;
-import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
+import com.bernardomg.darksouls.explorer.item.shield.service.ShieldWeaponService;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITShieldServiceGetProgression.Initializer.class })
+@ContextConfiguration(initializers = {
+        ITDefaultShieldServiceGetProgression.Initializer.class })
 @DisplayName("Reading shield progression for shields")
 @Sql({ "/db/queries/shield/single.sql",
         "/db/queries/shield/physical_5_levels.sql" })
-public class ITShieldServiceGetProgression {
+public class ITDefaultShieldServiceGetProgression {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -90,15 +90,15 @@ public class ITShieldServiceGetProgression {
     }
 
     @Autowired
-    private ShieldRepository repository;
+    private WeaponRepository    repository;
 
     @Autowired
-    private ShieldService    service;
+    private ShieldWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITShieldServiceGetProgression() {
+    public ITDefaultShieldServiceGetProgression() {
         super();
     }
 

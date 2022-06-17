@@ -89,10 +89,6 @@ public final class PersistentWeapon {
     private String  name;
 
     @NonNull
-    @Column(name = "type", nullable = false)
-    private String  type;
-
-    @NonNull
     @Column(name = "physical_dmg", nullable = false)
     private Integer physicalDamage     = 0;
 
@@ -107,6 +103,14 @@ public final class PersistentWeapon {
     @NonNull
     @Column(name = "strength_bonus", nullable = false)
     private String  strengthBonus      = "";
+
+    @NonNull
+    @Column(name = "subtype", nullable = false)
+    private String  subtype;
+
+    @NonNull
+    @Column(name = "type", nullable = false)
+    private String  type;
 
     @NonNull
     @Column(name = "weight", nullable = false)

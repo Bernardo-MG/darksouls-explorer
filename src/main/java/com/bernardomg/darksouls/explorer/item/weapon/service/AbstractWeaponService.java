@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.shield.service;
+package com.bernardomg.darksouls.explorer.item.weapon.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,12 +11,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponLevelNode;
 import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionPath;
@@ -26,17 +23,17 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponLevelNode;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.shield.domain.DtoShield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.PersistentShield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.ShieldSummary;
-import com.bernardomg.darksouls.explorer.item.shield.query.ShieldLevelQuery;
-import com.bernardomg.darksouls.explorer.item.shield.repository.ShieldRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduction;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
@@ -46,47 +43,48 @@ import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
 
 import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 
-@Service
-public final class DefaultShieldService implements ShieldService {
+public abstract class AbstractWeaponService implements WeaponService {
 
-    private final Query<DtoWeaponLevelNode> levelQuery = new ShieldLevelQuery();
+    private final Query<WeaponLevelNode> levelQuery = new WeaponLevelQuery();
 
-    private final WeaponLevelRepository     levelRepository;
+    private final WeaponLevelRepository  levelRepository;
 
-    private final QueryExecutor             queryExecutor;
+    private final QueryExecutor          queryExecutor;
 
-    private final ShieldRepository          repository;
+    private final WeaponRepository       repository;
 
-    @Autowired
-    public DefaultShieldService(final ShieldRepository repo,
+    private final String                 type;
+
+    public AbstractWeaponService(final WeaponRepository repo,
             final WeaponLevelRepository levelRepo,
-            final QueryExecutor queryExec) {
+            final QueryExecutor queryExec, final String tp) {
         super();
 
         repository = Objects.requireNonNull(repo);
         levelRepository = Objects.requireNonNull(levelRepo);
         queryExecutor = Objects.requireNonNull(queryExec);
+        type = Objects.requireNonNull(tp);
     }
 
     @Override
-    public final PageIterable<? extends ShieldSummary>
+    public final PageIterable<? extends WeaponSummary>
             getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
-        final Page<ShieldSummary> page;
+        final Page<WeaponSummary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
-        page = repository.findAllSummaries(pageable);
+        page = repository.findAllSummaries(type, pageable);
 
         return Paginations.fromSpring(page);
     }
 
     @Override
-    public final Optional<? extends Shield> getOne(final Long id) {
-        final Optional<PersistentShield> read;
-        final PersistentShield entity;
-        final Optional<? extends Shield> result;
-        final DtoShield weapon;
+    public final Optional<? extends Weapon> getOne(final Long id) {
+        final Optional<PersistentWeapon> read;
+        final PersistentWeapon entity;
+        final Optional<? extends Weapon> result;
+        final DtoWeapon weapon;
         final DtoWeaponRequirements requirements;
         final DtoWeaponDamage damage;
         final DtoWeaponDamageReduction damageReduction;
@@ -95,7 +93,7 @@ public final class DefaultShieldService implements ShieldService {
         read = repository.findById(id);
 
         if (read.isPresent()) {
-            weapon = new DtoShield();
+            weapon = new DtoWeapon();
             entity = read.get();
 
             weapon.setId(id);
@@ -104,6 +102,7 @@ public final class DefaultShieldService implements ShieldService {
             weapon.setDurability(entity.getDurability());
             weapon.setWeight(entity.getWeight());
             weapon.setType(entity.getType());
+            weapon.setSubtype(entity.getSubtype());
 
             requirements = new DtoWeaponRequirements();
             requirements.setDexterity(entity.getDexterity());
@@ -147,7 +146,7 @@ public final class DefaultShieldService implements ShieldService {
         final Collection<WeaponLevelNode> levelNodes;
         final Optional<WeaponProgression> result;
         final Map<String, Object> params;
-        final Optional<? extends Shield> weapon;
+        final Optional<? extends Weapon> weapon;
         final Iterable<String> names;
         final Collection<PersistentWeaponLevel> levels;
 

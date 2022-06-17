@@ -1,21 +1,22 @@
 
-package com.bernardomg.darksouls.explorer.item.weapon.service;
+package com.bernardomg.darksouls.explorer.item.talisman.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.service.AbstractWeaponService;
 import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
 
-@Service("BasicWeaponService")
-public final class DefaultWeaponService extends AbstractWeaponService {
+@Service("TalismanWeaponService")
+public final class TalismanWeaponService extends AbstractWeaponService {
 
     @Autowired
-    public DefaultWeaponService(final WeaponRepository repo,
+    public TalismanWeaponService(final WeaponRepository repo,
             final WeaponLevelRepository levelRepo,
             final QueryExecutor queryExec) {
-        super(repo, levelRepo, queryExec, "Weapon");
+        super(repo, levelRepo, queryExec, "Talisman");
     }
 
 }

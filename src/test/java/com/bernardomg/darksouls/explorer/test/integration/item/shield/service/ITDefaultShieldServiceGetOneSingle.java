@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.shield.service;
 
 import java.util.Optional;
 
@@ -22,26 +22,48 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
+import com.bernardomg.darksouls.explorer.item.shield.service.ShieldWeaponService;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
-import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
+import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@DisplayName("Reading single weapon from id")
-@Sql({ "/db/queries/weapon/single.sql" })
-public class ITWeaponServiceGetOneSingle {
+@ContextConfiguration(
+        initializers = { ITDefaultShieldServiceGetOneSingle.Initializer.class })
+@DisplayName("Reading single shield from id")
+@Sql({ "/db/queries/shield/single.sql" })
+public class ITDefaultShieldServiceGetOneSingle {
+
+    public static class Initializer implements
+            ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        @Override
+        public void initialize(
+                final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(neo4jContainer)
+                .initialize(configurableApplicationContext);
+        }
+    }
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
         .getMysqlContainer();
+
+    @Container
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
+        .getNeo4jContainer();
 
     @DynamicPropertySource
     public static void
@@ -52,15 +74,15 @@ public class ITWeaponServiceGetOneSingle {
     }
 
     @Autowired
-    private WeaponRepository repository;
+    private WeaponRepository    repository;
 
     @Autowired
-    private WeaponService    service;
+    private ShieldWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITWeaponServiceGetOneSingle() {
+    public ITDefaultShieldServiceGetOneSingle() {
         super();
     }
 
@@ -119,9 +141,10 @@ public class ITWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals("Sword", data.getName());
+        Assertions.assertEquals("Shield", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
-        Assertions.assertEquals("Type", data.getType());
+        Assertions.assertEquals("Shield", data.getType());
+        Assertions.assertEquals("Subtype", data.getSubtype());
     }
 
     @Test

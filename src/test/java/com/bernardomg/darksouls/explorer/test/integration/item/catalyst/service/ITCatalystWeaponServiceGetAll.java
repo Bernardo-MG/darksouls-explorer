@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.talisman.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.catalyst.service;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,17 +27,17 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.talisman.domain.TalismanSummary;
-import com.bernardomg.darksouls.explorer.item.talisman.service.TalismanService;
+import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystWeaponService;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@DisplayName("Reading all the talismans")
-@Sql({ "/db/queries/talisman/single.sql" })
-public class ITTalismanServiceGetAll {
+@DisplayName("Reading all the catalysts")
+@Sql({ "/db/queries/catalyst/single.sql" })
+public class ITCatalystWeaponServiceGetAll {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
@@ -52,19 +52,19 @@ public class ITTalismanServiceGetAll {
     }
 
     @Autowired
-    private TalismanService service;
+    private CatalystWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITTalismanServiceGetAll() {
+    public ITCatalystWeaponServiceGetAll() {
         super();
     }
 
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends TalismanSummary> data;
+        final Iterable<? extends WeaponSummary> data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort());
 
@@ -74,13 +74,13 @@ public class ITTalismanServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final TalismanSummary data;
+        final WeaponSummary data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort())
             .iterator()
             .next();
 
-        Assertions.assertEquals("Talisman", data.getName());
+        Assertions.assertEquals("Catalyst A", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 

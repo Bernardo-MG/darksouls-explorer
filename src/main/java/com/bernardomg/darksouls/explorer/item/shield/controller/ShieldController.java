@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.shield.domain.DtoShield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.Shield;
-import com.bernardomg.darksouls.explorer.item.shield.domain.ShieldSummary;
-import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
 import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
 import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 
@@ -25,16 +26,17 @@ import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 @RequestMapping("/shields")
 public class ShieldController {
 
-    private final ShieldService service;
+    private final WeaponService service;
 
-    public ShieldController(final ShieldService srvc) {
+    public ShieldController(
+            @Qualifier("ShieldWeaponService") final WeaponService srvc) {
         super();
 
         service = Objects.requireNonNull(srvc);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends ShieldSummary>
+    public Iterable<? extends WeaponSummary>
             read(@RequestParam(name = "selectors",
                     defaultValue = "") final Collection<String> selectors,
                     final Pagination pagination, final Sort sort) {
@@ -42,15 +44,15 @@ public class ShieldController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Shield readOne(@PathVariable("id") final Long id) {
-        final Optional<? extends Shield> read;
-        final Shield result;
+    public Weapon readOne(@PathVariable("id") final Long id) {
+        final Optional<? extends Weapon> read;
+        final Weapon result;
 
         read = service.getOne(id);
         if (read.isPresent()) {
             result = read.get();
         } else {
-            result = new DtoShield();
+            result = new DtoWeapon();
         }
 
         return result;

@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.shield.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,8 +27,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.shield.domain.ShieldSummary;
-import com.bernardomg.darksouls.explorer.item.shield.service.ShieldService;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.service.DefaultWeaponService;
 import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
 import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
@@ -37,9 +37,9 @@ import com.bernardomg.darksouls.explorer.test.configuration.annotation.Integrati
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@DisplayName("Reading all the shields paginated")
-@Sql({ "/db/queries/shield/multiple.sql" })
-public class ITShieldServiceGetAllPaged {
+@DisplayName("Reading all the weapons paginated")
+@Sql({ "/db/queries/weapon/multiple.sql" })
+public class ITDefaultWeaponServiceGetAllPaged {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
@@ -54,19 +54,19 @@ public class ITShieldServiceGetAllPaged {
     }
 
     @Autowired
-    private ShieldService service;
+    private DefaultWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITShieldServiceGetAllPaged() {
+    public ITDefaultWeaponServiceGetAllPaged() {
         super();
     }
 
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<? extends ShieldSummary> data;
+        final Iterable<? extends WeaponSummary> data;
 
         data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
 
@@ -76,7 +76,7 @@ public class ITShieldServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<? extends ShieldSummary> data;
+        final Iterable<? extends WeaponSummary> data;
 
         data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
 
@@ -86,7 +86,7 @@ public class ITShieldServiceGetAllPaged {
     @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
-        final Iterable<? extends ShieldSummary> data;
+        final Iterable<? extends WeaponSummary> data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort());
 

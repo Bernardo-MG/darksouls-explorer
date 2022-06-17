@@ -28,16 +28,16 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.catalyst.domain.Catalyst;
-import com.bernardomg.darksouls.explorer.item.catalyst.repository.CatalystRepository;
-import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystService;
+import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystWeaponService;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
 @DisplayName("Reading single catalyst from id")
 @Sql({ "/db/queries/catalyst/single.sql" })
-public class ITCatalystServiceGetOneSingle {
+public class ITCatalystWeaponServiceGetOneSingle {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
@@ -52,22 +52,22 @@ public class ITCatalystServiceGetOneSingle {
     }
 
     @Autowired
-    private CatalystRepository repository;
+    private WeaponRepository      repository;
 
     @Autowired
-    private CatalystService    service;
+    private CatalystWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITCatalystServiceGetOneSingle() {
+    public ITCatalystWeaponServiceGetOneSingle() {
         super();
     }
 
     @Test
     @DisplayName("Returns the correct damage")
     public void testGetOne_Damage() {
-        final Catalyst data;
+        final Weapon data;
         final Long id;
 
         id = getId();
@@ -90,7 +90,7 @@ public class ITCatalystServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct damage reduction")
     public void testGetOne_DamageReduction() {
-        final Catalyst data;
+        final Weapon data;
         final Long id;
 
         id = getId();
@@ -111,7 +111,7 @@ public class ITCatalystServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
-        final Catalyst data;
+        final Weapon data;
         final Long id;
 
         id = getId();
@@ -119,15 +119,15 @@ public class ITCatalystServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals("Catalyst", data.getName());
+        Assertions.assertEquals("Catalyst A", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
-        Assertions.assertEquals("Type", data.getType());
+        Assertions.assertEquals("Catalyst", data.getType());
     }
 
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Catalyst> data;
+        final Optional<? extends Weapon> data;
 
         data = service.getOne(-1l);
 
@@ -137,7 +137,7 @@ public class ITCatalystServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Requirement() {
-        final Catalyst data;
+        final Weapon data;
         final Long id;
 
         id = getId();
@@ -158,7 +158,7 @@ public class ITCatalystServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct stats")
     public void testGetOne_Stats() {
-        final Catalyst data;
+        final Weapon data;
         final Long id;
 
         id = getId();

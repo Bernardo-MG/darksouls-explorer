@@ -40,19 +40,19 @@ import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
-import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
+import com.bernardomg.darksouls.explorer.item.weapon.service.DefaultWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITWeaponServiceGetProgression.Initializer.class })
+@ContextConfiguration(initializers = {
+        ITDefaultWeaponServiceGetProgression.Initializer.class })
 @DisplayName("Reading weapon progression")
 @Sql({ "/db/queries/weapon/single.sql",
         "/db/queries/weapon/physical_5_levels.sql" })
-public class ITWeaponServiceGetProgression {
+public class ITDefaultWeaponServiceGetProgression {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -90,15 +90,15 @@ public class ITWeaponServiceGetProgression {
     }
 
     @Autowired
-    private WeaponRepository repository;
+    private WeaponRepository     repository;
 
     @Autowired
-    private WeaponService    service;
+    private DefaultWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITWeaponServiceGetProgression() {
+    public ITDefaultWeaponServiceGetProgression() {
         super();
     }
 
