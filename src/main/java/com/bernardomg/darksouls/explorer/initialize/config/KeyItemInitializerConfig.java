@@ -68,7 +68,7 @@ public class KeyItemInitializerConfig {
             .itemSqlParameterSourceProvider(
                 new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
             .sql(
-                "INSERT INTO key_items (type, name, description) VALUES (\"keyItem\", :name, :description)")
+                "INSERT INTO key_items (name, description) VALUES (:name, :description)")
             .dataSource(datasource)
             .build();
     }

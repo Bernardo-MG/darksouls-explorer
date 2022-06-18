@@ -47,15 +47,18 @@ databaseChangeLog:
                   type: varchar(1200)
               - column:
                   name: type
-                  type: varchar(50)
+                  type: varchar(20)
               - column:
                   name: subtype
-                  type: varchar(50)
+                  type: varchar(20)
               - column:
                   name: weight
                   type: int
               - column:
                   name: durability
+                  type: int
+              - column:
+                  name: stability
                   type: int
               - column:
                   name: strength

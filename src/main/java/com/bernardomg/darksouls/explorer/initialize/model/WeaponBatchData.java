@@ -10,27 +10,75 @@ import lombok.NonNull;
 public final class WeaponBatchData {
 
     @NonNull
-    private String  description  = "";
+    private String  attacks             = "";
 
     @NonNull
-    private Integer dexterity    = 0;
+    private Double  critical_dmg        = 0d;
 
     @NonNull
-    private Integer durability   = 0;
+    private String  description         = "";
 
     @NonNull
-    private Integer faith        = 0;
+    private Integer dexterity           = 0;
 
     @NonNull
-    private Integer intelligence = 0;
+    private String  dexterity_bonus     = "";
 
     @NonNull
-    private String  name         = "";
+    private Integer durability          = 0;
 
     @NonNull
-    private Integer strength     = 0;
+    private Integer faith               = 0;
 
     @NonNull
-    private Double  weight       = 0d;
+    private String  faith_bonus         = "";
+
+    @NonNull
+    private Double  fire_dmg            = 0d;
+
+    @NonNull
+    private Double  fire_reduction      = 0d;
+
+    @NonNull
+    private Integer intelligence        = 0;
+
+    @NonNull
+    private String  intelligence_bonus  = "";
+
+    @NonNull
+    private Double  lightning_dmg       = 0d;
+
+    @NonNull
+    private Double  lightning_reduction = 0d;
+
+    @NonNull
+    private Double  magic_dmg           = 0d;
+
+    @NonNull
+    private Double  magic_reduction     = 0d;
+
+    @NonNull
+    private String  name                = "";
+
+    @NonNull
+    private Double  physical_dmg        = 0d;
+
+    @NonNull
+    private Double  physical_reduction  = 0d;
+
+    @NonNull
+    private Double  stability           = 0d;
+
+    @NonNull
+    private Integer strength            = 0;
+
+    @NonNull
+    private String  strength_bonus      = "";
+
+    @NonNull
+    private String  type                = "";
+
+    @NonNull
+    private Double  weight              = 0d;
 
 }

@@ -68,7 +68,7 @@ public class MiscItemInitializerConfig {
             .itemSqlParameterSourceProvider(
                 new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
             .sql(
-                "INSERT INTO misc_items (type, name, description) VALUES (\"misc\", :name, :description)")
+                "INSERT INTO misc_items (name, description) VALUES (:name, :description)")
             .dataSource(datasource)
             .build();
     }

@@ -76,6 +76,9 @@ public final class CatalystBatchData {
     private String  strength_bonus      = "";
 
     @NonNull
+    private String  type                = "";
+
+    @NonNull
     private Double  weight              = 0d;
 
 }
