@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bernardomg.darksouls.explorer.item.key.domain.DtoKeyItem;
 import com.bernardomg.darksouls.explorer.item.key.domain.KeyItem;
 import com.bernardomg.darksouls.explorer.item.key.service.KeyItemService;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @RestController
 @RequestMapping("/keyitems")

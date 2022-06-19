@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.service.AbstractWeaponService;
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.persistence.executor.QueryExecutor;
 
 @Service("TalismanWeaponService")
 public final class TalismanWeaponService extends AbstractWeaponService {

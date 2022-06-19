@@ -14,8 +14,8 @@ import com.bernardomg.darksouls.explorer.item.spell.domain.DtoSpell;
 import com.bernardomg.darksouls.explorer.item.spell.domain.Spell;
 import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
 import com.bernardomg.darksouls.explorer.item.spell.service.SpellService;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @RestController
 @RequestMapping("/spells")

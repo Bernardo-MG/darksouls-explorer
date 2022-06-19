@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.test.unit.request.argument;
+package com.bernardomg.test.unit.pagination.argument;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +11,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.request.argument.PaginationArgumentResolver;
+import com.bernardomg.pagination.argument.PaginationArgumentResolver;
+import com.bernardomg.pagination.model.Pagination;
 
 @DisplayName("Pagination argument resolver")
 public class TestPaginationArgumentResolver {

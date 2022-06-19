@@ -3,9 +3,9 @@ package com.bernardomg.darksouls.explorer.problem.query;
 
 import java.util.Map;
 
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 import com.bernardomg.darksouls.explorer.problem.model.ImmutableDataProblem;
+import com.bernardomg.pagination.model.Query;
 
 public final class DuplicatedProblemQuery implements Query<DataProblem> {
 

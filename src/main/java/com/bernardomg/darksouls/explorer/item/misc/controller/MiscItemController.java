@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bernardomg.darksouls.explorer.item.misc.domain.DtoMiscItem;
 import com.bernardomg.darksouls.explorer.item.misc.domain.MiscItem;
 import com.bernardomg.darksouls.explorer.item.misc.service.MiscItemService;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @RestController
 @RequestMapping("/miscitems")

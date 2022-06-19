@@ -34,19 +34,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.model.DefaultSort;
-import com.bernardomg.darksouls.explorer.persistence.model.Direction;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.util.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.test.util.domain.Item;
+import com.bernardomg.pagination.model.DefaultSort;
+import com.bernardomg.pagination.model.Direction;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.persistence.executor.QueryExecutor;
+import com.bernardomg.persistence.executor.TextQueryExecutor;
 
 @IntegrationTest
 @ContextConfiguration(

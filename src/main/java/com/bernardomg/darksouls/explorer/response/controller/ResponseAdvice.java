@@ -11,11 +11,11 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.response.model.DefaultPaginatedResponse;
 import com.bernardomg.darksouls.explorer.response.model.DefaultResponse;
 import com.bernardomg.darksouls.explorer.response.model.PaginatedResponse;
 import com.bernardomg.darksouls.explorer.response.model.Response;
+import com.bernardomg.pagination.model.PageIterable;
 
 import lombok.extern.slf4j.Slf4j;
 

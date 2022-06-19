@@ -1,19 +1,19 @@
 
-package com.bernardomg.darksouls.explorer.test.unit.persistence.utils;
+package com.bernardomg.test.unit.pagination.utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
-import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DefaultSort;
-import com.bernardomg.darksouls.explorer.persistence.model.Direction;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
-import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
+import com.bernardomg.pagination.model.DefaultPagination;
+import com.bernardomg.pagination.model.DefaultSort;
+import com.bernardomg.pagination.model.Direction;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.pagination.utils.Paginations;
 
 @DisplayName("Pagination utils - Pagination to Spring model")
 public class TestPaginationsToSpring {

@@ -14,10 +14,10 @@ import com.bernardomg.darksouls.explorer.item.key.domain.DtoKeyItem;
 import com.bernardomg.darksouls.explorer.item.key.domain.KeyItem;
 import com.bernardomg.darksouls.explorer.item.key.domain.PersistentKeyItem;
 import com.bernardomg.darksouls.explorer.item.key.repository.KeyItemRepository;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
-import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.pagination.utils.Paginations;
 
 @Service
 public final class DefaultKeyItemService implements KeyItemService {

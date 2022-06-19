@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.request.argument;
+package com.bernardomg.pagination.argument;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -7,11 +7,14 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.bernardomg.darksouls.explorer.persistence.model.DefaultSort;
-import com.bernardomg.darksouls.explorer.persistence.model.Direction;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.DefaultSort;
+import com.bernardomg.pagination.model.Direction;
+import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Sort;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public final class SortArgumentResolver
         implements HandlerMethodArgumentResolver {
 
@@ -29,31 +32,43 @@ public final class SortArgumentResolver
         final String[] sortPieces;
         final Direction direction;
         final Sort sort;
+        final String rawDirection;
 
         sortText = webRequest.getParameter("sort");
 
         if (sortText == null) {
+            // No sort
             sort = new DisabledSort();
+            log.trace("No sort received, using disabled sort");
         } else {
+            log.trace("Received sort code: {}", sortText);
             sortPieces = sortText.split(",");
-            property = sortPieces[0];
 
-            if (sortPieces.length == 1) {
-                direction = Direction.ASC;
+            if (sortPieces.length == 0) {
+                // Invalid sort
+                sort = new DisabledSort();
+                log.warn("Invalid sort command: {}. Disabling sort", sortText);
             } else {
-                switch (sortPieces[1].toLowerCase()) {
-                    case "asc":
-                        direction = Direction.ASC;
-                        break;
-                    case "desc":
-                        direction = Direction.DESC;
-                        break;
-                    default:
-                        direction = Direction.ASC;
-                }
-            }
+                property = sortPieces[0];
 
-            sort = new DefaultSort(property, direction);
+                if (sortPieces.length == 1) {
+                    // No direction
+                    direction = Direction.ASC;
+                    log.trace(
+                        "No sort direction received, using default direction: {}",
+                        direction);
+                } else {
+                    rawDirection = sortPieces[1].toLowerCase();
+                    if ("desc".equals(rawDirection)) {
+                        direction = Direction.DESC;
+                    } else {
+                        direction = Direction.ASC;
+                    }
+                }
+                log.trace("Sorting by property {} and direction {}", property,
+                    direction);
+                sort = new DefaultSort(property, direction);
+            }
         }
 
         return sort;

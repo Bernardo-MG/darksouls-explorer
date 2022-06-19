@@ -20,8 +20,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
-import com.bernardomg.darksouls.explorer.request.argument.PaginationArgumentResolver;
-import com.bernardomg.darksouls.explorer.request.argument.SortArgumentResolver;
+import com.bernardomg.pagination.argument.PaginationArgumentResolver;
+import com.bernardomg.pagination.argument.SortArgumentResolver;
 
 /**
  * Request configuration.

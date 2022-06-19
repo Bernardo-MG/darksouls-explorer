@@ -14,10 +14,10 @@ import com.bernardomg.darksouls.explorer.item.misc.domain.DtoMiscItem;
 import com.bernardomg.darksouls.explorer.item.misc.domain.MiscItem;
 import com.bernardomg.darksouls.explorer.item.misc.domain.PersistentMiscItem;
 import com.bernardomg.darksouls.explorer.item.misc.repository.MiscItemRepository;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
-import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.pagination.utils.Paginations;
 
 @Service
 public final class DefaultMiscItemService implements MiscItemService {

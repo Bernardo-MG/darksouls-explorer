@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.persistence.model;
+package com.bernardomg.pagination.model;
 
 public interface PageIterable<T> extends Iterable<T> {
 

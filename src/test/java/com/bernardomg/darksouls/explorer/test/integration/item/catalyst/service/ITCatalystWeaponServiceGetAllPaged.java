@@ -29,12 +29,12 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystWeaponService;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
-import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.pagination.model.DefaultPagination;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.PageIterable;
 
 @IntegrationTest
 @DisplayName("Reading all the catalysts paginated")

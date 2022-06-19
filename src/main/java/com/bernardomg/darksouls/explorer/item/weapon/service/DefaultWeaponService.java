@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
+import com.bernardomg.persistence.executor.QueryExecutor;
 
 @Service("BasicWeaponService")
 public final class DefaultWeaponService extends AbstractWeaponService {

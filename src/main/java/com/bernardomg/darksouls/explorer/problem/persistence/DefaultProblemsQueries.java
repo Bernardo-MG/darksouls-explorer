@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.executor.TextQueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 import com.bernardomg.darksouls.explorer.problem.query.DuplicatedProblemQuery;
 import com.bernardomg.darksouls.explorer.problem.query.MissingFieldQuery;
 import com.bernardomg.darksouls.explorer.problem.query.MissingRelationshipQuery;
+import com.bernardomg.pagination.model.Query;
+import com.bernardomg.persistence.executor.QueryExecutor;
+import com.bernardomg.persistence.executor.TextQueryExecutor;
 
 @Component
 public final class DefaultProblemsQueries implements ProblemsQueries {

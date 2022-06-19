@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.persistence.model;
+package com.bernardomg.pagination.model;
 
 import lombok.Data;
 

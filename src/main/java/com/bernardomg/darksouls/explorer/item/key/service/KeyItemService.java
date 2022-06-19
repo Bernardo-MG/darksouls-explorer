@@ -4,8 +4,8 @@ package com.bernardomg.darksouls.explorer.item.key.service;
 import java.util.Optional;
 
 import com.bernardomg.darksouls.explorer.item.key.domain.KeyItem;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 public interface KeyItemService {
 

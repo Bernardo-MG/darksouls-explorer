@@ -1,15 +1,15 @@
 
-package com.bernardomg.darksouls.explorer.persistence.utils;
+package com.bernardomg.pagination.utils;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import com.bernardomg.darksouls.explorer.persistence.model.DefaultPageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Direction;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.DefaultPageIterable;
+import com.bernardomg.pagination.model.Direction;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 public final class Paginations {
 
