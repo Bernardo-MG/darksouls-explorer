@@ -20,4 +20,4 @@
  * scanned by the Spring Boot application.
  */
 
-package com.bernardomg.darksouls.explorer;
+package com.bernardomg;
