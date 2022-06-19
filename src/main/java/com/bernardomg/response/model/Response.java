@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.response.model;
+package com.bernardomg.response.model;
 
 /**
  * Response to the frontend.

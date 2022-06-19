@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.bernardomg.darksouls.explorer.response.model.DefaultResponse;
-import com.bernardomg.darksouls.explorer.response.model.Response;
+import com.bernardomg.response.model.DefaultResponse;
+import com.bernardomg.response.model.Response;
 
 /**
  * Captures and handles exceptions for all the controllers.

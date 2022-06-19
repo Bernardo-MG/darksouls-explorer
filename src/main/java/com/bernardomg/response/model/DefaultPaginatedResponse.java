@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.response.model;
+package com.bernardomg.response.model;
 
 import lombok.Data;
 import lombok.NonNull;
