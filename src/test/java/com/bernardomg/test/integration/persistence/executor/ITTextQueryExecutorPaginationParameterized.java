@@ -14,17 +14,15 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence.executor;
+package com.bernardomg.test.integration.persistence.executor;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
-import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -43,13 +41,20 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.util.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.test.util.domain.Item;
+import com.bernardomg.pagination.model.DefaultPagination;
+import com.bernardomg.pagination.model.DefaultSort;
+import com.bernardomg.pagination.model.Direction;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 import com.bernardomg.persistence.executor.QueryExecutor;
 import com.bernardomg.persistence.executor.TextQueryExecutor;
 
 @IntegrationTest
-@ContextConfiguration(initializers = { ITTextQueryExecutor.Initializer.class })
-@DisplayName("Query executor")
-public class ITTextQueryExecutor {
+@ContextConfiguration(initializers = {
+        ITTextQueryExecutorPaginationParameterized.Initializer.class })
+@DisplayName("Query executor paginated and parameterized")
+public class ITTextQueryExecutorPaginationParameterized {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -76,54 +81,81 @@ public class ITTextQueryExecutor {
     private final QueryExecutor queryExecutor;
 
     @Autowired
-    public ITTextQueryExecutor(final Neo4jClient clnt) {
+    public ITTextQueryExecutorPaginationParameterized(final Neo4jClient clnt) {
         super();
 
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
     @Test
-    @DisplayName("Reads the content for a query")
-    public void testFetch_Content() {
+    @DisplayName("Reads the content for a page returning a single value")
+    public void testFetch_AllElementsPage_Content() {
         final Iterator<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+        final Map<String, Object> parameters;
 
-        data = queryExecutor.fetch(getQuery(), this::toItem)
+        parameters = new HashMap<>();
+        parameters.put("name", "Item1");
+
+        pagination = new DefaultPagination(0, 5);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor
+            .fetch(getQuery(), this::toItem, parameters, pagination,
+                Arrays.asList(sort))
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
             .getName());
-        Assertions.assertEquals("Item2", data.next()
-            .getName());
-        Assertions.assertEquals("Item3", data.next()
-            .getName());
-        Assertions.assertEquals("Item4", data.next()
-            .getName());
-        Assertions.assertEquals("Item5", data.next()
-            .getName());
     }
 
     @Test
-    @DisplayName("Reads the values for a query")
-    public void testFetch_Values() {
-        final Collection<Item> data;
+    @DisplayName("Reads the status for a page returning a single value")
+    public void testFetch_AllElementsPage_Status() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+        final Map<String, Object> parameters;
 
-        data = queryExecutor.fetch(getQuery(), this::toItem);
+        parameters = new HashMap<>();
+        parameters.put("name", "Item1");
 
-        Assertions.assertEquals(5, IterableUtils.size(data));
+        pagination = new DefaultPagination(0, 5);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters,
+            pagination, Arrays.asList(sort));
+
+        Assertions.assertTrue(data.isFirst());
+        Assertions.assertTrue(data.isLast());
     }
 
     @Test
-    @DisplayName("Reads the values for a query of a single value")
-    public void testFetchOne_Values() {
-        final Optional<Item> data;
+    @DisplayName("Reads the values for a page returning a single value")
+    public void testFetch_AllElementsPage_Values() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+        final Map<String, Object> parameters;
 
-        data = queryExecutor.fetchOne(getQuery(), this::toItem);
+        parameters = new HashMap<>();
+        parameters.put("name", "Item1");
 
-        Assertions.assertTrue(data.isPresent());
+        pagination = new DefaultPagination(0, 5);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters,
+            pagination, Arrays.asList(sort));
+
+        Assertions.assertEquals(5, data.getSize());
+        Assertions.assertEquals(1, data.getTotalElements());
+        Assertions.assertEquals(1, data.getTotalPages());
+        Assertions.assertEquals(0, data.getPageNumber());
     }
 
     private final Function<Map<String, Object>, String> getQuery() {
-        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
+        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")
@@ -132,8 +164,6 @@ public class ITTextQueryExecutor {
         final String name;
         final Iterable<String> description;
         final Iterable<String> tags;
-
-        // TODO: Use custom model for testing
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");

@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence.request;
+package com.bernardomg.test.integration.pagination.request;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;

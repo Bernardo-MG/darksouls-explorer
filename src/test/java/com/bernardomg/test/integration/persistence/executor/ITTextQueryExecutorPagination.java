@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.persistence.executor;
+package com.bernardomg.test.integration.persistence.executor;
 
 import java.util.Arrays;
 import java.util.Collections;
