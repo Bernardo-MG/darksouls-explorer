@@ -13,7 +13,7 @@ import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 import com.bernardomg.darksouls.explorer.problem.query.DuplicatedProblemQuery;
 import com.bernardomg.darksouls.explorer.problem.query.MissingFieldQuery;
 import com.bernardomg.darksouls.explorer.problem.query.MissingRelationshipQuery;
-import com.bernardomg.pagination.model.Query;
+import com.bernardomg.persistence.executor.Query;
 import com.bernardomg.persistence.executor.QueryExecutor;
 import com.bernardomg.persistence.executor.TextQueryExecutor;
 

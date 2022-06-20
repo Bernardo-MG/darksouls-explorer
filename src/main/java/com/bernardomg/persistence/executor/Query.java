@@ -1,5 +1,5 @@
 
-package com.bernardomg.pagination.model;
+package com.bernardomg.persistence.executor;
 
 import java.util.Map;
 

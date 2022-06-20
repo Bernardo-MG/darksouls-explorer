@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponLevelNode;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevelNode;
-import com.bernardomg.pagination.model.Query;
+import com.bernardomg.persistence.executor.Query;
 import com.bernardomg.persistence.utils.Maps;
 
 public final class WeaponLevelQuery implements Query<WeaponLevelNode> {

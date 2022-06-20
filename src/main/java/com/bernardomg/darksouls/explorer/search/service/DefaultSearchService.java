@@ -11,8 +11,8 @@ import com.bernardomg.darksouls.explorer.search.domain.SearchRequest;
 import com.bernardomg.darksouls.explorer.search.domain.SearchResult;
 import com.bernardomg.darksouls.explorer.search.query.SearchQuery;
 import com.bernardomg.pagination.model.Pagination;
-import com.bernardomg.pagination.model.Query;
 import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.persistence.executor.Query;
 import com.bernardomg.persistence.executor.QueryExecutor;
 
 @Service

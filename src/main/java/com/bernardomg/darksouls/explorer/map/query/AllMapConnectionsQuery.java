@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.bernardomg.darksouls.explorer.map.domain.ImmutableMapConnection;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
-import com.bernardomg.pagination.model.Query;
+import com.bernardomg.persistence.executor.Query;
 
 public final class AllMapConnectionsQuery implements Query<MapConnection> {
 

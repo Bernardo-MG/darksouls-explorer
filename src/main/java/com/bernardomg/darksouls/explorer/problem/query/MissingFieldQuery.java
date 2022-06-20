@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 import com.bernardomg.darksouls.explorer.problem.model.ImmutableDataProblem;
-import com.bernardomg.pagination.model.Query;
+import com.bernardomg.persistence.executor.Query;
 
 public final class MissingFieldQuery implements Query<DataProblem> {
 

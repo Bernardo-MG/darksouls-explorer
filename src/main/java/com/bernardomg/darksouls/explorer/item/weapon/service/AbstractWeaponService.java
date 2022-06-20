@@ -36,9 +36,9 @@ import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepos
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
-import com.bernardomg.pagination.model.Query;
 import com.bernardomg.pagination.model.Sort;
 import com.bernardomg.pagination.utils.Paginations;
+import com.bernardomg.persistence.executor.Query;
 import com.bernardomg.persistence.executor.QueryExecutor;
 
 import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;

@@ -12,8 +12,8 @@ import com.bernardomg.darksouls.explorer.map.query.AllIMapsQuery;
 import com.bernardomg.darksouls.explorer.map.query.AllMapConnectionsQuery;
 import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
-import com.bernardomg.pagination.model.Query;
 import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.persistence.executor.Query;
 import com.bernardomg.persistence.executor.QueryExecutor;
 
 @Component
