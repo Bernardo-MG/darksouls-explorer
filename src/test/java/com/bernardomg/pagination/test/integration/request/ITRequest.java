@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.test.integration.pagination.request;
+package com.bernardomg.pagination.test.integration.request;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;

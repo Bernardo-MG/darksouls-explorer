@@ -14,17 +14,14 @@
  * the License.
  */
 
-package com.bernardomg.test.integration.persistence.executor;
+package com.bernardomg.persistence.test.integration.executor;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
-import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -43,13 +40,19 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.util.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.test.util.domain.Item;
+import com.bernardomg.pagination.model.DefaultSort;
+import com.bernardomg.pagination.model.Direction;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 import com.bernardomg.persistence.executor.QueryExecutor;
 import com.bernardomg.persistence.executor.TextQueryExecutor;
 
 @IntegrationTest
-@ContextConfiguration(initializers = { ITTextQueryExecutor.Initializer.class })
-@DisplayName("Query executor")
-public class ITTextQueryExecutor {
+@ContextConfiguration(
+        initializers = { ITTextQueryExecutorSort.Initializer.class })
+@DisplayName("Query executor sorted")
+public class ITTextQueryExecutorSort {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -76,18 +79,24 @@ public class ITTextQueryExecutor {
     private final QueryExecutor queryExecutor;
 
     @Autowired
-    public ITTextQueryExecutor(final Neo4jClient clnt) {
+    public ITTextQueryExecutorSort(final Neo4jClient clnt) {
         super();
 
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
     @Test
-    @DisplayName("Reads the content for a query")
-    public void testFetch_Content() {
+    @DisplayName("Sorts in ascending order through a query")
+    public void testFetch_Ascending() {
         final Iterator<Item> data;
+        final Pagination pagination;
+        final Sort sort;
 
-        data = queryExecutor.fetch(getQuery(), this::toItem)
+        pagination = new DisabledPagination();
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor
+            .fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
@@ -103,23 +112,29 @@ public class ITTextQueryExecutor {
     }
 
     @Test
-    @DisplayName("Reads the values for a query")
-    public void testFetch_Values() {
-        final Collection<Item> data;
+    @DisplayName("Sorts in descending order through a query")
+    public void testFetch_Descending() {
+        final Iterator<Item> data;
+        final Pagination pagination;
+        final Sort sort;
 
-        data = queryExecutor.fetch(getQuery(), this::toItem);
+        pagination = new DisabledPagination();
+        sort = new DefaultSort("name", Direction.DESC);
 
-        Assertions.assertEquals(5, IterableUtils.size(data));
-    }
+        data = queryExecutor
+            .fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
+            .iterator();
 
-    @Test
-    @DisplayName("Reads the values for a query of a single value")
-    public void testFetchOne_Values() {
-        final Optional<Item> data;
-
-        data = queryExecutor.fetchOne(getQuery(), this::toItem);
-
-        Assertions.assertTrue(data.isPresent());
+        Assertions.assertEquals("Item5", data.next()
+            .getName());
+        Assertions.assertEquals("Item4", data.next()
+            .getName());
+        Assertions.assertEquals("Item3", data.next()
+            .getName());
+        Assertions.assertEquals("Item2", data.next()
+            .getName());
+        Assertions.assertEquals("Item1", data.next()
+            .getName());
     }
 
     private final Function<Map<String, Object>, String> getQuery() {
@@ -132,8 +147,6 @@ public class ITTextQueryExecutor {
         final String name;
         final Iterable<String> description;
         final Iterable<String> tags;
-
-        // TODO: Use custom model for testing
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");

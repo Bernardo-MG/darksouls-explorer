@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.test.integration.pagination.request;
+package com.bernardomg.pagination.test.integration.request;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -42,10 +42,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
 @AutoConfigureMockMvc
-@ContextConfiguration(initializers = { ITPaginationRequest.Initializer.class })
-@DisplayName("Paginated requests")
+@ContextConfiguration(initializers = { ITPaginationSort.Initializer.class })
+@DisplayName("Sorted request")
 @Sql({ "/db/queries/weapon/multiple.sql" })
-public class ITPaginationRequest {
+public class ITPaginationSort {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -80,18 +80,17 @@ public class ITPaginationRequest {
     /**
      * Default constructor.
      */
-    public ITPaginationRequest() {
+    public ITPaginationSort() {
         super();
     }
 
     @Test
-    @DisplayName("Handles pagination parameters for the first page")
-    public void requestPaginated_First() throws Exception {
+    @DisplayName("Handles sort parameters with ascending order")
+    public void requestSorted_Ascending() throws Exception {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/weapons")
-            .param("page", "0")
-            .param("size", "10");
+            .param("sort", "name,asc");
 
         mockMvc.perform(request)
             .andExpect(MockMvcResultMatchers.content()
@@ -99,35 +98,24 @@ public class ITPaginationRequest {
             .andExpect(MockMvcResultMatchers.status()
                 .isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
-                Matchers.is("Weapon 1")))
-            .andExpect(
-                MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
-            .andExpect(
-                MockMvcResultMatchers.jsonPath("$.size", Matchers.is(10)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage",
-                Matchers.is(5)));
+                Matchers.is("Weapon 1")));
     }
 
     @Test
-    @DisplayName("Handles pagination parameters for the not existing page page")
-    public void requestPaginated_NotExisting() throws Exception {
+    @DisplayName("Handles sort parameters with descending order")
+    public void requestSorted_Descending() throws Exception {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/weapons")
-            .param("page", "1")
-            .param("size", "10");
+            .param("sort", "name,desc");
 
         mockMvc.perform(request)
             .andExpect(MockMvcResultMatchers.content()
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status()
                 .isOk())
-            .andExpect(
-                MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(1)))
-            .andExpect(
-                MockMvcResultMatchers.jsonPath("$.size", Matchers.is(10)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage",
-                Matchers.is(0)));
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
+                Matchers.is("Weapon 5")));
     }
 
 }

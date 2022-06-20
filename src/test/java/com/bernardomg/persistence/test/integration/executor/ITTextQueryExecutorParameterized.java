@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.test.integration.persistence.executor;
+package com.bernardomg.persistence.test.integration.executor;
 
 import java.util.Arrays;
 import java.util.Collection;

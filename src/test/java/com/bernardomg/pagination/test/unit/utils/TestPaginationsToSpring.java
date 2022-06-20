@@ -1,5 +1,5 @@
 
-package com.bernardomg.test.unit.pagination.utils;
+package com.bernardomg.pagination.test.unit.utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

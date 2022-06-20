@@ -14,10 +14,11 @@
  * the License.
  */
 
-package com.bernardomg.test.integration.persistence.executor;
+package com.bernardomg.persistence.test.integration.executor;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
@@ -40,19 +41,20 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.util.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.test.util.domain.Item;
+import com.bernardomg.pagination.model.DefaultPagination;
 import com.bernardomg.pagination.model.DefaultSort;
 import com.bernardomg.pagination.model.Direction;
-import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
 import com.bernardomg.persistence.executor.QueryExecutor;
 import com.bernardomg.persistence.executor.TextQueryExecutor;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITTextQueryExecutorSort.Initializer.class })
-@DisplayName("Query executor sorted")
-public class ITTextQueryExecutorSort {
+@ContextConfiguration(initializers = {
+        ITTextQueryExecutorPaginationParameterized.Initializer.class })
+@DisplayName("Query executor paginated and parameterized")
+public class ITTextQueryExecutorPaginationParameterized {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -79,66 +81,81 @@ public class ITTextQueryExecutorSort {
     private final QueryExecutor queryExecutor;
 
     @Autowired
-    public ITTextQueryExecutorSort(final Neo4jClient clnt) {
+    public ITTextQueryExecutorPaginationParameterized(final Neo4jClient clnt) {
         super();
 
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
     @Test
-    @DisplayName("Sorts in ascending order through a query")
-    public void testFetch_Ascending() {
+    @DisplayName("Reads the content for a page returning a single value")
+    public void testFetch_AllElementsPage_Content() {
         final Iterator<Item> data;
         final Pagination pagination;
         final Sort sort;
+        final Map<String, Object> parameters;
 
-        pagination = new DisabledPagination();
+        parameters = new HashMap<>();
+        parameters.put("name", "Item1");
+
+        pagination = new DefaultPagination(0, 5);
         sort = new DefaultSort("name", Direction.ASC);
 
         data = queryExecutor
-            .fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
+            .fetch(getQuery(), this::toItem, parameters, pagination,
+                Arrays.asList(sort))
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
-            .getName());
-        Assertions.assertEquals("Item2", data.next()
-            .getName());
-        Assertions.assertEquals("Item3", data.next()
-            .getName());
-        Assertions.assertEquals("Item4", data.next()
-            .getName());
-        Assertions.assertEquals("Item5", data.next()
             .getName());
     }
 
     @Test
-    @DisplayName("Sorts in descending order through a query")
-    public void testFetch_Descending() {
-        final Iterator<Item> data;
+    @DisplayName("Reads the status for a page returning a single value")
+    public void testFetch_AllElementsPage_Status() {
+        final PageIterable<Item> data;
         final Pagination pagination;
         final Sort sort;
+        final Map<String, Object> parameters;
 
-        pagination = new DisabledPagination();
-        sort = new DefaultSort("name", Direction.DESC);
+        parameters = new HashMap<>();
+        parameters.put("name", "Item1");
 
-        data = queryExecutor
-            .fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
-            .iterator();
+        pagination = new DefaultPagination(0, 5);
+        sort = new DefaultSort("name", Direction.ASC);
 
-        Assertions.assertEquals("Item5", data.next()
-            .getName());
-        Assertions.assertEquals("Item4", data.next()
-            .getName());
-        Assertions.assertEquals("Item3", data.next()
-            .getName());
-        Assertions.assertEquals("Item2", data.next()
-            .getName());
-        Assertions.assertEquals("Item1", data.next()
-            .getName());
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters,
+            pagination, Arrays.asList(sort));
+
+        Assertions.assertTrue(data.isFirst());
+        Assertions.assertTrue(data.isLast());
+    }
+
+    @Test
+    @DisplayName("Reads the values for a page returning a single value")
+    public void testFetch_AllElementsPage_Values() {
+        final PageIterable<Item> data;
+        final Pagination pagination;
+        final Sort sort;
+        final Map<String, Object> parameters;
+
+        parameters = new HashMap<>();
+        parameters.put("name", "Item1");
+
+        pagination = new DefaultPagination(0, 5);
+        sort = new DefaultSort("name", Direction.ASC);
+
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters,
+            pagination, Arrays.asList(sort));
+
+        Assertions.assertEquals(5, data.getSize());
+        Assertions.assertEquals(1, data.getTotalElements());
+        Assertions.assertEquals(1, data.getTotalPages());
+        Assertions.assertEquals(0, data.getPageNumber());
     }
 
     private final Function<Map<String, Object>, String> getQuery() {
-        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
+        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")
