@@ -5,6 +5,6 @@ public interface WeaponProgression {
 
     public Iterable<WeaponProgressionPath> getPaths();
 
-    public String getWeapon();
+    public String getName();
 
 }

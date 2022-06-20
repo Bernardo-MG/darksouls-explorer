@@ -61,31 +61,31 @@ databaseChangeLog:
                   name: stability
                   type: int
               - column:
-                  name: strength
+                  name: strength_requirement
                   type: int
               - column:
-                  name: dexterity
+                  name: dexterity_requirement
                   type: int
               - column:
-                  name: intelligence
+                  name: intelligence_requirement
                   type: int
               - column:
-                  name: faith
+                  name: faith_requirement
                   type: int
               - column:
-                  name: physical_dmg
+                  name: physical_damage
                   type: int
               - column:
-                  name: magic_dmg
+                  name: magic_damage
                   type: int
               - column:
-                  name: fire_dmg
+                  name: fire_damage
                   type: int
               - column:
-                  name: lightning_dmg
+                  name: lightning_damage
                   type: int
               - column:
-                  name: critical_dmg
+                  name: critical_damage
                   type: int
               - column:
                   name: physical_reduction
@@ -287,22 +287,19 @@ databaseChangeLog:
                   name: stability
                   type: int
               - column:
-                  name: critical
+                  name: physical_damage
                   type: int
               - column:
-                  name: physical_dmg
+                  name: magic_damage
                   type: int
               - column:
-                  name: magic_dmg
+                  name: fire_damage
                   type: int
               - column:
-                  name: fire_dmg
+                  name: lightning_damage
                   type: int
               - column:
-                  name: lightning_dmg
-                  type: int
-              - column:
-                  name: critical_dmg
+                  name: critical_damage
                   type: int
               - column:
                   name: physical_reduction

@@ -304,7 +304,7 @@ public class ITDefaultShieldServiceGetProgression {
         data = service.getProgression(id)
             .get();
 
-        Assertions.assertEquals("Shield", data.getWeapon());
+        Assertions.assertEquals("Shield", data.getName());
         Assertions.assertEquals(2, IterableUtils.size(data.getPaths()));
 
         itr = data.getPaths()

@@ -19,7 +19,7 @@ import lombok.NonNull;
 public final class PersistentWeaponLevel implements WeaponLevel {
 
     @NonNull
-    @Column(name = "critical", nullable = false)
+    @Column(name = "critical_damage", nullable = false)
     private Integer critical;
 
     @NonNull
@@ -31,7 +31,7 @@ public final class PersistentWeaponLevel implements WeaponLevel {
     private String  faithBonus;
 
     @NonNull
-    @Column(name = "fire_dmg", nullable = false)
+    @Column(name = "fire_damage", nullable = false)
     private Integer fireDamage;
 
     @NonNull
@@ -53,7 +53,7 @@ public final class PersistentWeaponLevel implements WeaponLevel {
     private Integer level;
 
     @NonNull
-    @Column(name = "lightning_dmg", nullable = false)
+    @Column(name = "lightning_damage", nullable = false)
     private Integer lightningDamage;
 
     @NonNull
@@ -61,7 +61,7 @@ public final class PersistentWeaponLevel implements WeaponLevel {
     private Float   lightningReduction;
 
     @NonNull
-    @Column(name = "magic_dmg", nullable = false)
+    @Column(name = "magic_damage", nullable = false)
     private Integer magicDamage;
 
     @NonNull
@@ -77,7 +77,7 @@ public final class PersistentWeaponLevel implements WeaponLevel {
     private String  path;
 
     @NonNull
-    @Column(name = "physical_dmg", nullable = false)
+    @Column(name = "physical_damage", nullable = false)
     private Integer physicalDamage;
 
     @NonNull

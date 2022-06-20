@@ -1,4 +1,4 @@
-INSERT INTO weapons (name, description, type, subtype, durability, weight, dexterity, faith, strength, intelligence, physical_dmg, magic_dmg, fire_dmg, lightning_dmg, critical_dmg, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, dexterity_bonus, faith_bonus, intelligence_bonus, strength_bonus) VALUES
+INSERT INTO weapons (name, description, type, subtype, durability, weight, dexterity_requirement, faith_requirement, strength_requirement, intelligence_requirement, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, dexterity_bonus, faith_bonus, intelligence_bonus, strength_bonus) VALUES
    ('Shield 1', 'Description 1', 'Shield', "Subtype 1", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 'A', 'B', 'C', 'D'),
    ('Shield 2', 'Description 2', 'Shield', "Subtype 2", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 'A', 'B', 'C', 'D'),
    ('Shield 3', 'Description 3', 'Shield', "Subtype 3", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 'A', 'B', 'C', 'D'),

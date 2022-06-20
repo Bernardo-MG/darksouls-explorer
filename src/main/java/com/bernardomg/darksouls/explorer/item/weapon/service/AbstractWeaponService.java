@@ -22,9 +22,9 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirement
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionLevel;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.path.ImmutableWeaponProgression;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.path.ImmutableWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.PersistentWeaponLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevelNode;
@@ -183,8 +183,9 @@ public abstract class AbstractWeaponService implements WeaponService {
         final String name;
         final Collection<WeaponProgressionPath> paths;
         final Collection<String> pathNames;
+        final DtoWeaponProgression result;
         Collection<WeaponProgressionLevel> currentLevels;
-        WeaponProgressionPath path;
+        DtoWeaponProgressionPath path;
 
         pathNames = StreamSupport.stream(levelNodes.spliterator(), false)
             .map(WeaponLevelNode::getPath)
@@ -199,7 +200,9 @@ public abstract class AbstractWeaponService implements WeaponService {
                 .map((l) -> toWeaponProgressionLevel(l, levelNodes))
                 .collect(Collectors.toList());
 
-            path = new ImmutableWeaponProgressionPath(pathName, currentLevels);
+            path = new DtoWeaponProgressionPath();
+            path.setPath(pathName);
+            path.setLevels(currentLevels);
             paths.add(path);
         }
 
@@ -208,7 +211,11 @@ public abstract class AbstractWeaponService implements WeaponService {
             .findAny()
             .orElse("");
 
-        return new ImmutableWeaponProgression(name, paths);
+        result = new DtoWeaponProgression();
+        result.setName(name);
+        result.setPaths(paths);
+
+        return result;
     }
 
     private final WeaponProgressionLevel toWeaponProgressionLevel(
@@ -219,6 +226,7 @@ public abstract class AbstractWeaponService implements WeaponService {
         final DtoWeaponProgressionLevel result;
 
         result = new DtoWeaponProgressionLevel();
+        // TODO: Avoid copying like this
         BeanUtils.copyProperties(level, result);
 
         levelNodeFound = StreamSupport.stream(levelNodes.spliterator(), false)
