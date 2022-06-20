@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.shield.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -39,8 +39,8 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.shield.service.ShieldWeaponService;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.service.ShieldWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;

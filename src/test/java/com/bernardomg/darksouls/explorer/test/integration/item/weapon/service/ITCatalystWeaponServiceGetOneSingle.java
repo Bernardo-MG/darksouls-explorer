@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.catalyst.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
 import java.util.Optional;
 
@@ -28,9 +28,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.catalyst.service.CatalystWeaponService;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.service.CatalystWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 

@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.catalyst.controller;
+package com.bernardomg.darksouls.explorer.item.weapon.controller;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -21,13 +21,13 @@ import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
 
 @RestController
-@RequestMapping("/catalysts")
-public class CatalystsController {
+@RequestMapping("/talismans")
+public class TalismanController {
 
     private final WeaponService service;
 
-    public CatalystsController(
-            @Qualifier("CatalystWeaponService") final WeaponService srvc) {
+    public TalismanController(
+            @Qualifier("ShieldWeaponService") final WeaponService srvc) {
         super();
 
         service = Objects.requireNonNull(srvc);

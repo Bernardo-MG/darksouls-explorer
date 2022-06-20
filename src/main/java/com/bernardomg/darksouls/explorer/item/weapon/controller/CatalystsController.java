@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.shield.controller;
+package com.bernardomg.darksouls.explorer.item.weapon.controller;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
@@ -23,13 +21,13 @@ import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
 
 @RestController
-@RequestMapping("/shields")
-public class ShieldController {
+@RequestMapping("/catalysts")
+public class CatalystsController {
 
     private final WeaponService service;
 
-    public ShieldController(
-            @Qualifier("ShieldWeaponService") final WeaponService srvc) {
+    public CatalystsController(
+            @Qualifier("CatalystWeaponService") final WeaponService srvc) {
         super();
 
         service = Objects.requireNonNull(srvc);
@@ -56,14 +54,6 @@ public class ShieldController {
         }
 
         return result;
-    }
-
-    @GetMapping(path = "/{id}/progression",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public WeaponProgression
-            readProgressions(@PathVariable("id") final Long id) {
-        return service.getProgression(id)
-            .orElse(new ImmutableWeaponProgression());
     }
 
 }

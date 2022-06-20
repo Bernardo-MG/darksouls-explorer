@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.talisman.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,8 +27,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.talisman.service.TalismanWeaponService;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.service.ShieldWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.pagination.model.DefaultPagination;
@@ -37,9 +37,9 @@ import com.bernardomg.pagination.model.DisabledSort;
 import com.bernardomg.pagination.model.PageIterable;
 
 @IntegrationTest
-@DisplayName("Reading all the talismans paginated")
-@Sql({ "/db/queries/talisman/multiple.sql" })
-public class ITTalismanWeaponServiceGetAllPaged {
+@DisplayName("Reading all the shields paginated")
+@Sql({ "/db/queries/shield/multiple.sql" })
+public class ITDefaultShieldServiceGetAllPaged {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
@@ -54,12 +54,12 @@ public class ITTalismanWeaponServiceGetAllPaged {
     }
 
     @Autowired
-    private TalismanWeaponService service;
+    private ShieldWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITTalismanWeaponServiceGetAllPaged() {
+    public ITDefaultShieldServiceGetAllPaged() {
         super();
     }
 

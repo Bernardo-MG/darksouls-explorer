@@ -143,31 +143,6 @@ public class TestSortArgumentResolver {
     }
 
     @Test
-    @DisplayName("Returns the default direction when an invalid direction is received")
-    public void testResolve_FullSort_InvalidDirection_Values()
-            throws Exception {
-        final MethodParameter parameter;
-        final ModelAndViewContainer mavContainer;
-        final NativeWebRequest webRequest;
-        final WebDataBinderFactory binderFactory;
-        final Sort sort;
-
-        parameter = Mockito.mock(MethodParameter.class);
-        mavContainer = Mockito.mock(ModelAndViewContainer.class);
-        webRequest = Mockito.mock(NativeWebRequest.class);
-        binderFactory = Mockito.mock(WebDataBinderFactory.class);
-
-        Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field,abc");
-
-        sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
-            webRequest, binderFactory);
-
-        Assertions.assertEquals("field", sort.getProperty());
-        Assertions.assertEquals(Direction.ASC, sort.getDirection());
-    }
-
-    @Test
     @DisplayName("The sort is sorted when receiving all the arguments for ascending sort")
     public void testResolve_FullSort_Asc_Sorted() throws Exception {
         final MethodParameter parameter;
@@ -259,6 +234,31 @@ public class TestSortArgumentResolver {
 
         Assertions.assertEquals("field", sort.getProperty());
         Assertions.assertEquals(Direction.DESC, sort.getDirection());
+    }
+
+    @Test
+    @DisplayName("Returns the default direction when an invalid direction is received")
+    public void testResolve_FullSort_InvalidDirection_Values()
+            throws Exception {
+        final MethodParameter parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest webRequest;
+        final WebDataBinderFactory binderFactory;
+        final Sort sort;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("sort"))
+            .thenReturn("field,abc");
+
+        sort = (Sort) resolver.resolveArgument(parameter, mavContainer,
+            webRequest, binderFactory);
+
+        Assertions.assertEquals("field", sort.getProperty());
+        Assertions.assertEquals(Direction.ASC, sort.getDirection());
     }
 
     @Test
