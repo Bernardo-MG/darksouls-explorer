@@ -23,23 +23,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
-import com.bernardomg.darksouls.explorer.item.weapon.service.ShieldWeaponService;
+import com.bernardomg.darksouls.explorer.item.weapon.service.DefaultWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DefaultPagination;
 import com.bernardomg.pagination.model.DisabledPagination;
 import com.bernardomg.pagination.model.DisabledSort;
-import com.bernardomg.pagination.model.PageIterable;
 
 @IntegrationTest
-@DisplayName("Reading all the shields paginated")
-@Sql({ "/db/queries/shield/multiple.sql" })
-public class ITDefaultShieldServiceGetAllPaged {
+@DisplayName("Reading all the weapons when there is no data")
+public class ITDefaultWeaponServiceGetAllNoData {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory
@@ -54,43 +50,23 @@ public class ITDefaultShieldServiceGetAllPaged {
     }
 
     @Autowired
-    private ShieldWeaponService service;
+    private DefaultWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITDefaultShieldServiceGetAllPaged() {
+    public ITDefaultWeaponServiceGetAllNoData() {
         super();
     }
 
     @Test
-    @DisplayName("Returns a page")
-    public void testGetAll_Instance() {
-        final Iterable<? extends WeaponSummary> data;
-
-        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
-
-        Assertions.assertInstanceOf(PageIterable.class, data);
-    }
-
-    @Test
-    @DisplayName("Applies pagination size")
-    public void testGetAll_SingleResult() {
-        final Iterable<? extends WeaponSummary> data;
-
-        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
-
-        Assertions.assertEquals(1, IterableUtils.size(data));
-    }
-
-    @Test
-    @DisplayName("When unpaged returns all the data")
-    public void testGetAll_Unpaged() {
+    @DisplayName("Returns no data")
+    public void testGetAll_Count() {
         final Iterable<? extends WeaponSummary> data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort());
 
-        Assertions.assertEquals(5, IterableUtils.size(data));
+        Assertions.assertEquals(0, IterableUtils.size(data));
     }
 
 }
