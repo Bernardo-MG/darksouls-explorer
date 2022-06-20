@@ -1,7 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.weapon.controller;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -10,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
@@ -34,10 +32,8 @@ public class CatalystsController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends WeaponSummary>
-            read(@RequestParam(name = "selectors",
-                    defaultValue = "") final Collection<String> selectors,
-                    final Pagination pagination, final Sort sort) {
+    public Iterable<? extends WeaponSummary> read(final Pagination pagination,
+            final Sort sort) {
         return service.getAll(pagination, sort);
     }
 
