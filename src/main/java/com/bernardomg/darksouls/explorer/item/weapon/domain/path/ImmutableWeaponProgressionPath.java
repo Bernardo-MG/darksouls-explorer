@@ -1,5 +1,5 @@
 
-package com.bernardomg.darksouls.explorer.item.domain;
+package com.bernardomg.darksouls.explorer.item.weapon.domain.path;
 
 import lombok.Data;
 import lombok.NonNull;

@@ -3,8 +3,8 @@ package com.bernardomg.darksouls.explorer.item.weapon.query;
 
 import java.util.Map;
 
-import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponLevelNode;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponLevelNode;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponLevelNode;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevelNode;
 import com.bernardomg.pagination.model.Query;
 import com.bernardomg.persistence.utils.Maps;
 

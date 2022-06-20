@@ -1,7 +1,7 @@
 
-package com.bernardomg.darksouls.explorer.item.domain;
+package com.bernardomg.darksouls.explorer.item.weapon.domain.path;
 
-public interface WeaponProgressionLevel {
+public interface WeaponLevel {
 
     public Integer getCritical();
 
@@ -28,8 +28,6 @@ public interface WeaponProgressionLevel {
     public String getName();
 
     public String getPath();
-
-    public Integer getPathLevel();
 
     public Integer getPhysicalDamage();
 
