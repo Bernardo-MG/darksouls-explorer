@@ -10,9 +10,9 @@ import lombok.NonNull;
 public final class DtoWeaponProgression implements WeaponProgression {
 
     @NonNull
-    private Iterable<WeaponProgressionPath> paths;
+    private String                          name;
 
     @NonNull
-    private String                          name;
+    private Iterable<WeaponProgressionPath> paths;
 
 }

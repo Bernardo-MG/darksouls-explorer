@@ -64,7 +64,8 @@ public class ITDefaultWeaponServiceGetAllNoData {
     public void testGetAll_Count() {
         final Iterable<? extends WeaponSummary> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll("Weapon", new DisabledPagination(),
+            new DisabledSort());
 
         Assertions.assertEquals(0, IterableUtils.size(data));
     }

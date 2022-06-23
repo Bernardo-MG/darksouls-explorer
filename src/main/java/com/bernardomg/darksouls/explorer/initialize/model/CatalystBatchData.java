@@ -19,19 +19,19 @@ public final class CatalystBatchData {
     private String  description              = "";
 
     @NonNull
-    private Integer dexterity_requirement    = 0;
+    private String  dexterity_bonus          = "";
 
     @NonNull
-    private String  dexterity_bonus          = "";
+    private Integer dexterity_requirement    = 0;
 
     @NonNull
     private Integer durability               = 0;
 
     @NonNull
-    private Integer faith_requirement        = 0;
+    private String  faith_bonus              = "";
 
     @NonNull
-    private String  faith_bonus              = "";
+    private Integer faith_requirement        = 0;
 
     @NonNull
     private Double  fire_damage              = 0d;
@@ -40,10 +40,10 @@ public final class CatalystBatchData {
     private Double  fire_reduction           = 0d;
 
     @NonNull
-    private Integer intelligence_requirement = 0;
+    private String  intelligence_bonus       = "";
 
     @NonNull
-    private String  intelligence_bonus       = "";
+    private Integer intelligence_requirement = 0;
 
     @NonNull
     private Double  lightning_damage         = 0d;
@@ -70,10 +70,10 @@ public final class CatalystBatchData {
     private Double  stability                = 0d;
 
     @NonNull
-    private Integer strength_requirement     = 0;
+    private String  strength_bonus           = "";
 
     @NonNull
-    private String  strength_bonus           = "";
+    private Integer strength_requirement     = 0;
 
     @NonNull
     private String  type                     = "";
