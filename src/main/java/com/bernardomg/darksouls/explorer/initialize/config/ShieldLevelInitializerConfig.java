@@ -73,7 +73,7 @@ public class ShieldLevelInitializerConfig {
             .itemSqlParameterSourceProvider(
                 new BeanPropertyItemSqlParameterSourceProvider<ShieldLevelBatchData>())
             .sql(
-                "INSERT INTO weapon_levels (name, path, level, physical_dmg, magic_dmg, fire_dmg, lightning_dmg, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, critical, stability) VALUES (:name, :path, :level, :physical, :magic, :fire, :lightning, :strength, :dexterity, :intelligence, :faith, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :critical, :stability)")
+                "INSERT INTO weapon_levels (name, path, level, physical_damage, magic_damage, fire_damage, lightning_damage, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, critical_damage, stability) VALUES (:name, :path, :level, :physical, :magic, :fire, :lightning, :strength, :dexterity, :intelligence, :faith, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :critical, :stability)")
             .dataSource(datasource)
             .build();
     }
