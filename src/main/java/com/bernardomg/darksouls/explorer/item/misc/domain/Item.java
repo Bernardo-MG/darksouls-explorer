@@ -1,7 +1,7 @@
 
 package com.bernardomg.darksouls.explorer.item.misc.domain;
 
-public interface MiscItem {
+public interface Item {
 
     public String getDescription();
 

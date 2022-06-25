@@ -27,8 +27,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.misc.domain.MiscItem;
-import com.bernardomg.darksouls.explorer.item.misc.service.MiscItemService;
+import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
+import com.bernardomg.darksouls.explorer.item.misc.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.pagination.model.DisabledPagination;
@@ -52,7 +52,7 @@ public class ITMiscItemServiceGetAll {
     }
 
     @Autowired
-    private MiscItemService service;
+    private ItemService service;
 
     /**
      * Default constructor.
@@ -64,7 +64,7 @@ public class ITMiscItemServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
         data = service.getAll("Misc", new DisabledPagination(),
             new DisabledSort());
@@ -75,7 +75,7 @@ public class ITMiscItemServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final MiscItem data;
+        final Item data;
 
         data = service
             .getAll("Misc", new DisabledPagination(), new DisabledSort())
@@ -89,7 +89,7 @@ public class ITMiscItemServiceGetAll {
     @Test
     @DisplayName("An empty type returns all data")
     public void testGetAll_EmptyType_Count() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
         data = service.getAll("", new DisabledPagination(), new DisabledSort());
 
@@ -99,7 +99,7 @@ public class ITMiscItemServiceGetAll {
     @Test
     @DisplayName("An invalid type returns no data")
     public void testGetAll_InvalidType_Count() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
         data = service.getAll("abc", new DisabledPagination(),
             new DisabledSort());

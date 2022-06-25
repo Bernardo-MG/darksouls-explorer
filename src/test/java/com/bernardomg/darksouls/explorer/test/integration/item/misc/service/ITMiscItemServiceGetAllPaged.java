@@ -27,8 +27,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.misc.domain.MiscItem;
-import com.bernardomg.darksouls.explorer.item.misc.service.MiscItemService;
+import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
+import com.bernardomg.darksouls.explorer.item.misc.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.pagination.model.DefaultPagination;
@@ -54,7 +54,7 @@ public class ITMiscItemServiceGetAllPaged {
     }
 
     @Autowired
-    private MiscItemService service;
+    private ItemService service;
 
     /**
      * Default constructor.
@@ -66,7 +66,7 @@ public class ITMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
         data = service.getAll("Misc", new DefaultPagination(0, 1),
             new DisabledSort());
@@ -77,7 +77,7 @@ public class ITMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
         data = service.getAll("Misc", new DefaultPagination(0, 1),
             new DisabledSort());
@@ -88,7 +88,7 @@ public class ITMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
         data = service.getAll("Misc", new DisabledPagination(),
             new DisabledSort());

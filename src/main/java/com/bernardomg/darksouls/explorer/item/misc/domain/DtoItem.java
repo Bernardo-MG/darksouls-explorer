@@ -7,7 +7,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public final class DtoMiscItem implements MiscItem {
+public final class DtoItem implements Item {
 
     @NonNull
     private String description = "";

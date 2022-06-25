@@ -28,9 +28,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.misc.domain.MiscItem;
-import com.bernardomg.darksouls.explorer.item.misc.repository.MiscItemRepository;
-import com.bernardomg.darksouls.explorer.item.misc.service.MiscItemService;
+import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
+import com.bernardomg.darksouls.explorer.item.misc.repository.ItemRepository;
+import com.bernardomg.darksouls.explorer.item.misc.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
@@ -52,10 +52,10 @@ public class ITMiscItemServiceGetOneSingle {
     }
 
     @Autowired
-    private MiscItemRepository repository;
+    private ItemRepository repository;
 
     @Autowired
-    private MiscItemService    service;
+    private ItemService    service;
 
     /**
      * Default constructor.
@@ -67,7 +67,7 @@ public class ITMiscItemServiceGetOneSingle {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
-        final MiscItem data;
+        final Item data;
         final Long id;
 
         id = getId();
@@ -82,7 +82,7 @@ public class ITMiscItemServiceGetOneSingle {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends MiscItem> data;
+        final Optional<? extends Item> data;
 
         data = service.getOne(-1l);
 

@@ -16,7 +16,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "Item")
 @Table(name = "items")
-public final class PersistentMiscItem {
+public final class PersistentItem {
 
     @NonNull
     @Column(name = "description", nullable = false)
