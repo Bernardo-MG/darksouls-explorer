@@ -9,4 +9,6 @@ public interface MiscItem {
 
     public String getName();
 
+    public String getType();
+
 }

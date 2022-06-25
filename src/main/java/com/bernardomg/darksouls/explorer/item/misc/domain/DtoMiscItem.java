@@ -18,4 +18,7 @@ public final class DtoMiscItem implements MiscItem {
     @NonNull
     private String name        = "";
 
+    @NonNull
+    private String type        = "";
+
 }

@@ -9,8 +9,8 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface MiscItemService {
 
-    public Iterable<? extends MiscItem> getAll(final Pagination pagination,
-            final Sort sort);
+    public Iterable<? extends MiscItem> getAll(final String type,
+            final Pagination pagination, final Sort sort);
 
     public Optional<? extends MiscItem> getOne(final Long id);
 

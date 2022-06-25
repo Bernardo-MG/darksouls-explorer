@@ -14,8 +14,8 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "MiscItem")
-@Table(name = "misc_items")
+@Entity(name = "Item")
+@Table(name = "items")
 public final class PersistentMiscItem {
 
     @NonNull
@@ -31,5 +31,9 @@ public final class PersistentMiscItem {
     @NonNull
     @Column(name = "name", nullable = false)
     private String name        = "";
+
+    @NonNull
+    @Column(name = "type", nullable = false)
+    private String type        = "";
 
 }

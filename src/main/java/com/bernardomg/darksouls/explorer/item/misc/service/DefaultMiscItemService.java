@@ -4,7 +4,7 @@ package com.bernardomg.darksouls.explorer.item.misc.service;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,14 +32,18 @@ public final class DefaultMiscItemService implements MiscItemService {
     }
 
     @Override
-    public final PageIterable<? extends MiscItem>
-            getAll(final Pagination pagination, final Sort sort) {
+    public final PageIterable<? extends MiscItem> getAll(final String type,
+            final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<MiscItem> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
-        page = repository.findAllSummaries(pageable);
+        if (Strings.isBlank(type)) {
+            page = repository.findAllSummaries(pageable);
+        } else {
+            page = repository.findAllSummaries(type, pageable);
+        }
 
         return Paginations.fromSpring(page);
     }
@@ -47,15 +51,21 @@ public final class DefaultMiscItemService implements MiscItemService {
     @Override
     public final Optional<? extends MiscItem> getOne(final Long id) {
         final Optional<PersistentMiscItem> read;
+        final PersistentMiscItem entity;
         final Optional<? extends MiscItem> result;
         final DtoMiscItem item;
 
         read = repository.findById(id);
 
         if (read.isPresent()) {
-            item = new DtoMiscItem();
 
-            BeanUtils.copyProperties(read.get(), item);
+            entity = read.get();
+
+            item = new DtoMiscItem();
+            item.setId(entity.getId());
+            item.setName(entity.getName());
+            item.setDescription(entity.getDescription());
+            item.setType(entity.getType());
 
             result = Optional.of(item);
         } else {

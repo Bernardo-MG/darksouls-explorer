@@ -99,9 +99,9 @@ public final class DefaultWeaponService implements WeaponService {
         read = repository.findById(id);
 
         if (read.isPresent()) {
-            weapon = new DtoWeapon();
             entity = read.get();
 
+            weapon = new DtoWeapon();
             weapon.setId(id);
             weapon.setName(entity.getName());
             weapon.setDescription(entity.getDescription());
