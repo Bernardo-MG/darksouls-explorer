@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.darksouls.explorer.item.spell.domain.DtoSpell;
@@ -30,9 +31,11 @@ public class SpellController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends SpellSummary> read(final Pagination pagination,
-            final Sort sort) {
-        return service.getAll(pagination, sort);
+    public Iterable<? extends SpellSummary>
+            read(@RequestParam(name = "school", required = false,
+                    defaultValue = "") final String school,
+                    final Pagination pagination, final Sort sort) {
+        return service.getAll(school, pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

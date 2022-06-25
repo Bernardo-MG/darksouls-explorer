@@ -68,7 +68,8 @@ public class ITSpellServiceGetAllPaged {
     public void testGetAll_Instance() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("School", new DefaultPagination(0, 1),
+            new DisabledSort());
 
         Assertions.assertInstanceOf(PageIterable.class, data);
     }
@@ -78,7 +79,8 @@ public class ITSpellServiceGetAllPaged {
     public void testGetAll_SingleResult() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("School", new DefaultPagination(0, 1),
+            new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -88,7 +90,8 @@ public class ITSpellServiceGetAllPaged {
     public void testGetAll_Unpaged() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll("School", new DisabledPagination(),
+            new DisabledSort());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }

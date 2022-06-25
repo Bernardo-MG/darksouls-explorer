@@ -4,6 +4,7 @@ package com.bernardomg.darksouls.explorer.item.spell.service;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,14 +34,18 @@ public final class DefaultSpellService implements SpellService {
     }
 
     @Override
-    public final PageIterable<? extends SpellSummary>
-            getAll(final Pagination pagination, final Sort sort) {
+    public final PageIterable<? extends SpellSummary> getAll(
+            final String school, final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<SpellSummary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
-        page = repository.findAllSummaries(pageable);
+        if (Strings.isBlank(school)) {
+            page = repository.findAllSummaries(pageable);
+        } else {
+            page = repository.findAllSummaries(school, pageable);
+        }
 
         return Paginations.fromSpring(page);
     }

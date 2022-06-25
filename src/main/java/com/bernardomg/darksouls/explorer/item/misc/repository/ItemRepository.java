@@ -10,8 +10,7 @@ import org.springframework.data.repository.query.Param;
 import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
 import com.bernardomg.darksouls.explorer.item.misc.domain.PersistentItem;
 
-public interface ItemRepository
-        extends JpaRepository<PersistentItem, Long> {
+public interface ItemRepository extends JpaRepository<PersistentItem, Long> {
 
     @Query("SELECT i FROM Item i")
     public Page<Item> findAllSummaries(final Pageable pageable);
