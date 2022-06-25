@@ -33,9 +33,10 @@ public class WeaponController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends WeaponSummary> read(
-            @RequestParam("type") final String type,
-            final Pagination pagination, final Sort sort) {
+    public Iterable<? extends WeaponSummary>
+            read(@RequestParam(name = "type", required = false,
+                    defaultValue = "") final String type,
+                    final Pagination pagination, final Sort sort) {
         return service.getAll(type, pagination, sort);
     }
 

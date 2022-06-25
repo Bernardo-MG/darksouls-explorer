@@ -86,4 +86,25 @@ public class ITDefaultWeaponServiceGetAll {
         Assertions.assertEquals("Description", data.getDescription());
     }
 
+    @Test
+    @DisplayName("An empty type returns all data")
+    public void testGetAll_EmptyType_Count() {
+        final Iterable<? extends WeaponSummary> data;
+
+        data = service.getAll("", new DisabledPagination(), new DisabledSort());
+
+        Assertions.assertEquals(1, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("An invalid type returns no data")
+    public void testGetAll_InvalidType_Count() {
+        final Iterable<? extends WeaponSummary> data;
+
+        data = service.getAll("abc", new DisabledPagination(),
+            new DisabledSort());
+
+        Assertions.assertEquals(0, IterableUtils.size(data));
+    }
+
 }

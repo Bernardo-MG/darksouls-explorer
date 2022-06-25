@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,7 +76,11 @@ public final class DefaultWeaponService implements WeaponService {
 
         pageable = Paginations.toSpring(pagination, sort);
 
-        page = repository.findAllSummaries(type, pageable);
+        if (Strings.isBlank(type)) {
+            page = repository.findAllSummaries(pageable);
+        } else {
+            page = repository.findAllSummaries(type, pageable);
+        }
 
         return Paginations.fromSpring(page);
     }
