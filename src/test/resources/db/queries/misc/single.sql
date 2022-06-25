@@ -1,2 +1,2 @@
-INSERT INTO misc_items (name, description) VALUES
-   ('Misc item', 'Description');
+INSERT INTO items (name, description, type) VALUES
+   ('Misc item', 'Description', 'Misc');

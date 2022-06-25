@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.bernardomg.darksouls.explorer.item.domain.PersistentWeaponLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.PersistentWeaponLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 

@@ -1,7 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.weapon.controller;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -12,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgression;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @RestController
 @RequestMapping("/weapons")
@@ -35,10 +34,10 @@ public class WeaponController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<? extends WeaponSummary>
-            read(@RequestParam(name = "selectors",
-                    defaultValue = "") final Collection<String> selectors,
+            read(@RequestParam(name = "type", required = false,
+                    defaultValue = "") final String type,
                     final Pagination pagination, final Sort sort) {
-        return service.getAll(pagination, sort);
+        return service.getAll(type, pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,7 +60,7 @@ public class WeaponController {
     public WeaponProgression
             readProgressions(@PathVariable("id") final Long id) {
         return service.getProgression(id)
-            .orElse(new ImmutableWeaponProgression());
+            .orElse(new DtoWeaponProgression());
     }
 
 }

@@ -56,13 +56,14 @@ public class TalismanInitializerConfig {
             .name("talismanItemReader")
             .resource(data)
             .delimited()
-            .names(new String[] { "name", "description", "weight", "durability",
-                    "attacks", "strength", "dexterity", "intelligence", "faith",
-                    "strength_bonus", "dexterity_bonus", "intelligence_bonus",
-                    "faith_bonus", "physical_dmg", "magic_dmg", "fire_dmg",
-                    "lightning_dmg", "critical_dmg", "physical_reduction",
-                    "magic_reduction", "fire_reduction", "lightning_reduction",
-                    "stability" })
+            .names(new String[] { "name", "type", "description", "weight",
+                    "durability", "attacks", "strength_requirement",
+                    "dexterity_requirement", "intelligence_requirement",
+                    "faith_requirement", "strength_bonus", "dexterity_bonus",
+                    "intelligence_bonus", "faith_bonus", "physical_damage",
+                    "magic_damage", "fire_damage", "lightning_damage",
+                    "critical_damage", "physical_reduction", "magic_reduction",
+                    "fire_reduction", "lightning_reduction", "stability" })
             .linesToSkip(1)
             .lineMapper(lineMapper)
             .build();
@@ -74,7 +75,7 @@ public class TalismanInitializerConfig {
             .itemSqlParameterSourceProvider(
                 new BeanPropertyItemSqlParameterSourceProvider<TalismanBatchData>())
             .sql(
-                "INSERT INTO talismans (name, description, weight, durability, strength, dexterity, intelligence, faith, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_dmg, magic_dmg, fire_dmg, lightning_dmg, critical_dmg, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, :weight, :durability, :strength, :dexterity, :intelligence, :faith, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_dmg, :magic_dmg, :fire_dmg, :lightning_dmg, :critical_dmg, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
+                "INSERT INTO weapons (name, description, type, subtype, weight, durability, strength_requirement, dexterity_requirement, intelligence_requirement, faith_requirement, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, 'Talisman', '', :weight, :durability, :strength_requirement, :dexterity_requirement, :intelligence_requirement, :faith_requirement, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :critical_damage, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
             .dataSource(datasource)
             .build();
     }
@@ -88,13 +89,14 @@ public class TalismanInitializerConfig {
         lineMapper = new DefaultLineMapper<TalismanBatchData>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "description", "weight",
-                "durability", "attacks", "strength", "dexterity",
-                "intelligence", "faith", "strength_bonus", "dexterity_bonus",
-                "intelligence_bonus", "faith_bonus", "physical_dmg",
-                "magic_dmg", "fire_dmg", "lightning_dmg", "critical_dmg",
-                "physical_reduction", "magic_reduction", "fire_reduction",
-                "lightning_reduction", "stability" });
+        lineTokenizer.setNames(new String[] { "name", "type", "description",
+                "weight", "durability", "attacks", "strength_requirement",
+                "dexterity_requirement", "intelligence_requirement",
+                "faith_requirement", "strength_bonus", "dexterity_bonus",
+                "intelligence_bonus", "faith_bonus", "physical_damage",
+                "magic_damage", "fire_damage", "lightning_damage",
+                "critical_damage", "physical_reduction", "magic_reduction",
+                "fire_reduction", "lightning_reduction", "stability" });
         fieldSetMapper = new BeanWrapperFieldSetMapper<TalismanBatchData>();
         fieldSetMapper.setTargetType(TalismanBatchData.class);
 

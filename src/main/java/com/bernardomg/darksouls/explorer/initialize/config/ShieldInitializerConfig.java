@@ -56,8 +56,14 @@ public class ShieldInitializerConfig {
             .name("shieldItemReader")
             .resource(data)
             .delimited()
-            .names(new String[] { "name", "description", "weight", "durability",
-                    "strength", "dexterity", "intelligence", "faith" })
+            .names(new String[] { "name", "type", "description", "weight",
+                    "durability", "attacks", "strength_requirement",
+                    "dexterity_requirement", "intelligence_requirement",
+                    "faith_requirement", "strength_bonus", "dexterity_bonus",
+                    "intelligence_bonus", "faith_bonus", "physical_damage",
+                    "magic_damage", "fire_damage", "lightning_damage",
+                    "critical_damage", "physical_reduction", "magic_reduction",
+                    "fire_reduction", "lightning_reduction", "stability" })
             .linesToSkip(1)
             .lineMapper(lineMapper)
             .build();
@@ -69,7 +75,7 @@ public class ShieldInitializerConfig {
             .itemSqlParameterSourceProvider(
                 new BeanPropertyItemSqlParameterSourceProvider<ShieldBatchData>())
             .sql(
-                "INSERT INTO shields (name, description, weight, durability, strength, dexterity, intelligence, faith) VALUES (:name, :description, :weight, :durability, :strength, :dexterity, :intelligence, :faith)")
+                "INSERT INTO weapons (name, description, type, subtype, weight, durability, strength_requirement, dexterity_requirement, intelligence_requirement, faith_requirement, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, 'Shield', :type, :weight, :durability, :strength_requirement, :dexterity_requirement, :intelligence_requirement, :faith_requirement, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :critical_damage, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
             .dataSource(datasource)
             .build();
     }
@@ -83,10 +89,14 @@ public class ShieldInitializerConfig {
         lineMapper = new DefaultLineMapper<ShieldBatchData>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(
-            new String[] { "name", "description", "weight", "durability",
-                    "strength", "dexterity", "intelligence", "faith" });
-        lineTokenizer.setIncludedFields(new int[] { 0, 2, 3, 4, 6, 7, 8, 9 });
+        lineTokenizer.setNames(new String[] { "name", "type", "description",
+                "weight", "durability", "attacks", "strength_requirement",
+                "dexterity_requirement", "intelligence_requirement",
+                "faith_requirement", "strength_bonus", "dexterity_bonus",
+                "intelligence_bonus", "faith_bonus", "physical_damage",
+                "magic_damage", "fire_damage", "lightning_damage",
+                "critical_damage", "physical_reduction", "magic_reduction",
+                "fire_reduction", "lightning_reduction", "stability" });
         fieldSetMapper = new BeanWrapperFieldSetMapper<ShieldBatchData>();
         fieldSetMapper.setTargetType(ShieldBatchData.class);
 

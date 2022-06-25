@@ -10,9 +10,9 @@ import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingWithoutWhere;
 
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
 import com.bernardomg.darksouls.explorer.search.domain.ImmutableSearchResult;
 import com.bernardomg.darksouls.explorer.search.domain.SearchResult;
+import com.bernardomg.persistence.executor.Query;
 
 public final class SearchQuery implements Query<SearchResult> {
 

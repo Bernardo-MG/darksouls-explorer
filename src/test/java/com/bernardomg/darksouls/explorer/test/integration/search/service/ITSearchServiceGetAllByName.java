@@ -30,8 +30,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.search.domain.DtoSearchRequest;
 import com.bernardomg.darksouls.explorer.search.domain.SearchResult;
 import com.bernardomg.darksouls.explorer.search.service.SearchService;
@@ -39,6 +37,8 @@ import com.bernardomg.darksouls.explorer.test.configuration.annotation.Integrati
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.DisabledSort;
 
 @IntegrationTest
 @ContextConfiguration(

@@ -47,7 +47,10 @@ databaseChangeLog:
                   type: varchar(1200)
               - column:
                   name: type
-                  type: varchar(50)
+                  type: varchar(20)
+              - column:
+                  name: subtype
+                  type: varchar(20)
               - column:
                   name: weight
                   type: int
@@ -55,31 +58,34 @@ databaseChangeLog:
                   name: durability
                   type: int
               - column:
-                  name: strength
+                  name: stability
                   type: int
               - column:
-                  name: dexterity
+                  name: strength_requirement
                   type: int
               - column:
-                  name: intelligence
+                  name: dexterity_requirement
                   type: int
               - column:
-                  name: faith
+                  name: intelligence_requirement
                   type: int
               - column:
-                  name: physical_dmg
+                  name: faith_requirement
                   type: int
               - column:
-                  name: magic_dmg
+                  name: physical_damage
                   type: int
               - column:
-                  name: fire_dmg
+                  name: magic_damage
                   type: int
               - column:
-                  name: lightning_dmg
+                  name: fire_damage
                   type: int
               - column:
-                  name: critical_dmg
+                  name: lightning_damage
+                  type: int
+              - column:
+                  name: critical_damage
                   type: int
               - column:
                   name: physical_reduction
@@ -139,243 +145,6 @@ databaseChangeLog:
                   name: uses
                   type: int
         - createTable:
-            tableName: shields
-            columns:
-              - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: name
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: description
-                  type: varchar(1200)
-              - column:
-                  name: type
-                  type: varchar(50)
-              - column:
-                  name: weight
-                  type: int
-              - column:
-                  name: durability
-                  type: int
-              - column:
-                  name: strength
-                  type: int
-              - column:
-                  name: dexterity
-                  type: int
-              - column:
-                  name: intelligence
-                  type: int
-              - column:
-                  name: faith
-                  type: int
-              - column:
-                  name: physical_dmg
-                  type: int
-              - column:
-                  name: magic_dmg
-                  type: int
-              - column:
-                  name: fire_dmg
-                  type: int
-              - column:
-                  name: lightning_dmg
-                  type: int
-              - column:
-                  name: critical_dmg
-                  type: int
-              - column:
-                  name: physical_reduction
-                  type: int
-              - column:
-                  name: magic_reduction
-                  type: int
-              - column:
-                  name: fire_reduction
-                  type: int
-              - column:
-                  name: lightning_reduction
-                  type: int
-              - column:
-                  name: dexterity_bonus
-                  type: varchar(1)
-              - column:
-                  name: faith_bonus
-                  type: varchar(1)
-              - column:
-                  name: intelligence_bonus
-                  type: varchar(1)
-              - column:
-                  name: strength_bonus
-                  type: varchar(1)
-        - createTable:
-            tableName: talismans
-            columns:
-              - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: name
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: description
-                  type: varchar(1200)
-              - column:
-                  name: type
-                  type: varchar(50)
-              - column:
-                  name: weight
-                  type: int
-              - column:
-                  name: durability
-                  type: int
-              - column:
-                  name: stability
-                  type: int
-              - column:
-                  name: strength
-                  type: int
-              - column:
-                  name: dexterity
-                  type: int
-              - column:
-                  name: intelligence
-                  type: int
-              - column:
-                  name: faith
-                  type: int
-              - column:
-                  name: physical_dmg
-                  type: int
-              - column:
-                  name: magic_dmg
-                  type: int
-              - column:
-                  name: fire_dmg
-                  type: int
-              - column:
-                  name: lightning_dmg
-                  type: int
-              - column:
-                  name: critical_dmg
-                  type: int
-              - column:
-                  name: physical_reduction
-                  type: int
-              - column:
-                  name: magic_reduction
-                  type: int
-              - column:
-                  name: fire_reduction
-                  type: int
-              - column:
-                  name: lightning_reduction
-                  type: int
-              - column:
-                  name: dexterity_bonus
-                  type: varchar(1)
-              - column:
-                  name: faith_bonus
-                  type: varchar(1)
-              - column:
-                  name: intelligence_bonus
-                  type: varchar(1)
-              - column:
-                  name: strength_bonus
-                  type: varchar(1)
-        - createTable:
-            tableName: catalysts
-            columns:
-              - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: name
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: description
-                  type: varchar(1200)
-              - column:
-                  name: weight
-                  type: int
-              - column:
-                  name: stability
-                  type: int
-              - column:
-                  name: durability
-                  type: int
-              - column:
-                  name: strength
-                  type: int
-              - column:
-                  name: dexterity
-                  type: int
-              - column:
-                  name: intelligence
-                  type: int
-              - column:
-                  name: faith
-                  type: int
-              - column:
-                  name: physical_dmg
-                  type: int
-              - column:
-                  name: magic_dmg
-                  type: int
-              - column:
-                  name: fire_dmg
-                  type: int
-              - column:
-                  name: lightning_dmg
-                  type: int
-              - column:
-                  name: critical_dmg
-                  type: int
-              - column:
-                  name: physical_reduction
-                  type: int
-              - column:
-                  name: magic_reduction
-                  type: int
-              - column:
-                  name: fire_reduction
-                  type: int
-              - column:
-                  name: lightning_reduction
-                  type: int
-              - column:
-                  name: dexterity_bonus
-                  type: varchar(1)
-              - column:
-                  name: faith_bonus
-                  type: varchar(1)
-              - column:
-                  name: intelligence_bonus
-                  type: varchar(1)
-              - column:
-                  name: strength_bonus
-                  type: varchar(1)
-        - createTable:
             tableName: ammunitions
             columns:
               - column:
@@ -399,7 +168,7 @@ databaseChangeLog:
                   name: description
                   type: varchar(1200)
         - createTable:
-            tableName: key_items
+            tableName: items
             columns:
               - column:
                   name: id
@@ -416,24 +185,9 @@ databaseChangeLog:
               - column:
                   name: description
                   type: varchar(1200)
-        - createTable:
-            tableName: misc_items
-            columns:
               - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: name
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: description
-                  type: varchar(1200)
+                  name: type
+                  type: varchar(20)
       modifySql:
         - append:
             dbms: mysql
@@ -518,22 +272,19 @@ databaseChangeLog:
                   name: stability
                   type: int
               - column:
-                  name: critical
+                  name: physical_damage
                   type: int
               - column:
-                  name: physical_dmg
+                  name: magic_damage
                   type: int
               - column:
-                  name: magic_dmg
+                  name: fire_damage
                   type: int
               - column:
-                  name: fire_dmg
+                  name: lightning_damage
                   type: int
               - column:
-                  name: lightning_dmg
-                  type: int
-              - column:
-                  name: critical_dmg
+                  name: critical_damage
                   type: int
               - column:
                   name: physical_reduction

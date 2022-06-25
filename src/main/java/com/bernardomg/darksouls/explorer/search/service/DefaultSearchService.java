@@ -7,13 +7,13 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
 import com.bernardomg.darksouls.explorer.search.domain.SearchRequest;
 import com.bernardomg.darksouls.explorer.search.domain.SearchResult;
 import com.bernardomg.darksouls.explorer.search.query.SearchQuery;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.persistence.executor.Query;
+import com.bernardomg.persistence.executor.QueryExecutor;
 
 @Service
 public final class DefaultSearchService implements SearchService {

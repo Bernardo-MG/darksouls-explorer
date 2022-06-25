@@ -19,7 +19,7 @@ import lombok.NonNull;
 public final class PersistentWeapon {
 
     @NonNull
-    @Column(name = "critical_dmg", nullable = false)
+    @Column(name = "critical_damage", nullable = false)
     private Integer criticalDamage     = 0;
 
     @NonNull
@@ -27,7 +27,7 @@ public final class PersistentWeapon {
     private String  description;
 
     @NonNull
-    @Column(name = "dexterity", nullable = false)
+    @Column(name = "dexterity_requirement", nullable = false)
     private Integer dexterity;
 
     @NonNull
@@ -39,7 +39,7 @@ public final class PersistentWeapon {
     private Integer durability         = 0;
 
     @NonNull
-    @Column(name = "faith", nullable = false)
+    @Column(name = "faith_requirement", nullable = false)
     private Integer faith;
 
     @NonNull
@@ -47,7 +47,7 @@ public final class PersistentWeapon {
     private String  faithBonus         = "";
 
     @NonNull
-    @Column(name = "fire_dmg", nullable = false)
+    @Column(name = "fire_damage", nullable = false)
     private Integer fireDamage         = 0;
 
     @NonNull
@@ -61,7 +61,7 @@ public final class PersistentWeapon {
     private Long    id;
 
     @NonNull
-    @Column(name = "intelligence", nullable = false)
+    @Column(name = "intelligence_requirement", nullable = false)
     private Integer intelligence;
 
     @NonNull
@@ -69,7 +69,7 @@ public final class PersistentWeapon {
     private String  intelligenceBonus  = "";
 
     @NonNull
-    @Column(name = "lightning_dmg", nullable = false)
+    @Column(name = "lightning_damage", nullable = false)
     private Integer lightningDamage    = 0;
 
     @NonNull
@@ -77,7 +77,7 @@ public final class PersistentWeapon {
     private Float   lightningReduction = 0f;
 
     @NonNull
-    @Column(name = "magic_dmg", nullable = false)
+    @Column(name = "magic_damage", nullable = false)
     private Integer magicDamage        = 0;
 
     @NonNull
@@ -89,7 +89,7 @@ public final class PersistentWeapon {
     private String  name;
 
     @NonNull
-    @Column(name = "physical_dmg", nullable = false)
+    @Column(name = "physical_damage", nullable = false)
     private Integer physicalDamage     = 0;
 
     @NonNull
@@ -97,12 +97,20 @@ public final class PersistentWeapon {
     private Float   physicalReduction  = 0f;
 
     @NonNull
-    @Column(name = "strength", nullable = false)
+    @Column(name = "strength_requirement", nullable = false)
     private Integer strength;
 
     @NonNull
     @Column(name = "strength_bonus", nullable = false)
     private String  strengthBonus      = "";
+
+    @NonNull
+    @Column(name = "subtype", nullable = false)
+    private String  subtype;
+
+    @NonNull
+    @Column(name = "type", nullable = false)
+    private String  type;
 
     @NonNull
     @Column(name = "weight", nullable = false)

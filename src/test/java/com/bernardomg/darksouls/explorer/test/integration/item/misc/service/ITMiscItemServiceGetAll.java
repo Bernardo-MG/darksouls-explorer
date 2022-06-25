@@ -27,12 +27,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.misc.domain.MiscItem;
-import com.bernardomg.darksouls.explorer.item.misc.service.MiscItemService;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
+import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
+import com.bernardomg.darksouls.explorer.item.misc.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.DisabledSort;
 
 @IntegrationTest
 @DisplayName("Reading all the misc items")
@@ -52,7 +52,7 @@ public class ITMiscItemServiceGetAll {
     }
 
     @Autowired
-    private MiscItemService service;
+    private ItemService service;
 
     /**
      * Default constructor.
@@ -64,9 +64,10 @@ public class ITMiscItemServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll("Misc", new DisabledPagination(),
+            new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -74,14 +75,36 @@ public class ITMiscItemServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final MiscItem data;
+        final Item data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort())
+        data = service
+            .getAll("Misc", new DisabledPagination(), new DisabledSort())
             .iterator()
             .next();
 
         Assertions.assertEquals("Misc item", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
+    }
+
+    @Test
+    @DisplayName("An empty type returns all data")
+    public void testGetAll_EmptyType_Count() {
+        final Iterable<? extends Item> data;
+
+        data = service.getAll("", new DisabledPagination(), new DisabledSort());
+
+        Assertions.assertEquals(1, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("An invalid type returns no data")
+    public void testGetAll_InvalidType_Count() {
+        final Iterable<? extends Item> data;
+
+        data = service.getAll("abc", new DisabledPagination(),
+            new DisabledSort());
+
+        Assertions.assertEquals(0, IterableUtils.size(data));
     }
 
 }

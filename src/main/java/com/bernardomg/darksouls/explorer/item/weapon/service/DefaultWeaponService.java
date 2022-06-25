@@ -10,21 +10,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponProgressionLevel;
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgression;
-import com.bernardomg.darksouls.explorer.item.domain.ImmutableWeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.domain.PersistentWeaponLevel;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponLevel;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponLevelNode;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionLevel;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
@@ -33,15 +25,24 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirement
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgression;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.PersistentWeaponLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevelNode;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgressionLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
-import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.pagination.utils.Paginations;
+import com.bernardomg.persistence.executor.Query;
+import com.bernardomg.persistence.executor.QueryExecutor;
 
 import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 
@@ -68,14 +69,18 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final PageIterable<? extends WeaponSummary>
-            getAll(final Pagination pagination, final Sort sort) {
+    public final PageIterable<? extends WeaponSummary> getAll(final String type,
+            final Pagination pagination, final Sort sort) {
         final Pageable pageable;
         final Page<WeaponSummary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
-        page = repository.findAllSummaries(pageable);
+        if (Strings.isBlank(type)) {
+            page = repository.findAllSummaries(pageable);
+        } else {
+            page = repository.findAllSummaries(type, pageable);
+        }
 
         return Paginations.fromSpring(page);
     }
@@ -94,14 +99,16 @@ public final class DefaultWeaponService implements WeaponService {
         read = repository.findById(id);
 
         if (read.isPresent()) {
-            weapon = new DtoWeapon();
             entity = read.get();
 
+            weapon = new DtoWeapon();
             weapon.setId(id);
             weapon.setName(entity.getName());
             weapon.setDescription(entity.getDescription());
             weapon.setDurability(entity.getDurability());
             weapon.setWeight(entity.getWeight());
+            weapon.setType(entity.getType());
+            weapon.setSubtype(entity.getSubtype());
 
             requirements = new DtoWeaponRequirements();
             requirements.setDexterity(entity.getDexterity());
@@ -182,8 +189,9 @@ public final class DefaultWeaponService implements WeaponService {
         final String name;
         final Collection<WeaponProgressionPath> paths;
         final Collection<String> pathNames;
+        final DtoWeaponProgression result;
         Collection<WeaponProgressionLevel> currentLevels;
-        WeaponProgressionPath path;
+        DtoWeaponProgressionPath path;
 
         pathNames = StreamSupport.stream(levelNodes.spliterator(), false)
             .map(WeaponLevelNode::getPath)
@@ -198,7 +206,9 @@ public final class DefaultWeaponService implements WeaponService {
                 .map((l) -> toWeaponProgressionLevel(l, levelNodes))
                 .collect(Collectors.toList());
 
-            path = new ImmutableWeaponProgressionPath(pathName, currentLevels);
+            path = new DtoWeaponProgressionPath();
+            path.setPath(pathName);
+            path.setLevels(currentLevels);
             paths.add(path);
         }
 
@@ -207,7 +217,11 @@ public final class DefaultWeaponService implements WeaponService {
             .findAny()
             .orElse("");
 
-        return new ImmutableWeaponProgression(name, paths);
+        result = new DtoWeaponProgression();
+        result.setName(name);
+        result.setPaths(paths);
+
+        return result;
     }
 
     private final WeaponProgressionLevel toWeaponProgressionLevel(
@@ -218,6 +232,7 @@ public final class DefaultWeaponService implements WeaponService {
         final DtoWeaponProgressionLevel result;
 
         result = new DtoWeaponProgressionLevel();
+        // TODO: Avoid copying like this
         BeanUtils.copyProperties(level, result);
 
         levelNodeFound = StreamSupport.stream(levelNodes.spliterator(), false)

@@ -3,10 +3,10 @@ package com.bernardomg.darksouls.explorer.item.weapon.query;
 
 import java.util.Map;
 
-import com.bernardomg.darksouls.explorer.item.domain.DtoWeaponLevelNode;
-import com.bernardomg.darksouls.explorer.item.domain.WeaponLevelNode;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
-import com.bernardomg.darksouls.explorer.persistence.utils.Maps;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponLevelNode;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevelNode;
+import com.bernardomg.persistence.executor.Query;
+import com.bernardomg.persistence.utils.Maps;
 
 public final class WeaponLevelQuery implements Query<WeaponLevelNode> {
 
@@ -39,7 +39,6 @@ public final class WeaponLevelQuery implements Query<WeaponLevelNode> {
         + "   (w)-[HAS_LEVEL]->(l:Level) " + System.lineSeparator()
         + "WHERE" + System.lineSeparator()
         + "   l.target = $name" + System.lineSeparator()
-        + "   AND (w:Weapon)" + System.lineSeparator()
         + "OPTIONAL MATCH " + System.lineSeparator()
         + "   (p:Level)-[NEXT]->(l) " + System.lineSeparator()
         + "RETURN" + System.lineSeparator()

@@ -23,8 +23,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.bernardomg.darksouls.explorer.request.argument.PaginationArgumentResolver;
-import com.bernardomg.darksouls.explorer.request.argument.SortArgumentResolver;
+import com.bernardomg.pagination.argument.PaginationArgumentResolver;
+import com.bernardomg.pagination.argument.SortArgumentResolver;
 
 /**
  * Web configuration.

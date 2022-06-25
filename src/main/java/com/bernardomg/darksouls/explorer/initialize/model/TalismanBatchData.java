@@ -10,72 +10,75 @@ import lombok.NonNull;
 public final class TalismanBatchData {
 
     @NonNull
-    private String  attacks             = "";
+    private String  attacks                  = "";
 
     @NonNull
-    private Double  critical_dmg        = 0d;
+    private Double  critical_damage          = 0d;
 
     @NonNull
-    private String  description         = "";
+    private String  description              = "";
 
     @NonNull
-    private Integer dexterity           = 0;
+    private String  dexterity_bonus          = "";
 
     @NonNull
-    private String  dexterity_bonus     = "";
+    private Integer dexterity_requirement    = 0;
 
     @NonNull
-    private Integer durability          = 0;
+    private Integer durability               = 0;
 
     @NonNull
-    private Integer faith               = 0;
+    private String  faith_bonus              = "";
 
     @NonNull
-    private String  faith_bonus         = "";
+    private Integer faith_requirement        = 0;
 
     @NonNull
-    private Double  fire_dmg            = 0d;
+    private Double  fire_damage              = 0d;
 
     @NonNull
-    private Double  fire_reduction      = 0d;
+    private Double  fire_reduction           = 0d;
 
     @NonNull
-    private Integer intelligence        = 0;
+    private String  intelligence_bonus       = "";
 
     @NonNull
-    private String  intelligence_bonus  = "";
+    private Integer intelligence_requirement = 0;
 
     @NonNull
-    private Double  lightning_dmg       = 0d;
+    private Double  lightning_damage         = 0d;
 
     @NonNull
-    private Double  lightning_reduction = 0d;
+    private Double  lightning_reduction      = 0d;
 
     @NonNull
-    private Double  magic_dmg           = 0d;
+    private Double  magic_damage             = 0d;
 
     @NonNull
-    private Double  magic_reduction     = 0d;
+    private Double  magic_reduction          = 0d;
 
     @NonNull
-    private String  name                = "";
+    private String  name                     = "";
 
     @NonNull
-    private Double  physical_dmg        = 0d;
+    private Double  physical_damage          = 0d;
 
     @NonNull
-    private Double  physical_reduction  = 0d;
+    private Double  physical_reduction       = 0d;
 
     @NonNull
-    private Double  stability           = 0d;
+    private Double  stability                = 0d;
 
     @NonNull
-    private Integer strength            = 0;
+    private String  strength_bonus           = "";
 
     @NonNull
-    private String  strength_bonus      = "";
+    private Integer strength_requirement     = 0;
 
     @NonNull
-    private Double  weight              = 0d;
+    private String  type                     = "";
+
+    @NonNull
+    private Double  weight                   = 0d;
 
 }

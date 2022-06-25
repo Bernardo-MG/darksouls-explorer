@@ -4,7 +4,7 @@ package com.bernardomg.darksouls.explorer.map.query;
 import java.util.Map;
 
 import com.bernardomg.darksouls.explorer.map.domain.ImmutableMap;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
+import com.bernardomg.persistence.executor.Query;
 
 public final class AllIMapsQuery
         implements Query<com.bernardomg.darksouls.explorer.map.domain.Map> {

@@ -29,12 +29,12 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
-import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.pagination.model.DefaultPagination;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.PageIterable;
 
 @IntegrationTest
 @DisplayName("Reading all the armors paginated")

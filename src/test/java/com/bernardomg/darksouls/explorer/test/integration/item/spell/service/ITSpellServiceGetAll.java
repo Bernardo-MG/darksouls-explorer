@@ -29,10 +29,10 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
 import com.bernardomg.darksouls.explorer.item.spell.service.SpellService;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.DisabledSort;
 
 @IntegrationTest
 @DisplayName("Reading all the spells")
@@ -66,7 +66,8 @@ public class ITSpellServiceGetAll {
     public void testGetAll_Count() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll("School", new DisabledPagination(),
+            new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -76,12 +77,34 @@ public class ITSpellServiceGetAll {
     public void testGetAll_Data() {
         final SpellSummary data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort())
+        data = service
+            .getAll("School", new DisabledPagination(), new DisabledSort())
             .iterator()
             .next();
 
         Assertions.assertEquals("Spell", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
+    }
+
+    @Test
+    @DisplayName("An empty type returns all data")
+    public void testGetAll_EmptyType_Count() {
+        final Iterable<? extends SpellSummary> data;
+
+        data = service.getAll("", new DisabledPagination(), new DisabledSort());
+
+        Assertions.assertEquals(1, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("An invalid type returns no data")
+    public void testGetAll_InvalidType_Count() {
+        final Iterable<? extends SpellSummary> data;
+
+        data = service.getAll("abc", new DisabledPagination(),
+            new DisabledSort());
+
+        Assertions.assertEquals(0, IterableUtils.size(data));
     }
 
 }

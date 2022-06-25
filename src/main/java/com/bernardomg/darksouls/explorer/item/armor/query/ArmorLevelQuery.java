@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorLevel;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
-import com.bernardomg.darksouls.explorer.persistence.utils.Maps;
+import com.bernardomg.persistence.executor.Query;
+import com.bernardomg.persistence.utils.Maps;
 
 @Deprecated
 public final class ArmorLevelQuery implements Query<ArmorLevel> {

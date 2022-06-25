@@ -18,10 +18,10 @@ import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.repository.ArmorLevelRepository;
 import com.bernardomg.darksouls.explorer.item.armor.repository.ArmorRepository;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
-import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.pagination.utils.Paginations;
 
 import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 

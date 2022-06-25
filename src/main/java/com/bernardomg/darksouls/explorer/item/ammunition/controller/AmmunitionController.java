@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.DtoAmmunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.service.AmmunitionService;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @RestController
 @RequestMapping("/ammunitions")

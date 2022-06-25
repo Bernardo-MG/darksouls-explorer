@@ -14,10 +14,10 @@ import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.DtoAmmunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.PersistentAmmunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.repository.AmmunitionRepository;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
-import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.pagination.utils.Paginations;
 
 @Service
 public final class DefaultAmmunitionService implements AmmunitionService {

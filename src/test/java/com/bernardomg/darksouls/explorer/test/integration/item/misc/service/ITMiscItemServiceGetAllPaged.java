@@ -27,14 +27,14 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.misc.domain.MiscItem;
-import com.bernardomg.darksouls.explorer.item.misc.service.MiscItemService;
-import com.bernardomg.darksouls.explorer.persistence.model.DefaultPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
+import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
+import com.bernardomg.darksouls.explorer.item.misc.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.pagination.model.DefaultPagination;
+import com.bernardomg.pagination.model.DisabledPagination;
+import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.PageIterable;
 
 @IntegrationTest
 @DisplayName("Reading all the misc items paginated")
@@ -54,7 +54,7 @@ public class ITMiscItemServiceGetAllPaged {
     }
 
     @Autowired
-    private MiscItemService service;
+    private ItemService service;
 
     /**
      * Default constructor.
@@ -66,9 +66,10 @@ public class ITMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
-        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("Misc", new DefaultPagination(0, 1),
+            new DisabledSort());
 
         Assertions.assertInstanceOf(PageIterable.class, data);
     }
@@ -76,9 +77,10 @@ public class ITMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
-        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("Misc", new DefaultPagination(0, 1),
+            new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -86,9 +88,10 @@ public class ITMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
-        final Iterable<? extends MiscItem> data;
+        final Iterable<? extends Item> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll("Misc", new DisabledPagination(),
+            new DisabledSort());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }
