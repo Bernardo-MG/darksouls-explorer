@@ -104,7 +104,7 @@ public class ITDefaultWeaponServiceGetProgression {
 
     @Test
     @DisplayName("Returns the levels progression")
-    public void testgetProgression_Data() {
+    public void testGetProgression_Data() {
         final Optional<WeaponProgression> data;
         final Long id;
 
@@ -117,7 +117,7 @@ public class ITDefaultWeaponServiceGetProgression {
 
     @Test
     @DisplayName("Returns the levels bonuses")
-    public void testgetProgression_LevelsBonus() {
+    public void testGetProgression_LevelsBonus() {
         final WeaponProgression data;
         final Iterator<WeaponProgressionLevel> levels;
         final Long id;
@@ -146,7 +146,7 @@ public class ITDefaultWeaponServiceGetProgression {
 
     @Test
     @DisplayName("Returns the levels damage")
-    public void testgetProgression_LevelsDamage() {
+    public void testGetProgression_LevelsDamage() {
         final WeaponProgression data;
         final Iterator<WeaponProgressionLevel> levels;
         final Long id;
@@ -199,7 +199,7 @@ public class ITDefaultWeaponServiceGetProgression {
 
     @Test
     @DisplayName("Returns the levels in order")
-    public void testgetProgression_LevelsOrder() {
+    public void testGetProgression_LevelsOrder() {
         final WeaponProgression data;
         final Iterator<WeaponProgressionLevel> levels;
         final Long id;
@@ -237,7 +237,7 @@ public class ITDefaultWeaponServiceGetProgression {
 
     @Test
     @DisplayName("Returns the levels reductions")
-    public void testgetProgression_LevelsReductions() {
+    public void testGetProgression_LevelsReductions() {
         final WeaponProgression data;
         final Iterator<WeaponProgressionLevel> levels;
         final Long id;
@@ -265,8 +265,18 @@ public class ITDefaultWeaponServiceGetProgression {
     }
 
     @Test
+    @DisplayName("Returns no level progression when asking for a not existing weapon")
+    public void testGetProgression_NotExisting() {
+        final Optional<WeaponProgression> data;
+
+        data = service.getProgression(-1l);
+
+        Assertions.assertFalse(data.isPresent());
+    }
+
+    @Test
     @DisplayName("Returns the path level")
-    public void testgetProgression_PathLevel() {
+    public void testGetProgression_PathLevel() {
         final WeaponProgression data;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;
@@ -293,7 +303,7 @@ public class ITDefaultWeaponServiceGetProgression {
 
     @Test
     @DisplayName("Returns the expected structure")
-    public void testgetProgression_Structure() {
+    public void testGetProgression_Structure() {
         final WeaponProgression data;
         final Long id;
         final Iterator<WeaponProgressionPath> itr;

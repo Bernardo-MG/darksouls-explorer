@@ -17,6 +17,7 @@
 package com.bernardomg.darksouls.explorer.test.integration.item.armor.service;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -111,6 +112,16 @@ public class ITArmorServiceGetProgression {
         Assertions.assertEquals(27, level.getBleedProtection());
         Assertions.assertEquals(28, level.getPoisonProtection());
         Assertions.assertEquals(29, level.getCurseProtection());
+    }
+
+    @Test
+    @DisplayName("Returns no level progression when asking for a not existing weapon")
+    public void testGetProgression_NotExisting() {
+        final Optional<ArmorProgression> data;
+
+        data = service.getProgression(-1l);
+
+        Assertions.assertFalse(data.isPresent());
     }
 
     @Test

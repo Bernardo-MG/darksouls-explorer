@@ -35,6 +35,7 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.service.DefaultWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
@@ -43,11 +44,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInit
 
 @IntegrationTest
 @ContextConfiguration(initializers = {
-        ITDefaultWeaponServiceGetProgressionInvalid.Initializer.class })
-@DisplayName("Reading weapon progression with invalid data")
-@Sql({ "/db/queries/weapon/single.sql",
-        "/db/queries/weapon/physical_5_levels.sql" })
-public class ITDefaultWeaponServiceGetProgressionInvalid {
+        ITDefaultWeaponServiceGetProgressionNoLevels.Initializer.class })
+@DisplayName("Reading weapon progression with no levels")
+@Sql({ "/db/queries/weapon/single.sql" })
+public class ITDefaultWeaponServiceGetProgressionNoLevels {
 
     public static class Initializer implements
             ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -85,23 +85,36 @@ public class ITDefaultWeaponServiceGetProgressionInvalid {
     }
 
     @Autowired
+    private WeaponRepository     repository;
+
+    @Autowired
     private DefaultWeaponService service;
 
     /**
      * Default constructor.
      */
-    public ITDefaultWeaponServiceGetProgressionInvalid() {
+    public ITDefaultWeaponServiceGetProgressionNoLevels() {
         super();
     }
 
     @Test
-    @DisplayName("Returns no level progression when asking for a not existing weapon")
-    public void testgetProgression_Data() {
+    @DisplayName("Returns no level progression")
+    public void testGetProgression_NotData() {
         final Optional<WeaponProgression> data;
+        final Long id;
 
-        data = service.getProgression(-1l);
+        id = getId();
+
+        data = service.getProgression(id);
 
         Assertions.assertFalse(data.isPresent());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }
