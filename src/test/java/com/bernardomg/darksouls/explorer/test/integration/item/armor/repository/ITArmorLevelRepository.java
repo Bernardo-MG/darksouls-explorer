@@ -29,7 +29,7 @@ public class ITArmorLevelRepository {
 
     @Test
     @DisplayName("Returns all the levels")
-    public void testFindAllForNames_Count() {
+    public void testFindAllByName_Count() {
         final Collection<PersistentArmorLevel> levels;
 
         levels = levelRepository.findAllByName("Chain Armor");
@@ -39,7 +39,7 @@ public class ITArmorLevelRepository {
 
     @Test
     @DisplayName("Returns levels in the correct order")
-    public void testFindAllForNames_Order() {
+    public void testFindAllByName_Order() {
         final Iterator<PersistentArmorLevel> levels;
         PersistentArmorLevel level;
 

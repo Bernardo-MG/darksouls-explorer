@@ -153,23 +153,22 @@ public final class DefaultWeaponService implements WeaponService {
         final Optional<WeaponProgression> result;
         final Map<String, Object> params;
         final Optional<? extends Weapon> weapon;
-        final Iterable<String> names;
         final Collection<PersistentWeaponLevel> levels;
+        final String name;
 
         weapon = getOne(id);
 
         if (weapon.isPresent()) {
+            name = weapon.get()
+                .getName();
+
             params = new HashMap<>();
-            params.put("name", weapon.get()
-                .getName());
+            params.put("name", name);
 
             levelNodes = queryExecutor.fetch(levelQuery::getStatement,
                 levelQuery::getOutput, params);
 
-            names = levelNodes.stream()
-                .map(WeaponLevelNode::getName)
-                .collect(Collectors.toList());
-            levels = levelRepository.findAllForNames(names);
+            levels = levelRepository.findAllByName(name);
 
             if (IterableUtils.isEmpty(levels)) {
                 result = Optional.empty();
