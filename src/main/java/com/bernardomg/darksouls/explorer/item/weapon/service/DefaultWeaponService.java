@@ -162,14 +162,14 @@ public final class DefaultWeaponService implements WeaponService {
             name = weapon.get()
                 .getName();
 
-            params = new HashMap<>();
-            params.put("name", name);
-
             levels = levelRepository.findAllByName(name);
 
             if (IterableUtils.isEmpty(levels)) {
                 result = Optional.empty();
             } else {
+                params = new HashMap<>();
+                params.put("name", name);
+
                 levelNodes = queryExecutor.fetch(levelQuery::getStatement,
                     levelQuery::getOutput, params);
 
