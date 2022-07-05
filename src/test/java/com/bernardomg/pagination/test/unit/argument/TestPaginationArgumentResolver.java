@@ -38,9 +38,9 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("page"))
-        .thenReturn("1");
+            .thenReturn("1");
         Mockito.when(webRequest.getParameter("size"))
-        .thenReturn("10");
+            .thenReturn("10");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -62,9 +62,9 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("page"))
-        .thenReturn("1");
+            .thenReturn("1");
         Mockito.when(webRequest.getParameter("size"))
-        .thenReturn("10");
+            .thenReturn("10");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -106,7 +106,7 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("page"))
-        .thenReturn("1");
+            .thenReturn("1");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -128,7 +128,7 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("page"))
-        .thenReturn("1");
+            .thenReturn("1");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 

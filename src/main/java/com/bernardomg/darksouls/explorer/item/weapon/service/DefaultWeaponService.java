@@ -25,6 +25,7 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduc
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamageReduction;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustment;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.PersistentWeaponAdjustment;
@@ -33,7 +34,6 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgre
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.PersistentWeaponLevel;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevelNode;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgressionLevel;
@@ -85,7 +85,7 @@ public final class DefaultWeaponService implements WeaponService {
 
         if (weapon.isPresent()) {
             name = weapon.get()
-                    .getName();
+                .getName();
 
             levels = adjustmentRepository.findAllByName(name);
         } else {
@@ -93,8 +93,8 @@ public final class DefaultWeaponService implements WeaponService {
         }
 
         return levels.stream()
-                .map(this::toWeaponAdjustment)
-                .collect(Collectors.toList());
+            .map(this::toWeaponAdjustment)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -189,7 +189,7 @@ public final class DefaultWeaponService implements WeaponService {
 
         if (weapon.isPresent()) {
             name = weapon.get()
-                    .getName();
+                .getName();
 
             levels = levelRepository.findAllByName(name);
 
@@ -237,17 +237,17 @@ public final class DefaultWeaponService implements WeaponService {
         DtoWeaponProgressionPath                path;
 
         pathNames = StreamSupport.stream(levelNodes.spliterator(), false)
-                .map(WeaponLevelNode::getPath)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
+            .map(WeaponLevelNode::getPath)
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
 
         paths = new ArrayList<>();
         for (final String pathName : pathNames) {
             currentLevels = StreamSupport.stream(levels.spliterator(), false)
-                    .filter((l) -> pathName.equals(l.getPath()))
-                    .map((l) -> toWeaponProgressionLevel(l, levelNodes))
-                    .collect(Collectors.toList());
+                .filter((l) -> pathName.equals(l.getPath()))
+                .map((l) -> toWeaponProgressionLevel(l, levelNodes))
+                .collect(Collectors.toList());
 
             path = new DtoWeaponProgressionPath();
             path.setPath(pathName);
@@ -256,9 +256,9 @@ public final class DefaultWeaponService implements WeaponService {
         }
 
         name = StreamSupport.stream(levels.spliterator(), false)
-                .map(WeaponLevel::getName)
-                .findAny()
-                .orElse("");
+            .map(PersistentWeaponLevel::getName)
+            .findAny()
+            .orElse("");
 
         result = new DtoWeaponProgression();
         result.setName(name);
@@ -267,24 +267,56 @@ public final class DefaultWeaponService implements WeaponService {
         return result;
     }
 
-    private final WeaponProgressionLevel toWeaponProgressionLevel(final WeaponLevel level,
+    private final WeaponProgressionLevel toWeaponProgressionLevel(final PersistentWeaponLevel level,
             final Iterable<WeaponLevelNode> levelNodes) {
         final Optional<WeaponLevelNode> levelNodeFound;
         final WeaponLevelNode           levelNode;
         final DtoWeaponProgressionLevel result;
+        final DtoWeaponBonus            bonus;
+        final DtoWeaponDamage           damage;
+        final DtoWeaponDamageReduction  damageReduction;
 
         result = new DtoWeaponProgressionLevel();
         // TODO: Avoid copying like this
         BeanUtils.copyProperties(level, result);
 
+        result.setName(level.getName());
+        result.setPath(level.getPath());
+        result.setLevel(level.getLevel());
+        result.setStability(level.getStability());
+
+        bonus = new DtoWeaponBonus();
+        bonus.setDexterity(level.getDexterityBonus());
+        bonus.setFaith(level.getFaithBonus());
+        bonus.setIntelligence(level.getIntelligenceBonus());
+        bonus.setStrength(level.getStrengthBonus());
+        result.setBonus(bonus);
+
+        damage = new DtoWeaponDamage();
+        damage.setCritical(level.getCritical());
+        damage.setFire(level.getFireDamage());
+        damage.setLightning(level.getLightningDamage());
+        damage.setMagic(level.getMagicDamage());
+        damage.setPhysical(level.getPhysicalDamage());
+
+        result.setDamage(damage);
+
+        damageReduction = new DtoWeaponDamageReduction();
+        damageReduction.setFire(level.getFireReduction());
+        damageReduction.setLightning(level.getLightningReduction());
+        damageReduction.setMagic(level.getMagicReduction());
+        damageReduction.setPhysical(level.getPhysicalReduction());
+
+        result.setDamageReduction(damageReduction);
+
         levelNodeFound = StreamSupport.stream(levelNodes.spliterator(), false)
-                .filter(n -> n.getName()
-                    .equals(level.getName())
+            .filter(n -> n.getName()
+                .equals(level.getName())
                     && n.getPath()
-                    .equals(level.getPath())
+                        .equals(level.getPath())
                     && n.getLevel()
-                    .equals(level.getLevel()))
-                .findFirst();
+                        .equals(level.getLevel()))
+            .findFirst();
         if (levelNodeFound.isPresent()) {
             levelNode = levelNodeFound.get();
             result.setPathLevel(levelNode.getPathLevel());

@@ -51,22 +51,26 @@ public class WeaponInitializerConfig {
     @Bean("weaponItemReader")
     public ItemReader<WeaponBatchData> getWeaponItemReader(final LineMapper<WeaponBatchData> lineMapper) {
         return new FlatFileItemReaderBuilder<WeaponBatchData>().name("weaponItemReader")
-                .resource(data)
-                .delimited()
-                .names("name", "type", "description", "weight", "durability", "attacks", "strength_requirement", "dexterity_requirement", "intelligence_requirement", "faith_requirement", "strength_bonus", "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_damage", "magic_damage", "fire_damage", "lightning_damage", "critical_damage", "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "stability")
-                .linesToSkip(1)
-                .lineMapper(lineMapper)
-                .build();
+            .resource(data)
+            .delimited()
+            .names("name", "type", "description", "weight", "durability", "attacks", "strength_requirement",
+                "dexterity_requirement", "intelligence_requirement", "faith_requirement", "strength_bonus",
+                "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_damage", "magic_damage",
+                "fire_damage", "lightning_damage", "critical_damage", "physical_reduction", "magic_reduction",
+                "fire_reduction", "lightning_reduction", "stability")
+            .linesToSkip(1)
+            .lineMapper(lineMapper)
+            .build();
     }
 
     @Bean("weaponItemWriter")
     public ItemWriter<WeaponBatchData> getWeaponItemWriter() {
         return new JdbcBatchItemWriterBuilder<WeaponBatchData>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<WeaponBatchData>())
-                .sql(
-                        "INSERT INTO weapons (name, description, type, subtype, weight, durability, strength_requirement, dexterity_requirement, intelligence_requirement, faith_requirement, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, 'Weapon', :type, :weight, :durability, :strength_requirement, :dexterity_requirement, :intelligence_requirement, :faith_requirement, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :critical_damage, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
-                .dataSource(datasource)
-                .build();
+            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<WeaponBatchData>())
+            .sql(
+                "INSERT INTO weapons (name, description, type, subtype, weight, durability, strength_requirement, dexterity_requirement, intelligence_requirement, faith_requirement, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, 'Weapon', :type, :weight, :durability, :strength_requirement, :dexterity_requirement, :intelligence_requirement, :faith_requirement, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :critical_damage, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
+            .dataSource(datasource)
+            .build();
     }
 
     @Bean("weaponLineMapper")
@@ -78,7 +82,11 @@ public class WeaponInitializerConfig {
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames("name", "type", "description", "weight", "durability", "attacks", "strength_requirement", "dexterity_requirement", "intelligence_requirement", "faith_requirement", "strength_bonus", "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_damage", "magic_damage", "fire_damage", "lightning_damage", "critical_damage", "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "stability");
+        lineTokenizer.setNames("name", "type", "description", "weight", "durability", "attacks", "strength_requirement",
+            "dexterity_requirement", "intelligence_requirement", "faith_requirement", "strength_bonus",
+            "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_damage", "magic_damage", "fire_damage",
+            "lightning_damage", "critical_damage", "physical_reduction", "magic_reduction", "fire_reduction",
+            "lightning_reduction", "stability");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(WeaponBatchData.class);
 
@@ -91,20 +99,20 @@ public class WeaponInitializerConfig {
     @Bean("weaponLoaderJob")
     public Job getWeaponLoaderJob(@Qualifier("weaponLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("weaponLoaderJob")
-                .incrementer(new RunIdIncrementer())
-                .start(armorLoaderStep)
-                .build();
+            .incrementer(new RunIdIncrementer())
+            .start(armorLoaderStep)
+            .build();
     }
 
     @Bean("weaponLoaderStep")
     public Step getWeaponLoaderStep(final ItemReader<WeaponBatchData> reader,
             final ItemWriter<WeaponBatchData> writer) {
         return stepBuilderFactory.get("weaponLoaderStep")
-                .<WeaponBatchData, WeaponBatchData> chunk(5)
-                .reader(reader)
-                .processor(new DBLogProcessor<>())
-                .writer(writer)
-                .build();
+            .<WeaponBatchData, WeaponBatchData> chunk(5)
+            .reader(reader)
+            .processor(new DBLogProcessor<>())
+            .writer(writer)
+            .build();
     }
 
 }

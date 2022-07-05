@@ -1,6 +1,13 @@
 
 package com.bernardomg.darksouls.explorer.item.weapon.domain.path;
 
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduction;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamageReduction;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -10,57 +17,27 @@ import lombok.NonNull;
 public final class DtoWeaponProgressionLevel implements WeaponProgressionLevel {
 
     @NonNull
-    private Integer critical           = 0;
+    private WeaponBonus           bonus           = new DtoWeaponBonus();
 
     @NonNull
-    private String  dexterityBonus;
+    private WeaponDamage          damage          = new DtoWeaponDamage();
 
     @NonNull
-    private String  faithBonus;
+    private WeaponDamageReduction damageReduction = new DtoWeaponDamageReduction();
 
     @NonNull
-    private Integer fireDamage         = 0;
+    private Integer               level           = 0;
 
     @NonNull
-    private Float   fireReduction      = 0f;
+    private String                name            = "";
 
     @NonNull
-    private String  intelligenceBonus;
+    private Integer               pathLevel       = 0;
 
     @NonNull
-    private Integer level              = 0;
+    private String                path            = "";
 
     @NonNull
-    private Integer lightningDamage    = 0;
-
-    @NonNull
-    private Float   lightningReduction = 0f;
-
-    @NonNull
-    private Integer magicDamage        = 0;
-
-    @NonNull
-    private Float   magicReduction     = 0f;
-
-    @NonNull
-    private String  name               = "";
-
-    @NonNull
-    private String  path               = "";
-
-    @NonNull
-    private Integer pathLevel          = 0;
-
-    @NonNull
-    private Integer physicalDamage     = 0;
-
-    @NonNull
-    private Float   physicalReduction  = 0f;
-
-    @NonNull
-    private Integer stability          = 0;
-
-    @NonNull
-    private String  strengthBonus      = "";
+    private Integer               stability       = 0;
 
 }

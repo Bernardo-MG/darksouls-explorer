@@ -35,7 +35,7 @@ public final class MissingRelationshipQuery implements Query<DataProblem> {
         mergedRels = String.join("|", relationships);
 
         template =
-                // @formatter:off
+        // @formatter:off
                 "MATCH" + System.lineSeparator()
                 + "  (n:%s)" + System.lineSeparator()
                 + "WHERE" + System.lineSeparator()

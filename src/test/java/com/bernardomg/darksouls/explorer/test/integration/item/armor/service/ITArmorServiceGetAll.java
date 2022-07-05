@@ -75,8 +75,8 @@ public class ITArmorServiceGetAll {
         final Armor data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort())
-                .iterator()
-                .next();
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Chain Armor", data.getName());
         Assertions.assertEquals("Description", data.getDescription());

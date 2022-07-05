@@ -67,9 +67,9 @@ public final class TextQueryExecutor implements QueryExecutor {
         LOGGER.debug("Count: {}", countQuery);
 
         return client.query(countQuery)
-                .fetchAs(Long.class)
-                .first()
-                .get();
+            .fetchAs(Long.class)
+            .first()
+            .get();
     }
 
     @Override
@@ -83,11 +83,11 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         return client.query(query)
-                .fetch()
-                .all()
-                .stream()
-                .map(mapper)
-                .collect(Collectors.toList());
+            .fetch()
+            .all()
+            .stream()
+            .map(mapper)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -101,12 +101,12 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         return client.query(query)
-                .bindAll(parameters)
-                .fetch()
-                .all()
-                .stream()
-                .map(mapper)
-                .collect(Collectors.toList());
+            .bindAll(parameters)
+            .fetch()
+            .all()
+            .stream()
+            .map(mapper)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -127,9 +127,9 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Sort
         sortOptions = StreamSupport.stream(sort.spliterator(), false)
-                .filter(Sort::getSorted)
-                .map(this::getFieldSort)
-                .reduce(this::mergeSort);
+            .filter(Sort::getSorted)
+            .map(this::getFieldSort)
+            .reduce(this::mergeSort);
         if (sortOptions.isPresent()) {
             finalQuery += " ORDER BY " + sortOptions.get();
         }
@@ -144,12 +144,12 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         data = client.query(finalQuery)
-                .bindAll(parameters)
-                .fetch()
-                .all()
-                .stream()
-                .map(mapper)
-                .collect(Collectors.toList());
+            .bindAll(parameters)
+            .fetch()
+            .all()
+            .stream()
+            .map(mapper)
+            .collect(Collectors.toList());
 
         return getPage(data, pagination, () -> count(baseStatement, parameters));
     }
@@ -174,8 +174,8 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         read = client.query(query)
-                .fetch()
-                .first();
+            .fetch()
+            .first();
         if (read.isPresent()) {
             mapped = mapper.apply(read.get());
             result = Optional.ofNullable(mapped);
@@ -200,9 +200,9 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         read = client.query(query)
-                .bindAll(parameters)
-                .fetch()
-                .first();
+            .bindAll(parameters)
+            .fetch()
+            .first();
 
         if (read.isPresent()) {
             mapped = mapper.apply(read.get());
@@ -220,20 +220,20 @@ public final class TextQueryExecutor implements QueryExecutor {
         final Collection<Object>      params;
 
         params = parameters.entrySet()
-                .stream()
-                .map(e -> Arrays.asList(e.getKey(), Cypher.literalOf(e.getValue())))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+            .stream()
+            .map(e -> Arrays.asList(e.getKey(), Cypher.literalOf(e.getValue())))
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
 
         name = Cypher.name("value");
         call = Cypher.call("apoc.cypher.run")
-                .withArgs(Cypher.literalOf(subquery), Cypher.mapOf(params.toArray()))
-                .yield(name)
-                .returning(Functions.count(name)
-                    .as("count"));
+            .withArgs(Cypher.literalOf(subquery), Cypher.mapOf(params.toArray()))
+            .yield(name)
+            .returning(Functions.count(name)
+                .as("count"));
 
         return call.build()
-                .getCypher();
+            .getCypher();
     }
 
     private final String getFieldSort(final Sort sort) {

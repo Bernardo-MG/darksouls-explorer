@@ -65,9 +65,9 @@ public class ITDefaultWeaponServiceGetAdjustments {
 
     private final Long getId() {
         return repository.findAll()
-                .iterator()
-                .next()
-                .getId();
+            .iterator()
+            .next()
+            .getId();
     }
 
     @Test
@@ -103,7 +103,7 @@ public class ITDefaultWeaponServiceGetAdjustments {
         id = getId();
 
         data = service.getAdjustment(id)
-                .iterator();
+            .iterator();
 
         adjust = data.next();
 

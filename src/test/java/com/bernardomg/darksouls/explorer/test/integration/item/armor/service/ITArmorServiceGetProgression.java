@@ -52,9 +52,9 @@ public class ITArmorServiceGetProgression {
 
     private final Long getId() {
         return repository.findAll()
-                .iterator()
-                .next()
-                .getId();
+            .iterator()
+            .next()
+            .getId();
     }
 
     @Test
@@ -68,10 +68,10 @@ public class ITArmorServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         levels = data.getLevels()
-                .iterator();
+            .iterator();
 
         level = levels.next();
         Assertions.assertEquals(0, level.getLevel());
@@ -91,10 +91,10 @@ public class ITArmorServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         levels = data.getLevels()
-                .iterator();
+            .iterator();
 
         level = levels.next();
         Assertions.assertEquals(10, level.getRegularProtection());
@@ -140,7 +140,7 @@ public class ITArmorServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         Assertions.assertEquals("Chain Armor", data.getArmor());
         Assertions.assertEquals(2, IterableUtils.size(data.getLevels()));

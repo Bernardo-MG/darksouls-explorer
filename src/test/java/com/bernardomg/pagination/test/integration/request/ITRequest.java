@@ -83,11 +83,11 @@ public class ITRequest {
         request = MockMvcRequestBuilders.get("/weapons");
 
         mockMvc.perform(request)
-        .andExpect(MockMvcResultMatchers.content()
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(MockMvcResultMatchers.status()
-            .isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 1")));
+            .andExpect(MockMvcResultMatchers.content()
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status()
+                .isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 1")));
     }
 
     @Test
@@ -98,13 +98,13 @@ public class ITRequest {
         request = MockMvcRequestBuilders.get("/weapons");
 
         mockMvc.perform(request)
-        .andExpect(MockMvcResultMatchers.content()
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(MockMvcResultMatchers.status()
-            .isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(5)))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage", Matchers.is(5)));
+            .andExpect(MockMvcResultMatchers.content()
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status()
+                .isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(5)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage", Matchers.is(5)));
     }
 
 }

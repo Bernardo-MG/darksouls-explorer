@@ -50,23 +50,23 @@ public class MiscItemInitializerConfig {
 
     @Bean("miscItemItemReader")
     public ItemReader<ItemBatchData>
-    getMiscItemItemReader(@Qualifier("miscItemLineMapper") final LineMapper<ItemBatchData> lineMapper) {
+            getMiscItemItemReader(@Qualifier("miscItemLineMapper") final LineMapper<ItemBatchData> lineMapper) {
         return new FlatFileItemReaderBuilder<ItemBatchData>().name("miscItemItemReader")
-                .resource(data)
-                .delimited()
-                .names("name", "description")
-                .linesToSkip(1)
-                .lineMapper(lineMapper)
-                .build();
+            .resource(data)
+            .delimited()
+            .names("name", "description")
+            .linesToSkip(1)
+            .lineMapper(lineMapper)
+            .build();
     }
 
     @Bean("miscItemItemWriter")
     public ItemWriter<ItemBatchData> getMiscItemItemWriter() {
         return new JdbcBatchItemWriterBuilder<ItemBatchData>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
-                .sql("INSERT INTO items (name, description, type) VALUES (:name, :description, 'Misc')")
-                .dataSource(datasource)
-                .build();
+            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
+            .sql("INSERT INTO items (name, description, type) VALUES (:name, :description, 'Misc')")
+            .dataSource(datasource)
+            .build();
     }
 
     @Bean("miscItemLineMapper")
@@ -91,20 +91,20 @@ public class MiscItemInitializerConfig {
     @Bean("miscItemLoaderJob")
     public Job getMiscItemLoaderJob(@Qualifier("miscItemLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("miscItemLoaderJob")
-                .incrementer(new RunIdIncrementer())
-                .start(armorLoaderStep)
-                .build();
+            .incrementer(new RunIdIncrementer())
+            .start(armorLoaderStep)
+            .build();
     }
 
     @Bean("miscItemLoaderStep")
     public Step getMiscItemLoaderStep(@Qualifier("miscItemItemReader") final ItemReader<ItemBatchData> reader,
             @Qualifier("miscItemItemWriter") final ItemWriter<ItemBatchData> writer) {
         return stepBuilderFactory.get("miscItemLoaderStep")
-                .<ItemBatchData, ItemBatchData> chunk(5)
-                .reader(reader)
-                .processor(new DBLogProcessor<>())
-                .writer(writer)
-                .build();
+            .<ItemBatchData, ItemBatchData> chunk(5)
+            .reader(reader)
+            .processor(new DBLogProcessor<>())
+            .writer(writer)
+            .build();
     }
 
 }

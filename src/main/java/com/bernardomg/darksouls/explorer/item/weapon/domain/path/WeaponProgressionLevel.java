@@ -1,29 +1,19 @@
 
 package com.bernardomg.darksouls.explorer.item.weapon.domain.path;
 
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponDamageReduction;
+
 public interface WeaponProgressionLevel {
 
-    public Integer getCritical();
+    public WeaponBonus getBonus();
 
-    public String getDexterityBonus();
+    public WeaponDamage getDamage();
 
-    public String getFaithBonus();
-
-    public Integer getFireDamage();
-
-    public Float getFireReduction();
-
-    public String getIntelligenceBonus();
+    public WeaponDamageReduction getDamageReduction();
 
     public Integer getLevel();
-
-    public Integer getLightningDamage();
-
-    public Float getLightningReduction();
-
-    public Integer getMagicDamage();
-
-    public Float getMagicReduction();
 
     public String getName();
 
@@ -31,12 +21,6 @@ public interface WeaponProgressionLevel {
 
     public Integer getPathLevel();
 
-    public Integer getPhysicalDamage();
-
-    public Float getPhysicalReduction();
-
     public Integer getStability();
-
-    public String getStrengthBonus();
 
 }

@@ -30,7 +30,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(final Object body, final MethodParameter returnType,
             final MediaType selectedContentType, final Class<? extends HttpMessageConverter<?>> selectedConverterType,
-                    final ServerHttpRequest request, final ServerHttpResponse response) {
+            final ServerHttpRequest request, final ServerHttpResponse response) {
         final Object result;
 
         log.trace("Received {} as response body", body);

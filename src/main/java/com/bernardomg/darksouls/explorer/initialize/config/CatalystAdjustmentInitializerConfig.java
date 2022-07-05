@@ -50,26 +50,26 @@ public class CatalystAdjustmentInitializerConfig {
 
     @Bean("catalystAdjustmentItemReader")
     public ItemReader<CatalystAdjustmentBatchData>
-    getCatalystAdjustmentItemReader(final LineMapper<CatalystAdjustmentBatchData> lineMapper) {
+            getCatalystAdjustmentItemReader(final LineMapper<CatalystAdjustmentBatchData> lineMapper) {
         return new FlatFileItemReaderBuilder<CatalystAdjustmentBatchData>().name("catalystAdjustmentItemReader")
-                .resource(data)
-                .delimited()
-                .names("name", "faith", "intelligence", "adjustment")
-                .distanceLimit(0)
-                .linesToSkip(1)
-                .lineMapper(lineMapper)
-                .build();
+            .resource(data)
+            .delimited()
+            .names("name", "faith", "intelligence", "adjustment")
+            .distanceLimit(0)
+            .linesToSkip(1)
+            .lineMapper(lineMapper)
+            .build();
     }
 
     @Bean("catalystAdjustmentItemWriter")
     public ItemWriter<CatalystAdjustmentBatchData> getCatalystAdjustmentItemWriter() {
         return new JdbcBatchItemWriterBuilder<CatalystAdjustmentBatchData>()
-                .itemSqlParameterSourceProvider(
-                    new BeanPropertyItemSqlParameterSourceProvider<CatalystAdjustmentBatchData>())
-                .sql(
-                        "INSERT INTO weapon_adjustments (name, faith, intelligence, adjustment) VALUES (:name, :faith, :intelligence, :adjustment)")
-                .dataSource(datasource)
-                .build();
+            .itemSqlParameterSourceProvider(
+                new BeanPropertyItemSqlParameterSourceProvider<CatalystAdjustmentBatchData>())
+            .sql(
+                "INSERT INTO weapon_adjustments (name, faith, intelligence, adjustment) VALUES (:name, :faith, :intelligence, :adjustment)")
+            .dataSource(datasource)
+            .build();
     }
 
     @Bean("catalystAdjustmentLineMapper")
@@ -94,20 +94,20 @@ public class CatalystAdjustmentInitializerConfig {
     @Bean("catalystAdjustmentLoaderJob")
     public Job getCatalystAdjustmentLoaderJob(@Qualifier("catalystAdjustmentLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("catalystAdjustmentLoaderJob")
-                .incrementer(new RunIdIncrementer())
-                .start(armorLoaderStep)
-                .build();
+            .incrementer(new RunIdIncrementer())
+            .start(armorLoaderStep)
+            .build();
     }
 
     @Bean("catalystAdjustmentLoaderStep")
     public Step getCatalystAdjustmentLoaderStep(final ItemReader<CatalystAdjustmentBatchData> reader,
             final ItemWriter<CatalystAdjustmentBatchData> writer) {
         return stepBuilderFactory.get("catalystAdjustmentLoaderStep")
-                .<CatalystAdjustmentBatchData, CatalystAdjustmentBatchData> chunk(5)
-                .reader(reader)
-                .processor(new DBLogProcessor<>())
-                .writer(writer)
-                .build();
+            .<CatalystAdjustmentBatchData, CatalystAdjustmentBatchData> chunk(5)
+            .reader(reader)
+            .processor(new DBLogProcessor<>())
+            .writer(writer)
+            .build();
     }
 
 }

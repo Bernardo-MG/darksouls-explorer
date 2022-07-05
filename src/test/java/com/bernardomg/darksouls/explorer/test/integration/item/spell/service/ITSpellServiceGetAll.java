@@ -75,8 +75,8 @@ public class ITSpellServiceGetAll {
         final SpellSummary data;
 
         data = service.getAll("School", new DisabledPagination(), new DisabledSort())
-                .iterator()
-                .next();
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Spell", data.getName());
         Assertions.assertEquals("Description", data.getDescription());

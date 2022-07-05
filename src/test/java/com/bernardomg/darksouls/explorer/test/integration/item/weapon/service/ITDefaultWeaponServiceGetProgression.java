@@ -94,9 +94,9 @@ public class ITDefaultWeaponServiceGetProgression {
 
     private final Long getId() {
         return repository.findAll()
-                .iterator()
-                .next()
-                .getId();
+            .iterator()
+            .next()
+            .getId();
     }
 
     @Test
@@ -125,20 +125,24 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         itr = data.getPaths()
-                .iterator();
+            .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-                .iterator();
+            .iterator();
 
         level = levels.next();
-        Assertions.assertEquals("A", level.getStrengthBonus());
-        Assertions.assertEquals("B", level.getDexterityBonus());
-        Assertions.assertEquals("C", level.getIntelligenceBonus());
-        Assertions.assertEquals("D", level.getFaithBonus());
+        Assertions.assertEquals("A", level.getBonus()
+            .getStrength());
+        Assertions.assertEquals("B", level.getBonus()
+            .getDexterity());
+        Assertions.assertEquals("C", level.getBonus()
+            .getIntelligence());
+        Assertions.assertEquals("D", level.getBonus()
+            .getFaith());
     }
 
     @Test
@@ -154,44 +158,64 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         itr = data.getPaths()
-                .iterator();
+            .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-                .iterator();
+            .iterator();
 
         level = levels.next();
-        Assertions.assertEquals(10, level.getPhysicalDamage());
-        Assertions.assertEquals(11, level.getMagicDamage());
-        Assertions.assertEquals(12, level.getFireDamage());
-        Assertions.assertEquals(13, level.getLightningDamage());
+        Assertions.assertEquals(10, level.getDamage()
+            .getPhysical());
+        Assertions.assertEquals(11, level.getDamage()
+            .getMagic());
+        Assertions.assertEquals(12, level.getDamage()
+            .getFire());
+        Assertions.assertEquals(13, level.getDamage()
+            .getLightning());
 
         level = levels.next();
-        Assertions.assertEquals(20, level.getPhysicalDamage());
-        Assertions.assertEquals(21, level.getMagicDamage());
-        Assertions.assertEquals(22, level.getFireDamage());
-        Assertions.assertEquals(23, level.getLightningDamage());
+        Assertions.assertEquals(20, level.getDamage()
+            .getPhysical());
+        Assertions.assertEquals(21, level.getDamage()
+            .getMagic());
+        Assertions.assertEquals(22, level.getDamage()
+            .getFire());
+        Assertions.assertEquals(23, level.getDamage()
+            .getLightning());
 
         level = levels.next();
-        Assertions.assertEquals(30, level.getPhysicalDamage());
-        Assertions.assertEquals(31, level.getMagicDamage());
-        Assertions.assertEquals(32, level.getFireDamage());
-        Assertions.assertEquals(33, level.getLightningDamage());
+        Assertions.assertEquals(30, level.getDamage()
+            .getPhysical());
+        Assertions.assertEquals(31, level.getDamage()
+            .getMagic());
+        Assertions.assertEquals(32, level.getDamage()
+            .getFire());
+        Assertions.assertEquals(33, level.getDamage()
+            .getLightning());
 
         level = levels.next();
-        Assertions.assertEquals(40, level.getPhysicalDamage());
-        Assertions.assertEquals(41, level.getMagicDamage());
-        Assertions.assertEquals(42, level.getFireDamage());
-        Assertions.assertEquals(43, level.getLightningDamage());
+        Assertions.assertEquals(40, level.getDamage()
+            .getPhysical());
+        Assertions.assertEquals(41, level.getDamage()
+            .getMagic());
+        Assertions.assertEquals(42, level.getDamage()
+            .getFire());
+        Assertions.assertEquals(43, level.getDamage()
+            .getLightning());
 
         level = levels.next();
-        Assertions.assertEquals(50, level.getPhysicalDamage());
-        Assertions.assertEquals(51, level.getMagicDamage());
-        Assertions.assertEquals(52, level.getFireDamage());
-        Assertions.assertEquals(53, level.getLightningDamage());
+        Assertions.assertEquals(50, level.getDamage()
+            .getPhysical());
+        Assertions.assertEquals(51, level.getDamage()
+            .getMagic());
+        Assertions.assertEquals(52, level.getDamage()
+            .getFire());
+        Assertions.assertEquals(53, level.getDamage()
+            .getLightning());
     }
 
     @Test
@@ -207,14 +231,14 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         itr = data.getPaths()
-                .iterator();
+            .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-                .iterator();
+            .iterator();
 
         level = levels.next();
         Assertions.assertEquals(0, level.getLevel());
@@ -245,20 +269,24 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         itr = data.getPaths()
-                .iterator();
+            .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-                .iterator();
+            .iterator();
 
         level = levels.next();
-        Assertions.assertEquals(0.1f, level.getPhysicalReduction());
-        Assertions.assertEquals(0.2f, level.getMagicReduction());
-        Assertions.assertEquals(0.3f, level.getFireReduction());
-        Assertions.assertEquals(0.4f, level.getLightningReduction());
+        Assertions.assertEquals(0.1f, level.getDamageReduction()
+            .getPhysical());
+        Assertions.assertEquals(0.2f, level.getDamageReduction()
+            .getMagic());
+        Assertions.assertEquals(0.3f, level.getDamageReduction()
+            .getFire());
+        Assertions.assertEquals(0.4f, level.getDamageReduction()
+            .getLightning());
     }
 
     @Test
@@ -283,18 +311,18 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         itr = data.getPaths()
-                .iterator();
+            .iterator();
 
         path = itr.next();
 
         path = itr.next();
 
         level = path.getLevels()
-                .iterator()
-                .next();
+            .iterator()
+            .next();
         Assertions.assertEquals(0, level.getPathLevel());
     }
 
@@ -309,13 +337,13 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-                .get();
+            .get();
 
         Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals(2, IterableUtils.size(data.getPaths()));
 
         itr = data.getPaths()
-                .iterator();
+            .iterator();
         path = itr.next();
 
         Assertions.assertEquals("Magic", path.getPath());

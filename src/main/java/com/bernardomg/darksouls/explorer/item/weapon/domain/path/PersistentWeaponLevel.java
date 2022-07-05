@@ -16,7 +16,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "WeaponLevel")
 @Table(name = "weapon_levels")
-public final class PersistentWeaponLevel implements WeaponLevel {
+public final class PersistentWeaponLevel {
 
     @NonNull
     @Column(name = "critical_damage", nullable = false)
