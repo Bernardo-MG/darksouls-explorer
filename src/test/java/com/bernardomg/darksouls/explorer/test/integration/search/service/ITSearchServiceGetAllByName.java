@@ -41,30 +41,24 @@ import com.bernardomg.pagination.model.DisabledPagination;
 import com.bernardomg.pagination.model.DisabledSort;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITSearchServiceGetAllByName.Initializer.class })
+@ContextConfiguration(initializers = { ITSearchServiceGetAllByName.Initializer.class })
 @DisplayName("Search")
 public class ITSearchServiceGetAllByName {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(dbContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory.getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+        new Neo4jDatabaseInitalizer().initialize("neo4j", dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
             Arrays.asList("classpath:db/queries/item/single.cypher"));
     }
 
@@ -82,13 +76,12 @@ public class ITSearchServiceGetAllByName {
     @DisplayName("Returns the search results when searching by full name")
     public void testGetByName_FullName_Count() {
         final Iterable<SearchResult> data;
-        final DtoSearchRequest request;
+        final DtoSearchRequest       request;
 
         request = new DtoSearchRequest();
         request.setName("Item name");
 
-        data = service.search(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.search(request, new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -96,16 +89,15 @@ public class ITSearchServiceGetAllByName {
     @Test
     @DisplayName("Returns the search results when searching by full name")
     public void testGetByName_FullName_Data() {
-        final SearchResult data;
+        final SearchResult     data;
         final DtoSearchRequest request;
 
         request = new DtoSearchRequest();
         request.setName("Item name");
 
-        data = service
-            .search(request, new DisabledPagination(), new DisabledSort())
-            .iterator()
-            .next();
+        data = service.search(request, new DisabledPagination(), new DisabledSort())
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Item name", data.getName());
     }
@@ -114,13 +106,12 @@ public class ITSearchServiceGetAllByName {
     @DisplayName("Returns all the data when searching by partial name")
     public void testGetByName_PartialName_Count() {
         final Iterable<SearchResult> data;
-        final DtoSearchRequest request;
+        final DtoSearchRequest       request;
 
         request = new DtoSearchRequest();
         request.setName("name");
 
-        data = service.search(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.search(request, new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }

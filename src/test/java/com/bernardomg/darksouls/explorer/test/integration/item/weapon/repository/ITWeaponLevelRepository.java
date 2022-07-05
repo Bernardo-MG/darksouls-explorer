@@ -41,10 +41,10 @@ public class ITWeaponLevelRepository {
     @DisplayName("Returns levels in the correct order")
     public void testFindAllForNames_Order() {
         final Iterator<PersistentWeaponLevel> levels;
-        PersistentWeaponLevel level;
+        PersistentWeaponLevel                 level;
 
         levels = levelRepository.findAllByName("Sword")
-            .iterator();
+                .iterator();
 
         level = levels.next();
 

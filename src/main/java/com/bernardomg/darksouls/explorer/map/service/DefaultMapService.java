@@ -28,25 +28,21 @@ public final class DefaultMapService implements MapService {
     }
 
     @Override
-    public final PageIterable<Map> getAll(final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<Map> getAll(final Pagination pagination, final Sort sort) {
         final Query<Map> query;
 
         query = new AllIMapsQuery();
 
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
-            pagination, Arrays.asList(sort));
+        return queryExecutor.fetch(query::getStatement, query::getOutput, pagination, Arrays.asList(sort));
     }
 
     @Override
-    public final PageIterable<MapConnection>
-            getAllConnections(final Pagination pagination, final Sort sort) {
+    public final PageIterable<MapConnection> getAllConnections(final Pagination pagination, final Sort sort) {
         final Query<MapConnection> query;
 
         query = new AllMapConnectionsQuery();
 
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
-            pagination, Arrays.asList(sort));
+        return queryExecutor.fetch(query::getStatement, query::getOutput, pagination, Arrays.asList(sort));
     }
 
 }

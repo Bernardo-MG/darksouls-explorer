@@ -44,25 +44,20 @@ import com.bernardomg.pagination.model.DisabledSort;
 @DisplayName("Reading all the maps")
 public class ITMapServiceGetAll {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(dbContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory.getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+        new Neo4jDatabaseInitalizer().initialize("neo4j", dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
             Arrays.asList("classpath:db/queries/map/single.cypher"));
     }
 
@@ -92,8 +87,8 @@ public class ITMapServiceGetAll {
         final Map data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort())
-            .iterator()
-            .next();
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Map name", data.getName());
     }

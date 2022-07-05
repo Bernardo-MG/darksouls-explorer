@@ -4,17 +4,15 @@ package com.bernardomg.persistence.utils;
 import java.util.Map;
 
 /**
- * For some reason the maps returned by Neo4J always say they contain values,
- * even when they don't, breaking default value handling. This class avoids
- * working with nulls.
+ * For some reason the maps returned by Neo4J always say they contain values, even when they don't, breaking default
+ * value handling. This class avoids working with nulls.
  *
  * @author Bernardo
  *
  */
 public final class Maps {
 
-    public static final <T> T getOrDefault(final Map<String, Object> map,
-            final String key, final T dflt) {
+    public static final <T> T getOrDefault(final Map<String, Object> map, final String key, final T dflt) {
         final T result;
         final T value;
 

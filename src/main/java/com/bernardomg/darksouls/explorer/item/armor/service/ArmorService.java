@@ -10,8 +10,7 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface ArmorService {
 
-    public Iterable<? extends Armor> getAll(final Pagination pagination,
-            final Sort sort);
+    public Iterable<? extends Armor> getAll(final Pagination pagination, final Sort sort);
 
     public Optional<? extends Armor> getOne(final Long id);
 

@@ -14,8 +14,7 @@ import com.bernardomg.pagination.model.Pagination;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class PaginationArgumentResolver
-        implements HandlerMethodArgumentResolver {
+public final class PaginationArgumentResolver implements HandlerMethodArgumentResolver {
 
     private static final Integer DEFAULT_SIZE = 20;
 
@@ -24,14 +23,12 @@ public final class PaginationArgumentResolver
     }
 
     @Override
-    public final Pagination resolveArgument(final MethodParameter parameter,
-            final ModelAndViewContainer mavContainer,
-            final NativeWebRequest webRequest,
-            final WebDataBinderFactory binderFactory) throws Exception {
-        final String rawPage;
-        final String sizeText;
-        final Integer page;
-        final Integer size;
+    public final Pagination resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
+            final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
+        final String     rawPage;
+        final String     sizeText;
+        final Integer    page;
+        final Integer    size;
         final Pagination pagination;
 
         rawPage = webRequest.getParameter("page");
@@ -46,8 +43,7 @@ public final class PaginationArgumentResolver
             if (sizeText == null) {
                 // No size
                 size = DEFAULT_SIZE;
-                log.trace("No size received, using default page size: {}",
-                    size);
+                log.trace("No size received, using default page size: {}", size);
             } else {
                 size = Integer.valueOf(sizeText);
             }

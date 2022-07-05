@@ -40,12 +40,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 public class ITMiscItemServiceGetOneSingle {
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -64,6 +62,13 @@ public class ITMiscItemServiceGetOneSingle {
         super();
     }
 
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
+
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
@@ -73,7 +78,7 @@ public class ITMiscItemServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Misc item", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
@@ -87,13 +92,6 @@ public class ITMiscItemServiceGetOneSingle {
         data = service.getOne(-1l);
 
         Assertions.assertTrue(data.isEmpty());
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
     }
 
 }

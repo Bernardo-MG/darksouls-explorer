@@ -50,21 +50,28 @@ public class ITArmorServiceGetProgression {
         super();
     }
 
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
+
     @Test
     @DisplayName("Returns the levels in order")
     public void testGetProgression_LevelsOrder() {
-        final ArmorProgression data;
+        final ArmorProgression               data;
         final Iterator<? extends ArmorLevel> levels;
-        final Long id;
-        ArmorLevel level;
+        final Long                           id;
+        ArmorLevel                           level;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         levels = data.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals(0, level.getLevel());
@@ -76,18 +83,18 @@ public class ITArmorServiceGetProgression {
     @Test
     @DisplayName("Returns the levels protections")
     public void testGetProgression_LevelsProtection() {
-        final ArmorProgression data;
+        final ArmorProgression               data;
         final Iterator<? extends ArmorLevel> levels;
-        final Long id;
-        ArmorLevel level;
+        final Long                           id;
+        ArmorLevel                           level;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         levels = data.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals(10, level.getRegularProtection());
@@ -128,22 +135,15 @@ public class ITArmorServiceGetProgression {
     @DisplayName("Returns the expected structure")
     public void testGetProgression_Structure() {
         final ArmorProgression data;
-        final Long id;
+        final Long             id;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Chain Armor", data.getArmor());
         Assertions.assertEquals(2, IterableUtils.size(data.getLevels()));
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
     }
 
 }

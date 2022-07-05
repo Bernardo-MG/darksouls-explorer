@@ -19,25 +19,25 @@ import lombok.NonNull;
 public final class PersistentWeaponAdjustment {
 
     @NonNull
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
-    private Long    id;
-
-    @NonNull
-    @Column(name = "name", nullable = false)
-    private String  name;
+    @Column(name = "adjustment", nullable = false)
+    private Integer adjustment   = 0;
 
     @NonNull
     @Column(name = "faith", nullable = false)
     private Integer faith        = 0;
 
     @NonNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
+    private Long    id;
+
+    @NonNull
     @Column(name = "intelligence", nullable = false)
     private Integer intelligence = 0;
 
     @NonNull
-    @Column(name = "adjustment", nullable = false)
-    private Integer adjustment   = 0;
+    @Column(name = "name", nullable = false)
+    private String  name;
 
 }

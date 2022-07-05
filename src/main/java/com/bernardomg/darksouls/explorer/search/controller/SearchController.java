@@ -24,8 +24,7 @@ public class SearchController {
     }
 
     @GetMapping
-    public Iterable<SearchResult> readSources(final SearchRequest query,
-            final Pagination pagination, final Sort sort) {
+    public Iterable<SearchResult> readSources(final SearchRequest query, final Pagination pagination, final Sort sort) {
         return service.search(query, pagination, sort);
     }
 

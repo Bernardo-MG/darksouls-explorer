@@ -16,8 +16,8 @@ public final class ImmutableDataProblem implements DataProblem {
     @NonNull
     private final String source;
 
-    public ImmutableDataProblem(@NonNull final String name,
-            @NonNull final String source, @NonNull final String problem) {
+    public ImmutableDataProblem(@NonNull final String name, @NonNull final String source,
+            @NonNull final String problem) {
         super();
 
         this.name = name;

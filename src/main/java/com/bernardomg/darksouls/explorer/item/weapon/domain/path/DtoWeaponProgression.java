@@ -12,7 +12,7 @@ import lombok.NonNull;
 public final class DtoWeaponProgression implements WeaponProgression {
 
     @NonNull
-    private String                          name = "";
+    private String                          name  = "";
 
     @NonNull
     private Iterable<WeaponProgressionPath> paths = Collections.emptyList();

@@ -29,8 +29,7 @@ import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.initialize.model.ItemBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "miscItem",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "miscItem", havingValue = "true")
 public class MiscItemInitializerConfig {
 
     @Value("classPath:/data/misc_items.csv")
@@ -50,39 +49,36 @@ public class MiscItemInitializerConfig {
     }
 
     @Bean("miscItemItemReader")
-    public ItemReader<ItemBatchData> getMiscItemItemReader(
-            @Qualifier("miscItemLineMapper") final LineMapper<ItemBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<ItemBatchData>()
-            .name("miscItemItemReader")
-            .resource(data)
-            .delimited()
-            .names(new String[] { "name", "description" })
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+    public ItemReader<ItemBatchData>
+    getMiscItemItemReader(@Qualifier("miscItemLineMapper") final LineMapper<ItemBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<ItemBatchData>().name("miscItemItemReader")
+                .resource(data)
+                .delimited()
+                .names("name", "description")
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("miscItemItemWriter")
     public ItemWriter<ItemBatchData> getMiscItemItemWriter() {
         return new JdbcBatchItemWriterBuilder<ItemBatchData>()
-            .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
-            .sql(
-                "INSERT INTO items (name, description, type) VALUES (:name, :description, 'Misc')")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
+                .sql("INSERT INTO items (name, description, type) VALUES (:name, :description, 'Misc')")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("miscItemLineMapper")
     public LineMapper<ItemBatchData> getMiscItemLineMapper() {
-        final DelimitedLineTokenizer lineTokenizer;
+        final DelimitedLineTokenizer                   lineTokenizer;
         final BeanWrapperFieldSetMapper<ItemBatchData> fieldSetMapper;
-        final DefaultLineMapper<ItemBatchData> lineMapper;
+        final DefaultLineMapper<ItemBatchData>         lineMapper;
 
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "description" });
+        lineTokenizer.setNames("name", "description");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ItemBatchData.class);
 
@@ -93,24 +89,22 @@ public class MiscItemInitializerConfig {
     }
 
     @Bean("miscItemLoaderJob")
-    public Job getMiscItemLoaderJob(
-            @Qualifier("miscItemLoaderStep") final Step armorLoaderStep) {
+    public Job getMiscItemLoaderJob(@Qualifier("miscItemLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("miscItemLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("miscItemLoaderStep")
-    public Step getMiscItemLoaderStep(
-            @Qualifier("miscItemItemReader") final ItemReader<ItemBatchData> reader,
+    public Step getMiscItemLoaderStep(@Qualifier("miscItemItemReader") final ItemReader<ItemBatchData> reader,
             @Qualifier("miscItemItemWriter") final ItemWriter<ItemBatchData> writer) {
         return stepBuilderFactory.get("miscItemLoaderStep")
-            .<ItemBatchData, ItemBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<ItemBatchData, ItemBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

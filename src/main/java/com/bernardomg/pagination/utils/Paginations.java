@@ -29,22 +29,18 @@ public final class Paginations {
         return result;
     }
 
-    public static final Pageable toSpring(final Pagination pagination,
-            final Sort sort) {
-        final Pageable pageable;
+    public static final Pageable toSpring(final Pagination pagination, final Sort sort) {
+        final Pageable                                       pageable;
         final org.springframework.data.domain.Sort.Direction direction;
-        final Boolean paged;
+        final Boolean                                        paged;
 
-        paged = (pagination.getPaged()) && (pagination.getSize() > 0)
-                && (pagination.getPage() >= 0);
+        paged = (pagination.getPaged()) && (pagination.getSize() > 0) && (pagination.getPage() >= 0);
 
         if ((paged) && (sort.getSorted())) {
             direction = toSpringDirection(sort.getDirection());
-            pageable = PageRequest.of(pagination.getPage(),
-                pagination.getSize(), direction, sort.getProperty());
+            pageable = PageRequest.of(pagination.getPage(), pagination.getSize(), direction, sort.getProperty());
         } else if (paged) {
-            pageable = PageRequest.of(pagination.getPage(),
-                pagination.getSize());
+            pageable = PageRequest.of(pagination.getPage(), pagination.getSize());
         } else if (sort.getSorted()) {
             direction = toSpringDirection(sort.getDirection());
             pageable = PageRequest.of(0, 10, direction, sort.getProperty());
@@ -55,8 +51,7 @@ public final class Paginations {
         return pageable;
     }
 
-    private static final org.springframework.data.domain.Sort.Direction
-            toSpringDirection(final Direction direction) {
+    private static final org.springframework.data.domain.Sort.Direction toSpringDirection(final Direction direction) {
         final org.springframework.data.domain.Sort.Direction result;
 
         if (Direction.ASC.equals(direction)) {

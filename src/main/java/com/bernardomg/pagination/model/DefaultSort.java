@@ -15,8 +15,7 @@ public final class DefaultSort implements Sort {
 
     private final Boolean   sorted = true;
 
-    public DefaultSort(@NonNull final String property,
-            @NonNull final Direction direction) {
+    public DefaultSort(@NonNull final String property, @NonNull final Direction direction) {
         super();
 
         this.property = property;

@@ -51,30 +51,24 @@ import com.bernardomg.persistence.executor.QueryExecutor;
 import com.bernardomg.persistence.executor.TextQueryExecutor;
 
 @IntegrationTest
-@ContextConfiguration(initializers = {
-        ITTextQueryExecutorPaginationParameterized.Initializer.class })
+@ContextConfiguration(initializers = { ITTextQueryExecutorPaginationParameterized.Initializer.class })
 @DisplayName("Query executor paginated and parameterized")
 public class ITTextQueryExecutorPaginationParameterized {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(dbContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory.getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+        new Neo4jDatabaseInitalizer().initialize("neo4j", dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
             Arrays.asList("classpath:db/queries/item/multiple.cypher"));
     }
 
@@ -87,12 +81,16 @@ public class ITTextQueryExecutorPaginationParameterized {
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
+    }
+
     @Test
     @DisplayName("Reads the content for a page returning a single value")
     public void testFetch_AllElementsPage_Content() {
-        final Iterator<Item> data;
-        final Pagination pagination;
-        final Sort sort;
+        final Iterator<Item>      data;
+        final Pagination          pagination;
+        final Sort                sort;
         final Map<String, Object> parameters;
 
         parameters = new HashMap<>();
@@ -101,10 +99,8 @@ public class ITTextQueryExecutorPaginationParameterized {
         pagination = new DefaultPagination(0, 5);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor
-            .fetch(getQuery(), this::toItem, parameters, pagination,
-                Arrays.asList(sort))
-            .iterator();
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters, pagination, Arrays.asList(sort))
+                .iterator();
 
         Assertions.assertEquals("Item1", data.next()
             .getName());
@@ -113,9 +109,9 @@ public class ITTextQueryExecutorPaginationParameterized {
     @Test
     @DisplayName("Reads the status for a page returning a single value")
     public void testFetch_AllElementsPage_Status() {
-        final PageIterable<Item> data;
-        final Pagination pagination;
-        final Sort sort;
+        final PageIterable<Item>  data;
+        final Pagination          pagination;
+        final Sort                sort;
         final Map<String, Object> parameters;
 
         parameters = new HashMap<>();
@@ -124,8 +120,7 @@ public class ITTextQueryExecutorPaginationParameterized {
         pagination = new DefaultPagination(0, 5);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, parameters,
-            pagination, Arrays.asList(sort));
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters, pagination, Arrays.asList(sort));
 
         Assertions.assertTrue(data.isFirst());
         Assertions.assertTrue(data.isLast());
@@ -134,9 +129,9 @@ public class ITTextQueryExecutorPaginationParameterized {
     @Test
     @DisplayName("Reads the values for a page returning a single value")
     public void testFetch_AllElementsPage_Values() {
-        final PageIterable<Item> data;
-        final Pagination pagination;
-        final Sort sort;
+        final PageIterable<Item>  data;
+        final Pagination          pagination;
+        final Sort                sort;
         final Map<String, Object> parameters;
 
         parameters = new HashMap<>();
@@ -145,8 +140,7 @@ public class ITTextQueryExecutorPaginationParameterized {
         pagination = new DefaultPagination(0, 5);
         sort = new DefaultSort("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, parameters,
-            pagination, Arrays.asList(sort));
+        data = queryExecutor.fetch(getQuery(), this::toItem, parameters, pagination, Arrays.asList(sort));
 
         Assertions.assertEquals(5, data.getSize());
         Assertions.assertEquals(1, data.getTotalElements());
@@ -154,23 +148,17 @@ public class ITTextQueryExecutorPaginationParameterized {
         Assertions.assertEquals(0, data.getPageNumber());
     }
 
-    private final Function<Map<String, Object>, String> getQuery() {
-        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
-    }
-
     @SuppressWarnings("unchecked")
     private final Item toItem(final Map<String, Object> record) {
-        final Long id;
-        final String name;
+        final Long             id;
+        final String           name;
         final Iterable<String> description;
         final Iterable<String> tags;
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
         name = (String) record.getOrDefault("name", "");
-        description = Arrays.asList(
-            ((String) record.getOrDefault("description", "")).split("\\|"));
-        tags = (Iterable<String>) record.getOrDefault("labels",
-            Collections.emptyList());
+        description = Arrays.asList(((String) record.getOrDefault("description", "")).split("\\|"));
+        tags = (Iterable<String>) record.getOrDefault("labels", Collections.emptyList());
 
         return new ImmutableItem(id, name, description, tags);
     }

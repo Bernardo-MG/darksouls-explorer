@@ -9,16 +9,16 @@ import lombok.NonNull;
 @NoArgsConstructor
 public final class TalismanAdjustmentBatchData {
 
+    @NonNull
+    private Integer adjustment   = 0;
 
     @NonNull
-    private String  name                     = "";
+    private Integer faith        = 0;
 
     @NonNull
-    private Integer faith     = 0;
-    @NonNull
-    private Integer intelligence     = 0;
-    @NonNull
-    private Integer adjustment     = 0;
+    private Integer intelligence = 0;
 
+    @NonNull
+    private String  name         = "";
 
 }

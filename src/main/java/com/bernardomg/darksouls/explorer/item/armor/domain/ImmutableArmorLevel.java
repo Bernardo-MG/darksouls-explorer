@@ -43,18 +43,12 @@ public final class ImmutableArmorLevel implements ArmorLevel {
     @NonNull
     private final Float   thrustProtection;
 
-    public ImmutableArmorLevel(@NonNull final String armor,
-            @NonNull final Integer level,
-            @NonNull final Float regularProtection,
-            @NonNull final Float strikeProtection,
-            @NonNull final Float slashProtection,
-            @NonNull final Float thrustProtection,
-            @NonNull final Float magicProtection,
-            @NonNull final Float fireProtection,
-            @NonNull final Float lightningProtection,
-            @NonNull final Float bleedProtection,
-            @NonNull final Float poisonProtection,
-            @NonNull final Float curseProtection) {
+    public ImmutableArmorLevel(@NonNull final String armor, @NonNull final Integer level,
+            @NonNull final Float regularProtection, @NonNull final Float strikeProtection,
+            @NonNull final Float slashProtection, @NonNull final Float thrustProtection,
+            @NonNull final Float magicProtection, @NonNull final Float fireProtection,
+            @NonNull final Float lightningProtection, @NonNull final Float bleedProtection,
+            @NonNull final Float poisonProtection, @NonNull final Float curseProtection) {
         super();
 
         name = armor;

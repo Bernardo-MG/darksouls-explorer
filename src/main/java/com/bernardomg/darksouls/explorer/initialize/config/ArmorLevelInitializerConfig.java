@@ -29,8 +29,7 @@ import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.initialize.model.ArmorLevelBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "armorLevel",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "armorLevel", havingValue = "true")
 public class ArmorLevelInitializerConfig {
 
     @Value("classPath:/data/armor_levels.csv")
@@ -50,44 +49,37 @@ public class ArmorLevelInitializerConfig {
     }
 
     @Bean("armorLevelItemReader")
-    public ItemReader<ArmorLevelBatchData> getArmorLevelItemReader(
-            final LineMapper<ArmorLevelBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<ArmorLevelBatchData>()
-            .name("armorLevelItemReader")
-            .resource(data)
-            .delimited()
-            .names(new String[] { "name", "level", "regular", "strike", "slash",
-                    "thrust", "magic", "fire", "lightning", "bleed", "poison",
-                    "curse", "poise" })
-            .distanceLimit(0)
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+    public ItemReader<ArmorLevelBatchData> getArmorLevelItemReader(final LineMapper<ArmorLevelBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<ArmorLevelBatchData>().name("armorLevelItemReader")
+                .resource(data)
+                .delimited()
+                .names("name", "level", "regular", "strike", "slash", "thrust", "magic", "fire", "lightning", "bleed", "poison", "curse", "poise")
+                .distanceLimit(0)
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("armorLevelItemWriter")
     public ItemWriter<ArmorLevelBatchData> getArmorLevelItemWriter() {
         return new JdbcBatchItemWriterBuilder<ArmorLevelBatchData>()
-            .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<ArmorLevelBatchData>())
-            .sql(
-                "INSERT INTO armor_levels (name, level, regular_protection, strike_protection, slash_protection, thrust_protection, magic_protection, fire_protection, lightning_protection, bleed_protection, poison_protection, curse_protection, poise) VALUES (:name, :level, :regular, :strike, :slash, :thrust, :magic, :fire, :lightning, :bleed, :poison, :curse, :poise)")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ArmorLevelBatchData>())
+                .sql(
+                        "INSERT INTO armor_levels (name, level, regular_protection, strike_protection, slash_protection, thrust_protection, magic_protection, fire_protection, lightning_protection, bleed_protection, poison_protection, curse_protection, poise) VALUES (:name, :level, :regular, :strike, :slash, :thrust, :magic, :fire, :lightning, :bleed, :poison, :curse, :poise)")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("armorLevelLineMapper")
     public LineMapper<ArmorLevelBatchData> getArmorLevelLineMapper() {
-        final DelimitedLineTokenizer lineTokenizer;
+        final DelimitedLineTokenizer                         lineTokenizer;
         final BeanWrapperFieldSetMapper<ArmorLevelBatchData> fieldSetMapper;
-        final DefaultLineMapper<ArmorLevelBatchData> lineMapper;
+        final DefaultLineMapper<ArmorLevelBatchData>         lineMapper;
 
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "level", "regular",
-                "strike", "slash", "thrust", "magic", "fire", "lightning",
-                "bleed", "poison", "curse", "poise" });
+        lineTokenizer.setNames("name", "level", "regular", "strike", "slash", "thrust", "magic", "fire", "lightning", "bleed", "poison", "curse", "poise");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ArmorLevelBatchData.class);
 
@@ -98,24 +90,22 @@ public class ArmorLevelInitializerConfig {
     }
 
     @Bean("armorLevelLoaderJob")
-    public Job getArmorLevelLoaderJob(
-            @Qualifier("armorLevelLoaderStep") final Step armorLoaderStep) {
+    public Job getArmorLevelLoaderJob(@Qualifier("armorLevelLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("armorLevelLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("armorLevelLoaderStep")
-    public Step getArmorLevelLoaderStep(
-            final ItemReader<ArmorLevelBatchData> reader,
+    public Step getArmorLevelLoaderStep(final ItemReader<ArmorLevelBatchData> reader,
             final ItemWriter<ArmorLevelBatchData> writer) {
         return stepBuilderFactory.get("armorLevelLoaderStep")
-            .<ArmorLevelBatchData, ArmorLevelBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<ArmorLevelBatchData, ArmorLevelBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

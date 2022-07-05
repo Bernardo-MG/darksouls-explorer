@@ -9,10 +9,8 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface MapService {
 
-    public PageIterable<Map> getAll(final Pagination pagination,
-            final Sort sort);
+    public PageIterable<Map> getAll(final Pagination pagination, final Sort sort);
 
-    public PageIterable<MapConnection>
-            getAllConnections(final Pagination pagination, final Sort sort);
+    public PageIterable<MapConnection> getAllConnections(final Pagination pagination, final Sort sort);
 
 }

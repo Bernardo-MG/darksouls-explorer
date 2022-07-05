@@ -9,8 +9,7 @@ import com.bernardomg.darksouls.explorer.initialize.listener.ProblemsInitializer
 import com.bernardomg.darksouls.explorer.problem.service.ProblemService;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "problem",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "problem", havingValue = "true")
 public class ProblemInitializerConfig {
 
     public ProblemInitializerConfig() {
@@ -18,8 +17,7 @@ public class ProblemInitializerConfig {
     }
 
     @Bean("problemsInitializer")
-    public ProblemsInitializerListener
-            getProblemsInitializer(final ProblemService svc) {
+    public ProblemsInitializerListener getProblemsInitializer(final ProblemService svc) {
         return new ProblemsInitializerListener(svc);
     }
 

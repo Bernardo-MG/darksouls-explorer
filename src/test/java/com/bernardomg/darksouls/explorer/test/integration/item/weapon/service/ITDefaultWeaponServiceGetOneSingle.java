@@ -40,12 +40,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 public class ITDefaultWeaponServiceGetOneSingle {
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -64,16 +62,23 @@ public class ITDefaultWeaponServiceGetOneSingle {
         super();
     }
 
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
+
     @Test
     @DisplayName("Returns the correct damage")
     public void testGetOne_Damage() {
         final Weapon data;
-        final Long id;
+        final Long   id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(7, data.getDamage()
             .getPhysical());
@@ -91,12 +96,12 @@ public class ITDefaultWeaponServiceGetOneSingle {
     @DisplayName("Returns the correct damage reduction")
     public void testGetOne_DamageReduction() {
         final Weapon data;
-        final Long id;
+        final Long   id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(12, data.getDamageReduction()
             .getPhysical());
@@ -112,12 +117,12 @@ public class ITDefaultWeaponServiceGetOneSingle {
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
         final Weapon data;
-        final Long id;
+        final Long   id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
@@ -139,12 +144,12 @@ public class ITDefaultWeaponServiceGetOneSingle {
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Requirement() {
         final Weapon data;
-        final Long id;
+        final Long   id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(3, data.getRequirements()
             .getDexterity());
@@ -160,22 +165,15 @@ public class ITDefaultWeaponServiceGetOneSingle {
     @DisplayName("Returns the correct stats")
     public void testGetOne_Stats() {
         final Weapon data;
-        final Long id;
+        final Long   id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(1, data.getDurability());
         Assertions.assertEquals(2, data.getWeight());
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
     }
 
 }

@@ -21,28 +21,21 @@ public final class DuplicatedProblemQuery implements Query<DataProblem> {
 
     @Override
     public final DataProblem getOutput(final Map<String, Object> record) {
-        return new ImmutableDataProblem((String) record.getOrDefault("id", ""),
-            source, error);
+        return new ImmutableDataProblem((String) record.getOrDefault("id", ""), source, error);
     }
 
     @Override
     public final String getStatement(final Map<String, Object> params) {
-        final String query;
-
-        query =
-        // @formatter:off
-          "MATCH" + System.lineSeparator()
-        + "  (n)" + System.lineSeparator()
-        + "WHERE" + System.lineSeparator()
-        + "  $node IN LABELS(n)" + System.lineSeparator()
-        + "WITH" + System.lineSeparator()
-        + "  n.name AS id," + System.lineSeparator()
-        + "  count(n) AS count" + System.lineSeparator()
-        + "WHERE" + System.lineSeparator()
-        + "  count > 1 RETURN id";
-        // @formatter:on
-
-        return query;
+        return // @formatter:off
+                "MATCH" + System.lineSeparator()
+                + "  (n)" + System.lineSeparator()
+                + "WHERE" + System.lineSeparator()
+                + "  $node IN LABELS(n)" + System.lineSeparator()
+                + "WITH" + System.lineSeparator()
+                + "  n.name AS id," + System.lineSeparator()
+                + "  count(n) AS count" + System.lineSeparator()
+                + "WHERE" + System.lineSeparator()
+                + "  count > 1 RETURN id";
     }
 
 }

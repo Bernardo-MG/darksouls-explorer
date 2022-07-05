@@ -29,8 +29,7 @@ import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.initialize.model.TalismanAdjustmentBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "talismanAdjustment",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "talismanAdjustment", havingValue = "true")
 public class TalismanAdjustmentInitializerConfig {
 
     @Value("classPath:/data/talisman_adjustments.csv")
@@ -50,40 +49,39 @@ public class TalismanAdjustmentInitializerConfig {
     }
 
     @Bean("talismanAdjustmentItemReader")
-    public ItemReader<TalismanAdjustmentBatchData> getTalismanAdjustmentItemReader(
-            final LineMapper<TalismanAdjustmentBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<TalismanAdjustmentBatchData>()
-            .name("talismanAdjustmentItemReader")
-            .resource(data)
-            .delimited()
-            .names(new String[] { "name", "faith" , "intelligence", "adjustment"})
-            .distanceLimit(0)
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+    public ItemReader<TalismanAdjustmentBatchData>
+    getTalismanAdjustmentItemReader(final LineMapper<TalismanAdjustmentBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<TalismanAdjustmentBatchData>().name("talismanAdjustmentItemReader")
+                .resource(data)
+                .delimited()
+                .names("name", "faith", "intelligence", "adjustment")
+                .distanceLimit(0)
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("talismanAdjustmentItemWriter")
     public ItemWriter<TalismanAdjustmentBatchData> getTalismanAdjustmentItemWriter() {
         return new JdbcBatchItemWriterBuilder<TalismanAdjustmentBatchData>()
-            .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<TalismanAdjustmentBatchData>())
-            .sql(
-                "INSERT INTO weapon_adjustments (name, faith, intelligence, adjustment) VALUES (:name, :faith, :intelligence, :adjustment)")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(
+                    new BeanPropertyItemSqlParameterSourceProvider<TalismanAdjustmentBatchData>())
+                .sql(
+                        "INSERT INTO weapon_adjustments (name, faith, intelligence, adjustment) VALUES (:name, :faith, :intelligence, :adjustment)")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("talismanAdjustmentLineMapper")
     public LineMapper<TalismanAdjustmentBatchData> getTalismanAdjustmentLineMapper() {
-        final DelimitedLineTokenizer lineTokenizer;
+        final DelimitedLineTokenizer                                 lineTokenizer;
         final BeanWrapperFieldSetMapper<TalismanAdjustmentBatchData> fieldSetMapper;
-        final DefaultLineMapper<TalismanAdjustmentBatchData> lineMapper;
+        final DefaultLineMapper<TalismanAdjustmentBatchData>         lineMapper;
 
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "faith" , "intelligence", "adjustment"});
+        lineTokenizer.setNames("name", "faith", "intelligence", "adjustment");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(TalismanAdjustmentBatchData.class);
 
@@ -94,24 +92,22 @@ public class TalismanAdjustmentInitializerConfig {
     }
 
     @Bean("talismanAdjustmentLoaderJob")
-    public Job getTalismanAdjustmentLoaderJob(
-            @Qualifier("talismanAdjustmentLoaderStep") final Step armorLoaderStep) {
+    public Job getTalismanAdjustmentLoaderJob(@Qualifier("talismanAdjustmentLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("talismanAdjustmentLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("talismanAdjustmentLoaderStep")
-    public Step getTalismanAdjustmentLoaderStep(
-            final ItemReader<TalismanAdjustmentBatchData> reader,
+    public Step getTalismanAdjustmentLoaderStep(final ItemReader<TalismanAdjustmentBatchData> reader,
             final ItemWriter<TalismanAdjustmentBatchData> writer) {
         return stepBuilderFactory.get("talismanAdjustmentLoaderStep")
-            .<TalismanAdjustmentBatchData, TalismanAdjustmentBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<TalismanAdjustmentBatchData, TalismanAdjustmentBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

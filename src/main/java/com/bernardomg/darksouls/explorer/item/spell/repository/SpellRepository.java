@@ -16,7 +16,6 @@ public interface SpellRepository extends JpaRepository<PersistentSpell, Long> {
     public Page<SpellSummary> findAllSummaries(final Pageable pageable);
 
     @Query("SELECT s FROM Spell s WHERE s.school = :school")
-    public Page<SpellSummary> findAllSummaries(
-            @Param("school") final String school, final Pageable pageable);
+    public Page<SpellSummary> findAllSummaries(@Param("school") final String school, final Pageable pageable);
 
 }

@@ -33,6 +33,22 @@ public class TestResponseAdvice {
         super();
     }
 
+    private final Object handleResponse(final Object body) {
+        final MethodParameter                          returnType;
+        final MediaType                                selectedContentType;
+        final Class<? extends HttpMessageConverter<?>> selectedConverterType;
+        final ServerHttpRequest                        request;
+        final ServerHttpResponse                       response;
+
+        returnType = Mockito.mock(MethodParameter.class);
+        selectedContentType = Mockito.mock(MediaType.class);
+        selectedConverterType = null;
+        request = Mockito.mock(ServerHttpRequest.class);
+        response = Mockito.mock(ServerHttpResponse.class);
+
+        return advice.beforeBodyWrite(body, returnType, selectedContentType, selectedConverterType, request, response);
+    }
+
     @Test
     @DisplayName("A null is wrapped")
     public void testResponse_Null_WrappedType() {
@@ -49,36 +65,34 @@ public class TestResponseAdvice {
     @Test
     @DisplayName("A page content is returned back")
     public void testResponse_Page_WrappedContent() {
-        final Page<?> body;
+        final Page<?>              body;
         final PaginatedResponse<?> response;
 
         body = Mockito.mock(Page.class);
         Mockito.when(body.getContent())
-            .thenReturn(Collections.emptyList());
+        .thenReturn(Collections.emptyList());
         Mockito.when(body.getNumberOfElements())
-            .thenReturn(1);
+        .thenReturn(1);
         Mockito.when(body.getNumber())
-            .thenReturn(2);
+        .thenReturn(2);
         Mockito.when(body.getSize())
-            .thenReturn(3);
+        .thenReturn(3);
         Mockito.when(body.getTotalElements())
-            .thenReturn(4l);
+        .thenReturn(4l);
         Mockito.when(body.getTotalPages())
-            .thenReturn(5);
+        .thenReturn(5);
         Mockito.when(body.isFirst())
-            .thenReturn(true);
+        .thenReturn(true);
         Mockito.when(body.isLast())
-            .thenReturn(false);
+        .thenReturn(false);
 
         response = (PaginatedResponse<?>) handleResponse(body);
 
         Assertions.assertEquals(response.getContent(), body.getContent());
-        Assertions.assertEquals(response.getElementsInPage(),
-            body.getNumberOfElements());
+        Assertions.assertEquals(response.getElementsInPage(), body.getNumberOfElements());
         Assertions.assertEquals(response.getPageNumber(), body.getNumber());
         Assertions.assertEquals(response.getSize(), body.getSize());
-        Assertions.assertEquals(response.getTotalElements(),
-            body.getTotalElements());
+        Assertions.assertEquals(response.getTotalElements(), body.getTotalElements());
         Assertions.assertEquals(response.getTotalPages(), body.getTotalPages());
         Assertions.assertEquals(response.getFirst(), body.isFirst());
         Assertions.assertEquals(response.getLast(), body.isLast());
@@ -100,36 +114,34 @@ public class TestResponseAdvice {
     @Test
     @DisplayName("A page iterable content is returned back")
     public void testResponse_PageIterable_WrappedContent() {
-        final PageIterable<?> body;
+        final PageIterable<?>      body;
         final PaginatedResponse<?> response;
 
         body = Mockito.mock(PageIterable.class);
         Mockito.when(body.getContent())
-            .thenReturn(Collections.emptyList());
+        .thenReturn(Collections.emptyList());
         Mockito.when(body.getElementsInPage())
-            .thenReturn(1);
+        .thenReturn(1);
         Mockito.when(body.getPageNumber())
-            .thenReturn(2);
+        .thenReturn(2);
         Mockito.when(body.getSize())
-            .thenReturn(3);
+        .thenReturn(3);
         Mockito.when(body.getTotalElements())
-            .thenReturn(4l);
+        .thenReturn(4l);
         Mockito.when(body.getTotalPages())
-            .thenReturn(5);
+        .thenReturn(5);
         Mockito.when(body.isFirst())
-            .thenReturn(true);
+        .thenReturn(true);
         Mockito.when(body.isLast())
-            .thenReturn(false);
+        .thenReturn(false);
 
         response = (PaginatedResponse<?>) handleResponse(body);
 
         Assertions.assertEquals(response.getContent(), body.getContent());
-        Assertions.assertEquals(response.getElementsInPage(),
-            body.getElementsInPage());
+        Assertions.assertEquals(response.getElementsInPage(), body.getElementsInPage());
         Assertions.assertEquals(response.getPageNumber(), body.getPageNumber());
         Assertions.assertEquals(response.getSize(), body.getSize());
-        Assertions.assertEquals(response.getTotalElements(),
-            body.getTotalElements());
+        Assertions.assertEquals(response.getTotalElements(), body.getTotalElements());
         Assertions.assertEquals(response.getTotalPages(), body.getTotalPages());
         Assertions.assertEquals(response.getFirst(), body.isFirst());
         Assertions.assertEquals(response.getLast(), body.isLast());
@@ -229,7 +241,7 @@ public class TestResponseAdvice {
     @Test
     @DisplayName("A random body content is returned back")
     public void testResponse_String_WrappedContent() {
-        final Object body;
+        final Object      body;
         final Response<?> response;
 
         body = "abc";
@@ -250,23 +262,6 @@ public class TestResponseAdvice {
         response = handleResponse(body);
 
         Assertions.assertInstanceOf(Response.class, response);
-    }
-
-    private final Object handleResponse(final Object body) {
-        final MethodParameter returnType;
-        final MediaType selectedContentType;
-        final Class<? extends HttpMessageConverter<?>> selectedConverterType;
-        final ServerHttpRequest request;
-        final ServerHttpResponse response;
-
-        returnType = Mockito.mock(MethodParameter.class);
-        selectedContentType = Mockito.mock(MediaType.class);
-        selectedConverterType = null;
-        request = Mockito.mock(ServerHttpRequest.class);
-        response = Mockito.mock(ServerHttpResponse.class);
-
-        return advice.beforeBodyWrite(body, returnType, selectedContentType,
-            selectedConverterType, request, response);
     }
 
 }

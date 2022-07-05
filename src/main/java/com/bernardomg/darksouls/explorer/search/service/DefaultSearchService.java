@@ -28,14 +28,13 @@ public final class DefaultSearchService implements SearchService {
     }
 
     @Override
-    public final Iterable<SearchResult> search(final SearchRequest search,
-            final Pagination pagination, final Sort sort) {
+    public final Iterable<SearchResult> search(final SearchRequest search, final Pagination pagination,
+            final Sort sort) {
         final Query<SearchResult> query;
 
         query = new SearchQuery(search.getName());
 
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
-            pagination, Arrays.asList(sort));
+        return queryExecutor.fetch(query::getStatement, query::getOutput, pagination, Arrays.asList(sort));
     }
 
 }

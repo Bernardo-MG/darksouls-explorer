@@ -28,12 +28,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     @Override
-    public Object beforeBodyWrite(final Object body,
-            final MethodParameter returnType,
-            final MediaType selectedContentType,
-            final Class<? extends HttpMessageConverter<?>> selectedConverterType,
-            final ServerHttpRequest request,
-            final ServerHttpResponse response) {
+    public Object beforeBodyWrite(final Object body, final MethodParameter returnType,
+            final MediaType selectedContentType, final Class<? extends HttpMessageConverter<?>> selectedConverterType,
+                    final ServerHttpRequest request, final ServerHttpResponse response) {
         final Object result;
 
         log.trace("Received {} as response body", body);
@@ -78,8 +75,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         return paginatedResponse;
     }
 
-    private final PaginatedResponse<?>
-            toPaginatedResponse(final PageIterable<?> page) {
+    private final PaginatedResponse<?> toPaginatedResponse(final PageIterable<?> page) {
         final DefaultPaginatedResponse<?> paginatedResponse;
 
         paginatedResponse = new DefaultPaginatedResponse<>(page.getContent());

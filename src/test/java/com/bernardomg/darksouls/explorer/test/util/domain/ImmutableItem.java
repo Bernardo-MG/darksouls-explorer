@@ -20,8 +20,7 @@ public final class ImmutableItem implements Item {
     private final Iterable<String> tags;
 
     public ImmutableItem(@NonNull final Long id, @NonNull final String name,
-            @NonNull final Iterable<String> description,
-            @NonNull final Iterable<String> tags) {
+            @NonNull final Iterable<String> description, @NonNull final Iterable<String> tags) {
         super();
 
         this.id = id;

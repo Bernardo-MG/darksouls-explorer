@@ -8,7 +8,6 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface SearchService {
 
-    public Iterable<SearchResult> search(final SearchRequest search,
-            final Pagination pagination, final Sort sort);
+    public Iterable<SearchResult> search(final SearchRequest search, final Pagination pagination, final Sort sort);
 
 }

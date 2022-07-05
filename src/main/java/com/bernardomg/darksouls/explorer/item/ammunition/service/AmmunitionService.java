@@ -9,8 +9,7 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface AmmunitionService {
 
-    public Iterable<? extends Ammunition> getAll(final Pagination pagination,
-            final Sort sort);
+    public Iterable<? extends Ammunition> getAll(final Pagination pagination, final Sort sort);
 
     public Optional<? extends Ammunition> getOne(final Long id);
 

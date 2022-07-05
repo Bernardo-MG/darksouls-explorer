@@ -24,28 +24,23 @@ public final class MissingFieldQuery implements Query<DataProblem> {
 
     @Override
     public final DataProblem getOutput(final Map<String, Object> record) {
-        return new ImmutableDataProblem((String) record.getOrDefault("id", ""),
-            source, error);
+        return new ImmutableDataProblem((String) record.getOrDefault("id", ""), source, error);
     }
 
     @Override
     public final String getStatement(final Map<String, Object> params) {
         final String template;
-        final String query;
 
         template =
-        // @formatter:off
-          "MATCH" + System.lineSeparator()
-        + "  (n) " + System.lineSeparator()
-        + "WHERE" + System.lineSeparator()
-        + "  $node IN LABELS(n) " + System.lineSeparator()
-        + "  AND (n.%1$s = '' OR n.%1$s IS NULL) " + System.lineSeparator()
-        + "RETURN" + System.lineSeparator()
-        + "  n.name AS id";
-        // @formatter:on;
-        query = String.format(template, field);
-
-        return query;
+                // @formatter:off
+                "MATCH" + System.lineSeparator()
+                + "  (n) " + System.lineSeparator()
+                + "WHERE" + System.lineSeparator()
+                + "  $node IN LABELS(n) " + System.lineSeparator()
+                + "  AND (n.%1$s = '' OR n.%1$s IS NULL) " + System.lineSeparator()
+                + "RETURN" + System.lineSeparator()
+                + "  n.name AS id";
+        return String.format(template, field);
     }
 
 }

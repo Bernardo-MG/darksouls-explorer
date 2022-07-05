@@ -32,9 +32,8 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final PageIterable<? extends Item> getAll(final String type,
-            final Pagination pagination, final Sort sort) {
-        final Pageable pageable;
+    public final PageIterable<? extends Item> getAll(final String type, final Pagination pagination, final Sort sort) {
+        final Pageable   pageable;
         final Page<Item> page;
 
         pageable = Paginations.toSpring(pagination, sort);
@@ -51,9 +50,9 @@ public final class DefaultItemService implements ItemService {
     @Override
     public final Optional<? extends Item> getOne(final Long id) {
         final Optional<PersistentItem> read;
-        final PersistentItem entity;
+        final PersistentItem           entity;
         final Optional<? extends Item> result;
-        final DtoItem item;
+        final DtoItem                  item;
 
         read = repository.findById(id);
 

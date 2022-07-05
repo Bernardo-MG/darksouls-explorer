@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.PersistentAmmunition;
 
-public interface AmmunitionRepository
-        extends JpaRepository<PersistentAmmunition, Long> {
+public interface AmmunitionRepository extends JpaRepository<PersistentAmmunition, Long> {
 
     @Query("SELECT a FROM Ammunition a")
     public Page<Ammunition> findAllSummaries(final Pageable pageable);

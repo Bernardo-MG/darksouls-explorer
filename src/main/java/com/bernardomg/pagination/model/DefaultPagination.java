@@ -16,8 +16,7 @@ public final class DefaultPagination implements Pagination {
     @NonNull
     private final Integer size;
 
-    public DefaultPagination(@NonNull final Integer page,
-            @NonNull final Integer size) {
+    public DefaultPagination(@NonNull final Integer page, @NonNull final Integer size) {
         super();
 
         this.page = page;

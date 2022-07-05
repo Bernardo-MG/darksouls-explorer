@@ -6,17 +6,15 @@ import java.util.Map;
 import com.bernardomg.darksouls.explorer.map.domain.ImmutableMap;
 import com.bernardomg.persistence.executor.Query;
 
-public final class AllIMapsQuery
-        implements Query<com.bernardomg.darksouls.explorer.map.domain.Map> {
+public final class AllIMapsQuery implements Query<com.bernardomg.darksouls.explorer.map.domain.Map> {
 
     public AllIMapsQuery() {
         super();
     }
 
     @Override
-    public final com.bernardomg.darksouls.explorer.map.domain.Map
-            getOutput(final Map<String, Object> record) {
-        final Long id;
+    public final com.bernardomg.darksouls.explorer.map.domain.Map getOutput(final Map<String, Object> record) {
+        final Long   id;
         final String name;
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
@@ -27,17 +25,11 @@ public final class AllIMapsQuery
 
     @Override
     public final String getStatement(final Map<String, Object> params) {
-        final String query;
-
-        query =
-        // @formatter:off
-            "MATCH" + System.lineSeparator()
-          + "  (m:Map)" + System.lineSeparator()
-          + "RETURN" + System.lineSeparator()
-          + "  m.name AS name, id(m) AS id";
-        // @formatter:on;
-
-        return query;
+        return // @formatter:off
+                "MATCH" + System.lineSeparator()
+                + "  (m:Map)" + System.lineSeparator()
+                + "RETURN" + System.lineSeparator()
+                + "  m.name AS name, id(m) AS id";
     }
 
 }

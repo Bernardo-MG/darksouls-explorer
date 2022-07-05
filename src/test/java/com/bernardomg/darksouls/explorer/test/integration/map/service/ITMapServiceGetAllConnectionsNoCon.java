@@ -40,30 +40,24 @@ import com.bernardomg.pagination.model.DisabledPagination;
 import com.bernardomg.pagination.model.DisabledSort;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITMapServiceGetAllConnectionsNoCon.Initializer.class })
+@ContextConfiguration(initializers = { ITMapServiceGetAllConnectionsNoCon.Initializer.class })
 @DisplayName("Reading all the map connections with no connections")
 public class ITMapServiceGetAllConnectionsNoCon {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(dbContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory.getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+        new Neo4jDatabaseInitalizer().initialize("neo4j", dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
             Arrays.asList("classpath:db/queries/map/single.cypher"));
     }
 
@@ -82,8 +76,7 @@ public class ITMapServiceGetAllConnectionsNoCon {
     public void testFindAll_Count() {
         final Iterable<MapConnection> data;
 
-        data = service.getAllConnections(new DisabledPagination(),
-            new DisabledSort());
+        data = service.getAllConnections(new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(0, IterableUtils.size(data));
     }

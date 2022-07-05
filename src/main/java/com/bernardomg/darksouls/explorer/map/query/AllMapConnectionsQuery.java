@@ -26,17 +26,11 @@ public final class AllMapConnectionsQuery implements Query<MapConnection> {
 
     @Override
     public final String getStatement(final Map<String, Object> params) {
-        final String query;
-
-        query =
-        // @formatter:off
-            "MATCH" + System.lineSeparator()
-          + "  (m:Map)-[:CONNECTS_TO]->(n:Map)" + System.lineSeparator()
-          + "RETURN" + System.lineSeparator()
-          + "  id(m) AS id, id(n) AS connection";
-        // @formatter:on;
-
-        return query;
+        return // @formatter:off
+                "MATCH" + System.lineSeparator()
+                + "  (m:Map)-[:CONNECTS_TO]->(n:Map)" + System.lineSeparator()
+                + "RETURN" + System.lineSeparator()
+                + "  id(m) AS id, id(n) AS connection";
     }
 
 }

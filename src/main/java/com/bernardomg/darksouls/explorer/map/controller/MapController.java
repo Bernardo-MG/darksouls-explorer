@@ -26,15 +26,12 @@ public class MapController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public PageIterable<Map> read(final Pagination pagination,
-            final Sort sort) {
+    public PageIterable<Map> read(final Pagination pagination, final Sort sort) {
         return service.getAll(pagination, sort);
     }
 
-    @GetMapping(path = "/connections",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public PageIterable<MapConnection>
-            readConnections(final Pagination pagination, final Sort sort) {
+    @GetMapping(path = "/connections", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PageIterable<MapConnection> readConnections(final Pagination pagination, final Sort sort) {
         return service.getAllConnections(pagination, sort);
     }
 

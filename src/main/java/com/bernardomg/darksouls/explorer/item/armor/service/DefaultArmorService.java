@@ -33,8 +33,7 @@ public final class DefaultArmorService implements ArmorService {
     private final ArmorRepository      repository;
 
     @Autowired
-    public DefaultArmorService(final ArmorRepository repo,
-            final ArmorLevelRepository levelRepo) {
+    public DefaultArmorService(final ArmorRepository repo, final ArmorLevelRepository levelRepo) {
         super();
 
         repository = Objects.requireNonNull(repo);
@@ -42,9 +41,8 @@ public final class DefaultArmorService implements ArmorService {
     }
 
     @Override
-    public final PageIterable<? extends Armor>
-            getAll(final Pagination pagination, final Sort sort) {
-        final Pageable pageable;
+    public final PageIterable<? extends Armor> getAll(final Pagination pagination, final Sort sort) {
+        final Pageable              pageable;
         final Page<PersistentArmor> page;
 
         pageable = Paginations.toSpring(pagination, sort);
@@ -62,8 +60,8 @@ public final class DefaultArmorService implements ArmorService {
     @Override
     public final Optional<ArmorProgression> getProgression(final Long id) {
         final Iterable<PersistentArmorLevel> levels;
-        final Optional<ArmorProgression> result;
-        final Optional<? extends Armor> armor;
+        final Optional<ArmorProgression>     result;
+        final Optional<? extends Armor>      armor;
 
         armor = getOne(id);
 
@@ -83,14 +81,13 @@ public final class DefaultArmorService implements ArmorService {
         return result;
     }
 
-    private final ArmorProgression
-            toArmorProgression(final Iterable<? extends ArmorLevel> levels) {
+    private final ArmorProgression toArmorProgression(final Iterable<? extends ArmorLevel> levels) {
         final String name;
 
         name = StreamSupport.stream(levels.spliterator(), false)
-            .map(ArmorLevel::getName)
-            .findAny()
-            .orElse("");
+                .map(ArmorLevel::getName)
+                .findAny()
+                .orElse("");
 
         return new ImmutableArmorProgression(name, levels);
     }

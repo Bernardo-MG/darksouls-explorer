@@ -8,8 +8,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import com.bernardomg.darksouls.explorer.problem.service.ProblemService;
 
-public final class ProblemsInitializerListener
-        implements ApplicationListener<ContextRefreshedEvent> {
+public final class ProblemsInitializerListener implements ApplicationListener<ContextRefreshedEvent> {
 
     private final ProblemService service;
 

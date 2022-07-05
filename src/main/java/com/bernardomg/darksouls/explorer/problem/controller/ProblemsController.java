@@ -25,8 +25,7 @@ public class ProblemsController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<? extends DataProblem> read(final Pagination pagination,
-            final Sort sort) {
+    public Page<? extends DataProblem> read(final Pagination pagination, final Sort sort) {
         return service.getAll(pagination, sort);
     }
 

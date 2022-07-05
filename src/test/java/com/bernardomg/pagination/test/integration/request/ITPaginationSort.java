@@ -47,28 +47,22 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 @Sql({ "/db/queries/weapon/multiple.sql" })
 public class ITPaginationSort {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(neo4jContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory.getNeo4jContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -90,15 +84,14 @@ public class ITPaginationSort {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/weapons")
-            .param("sort", "name,asc");
+                .param("sort", "name,asc");
 
         mockMvc.perform(request)
-            .andExpect(MockMvcResultMatchers.content()
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status()
-                .isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
-                Matchers.is("Weapon 1")));
+        .andExpect(MockMvcResultMatchers.content()
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status()
+            .isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 1")));
     }
 
     @Test
@@ -107,15 +100,14 @@ public class ITPaginationSort {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/weapons")
-            .param("sort", "name,desc");
+                .param("sort", "name,desc");
 
         mockMvc.perform(request)
-            .andExpect(MockMvcResultMatchers.content()
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status()
-                .isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name",
-                Matchers.is("Weapon 5")));
+        .andExpect(MockMvcResultMatchers.content()
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status()
+            .isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 5")));
     }
 
 }

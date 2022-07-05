@@ -34,9 +34,9 @@ public final class DefaultSpellService implements SpellService {
     }
 
     @Override
-    public final PageIterable<? extends SpellSummary> getAll(
-            final String school, final Pagination pagination, final Sort sort) {
-        final Pageable pageable;
+    public final PageIterable<? extends SpellSummary> getAll(final String school, final Pagination pagination,
+            final Sort sort) {
+        final Pageable           pageable;
         final Page<SpellSummary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
@@ -54,7 +54,7 @@ public final class DefaultSpellService implements SpellService {
     public final Optional<? extends Spell> getOne(final Long id) {
         final Optional<PersistentSpell> read;
         final Optional<? extends Spell> result;
-        final DtoSpell spell;
+        final DtoSpell                  spell;
 
         read = repository.findById(id);
 

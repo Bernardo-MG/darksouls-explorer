@@ -43,8 +43,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     }
 
     @Override
-    public void addArgumentResolvers(
-            final List<HandlerMethodArgumentResolver> argumentResolvers) {
+    public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new PaginationArgumentResolver());
         argumentResolvers.add(new SortArgumentResolver());
     }

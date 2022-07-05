@@ -15,6 +15,6 @@ public final class DtoWeaponProgressionPath implements WeaponProgressionPath {
     private Iterable<WeaponProgressionLevel> levels = Collections.emptyList();
 
     @NonNull
-    private String                           path = "";
+    private String                           path   = "";
 
 }

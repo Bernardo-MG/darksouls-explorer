@@ -9,8 +9,7 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface ProblemService {
 
-    public Page<? extends DataProblem> getAll(final Pagination pagination,
-            final Sort sort);
+    public Page<? extends DataProblem> getAll(final Pagination pagination, final Sort sort);
 
     public void recollectAndRegister();
 

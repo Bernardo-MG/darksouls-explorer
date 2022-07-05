@@ -29,15 +29,14 @@ public class AmmunitionController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Ammunition> read(final Pagination pagination,
-            final Sort sort) {
+    public Iterable<? extends Ammunition> read(final Pagination pagination, final Sort sort) {
         return service.getAll(pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Ammunition readOne(@PathVariable("id") final Long id) {
         final Optional<? extends Ammunition> read;
-        final Ammunition result;
+        final Ammunition                     result;
 
         read = service.getOne(id);
         if (read.isPresent()) {

@@ -30,17 +30,16 @@ public class ItemController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Item>
-            read(@RequestParam(name = "type", required = false,
-                    defaultValue = "") final String type,
-                    final Pagination pagination, final Sort sort) {
+    public Iterable<? extends Item> read(
+            @RequestParam(name = "type", required = false, defaultValue = "") final String type,
+            final Pagination pagination, final Sort sort) {
         return service.getAll(type, pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Item readOne(@PathVariable("id") final Long id) {
         final Optional<? extends Item> read;
-        final Item result;
+        final Item                     result;
 
         read = service.getOne(id);
         if (read.isPresent()) {

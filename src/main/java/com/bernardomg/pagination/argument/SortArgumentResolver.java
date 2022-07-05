@@ -15,24 +15,21 @@ import com.bernardomg.pagination.model.Sort;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class SortArgumentResolver
-        implements HandlerMethodArgumentResolver {
+public final class SortArgumentResolver implements HandlerMethodArgumentResolver {
 
     public SortArgumentResolver() {
         super();
     }
 
     @Override
-    public final Sort resolveArgument(final MethodParameter parameter,
-            final ModelAndViewContainer mavContainer,
-            final NativeWebRequest webRequest,
-            final WebDataBinderFactory binderFactory) throws Exception {
-        final String sortText;
-        final String property;
-        final String[] sortPieces;
+    public final Sort resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
+            final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
+        final String    sortText;
+        final String    property;
+        final String[]  sortPieces;
         final Direction direction;
-        final Sort sort;
-        final String rawDirection;
+        final Sort      sort;
+        final String    rawDirection;
 
         sortText = webRequest.getParameter("sort");
 
@@ -54,9 +51,7 @@ public final class SortArgumentResolver
                 if (sortPieces.length == 1) {
                     // No direction
                     direction = Direction.ASC;
-                    log.trace(
-                        "No sort direction received, using default direction: {}",
-                        direction);
+                    log.trace("No sort direction received, using default direction: {}", direction);
                 } else {
                     rawDirection = sortPieces[1].toLowerCase();
                     if ("desc".equals(rawDirection)) {
@@ -65,8 +60,7 @@ public final class SortArgumentResolver
                         direction = Direction.ASC;
                     }
                 }
-                log.trace("Sorting by property {} and direction {}", property,
-                    direction);
+                log.trace("Sorting by property {} and direction {}", property, direction);
                 sort = new DefaultSort(property, direction);
             }
         }

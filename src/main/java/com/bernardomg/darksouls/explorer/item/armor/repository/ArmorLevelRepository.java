@@ -9,11 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmorLevel;
 
-public interface ArmorLevelRepository
-        extends JpaRepository<PersistentArmorLevel, Long> {
+public interface ArmorLevelRepository extends JpaRepository<PersistentArmorLevel, Long> {
 
     @Query("SELECT l FROM ArmorLevel l WHERE l.name = :name ORDER BY l.level ASC")
-    public Collection<PersistentArmorLevel>
-            findAllByName(@Param("name") final String name);
+    public Collection<PersistentArmorLevel> findAllByName(@Param("name") final String name);
 
 }

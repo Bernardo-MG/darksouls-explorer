@@ -31,22 +31,20 @@ public class ArmorController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Armor> read(final Pagination pagination,
-            final Sort sort) {
+    public Iterable<? extends Armor> read(final Pagination pagination, final Sort sort) {
         return service.getAll(pagination, sort);
     }
 
-    @GetMapping(path = "/{id}/progression",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}/progression", produces = MediaType.APPLICATION_JSON_VALUE)
     public ArmorProgression readArmorLevels(@PathVariable("id") final Long id) {
         return service.getProgression(id)
-            .orElse(new ImmutableArmorProgression());
+                .orElse(new ImmutableArmorProgression());
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Armor readOne(@PathVariable("id") final Long id) {
         final Optional<? extends Armor> read;
-        final Armor result;
+        final Armor                     result;
 
         read = service.getOne(id);
         if (read.isPresent()) {

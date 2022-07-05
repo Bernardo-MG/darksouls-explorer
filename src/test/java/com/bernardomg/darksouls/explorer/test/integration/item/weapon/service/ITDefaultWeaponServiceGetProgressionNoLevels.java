@@ -43,45 +43,36 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(initializers = {
-        ITDefaultWeaponServiceGetProgressionNoLevels.Initializer.class })
+@ContextConfiguration(initializers = { ITDefaultWeaponServiceGetProgressionNoLevels.Initializer.class })
 @DisplayName("Reading weapon progression with no levels")
 @Sql({ "/db/queries/weapon/single.sql" })
 public class ITDefaultWeaponServiceGetProgressionNoLevels {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(neo4jContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
-
-    @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
-        registry.add("spring.datasource.password", mysqlContainer::getPassword);
-        registry.add("spring.datasource.username", mysqlContainer::getUsername);
-    }
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory.getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
-            Arrays.asList(
-                "classpath:db/queries/weapon/physical_5_levels.cypher"));
+        new Neo4jDatabaseInitalizer().initialize("neo4j", neo4jContainer.getAdminPassword(),
+            neo4jContainer.getBoltUrl(), Arrays.asList("classpath:db/queries/weapon/physical_5_levels.cypher"));
+    }
+
+    @DynamicPropertySource
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
     }
 
     @Autowired
@@ -97,24 +88,24 @@ public class ITDefaultWeaponServiceGetProgressionNoLevels {
         super();
     }
 
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
+
     @Test
     @DisplayName("Returns no level progression")
     public void testGetProgression_NotData() {
         final Optional<WeaponProgression> data;
-        final Long id;
+        final Long                        id;
 
         id = getId();
 
         data = service.getProgression(id);
 
         Assertions.assertFalse(data.isPresent());
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
     }
 
 }

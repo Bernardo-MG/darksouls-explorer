@@ -32,38 +32,35 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
     @Override
     public final Collection<DataProblem> findDuplicated(final String node) {
         final Map<String, Object> params;
-        final Query<DataProblem> query;
+        final Query<DataProblem>  query;
 
         params = new HashMap<>();
         params.put("node", node);
 
         query = new DuplicatedProblemQuery(node);
 
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
-            params);
+        return queryExecutor.fetch(query::getStatement, query::getOutput, params);
     }
 
     @Override
-    public final Collection<DataProblem> findMissingField(final String node,
-            final String field) {
+    public final Collection<DataProblem> findMissingField(final String node, final String field) {
         final Map<String, Object> params;
-        final Query<DataProblem> query;
+        final Query<DataProblem>  query;
 
         params = new HashMap<>();
         params.put("node", node);
 
         query = new MissingFieldQuery(node, field);
 
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
-            params);
+        return queryExecutor.fetch(query::getStatement, query::getOutput, params);
     }
 
     @Override
-    public final Collection<DataProblem> findMissingRelationships(
-            final String node, final Iterable<String> relationships) {
-        final String mergedRels;
+    public final Collection<DataProblem> findMissingRelationships(final String node,
+            final Iterable<String> relationships) {
+        final String              mergedRels;
         final Map<String, Object> params;
-        final Query<DataProblem> query;
+        final Query<DataProblem>  query;
 
         mergedRels = String.join("|", relationships);
 
@@ -73,8 +70,7 @@ public final class DefaultProblemsQueries implements ProblemsQueries {
 
         query = new MissingRelationshipQuery(node, relationships);
 
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
-            params);
+        return queryExecutor.fetch(query::getStatement, query::getOutput, params);
     }
 
 }

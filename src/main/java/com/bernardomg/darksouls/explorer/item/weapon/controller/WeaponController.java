@@ -34,24 +34,21 @@ public class WeaponController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends WeaponSummary>
-            read(@RequestParam(name = "type", required = false,
-                    defaultValue = "") final String type,
-                    final Pagination pagination, final Sort sort) {
+    public Iterable<? extends WeaponSummary> read(
+            @RequestParam(name = "type", required = false, defaultValue = "") final String type,
+            final Pagination pagination, final Sort sort) {
         return service.getAll(type, pagination, sort);
     }
 
-    @GetMapping(path = "/{id}/adjustment",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<WeaponAdjustment>
-            readAdjustments(@PathVariable("id") final Long id) {
+    @GetMapping(path = "/{id}/adjustment", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<WeaponAdjustment> readAdjustments(@PathVariable("id") final Long id) {
         return service.getAdjustment(id);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Weapon readOne(@PathVariable("id") final Long id) {
         final Optional<? extends Weapon> read;
-        final Weapon result;
+        final Weapon                     result;
 
         read = service.getOne(id);
         if (read.isPresent()) {
@@ -63,12 +60,10 @@ public class WeaponController {
         return result;
     }
 
-    @GetMapping(path = "/{id}/progression",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public WeaponProgression
-            readProgressions(@PathVariable("id") final Long id) {
+    @GetMapping(path = "/{id}/progression", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WeaponProgression readProgressions(@PathVariable("id") final Long id) {
         return service.getProgression(id)
-            .orElse(new DtoWeaponProgression());
+                .orElse(new DtoWeaponProgression());
     }
 
 }

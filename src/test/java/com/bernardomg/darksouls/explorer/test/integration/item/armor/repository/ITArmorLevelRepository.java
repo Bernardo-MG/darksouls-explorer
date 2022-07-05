@@ -41,10 +41,10 @@ public class ITArmorLevelRepository {
     @DisplayName("Returns levels in the correct order")
     public void testFindAllByName_Order() {
         final Iterator<PersistentArmorLevel> levels;
-        PersistentArmorLevel level;
+        PersistentArmorLevel                 level;
 
         levels = levelRepository.findAllByName("Chain Armor")
-            .iterator();
+                .iterator();
 
         level = levels.next();
 

@@ -40,12 +40,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 public class ITSpellServiceGetOneSingle {
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -64,16 +62,23 @@ public class ITSpellServiceGetOneSingle {
         super();
     }
 
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
+
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
         final Spell data;
-        final Long id;
+        final Long  id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Spell", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
@@ -94,12 +99,12 @@ public class ITSpellServiceGetOneSingle {
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Requirement() {
         final Spell data;
-        final Long id;
+        final Long  id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(1, data.getRequirements()
             .getFaith());
@@ -111,22 +116,15 @@ public class ITSpellServiceGetOneSingle {
     @DisplayName("Returns the correct stats")
     public void testGetOne_Stats() {
         final Spell data;
-        final Long id;
+        final Long  id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(3, data.getSlots());
         Assertions.assertEquals(4, data.getUses());
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
     }
 
 }

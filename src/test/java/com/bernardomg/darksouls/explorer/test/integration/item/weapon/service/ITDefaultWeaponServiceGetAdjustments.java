@@ -40,101 +40,105 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 @Sql({ "/db/queries/weapon/single.sql", "/db/queries/weapon/adjustment_5.sql" })
 public class ITDefaultWeaponServiceGetAdjustments {
 
-	@Container
-	private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
+    @Container
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
-	@DynamicPropertySource
-	public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
-		registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
-		registry.add("spring.datasource.password", mysqlContainer::getPassword);
-		registry.add("spring.datasource.username", mysqlContainer::getUsername);
-	}
+    @DynamicPropertySource
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
+    }
 
-	@Autowired
-	private WeaponRepository repository;
+    @Autowired
+    private WeaponRepository     repository;
 
-	@Autowired
-	private DefaultWeaponService service;
+    @Autowired
+    private DefaultWeaponService service;
 
-	/**
-	 * Default constructor.
-	 */
-	public ITDefaultWeaponServiceGetAdjustments() {
-		super();
-	}
+    /**
+     * Default constructor.
+     */
+    public ITDefaultWeaponServiceGetAdjustments() {
+        super();
+    }
 
-	private final Long getId() {
-		return repository.findAll().iterator().next().getId();
-	}
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
 
-	@Test
-	@DisplayName("Returns the level adjustments")
-	public void testGetAdjustment_Data() {
-		final Iterable<WeaponAdjustment> data;
-		final Long id;
+    @Test
+    @DisplayName("Returns the level adjustments")
+    public void testGetAdjustment_Data() {
+        final Iterable<WeaponAdjustment> data;
+        final Long                       id;
 
-		id = getId();
+        id = getId();
 
-		data = service.getAdjustment(id);
+        data = service.getAdjustment(id);
 
-		Assertions.assertEquals(5, Iterables.size(data));
-	}
+        Assertions.assertEquals(5, Iterables.size(data));
+    }
 
-	@Test
-	@DisplayName("Returns no level adjustment when asking for a not existing weapon")
-	public void testGetAdjustment_NotExisting() {
-		final Iterable<WeaponAdjustment> data;
+    @Test
+    @DisplayName("Returns no level adjustment when asking for a not existing weapon")
+    public void testGetAdjustment_NotExisting() {
+        final Iterable<WeaponAdjustment> data;
 
-		data = service.getAdjustment(-1l);
+        data = service.getAdjustment(-1l);
 
-		Assertions.assertEquals(0, Iterables.size(data));
-	}
+        Assertions.assertEquals(0, Iterables.size(data));
+    }
 
-	@Test
-	@DisplayName("Returns the expected values")
-	public void testGetAdjustment_Values() {
-		final Iterator<WeaponAdjustment> data;
-		final Long id;
-		WeaponAdjustment adjust;
+    @Test
+    @DisplayName("Returns the expected values")
+    public void testGetAdjustment_Values() {
+        final Iterator<WeaponAdjustment> data;
+        final Long                       id;
+        WeaponAdjustment                 adjust;
 
-		id = getId();
+        id = getId();
 
-		data = service.getAdjustment(id).iterator();
+        data = service.getAdjustment(id)
+                .iterator();
 
-		adjust = data.next();
+        adjust = data.next();
 
-		Assertions.assertEquals("Sword", adjust.getName());
-		Assertions.assertEquals(1, adjust.getFaith());
-		Assertions.assertEquals(10, adjust.getIntelligence());
-		Assertions.assertEquals(20, adjust.getAdjustment());
+        Assertions.assertEquals("Sword", adjust.getName());
+        Assertions.assertEquals(1, adjust.getFaith());
+        Assertions.assertEquals(10, adjust.getIntelligence());
+        Assertions.assertEquals(20, adjust.getAdjustment());
 
-		adjust = data.next();
+        adjust = data.next();
 
-		Assertions.assertEquals("Sword", adjust.getName());
-		Assertions.assertEquals(2, adjust.getFaith());
-		Assertions.assertEquals(11, adjust.getIntelligence());
-		Assertions.assertEquals(21, adjust.getAdjustment());
+        Assertions.assertEquals("Sword", adjust.getName());
+        Assertions.assertEquals(2, adjust.getFaith());
+        Assertions.assertEquals(11, adjust.getIntelligence());
+        Assertions.assertEquals(21, adjust.getAdjustment());
 
-		adjust = data.next();
+        adjust = data.next();
 
-		Assertions.assertEquals("Sword", adjust.getName());
-		Assertions.assertEquals(3, adjust.getFaith());
-		Assertions.assertEquals(12, adjust.getIntelligence());
-		Assertions.assertEquals(22, adjust.getAdjustment());
+        Assertions.assertEquals("Sword", adjust.getName());
+        Assertions.assertEquals(3, adjust.getFaith());
+        Assertions.assertEquals(12, adjust.getIntelligence());
+        Assertions.assertEquals(22, adjust.getAdjustment());
 
-		adjust = data.next();
+        adjust = data.next();
 
-		Assertions.assertEquals("Sword", adjust.getName());
-		Assertions.assertEquals(4, adjust.getFaith());
-		Assertions.assertEquals(13, adjust.getIntelligence());
-		Assertions.assertEquals(23, adjust.getAdjustment());
+        Assertions.assertEquals("Sword", adjust.getName());
+        Assertions.assertEquals(4, adjust.getFaith());
+        Assertions.assertEquals(13, adjust.getIntelligence());
+        Assertions.assertEquals(23, adjust.getAdjustment());
 
-		adjust = data.next();
+        adjust = data.next();
 
-		Assertions.assertEquals("Sword", adjust.getName());
-		Assertions.assertEquals(5, adjust.getFaith());
-		Assertions.assertEquals(14, adjust.getIntelligence());
-		Assertions.assertEquals(24, adjust.getAdjustment());
-	}
+        Assertions.assertEquals("Sword", adjust.getName());
+        Assertions.assertEquals(5, adjust.getFaith());
+        Assertions.assertEquals(14, adjust.getIntelligence());
+        Assertions.assertEquals(24, adjust.getAdjustment());
+    }
 
 }

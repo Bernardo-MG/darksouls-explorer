@@ -42,12 +42,10 @@ import com.bernardomg.pagination.model.PageIterable;
 public class ITDefaultWeaponServiceGetAllPaged {
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -68,8 +66,7 @@ public class ITDefaultWeaponServiceGetAllPaged {
     public void testGetAll_Instance() {
         final Iterable<? extends WeaponSummary> data;
 
-        data = service.getAll("Weapon", new DefaultPagination(0, 1),
-            new DisabledSort());
+        data = service.getAll("Weapon", new DefaultPagination(0, 1), new DisabledSort());
 
         Assertions.assertInstanceOf(PageIterable.class, data);
     }
@@ -79,8 +76,7 @@ public class ITDefaultWeaponServiceGetAllPaged {
     public void testGetAll_SingleResult() {
         final Iterable<? extends WeaponSummary> data;
 
-        data = service.getAll("Weapon", new DefaultPagination(0, 1),
-            new DisabledSort());
+        data = service.getAll("Weapon", new DefaultPagination(0, 1), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -90,8 +86,7 @@ public class ITDefaultWeaponServiceGetAllPaged {
     public void testGetAll_Unpaged() {
         final Iterable<? extends WeaponSummary> data;
 
-        data = service.getAll("Weapon", new DisabledPagination(),
-            new DisabledSort());
+        data = service.getAll("Weapon", new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }

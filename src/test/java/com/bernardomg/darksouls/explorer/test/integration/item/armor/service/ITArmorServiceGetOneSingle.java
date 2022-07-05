@@ -40,12 +40,10 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 public class ITArmorServiceGetOneSingle {
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -64,16 +62,23 @@ public class ITArmorServiceGetOneSingle {
         super();
     }
 
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
+
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
         final Armor data;
-        final Long id;
+        final Long  id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Chain Armor", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
@@ -93,22 +98,15 @@ public class ITArmorServiceGetOneSingle {
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Stats() {
         final Armor data;
-        final Long id;
+        final Long  id;
 
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(5, data.getDurability());
         Assertions.assertEquals(6, data.getWeight());
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
     }
 
 }

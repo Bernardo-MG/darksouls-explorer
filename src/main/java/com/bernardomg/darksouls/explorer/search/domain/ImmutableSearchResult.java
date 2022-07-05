@@ -16,8 +16,7 @@ public final class ImmutableSearchResult implements SearchResult {
     @NonNull
     private final String path;
 
-    public ImmutableSearchResult(@NonNull final Long id,
-            @NonNull final String name, @NonNull final String path) {
+    public ImmutableSearchResult(@NonNull final Long id, @NonNull final String name, @NonNull final String path) {
         super();
 
         this.id = id;

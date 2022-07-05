@@ -29,8 +29,7 @@ import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.initialize.model.SpellBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "spell",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "spell", havingValue = "true")
 public class SpellInitializerConfig {
 
     @Value("classPath:/data/spells.csv")
@@ -50,41 +49,37 @@ public class SpellInitializerConfig {
     }
 
     @Bean("spellItemReader")
-    public ItemReader<SpellBatchData>
-            getWeaponItemReader(final LineMapper<SpellBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<SpellBatchData>()
-            .name("spellItemReader")
-            .resource(data)
-            .delimited()
-            .names(new String[] { "name", "school", "description",
-                    "intelligence", "faith", "slots", "uses" })
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+    public ItemReader<SpellBatchData> getWeaponItemReader(final LineMapper<SpellBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<SpellBatchData>().name("spellItemReader")
+                .resource(data)
+                .delimited()
+                .names("name", "school", "description", "intelligence", "faith", "slots", "uses")
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("spellItemWriter")
     public ItemWriter<SpellBatchData> getWeaponItemWriter() {
         return new JdbcBatchItemWriterBuilder<SpellBatchData>()
-            .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<SpellBatchData>())
-            .sql(
-                "INSERT INTO spells (name, description, intelligence, faith, slots, uses) VALUES (:name, :description, :intelligence, :faith, :slots, :uses)")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<SpellBatchData>())
+                .sql(
+                        "INSERT INTO spells (name, description, intelligence, faith, slots, uses) VALUES (:name, :description, :intelligence, :faith, :slots, :uses)")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("spellLineMapper")
     public LineMapper<SpellBatchData> getWeaponLineMapper() {
-        final DelimitedLineTokenizer lineTokenizer;
+        final DelimitedLineTokenizer                    lineTokenizer;
         final BeanWrapperFieldSetMapper<SpellBatchData> fieldSetMapper;
-        final DefaultLineMapper<SpellBatchData> lineMapper;
+        final DefaultLineMapper<SpellBatchData>         lineMapper;
 
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "school", "description",
-                "intelligence", "faith", "slots", "uses" });
+        lineTokenizer
+        .setNames("name", "school", "description", "intelligence", "faith", "slots", "uses");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(SpellBatchData.class);
 
@@ -95,23 +90,21 @@ public class SpellInitializerConfig {
     }
 
     @Bean("spellLoaderJob")
-    public Job getWeaponLoaderJob(
-            @Qualifier("spellLoaderStep") final Step armorLoaderStep) {
+    public Job getWeaponLoaderJob(@Qualifier("spellLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("spellLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("spellLoaderStep")
-    public Step getWeaponLoaderStep(final ItemReader<SpellBatchData> reader,
-            final ItemWriter<SpellBatchData> writer) {
+    public Step getWeaponLoaderStep(final ItemReader<SpellBatchData> reader, final ItemWriter<SpellBatchData> writer) {
         return stepBuilderFactory.get("spellLoaderStep")
-            .<SpellBatchData, SpellBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<SpellBatchData, SpellBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

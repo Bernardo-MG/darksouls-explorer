@@ -40,12 +40,10 @@ import com.bernardomg.pagination.model.DisabledSort;
 public class ITAmmunitionServiceGetAll {
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -77,8 +75,8 @@ public class ITAmmunitionServiceGetAll {
         final Ammunition data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort())
-            .iterator()
-            .next();
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Ammunition", data.getName());
         Assertions.assertEquals("Description", data.getDescription());

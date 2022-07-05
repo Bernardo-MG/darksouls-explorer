@@ -29,8 +29,7 @@ import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.initialize.model.TalismanBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "talisman",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "talisman", havingValue = "true")
 public class TalismanInitializerConfig {
 
     @Value("classPath:/data/talismans.csv")
@@ -50,53 +49,36 @@ public class TalismanInitializerConfig {
     }
 
     @Bean("talismanItemReader")
-    public ItemReader<TalismanBatchData> getTalismanItemReader(
-            final LineMapper<TalismanBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<TalismanBatchData>()
-            .name("talismanItemReader")
-            .resource(data)
-            .delimited()
-            .names(new String[] { "name", "type", "description", "weight",
-                    "durability", "attacks", "strength_requirement",
-                    "dexterity_requirement", "intelligence_requirement",
-                    "faith_requirement", "strength_bonus", "dexterity_bonus",
-                    "intelligence_bonus", "faith_bonus", "physical_damage",
-                    "magic_damage", "fire_damage", "lightning_damage",
-                    "critical_damage", "physical_reduction", "magic_reduction",
-                    "fire_reduction", "lightning_reduction", "stability" })
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+    public ItemReader<TalismanBatchData> getTalismanItemReader(final LineMapper<TalismanBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<TalismanBatchData>().name("talismanItemReader")
+                .resource(data)
+                .delimited()
+                .names("name", "type", "description", "weight", "durability", "attacks", "strength_requirement", "dexterity_requirement", "intelligence_requirement", "faith_requirement", "strength_bonus", "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_damage", "magic_damage", "fire_damage", "lightning_damage", "critical_damage", "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "stability")
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("talismanItemWriter")
     public ItemWriter<TalismanBatchData> getTalismanItemWriter() {
         return new JdbcBatchItemWriterBuilder<TalismanBatchData>()
-            .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<TalismanBatchData>())
-            .sql(
-                "INSERT INTO weapons (name, description, type, subtype, weight, durability, strength_requirement, dexterity_requirement, intelligence_requirement, faith_requirement, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, 'Talisman', '', :weight, :durability, :strength_requirement, :dexterity_requirement, :intelligence_requirement, :faith_requirement, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :critical_damage, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<TalismanBatchData>())
+                .sql(
+                        "INSERT INTO weapons (name, description, type, subtype, weight, durability, strength_requirement, dexterity_requirement, intelligence_requirement, faith_requirement, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, 'Talisman', '', :weight, :durability, :strength_requirement, :dexterity_requirement, :intelligence_requirement, :faith_requirement, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :critical_damage, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("talismanLineMapper")
     public LineMapper<TalismanBatchData> getTalismanLineMapper() {
-        final DelimitedLineTokenizer lineTokenizer;
+        final DelimitedLineTokenizer                       lineTokenizer;
         final BeanWrapperFieldSetMapper<TalismanBatchData> fieldSetMapper;
-        final DefaultLineMapper<TalismanBatchData> lineMapper;
+        final DefaultLineMapper<TalismanBatchData>         lineMapper;
 
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "type", "description",
-                "weight", "durability", "attacks", "strength_requirement",
-                "dexterity_requirement", "intelligence_requirement",
-                "faith_requirement", "strength_bonus", "dexterity_bonus",
-                "intelligence_bonus", "faith_bonus", "physical_damage",
-                "magic_damage", "fire_damage", "lightning_damage",
-                "critical_damage", "physical_reduction", "magic_reduction",
-                "fire_reduction", "lightning_reduction", "stability" });
+        lineTokenizer.setNames("name", "type", "description", "weight", "durability", "attacks", "strength_requirement", "dexterity_requirement", "intelligence_requirement", "faith_requirement", "strength_bonus", "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_damage", "magic_damage", "fire_damage", "lightning_damage", "critical_damage", "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "stability");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(TalismanBatchData.class);
 
@@ -107,24 +89,22 @@ public class TalismanInitializerConfig {
     }
 
     @Bean("talismanLoaderJob")
-    public Job getTalismanLoaderJob(
-            @Qualifier("talismanLoaderStep") final Step armorLoaderStep) {
+    public Job getTalismanLoaderJob(@Qualifier("talismanLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("talismanLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("talismanLoaderStep")
-    public Step getTalismanLoaderStep(
-            final ItemReader<TalismanBatchData> reader,
+    public Step getTalismanLoaderStep(final ItemReader<TalismanBatchData> reader,
             final ItemWriter<TalismanBatchData> writer) {
         return stepBuilderFactory.get("talismanLoaderStep")
-            .<TalismanBatchData, TalismanBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<TalismanBatchData, TalismanBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

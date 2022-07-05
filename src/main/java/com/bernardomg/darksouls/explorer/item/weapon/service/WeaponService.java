@@ -12,13 +12,12 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface WeaponService {
 
-    public Iterable<? extends WeaponSummary> getAll(final String type,
-            final Pagination pagination, final Sort sort);
+    public Iterable<WeaponAdjustment> getAdjustment(final Long id);
+
+    public Iterable<? extends WeaponSummary> getAll(final String type, final Pagination pagination, final Sort sort);
 
     public Optional<? extends Weapon> getOne(final Long id);
 
     public Optional<WeaponProgression> getProgression(final Long id);
-
-    public Iterable<WeaponAdjustment> getAdjustment(final Long id);
 
 }

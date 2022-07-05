@@ -47,46 +47,36 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(initializers = {
-        ITDefaultWeaponServiceGetProgression.Initializer.class })
+@ContextConfiguration(initializers = { ITDefaultWeaponServiceGetProgression.Initializer.class })
 @DisplayName("Reading weapon progression")
-@Sql({ "/db/queries/weapon/single.sql",
-        "/db/queries/weapon/physical_5_levels.sql" })
+@Sql({ "/db/queries/weapon/single.sql", "/db/queries/weapon/physical_5_levels.sql" })
 public class ITDefaultWeaponServiceGetProgression {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(neo4jContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
-
-    @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
-        registry.add("spring.datasource.password", mysqlContainer::getPassword);
-        registry.add("spring.datasource.username", mysqlContainer::getUsername);
-    }
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory.getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            neo4jContainer.getAdminPassword(), neo4jContainer.getBoltUrl(),
-            Arrays.asList(
-                "classpath:db/queries/weapon/physical_5_levels.cypher"));
+        new Neo4jDatabaseInitalizer().initialize("neo4j", neo4jContainer.getAdminPassword(),
+            neo4jContainer.getBoltUrl(), Arrays.asList("classpath:db/queries/weapon/physical_5_levels.cypher"));
+    }
+
+    @DynamicPropertySource
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
     }
 
     @Autowired
@@ -102,11 +92,18 @@ public class ITDefaultWeaponServiceGetProgression {
         super();
     }
 
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
+
     @Test
     @DisplayName("Returns the levels progression")
     public void testGetProgression_Data() {
         final Optional<WeaponProgression> data;
-        final Long id;
+        final Long                        id;
 
         id = getId();
 
@@ -118,24 +115,24 @@ public class ITDefaultWeaponServiceGetProgression {
     @Test
     @DisplayName("Returns the levels bonuses")
     public void testGetProgression_LevelsBonus() {
-        final WeaponProgression data;
+        final WeaponProgression                data;
         final Iterator<WeaponProgressionLevel> levels;
-        final Long id;
-        final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionPath path;
-        WeaponProgressionLevel level;
+        final Long                             id;
+        final Iterator<WeaponProgressionPath>  itr;
+        WeaponProgressionPath                  path;
+        WeaponProgressionLevel                 level;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals("A", level.getStrengthBonus());
@@ -147,24 +144,24 @@ public class ITDefaultWeaponServiceGetProgression {
     @Test
     @DisplayName("Returns the levels damage")
     public void testGetProgression_LevelsDamage() {
-        final WeaponProgression data;
+        final WeaponProgression                data;
         final Iterator<WeaponProgressionLevel> levels;
-        final Long id;
-        final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionPath path;
-        WeaponProgressionLevel level;
+        final Long                             id;
+        final Iterator<WeaponProgressionPath>  itr;
+        WeaponProgressionPath                  path;
+        WeaponProgressionLevel                 level;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals(10, level.getPhysicalDamage());
@@ -200,24 +197,24 @@ public class ITDefaultWeaponServiceGetProgression {
     @Test
     @DisplayName("Returns the levels in order")
     public void testGetProgression_LevelsOrder() {
-        final WeaponProgression data;
+        final WeaponProgression                data;
         final Iterator<WeaponProgressionLevel> levels;
-        final Long id;
-        final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionPath path;
-        WeaponProgressionLevel level;
+        final Long                             id;
+        final Iterator<WeaponProgressionPath>  itr;
+        WeaponProgressionPath                  path;
+        WeaponProgressionLevel                 level;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals(0, level.getLevel());
@@ -238,24 +235,24 @@ public class ITDefaultWeaponServiceGetProgression {
     @Test
     @DisplayName("Returns the levels reductions")
     public void testGetProgression_LevelsReductions() {
-        final WeaponProgression data;
+        final WeaponProgression                data;
         final Iterator<WeaponProgressionLevel> levels;
-        final Long id;
-        final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionPath path;
-        WeaponProgressionLevel level;
+        final Long                             id;
+        final Iterator<WeaponProgressionPath>  itr;
+        WeaponProgressionPath                  path;
+        WeaponProgressionLevel                 level;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals(0.1f, level.getPhysicalReduction());
@@ -277,48 +274,48 @@ public class ITDefaultWeaponServiceGetProgression {
     @Test
     @DisplayName("Returns the path level")
     public void testGetProgression_PathLevel() {
-        final WeaponProgression data;
-        final Long id;
+        final WeaponProgression               data;
+        final Long                            id;
         final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionLevel level;
-        WeaponProgressionPath path;
+        WeaponProgressionLevel                level;
+        WeaponProgressionPath                 path;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
 
         path = itr.next();
 
         path = itr.next();
 
         level = path.getLevels()
-            .iterator()
-            .next();
+                .iterator()
+                .next();
         Assertions.assertEquals(0, level.getPathLevel());
     }
 
     @Test
     @DisplayName("Returns the expected structure")
     public void testGetProgression_Structure() {
-        final WeaponProgression data;
-        final Long id;
+        final WeaponProgression               data;
+        final Long                            id;
         final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionPath path;
+        WeaponProgressionPath                 path;
 
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals(2, IterableUtils.size(data.getPaths()));
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         path = itr.next();
 
         Assertions.assertEquals("Magic", path.getPath());
@@ -328,13 +325,6 @@ public class ITDefaultWeaponServiceGetProgression {
 
         Assertions.assertEquals("Physical", path.getPath());
         Assertions.assertEquals(5, IterableUtils.size(path.getLevels()));
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
     }
 
 }

@@ -26,7 +26,7 @@ public final class SearchQuery implements Query<SearchResult> {
 
     @Override
     public final SearchResult getOutput(final Map<String, Object> record) {
-        final Long id;
+        final Long   id;
         final String name;
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
@@ -37,13 +37,13 @@ public final class SearchQuery implements Query<SearchResult> {
 
     @Override
     public final String getStatement(final Map<String, Object> params) {
-        final Node item;
-        final Expression nodeName;
+        final Node                       item;
+        final Expression                 nodeName;
         final OngoingReadingWithoutWhere ongoingBuilder;
-        final Condition nameCondition;
+        final Condition                  nameCondition;
 
         item = Cypher.node("Item")
-            .named("i");
+                .named("i");
         nodeName = item.property("name");
 
         ongoingBuilder = Cypher.match(item);
@@ -55,8 +55,8 @@ public final class SearchQuery implements Query<SearchResult> {
 
         return ongoingBuilder.returning(Functions.id(item)
             .as("id"), nodeName.as("name"))
-            .build()
-            .getCypher();
+                .build()
+                .getCypher();
     }
 
 }

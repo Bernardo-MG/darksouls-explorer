@@ -27,16 +27,14 @@ public final class DefaultProblemService implements ProblemService {
     /**
      * Logger.
      */
-    private static final Logger         LOGGER = LoggerFactory
-        .getLogger(DefaultProblemService.class);
+    private static final Logger         LOGGER = LoggerFactory.getLogger(DefaultProblemService.class);
 
     private final ProblemsQueries       queries;
 
     private final DataProblemRepository repository;
 
     @Autowired
-    public DefaultProblemService(final DataProblemRepository repo,
-            final ProblemsQueries queries) {
+    public DefaultProblemService(final DataProblemRepository repo, final ProblemsQueries queries) {
         super();
 
         repository = Objects.requireNonNull(repo);
@@ -44,8 +42,7 @@ public final class DefaultProblemService implements ProblemService {
     }
 
     @Override
-    public final Page<? extends DataProblem> getAll(final Pagination pagination,
-            final Sort sort) {
+    public final Page<? extends DataProblem> getAll(final Pagination pagination, final Sort sort) {
         final Pageable pageable;
 
         pageable = Paginations.toSpring(pagination, sort);
@@ -54,7 +51,7 @@ public final class DefaultProblemService implements ProblemService {
     }
 
     private final Iterable<DataProblem> recollect() {
-        final Collection<DataProblem> data;
+        final Collection<DataProblem>           data;
         final Collection<? extends DataProblem> itemNoDescription;
         final Collection<? extends DataProblem> itemsDuplicated;
         final Collection<? extends DataProblem> actorsDuplicated;
@@ -65,9 +62,8 @@ public final class DefaultProblemService implements ProblemService {
         itemNoDescription = queries.findMissingField("Item", "description");
         itemsDuplicated = queries.findDuplicated("Item");
         actorsDuplicated = queries.findDuplicated("Actor");
-        itemsWithoutSource = queries.findMissingRelationships("Item",
-            Arrays.asList("DROPS", "SELLS", "STARTS_WITH", "REWARDS",
-                "CHOSEN_FROM", "ASCENDS", "LOOT", "DROPS_IN_COMBAT"));
+        itemsWithoutSource = queries.findMissingRelationships("Item", Arrays.asList("DROPS", "SELLS", "STARTS_WITH",
+            "REWARDS", "CHOSEN_FROM", "ASCENDS", "LOOT", "DROPS_IN_COMBAT"));
         // TODO: Items with no location
 
         LOGGER.trace("Duplicated items: {}", itemsDuplicated);
@@ -95,7 +91,7 @@ public final class DefaultProblemService implements ProblemService {
 
     private final void save(final Iterable<? extends DataProblem> data) {
         final Collection<PersistentDataProblem> entities;
-        PersistentDataProblem entity;
+        PersistentDataProblem                   entity;
 
         entities = new ArrayList<>();
         for (final DataProblem dataProblem : data) {

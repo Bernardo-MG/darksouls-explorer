@@ -29,8 +29,7 @@ import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.initialize.model.WeaponLevelBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "weaponLevel",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "weaponLevel", havingValue = "true")
 public class WeaponLevelInitializerConfig {
 
     @Value("classPath:/data/weapon_levels.csv")
@@ -50,48 +49,38 @@ public class WeaponLevelInitializerConfig {
     }
 
     @Bean("weaponLevelItemReader")
-    public ItemReader<WeaponLevelBatchData> getWeaponLevelItemReader(
-            final LineMapper<WeaponLevelBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<WeaponLevelBatchData>()
-            .name("weaponLevelItemReader")
-            .resource(data)
-            .delimited()
-            .names(new String[] { "name", "path", "level", "physical", "magic",
-                    "fire", "lightning", "strength", "dexterity",
-                    "intelligence", "faith", "physical_reduction",
-                    "magic_reduction", "fire_reduction", "lightning_reduction",
-                    "critical", "stability" })
-            .distanceLimit(0)
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+    public ItemReader<WeaponLevelBatchData>
+    getWeaponLevelItemReader(final LineMapper<WeaponLevelBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<WeaponLevelBatchData>().name("weaponLevelItemReader")
+                .resource(data)
+                .delimited()
+                .names("name", "path", "level", "physical", "magic", "fire", "lightning", "strength", "dexterity", "intelligence", "faith", "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "critical", "stability")
+                .distanceLimit(0)
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("weaponLevelItemWriter")
     public ItemWriter<WeaponLevelBatchData> getWeaponLevelItemWriter() {
         return new JdbcBatchItemWriterBuilder<WeaponLevelBatchData>()
-            .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<WeaponLevelBatchData>())
-            .sql(
-                "INSERT INTO weapon_levels (name, path, level, physical_damage, magic_damage, fire_damage, lightning_damage, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, critical_damage, stability) VALUES (:name, :path, :level, :physical, :magic, :fire, :lightning, :strength, :dexterity, :intelligence, :faith, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :critical, :stability)")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<WeaponLevelBatchData>())
+                .sql(
+                        "INSERT INTO weapon_levels (name, path, level, physical_damage, magic_damage, fire_damage, lightning_damage, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, critical_damage, stability) VALUES (:name, :path, :level, :physical, :magic, :fire, :lightning, :strength, :dexterity, :intelligence, :faith, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :critical, :stability)")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("weaponLevelLineMapper")
     public LineMapper<WeaponLevelBatchData> getWeaponLevelLineMapper() {
-        final DelimitedLineTokenizer lineTokenizer;
+        final DelimitedLineTokenizer                          lineTokenizer;
         final BeanWrapperFieldSetMapper<WeaponLevelBatchData> fieldSetMapper;
-        final DefaultLineMapper<WeaponLevelBatchData> lineMapper;
+        final DefaultLineMapper<WeaponLevelBatchData>         lineMapper;
 
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "path", "level",
-                "physical", "magic", "fire", "lightning", "strength",
-                "dexterity", "intelligence", "faith", "physical_reduction",
-                "magic_reduction", "fire_reduction", "lightning_reduction",
-                "critical", "stability" });
+        lineTokenizer.setNames("name", "path", "level", "physical", "magic", "fire", "lightning", "strength", "dexterity", "intelligence", "faith", "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "critical", "stability");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(WeaponLevelBatchData.class);
 
@@ -102,24 +91,22 @@ public class WeaponLevelInitializerConfig {
     }
 
     @Bean("weaponLevelLoaderJob")
-    public Job getWeaponLevelLoaderJob(
-            @Qualifier("weaponLevelLoaderStep") final Step armorLoaderStep) {
+    public Job getWeaponLevelLoaderJob(@Qualifier("weaponLevelLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("weaponLevelLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("weaponLevelLoaderStep")
-    public Step getWeaponLevelLoaderStep(
-            final ItemReader<WeaponLevelBatchData> reader,
+    public Step getWeaponLevelLoaderStep(final ItemReader<WeaponLevelBatchData> reader,
             final ItemWriter<WeaponLevelBatchData> writer) {
         return stepBuilderFactory.get("weaponLevelLoaderStep")
-            .<WeaponLevelBatchData, WeaponLevelBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<WeaponLevelBatchData, WeaponLevelBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

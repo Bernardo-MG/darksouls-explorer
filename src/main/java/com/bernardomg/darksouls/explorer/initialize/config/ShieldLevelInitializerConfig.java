@@ -29,8 +29,7 @@ import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.initialize.model.ShieldLevelBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "shieldLevel",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "shieldLevel", havingValue = "true")
 public class ShieldLevelInitializerConfig {
 
     @Value("classPath:/data/shield_levels.csv")
@@ -50,48 +49,38 @@ public class ShieldLevelInitializerConfig {
     }
 
     @Bean("shieldLevelItemReader")
-    public ItemReader<ShieldLevelBatchData> getShieldLevelItemReader(
-            final LineMapper<ShieldLevelBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<ShieldLevelBatchData>()
-            .name("weaponLevelItemReader")
-            .resource(data)
-            .delimited()
-            .names(new String[] { "name", "path", "level", "physical", "magic",
-                    "fire", "lightning", "strength", "dexterity",
-                    "intelligence", "faith", "physical_reduction",
-                    "magic_reduction", "fire_reduction", "lightning_reduction",
-                    "critical", "stability" })
-            .distanceLimit(0)
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+    public ItemReader<ShieldLevelBatchData>
+    getShieldLevelItemReader(final LineMapper<ShieldLevelBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<ShieldLevelBatchData>().name("weaponLevelItemReader")
+                .resource(data)
+                .delimited()
+                .names("name", "path", "level", "physical", "magic", "fire", "lightning", "strength", "dexterity", "intelligence", "faith", "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "critical", "stability")
+                .distanceLimit(0)
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("shieldLevelItemWriter")
     public ItemWriter<ShieldLevelBatchData> getShieldLevelItemWriter() {
         return new JdbcBatchItemWriterBuilder<ShieldLevelBatchData>()
-            .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<ShieldLevelBatchData>())
-            .sql(
-                "INSERT INTO weapon_levels (name, path, level, physical_damage, magic_damage, fire_damage, lightning_damage, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, critical_damage, stability) VALUES (:name, :path, :level, :physical, :magic, :fire, :lightning, :strength, :dexterity, :intelligence, :faith, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :critical, :stability)")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ShieldLevelBatchData>())
+                .sql(
+                        "INSERT INTO weapon_levels (name, path, level, physical_damage, magic_damage, fire_damage, lightning_damage, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, critical_damage, stability) VALUES (:name, :path, :level, :physical, :magic, :fire, :lightning, :strength, :dexterity, :intelligence, :faith, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :critical, :stability)")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("shieldLevelLineMapper")
     public LineMapper<ShieldLevelBatchData> getShieldLevelLineMapper() {
-        final DelimitedLineTokenizer lineTokenizer;
+        final DelimitedLineTokenizer                          lineTokenizer;
         final BeanWrapperFieldSetMapper<ShieldLevelBatchData> fieldSetMapper;
-        final DefaultLineMapper<ShieldLevelBatchData> lineMapper;
+        final DefaultLineMapper<ShieldLevelBatchData>         lineMapper;
 
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "path", "level",
-                "physical", "magic", "fire", "lightning", "strength",
-                "dexterity", "intelligence", "faith", "physical_reduction",
-                "magic_reduction", "fire_reduction", "lightning_reduction",
-                "critical", "stability" });
+        lineTokenizer.setNames("name", "path", "level", "physical", "magic", "fire", "lightning", "strength", "dexterity", "intelligence", "faith", "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "critical", "stability");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ShieldLevelBatchData.class);
 
@@ -102,24 +91,22 @@ public class ShieldLevelInitializerConfig {
     }
 
     @Bean("shieldLevelLoaderJob")
-    public Job getShieldLevelLoaderJob(
-            @Qualifier("shieldLevelLoaderStep") final Step armorLoaderStep) {
+    public Job getShieldLevelLoaderJob(@Qualifier("shieldLevelLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("shieldLevelLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("shieldLevelLoaderStep")
-    public Step getShieldLevelLoaderStep(
-            final ItemReader<ShieldLevelBatchData> reader,
+    public Step getShieldLevelLoaderStep(final ItemReader<ShieldLevelBatchData> reader,
             final ItemWriter<ShieldLevelBatchData> writer) {
         return stepBuilderFactory.get("shieldLevelLoaderStep")
-            .<ShieldLevelBatchData, ShieldLevelBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<ShieldLevelBatchData, ShieldLevelBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

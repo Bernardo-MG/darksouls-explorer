@@ -40,35 +40,27 @@ import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplica
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@ContextConfiguration(initializers = {
-        ITDefaultWeaponServiceGetProgressionNoLevelNodes.Initializer.class })
+@ContextConfiguration(initializers = { ITDefaultWeaponServiceGetProgressionNoLevelNodes.Initializer.class })
 @DisplayName("Reading weapon progression with no level nodes")
-@Sql({ "/db/queries/weapon/single.sql",
-        "/db/queries/weapon/physical_5_levels.sql" })
+@Sql({ "/db/queries/weapon/single.sql", "/db/queries/weapon/physical_5_levels.sql" })
 public class ITDefaultWeaponServiceGetProgressionNoLevelNodes {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(neo4jContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory.getNeo4jContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -87,24 +79,24 @@ public class ITDefaultWeaponServiceGetProgressionNoLevelNodes {
         super();
     }
 
+    private final Long getId() {
+        return repository.findAll()
+                .iterator()
+                .next()
+                .getId();
+    }
+
     @Test
     @DisplayName("Returns no level progression")
     public void testgetProgression_Data() {
         final Optional<WeaponProgression> data;
-        final Long id;
+        final Long                        id;
 
         id = getId();
 
         data = service.getProgression(id);
 
         Assertions.assertFalse(data.isPresent());
-    }
-
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
     }
 
 }

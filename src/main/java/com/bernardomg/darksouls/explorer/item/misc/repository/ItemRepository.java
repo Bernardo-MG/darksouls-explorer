@@ -16,7 +16,6 @@ public interface ItemRepository extends JpaRepository<PersistentItem, Long> {
     public Page<Item> findAllSummaries(final Pageable pageable);
 
     @Query("SELECT i FROM Item i WHERE i.type = :type")
-    public Page<Item> findAllSummaries(@Param("type") final String type,
-            final Pageable pageable);
+    public Page<Item> findAllSummaries(@Param("type") final String type, final Pageable pageable);
 
 }

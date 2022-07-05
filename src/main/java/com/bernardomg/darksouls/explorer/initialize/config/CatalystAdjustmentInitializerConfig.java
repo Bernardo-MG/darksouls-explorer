@@ -29,8 +29,7 @@ import com.bernardomg.darksouls.explorer.initialize.DBLogProcessor;
 import com.bernardomg.darksouls.explorer.initialize.model.CatalystAdjustmentBatchData;
 
 @Configuration
-@ConditionalOnProperty(prefix = "initialize.db.source", name = "catalystAdjustment",
-        havingValue = "true")
+@ConditionalOnProperty(prefix = "initialize.db.source", name = "catalystAdjustment", havingValue = "true")
 public class CatalystAdjustmentInitializerConfig {
 
     @Value("classPath:/data/catalyst_adjustments.csv")
@@ -50,40 +49,39 @@ public class CatalystAdjustmentInitializerConfig {
     }
 
     @Bean("catalystAdjustmentItemReader")
-    public ItemReader<CatalystAdjustmentBatchData> getCatalystAdjustmentItemReader(
-            final LineMapper<CatalystAdjustmentBatchData> lineMapper) {
-        return new FlatFileItemReaderBuilder<CatalystAdjustmentBatchData>()
-            .name("catalystAdjustmentItemReader")
-            .resource(data)
-            .delimited()
-            .names(new String[] { "name", "faith" , "intelligence", "adjustment"})
-            .distanceLimit(0)
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+    public ItemReader<CatalystAdjustmentBatchData>
+    getCatalystAdjustmentItemReader(final LineMapper<CatalystAdjustmentBatchData> lineMapper) {
+        return new FlatFileItemReaderBuilder<CatalystAdjustmentBatchData>().name("catalystAdjustmentItemReader")
+                .resource(data)
+                .delimited()
+                .names("name", "faith", "intelligence", "adjustment")
+                .distanceLimit(0)
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("catalystAdjustmentItemWriter")
     public ItemWriter<CatalystAdjustmentBatchData> getCatalystAdjustmentItemWriter() {
         return new JdbcBatchItemWriterBuilder<CatalystAdjustmentBatchData>()
-            .itemSqlParameterSourceProvider(
-                new BeanPropertyItemSqlParameterSourceProvider<CatalystAdjustmentBatchData>())
-            .sql(
-                "INSERT INTO weapon_adjustments (name, faith, intelligence, adjustment) VALUES (:name, :faith, :intelligence, :adjustment)")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(
+                    new BeanPropertyItemSqlParameterSourceProvider<CatalystAdjustmentBatchData>())
+                .sql(
+                        "INSERT INTO weapon_adjustments (name, faith, intelligence, adjustment) VALUES (:name, :faith, :intelligence, :adjustment)")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("catalystAdjustmentLineMapper")
     public LineMapper<CatalystAdjustmentBatchData> getCatalystAdjustmentLineMapper() {
-        final DelimitedLineTokenizer lineTokenizer;
+        final DelimitedLineTokenizer                                 lineTokenizer;
         final BeanWrapperFieldSetMapper<CatalystAdjustmentBatchData> fieldSetMapper;
-        final DefaultLineMapper<CatalystAdjustmentBatchData> lineMapper;
+        final DefaultLineMapper<CatalystAdjustmentBatchData>         lineMapper;
 
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "name", "faith" , "intelligence", "adjustment"});
+        lineTokenizer.setNames("name", "faith", "intelligence", "adjustment");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(CatalystAdjustmentBatchData.class);
 
@@ -94,24 +92,22 @@ public class CatalystAdjustmentInitializerConfig {
     }
 
     @Bean("catalystAdjustmentLoaderJob")
-    public Job getCatalystAdjustmentLoaderJob(
-            @Qualifier("catalystAdjustmentLoaderStep") final Step armorLoaderStep) {
+    public Job getCatalystAdjustmentLoaderJob(@Qualifier("catalystAdjustmentLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("catalystAdjustmentLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("catalystAdjustmentLoaderStep")
-    public Step getCatalystAdjustmentLoaderStep(
-            final ItemReader<CatalystAdjustmentBatchData> reader,
+    public Step getCatalystAdjustmentLoaderStep(final ItemReader<CatalystAdjustmentBatchData> reader,
             final ItemWriter<CatalystAdjustmentBatchData> writer) {
         return stepBuilderFactory.get("catalystAdjustmentLoaderStep")
-            .<CatalystAdjustmentBatchData, CatalystAdjustmentBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<CatalystAdjustmentBatchData, CatalystAdjustmentBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

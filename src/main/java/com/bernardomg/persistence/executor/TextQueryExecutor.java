@@ -49,8 +49,7 @@ public final class TextQueryExecutor implements QueryExecutor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LoggerFactory
-        .getLogger(TextQueryExecutor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TextQueryExecutor.class);
 
     private final Neo4jClient   client;
 
@@ -60,8 +59,7 @@ public final class TextQueryExecutor implements QueryExecutor {
         client = Objects.requireNonNull(clnt);
     }
 
-    private final Long count(final Statement statement,
-            final Map<String, Object> parameters) {
+    private final Long count(final Statement statement, final Map<String, Object> parameters) {
         final String countQuery;
 
         countQuery = getCountQuery(statement.getCypher(), parameters);
@@ -69,14 +67,13 @@ public final class TextQueryExecutor implements QueryExecutor {
         LOGGER.debug("Count: {}", countQuery);
 
         return client.query(countQuery)
-            .fetchAs(Long.class)
-            .first()
-            .get();
+                .fetchAs(Long.class)
+                .first()
+                .get();
     }
 
     @Override
-    public final <T> Collection<T> fetch(
-            final Function<Map<String, Object>, String> queryGenerator,
+    public final <T> Collection<T> fetch(final Function<Map<String, Object>, String> queryGenerator,
             final Function<Map<String, Object>, T> mapper) {
         final String query;
 
@@ -86,18 +83,16 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         return client.query(query)
-            .fetch()
-            .all()
-            .stream()
-            .map(mapper)
-            .collect(Collectors.toList());
+                .fetch()
+                .all()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public final <T> Collection<T> fetch(
-            final Function<Map<String, Object>, String> queryGenerator,
-            final Function<Map<String, Object>, T> mapper,
-            final Map<String, Object> parameters) {
+    public final <T> Collection<T> fetch(final Function<Map<String, Object>, String> queryGenerator,
+            final Function<Map<String, Object>, T> mapper, final Map<String, Object> parameters) {
         final String query;
 
         query = queryGenerator.apply(parameters);
@@ -106,25 +101,23 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         return client.query(query)
-            .bindAll(parameters)
-            .fetch()
-            .all()
-            .stream()
-            .map(mapper)
-            .collect(Collectors.toList());
+                .bindAll(parameters)
+                .fetch()
+                .all()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public final <T> PageIterable<T> fetch(
-            final Function<Map<String, Object>, String> queryGenerator,
-            final Function<Map<String, Object>, T> mapper,
-            final Map<String, Object> parameters, final Pagination pagination,
-            final Iterable<Sort> sort) {
-        final List<T> data;
-        final Statement baseStatement;
+    public final <T> PageIterable<T> fetch(final Function<Map<String, Object>, String> queryGenerator,
+            final Function<Map<String, Object>, T> mapper, final Map<String, Object> parameters,
+            final Pagination pagination, final Iterable<Sort> sort) {
+        final List<T>          data;
+        final Statement        baseStatement;
         final Optional<String> sortOptions;
-        String finalQuery;
-        final String query;
+        String                 finalQuery;
+        final String           query;
 
         query = queryGenerator.apply(parameters);
 
@@ -134,17 +127,16 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Sort
         sortOptions = StreamSupport.stream(sort.spliterator(), false)
-            .filter(Sort::getSorted)
-            .map(this::getFieldSort)
-            .reduce(this::mergeSort);
+                .filter(Sort::getSorted)
+                .map(this::getFieldSort)
+                .reduce(this::mergeSort);
         if (sortOptions.isPresent()) {
             finalQuery += " ORDER BY " + sortOptions.get();
         }
 
         // Pagination
         if (pagination.getPaged()) {
-            finalQuery += String.format(" SKIP %d",
-                pagination.getPage() * pagination.getSize());
+            finalQuery += String.format(" SKIP %d", pagination.getPage() * pagination.getSize());
             finalQuery += String.format(" LIMIT %d", pagination.getSize());
         }
 
@@ -152,34 +144,29 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         data = client.query(finalQuery)
-            .bindAll(parameters)
-            .fetch()
-            .all()
-            .stream()
-            .map(mapper)
-            .collect(Collectors.toList());
+                .bindAll(parameters)
+                .fetch()
+                .all()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList());
 
-        return getPage(data, pagination,
-            () -> count(baseStatement, parameters));
+        return getPage(data, pagination, () -> count(baseStatement, parameters));
     }
 
     @Override
-    public final <T> PageIterable<T> fetch(
-            final Function<Map<String, Object>, String> queryGenerator,
-            final Function<Map<String, Object>, T> mapper,
-            final Pagination pagination, final Iterable<Sort> sort) {
-        return fetch(queryGenerator, mapper, Collections.emptyMap(), pagination,
-            sort);
+    public final <T> PageIterable<T> fetch(final Function<Map<String, Object>, String> queryGenerator,
+            final Function<Map<String, Object>, T> mapper, final Pagination pagination, final Iterable<Sort> sort) {
+        return fetch(queryGenerator, mapper, Collections.emptyMap(), pagination, sort);
     }
 
     @Override
-    public final <T> Optional<T> fetchOne(
-            final Function<Map<String, Object>, String> queryGenerator,
+    public final <T> Optional<T> fetchOne(final Function<Map<String, Object>, String> queryGenerator,
             final Function<Map<String, Object>, T> mapper) {
         final Optional<Map<String, Object>> read;
-        final T mapped;
-        final Optional<T> result;
-        final String query;
+        final T                             mapped;
+        final Optional<T>                   result;
+        final String                        query;
 
         query = queryGenerator.apply(Collections.emptyMap());
 
@@ -187,8 +174,8 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         read = client.query(query)
-            .fetch()
-            .first();
+                .fetch()
+                .first();
         if (read.isPresent()) {
             mapped = mapper.apply(read.get());
             result = Optional.ofNullable(mapped);
@@ -200,14 +187,12 @@ public final class TextQueryExecutor implements QueryExecutor {
     }
 
     @Override
-    public final <T> Optional<T> fetchOne(
-            final Function<Map<String, Object>, String> queryGenerator,
-            final Function<Map<String, Object>, T> mapper,
-            final Map<String, Object> parameters) {
+    public final <T> Optional<T> fetchOne(final Function<Map<String, Object>, String> queryGenerator,
+            final Function<Map<String, Object>, T> mapper, final Map<String, Object> parameters) {
         final Optional<Map<String, Object>> read;
-        final T mapped;
-        final Optional<T> result;
-        final String query;
+        final T                             mapped;
+        final Optional<T>                   result;
+        final String                        query;
 
         query = queryGenerator.apply(parameters);
 
@@ -215,9 +200,9 @@ public final class TextQueryExecutor implements QueryExecutor {
 
         // Data is fetched and mapped
         read = client.query(query)
-            .bindAll(parameters)
-            .fetch()
-            .first();
+                .bindAll(parameters)
+                .fetch()
+                .first();
 
         if (read.isPresent()) {
             mapped = mapper.apply(read.get());
@@ -229,44 +214,41 @@ public final class TextQueryExecutor implements QueryExecutor {
         return result;
     }
 
-    private final String getCountQuery(final String subquery,
-            final Map<String, Object> parameters) {
-        final SymbolicName name;
+    private final String getCountQuery(final String subquery, final Map<String, Object> parameters) {
+        final SymbolicName            name;
         final OngoingReadingAndReturn call;
-        final Collection<Object> params;
+        final Collection<Object>      params;
 
         params = parameters.entrySet()
-            .stream()
-            .map(e -> Arrays.asList(e.getKey(), Cypher.literalOf(e.getValue())))
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
+                .stream()
+                .map(e -> Arrays.asList(e.getKey(), Cypher.literalOf(e.getValue())))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
 
         name = Cypher.name("value");
         call = Cypher.call("apoc.cypher.run")
-            .withArgs(Cypher.literalOf(subquery),
-                Cypher.mapOf(params.toArray()))
-            .yield(name)
-            .returning(Functions.count(name)
-                .as("count"));
+                .withArgs(Cypher.literalOf(subquery), Cypher.mapOf(params.toArray()))
+                .yield(name)
+                .returning(Functions.count(name)
+                    .as("count"));
 
         return call.build()
-            .getCypher();
+                .getCypher();
     }
 
     private final String getFieldSort(final Sort sort) {
         return String.format("%s %s", sort.getProperty(), sort.getDirection());
     }
 
-    private final <T> PageIterable<T> getPage(final List<T> data,
-            final Pagination pagination,
+    private final <T> PageIterable<T> getPage(final List<T> data, final Pagination pagination,
             final LongSupplier totalElementsSupplier) {
         final DefaultPageIterable<T> result;
-        final Integer totalPages;
-        final Boolean first;
-        final Boolean last;
-        final Integer size;
-        final Integer pageNumber;
-        final long totalElements;
+        final Integer                totalPages;
+        final Boolean                first;
+        final Boolean                last;
+        final Integer                size;
+        final Integer                pageNumber;
+        final long                   totalElements;
 
         result = new DefaultPageIterable<>();
         result.setContent(data);
@@ -295,7 +277,7 @@ public final class TextQueryExecutor implements QueryExecutor {
         result.setPageNumber(pageNumber);
         result.setSize(size);
         result.setTotalElements(totalElements);
-        result.setTotalPages(totalPages.intValue());
+        result.setTotalPages(totalPages);
 
         return result;
     }
