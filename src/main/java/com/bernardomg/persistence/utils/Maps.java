@@ -7,7 +7,7 @@ import java.util.Map;
  * For some reason the maps returned by Neo4J always say they contain values,
  * even when they don't, breaking default value handling. This class avoids
  * working with nulls.
- * 
+ *
  * @author Bernardo
  *
  */

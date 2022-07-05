@@ -60,6 +60,20 @@ public final class TextQueryExecutor implements QueryExecutor {
         client = Objects.requireNonNull(clnt);
     }
 
+    private final Long count(final Statement statement,
+            final Map<String, Object> parameters) {
+        final String countQuery;
+
+        countQuery = getCountQuery(statement.getCypher(), parameters);
+
+        LOGGER.debug("Count: {}", countQuery);
+
+        return client.query(countQuery)
+            .fetchAs(Long.class)
+            .first()
+            .get();
+    }
+
     @Override
     public final <T> Collection<T> fetch(
             final Function<Map<String, Object>, String> queryGenerator,
@@ -215,20 +229,6 @@ public final class TextQueryExecutor implements QueryExecutor {
         return result;
     }
 
-    private final Long count(final Statement statement,
-            final Map<String, Object> parameters) {
-        final String countQuery;
-
-        countQuery = getCountQuery(statement.getCypher(), parameters);
-
-        LOGGER.debug("Count: {}", countQuery);
-
-        return client.query(countQuery)
-            .fetchAs(Long.class)
-            .first()
-            .get();
-    }
-
     private final String getCountQuery(final String subquery,
             final Map<String, Object> parameters) {
         final SymbolicName name;
@@ -268,7 +268,7 @@ public final class TextQueryExecutor implements QueryExecutor {
         final Integer pageNumber;
         final long totalElements;
 
-        result = new DefaultPageIterable<T>();
+        result = new DefaultPageIterable<>();
         result.setContent(data);
 
         if (pagination.getPaged()) {

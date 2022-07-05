@@ -79,11 +79,11 @@ public class AmmunitionInitializerConfig {
         final BeanWrapperFieldSetMapper<ItemBatchData> fieldSetMapper;
         final DefaultLineMapper<ItemBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<ItemBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(new String[] { "name", "description" });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<ItemBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ItemBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

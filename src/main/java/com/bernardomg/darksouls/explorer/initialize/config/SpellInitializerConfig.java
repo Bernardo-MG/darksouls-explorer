@@ -80,12 +80,12 @@ public class SpellInitializerConfig {
         final BeanWrapperFieldSetMapper<SpellBatchData> fieldSetMapper;
         final DefaultLineMapper<SpellBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<SpellBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(new String[] { "name", "school", "description",
                 "intelligence", "faith", "slots", "uses" });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<SpellBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(SpellBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

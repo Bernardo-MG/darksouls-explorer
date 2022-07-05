@@ -80,13 +80,13 @@ public class ArmorInitializerConfig {
         final BeanWrapperFieldSetMapper<ArmorBatchData> fieldSetMapper;
         final DefaultLineMapper<ArmorBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<ArmorBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(
             new String[] { "name", "description", "weight", "durability" });
         lineTokenizer.setIncludedFields(new int[] { 0, 2, 3, 4 });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<ArmorBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ArmorBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

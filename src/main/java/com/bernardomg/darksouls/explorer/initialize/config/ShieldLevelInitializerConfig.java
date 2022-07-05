@@ -84,7 +84,7 @@ public class ShieldLevelInitializerConfig {
         final BeanWrapperFieldSetMapper<ShieldLevelBatchData> fieldSetMapper;
         final DefaultLineMapper<ShieldLevelBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<ShieldLevelBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(new String[] { "name", "path", "level",
@@ -92,7 +92,7 @@ public class ShieldLevelInitializerConfig {
                 "dexterity", "intelligence", "faith", "physical_reduction",
                 "magic_reduction", "fire_reduction", "lightning_reduction",
                 "critical", "stability" });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<ShieldLevelBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ShieldLevelBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

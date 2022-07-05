@@ -82,13 +82,13 @@ public class ArmorLevelInitializerConfig {
         final BeanWrapperFieldSetMapper<ArmorLevelBatchData> fieldSetMapper;
         final DefaultLineMapper<ArmorLevelBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<ArmorLevelBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(new String[] { "name", "level", "regular",
                 "strike", "slash", "thrust", "magic", "fire", "lightning",
                 "bleed", "poison", "curse", "poise" });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<ArmorLevelBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ArmorLevelBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

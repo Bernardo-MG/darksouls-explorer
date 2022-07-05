@@ -86,7 +86,7 @@ public class ShieldInitializerConfig {
         final BeanWrapperFieldSetMapper<ShieldBatchData> fieldSetMapper;
         final DefaultLineMapper<ShieldBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<ShieldBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(new String[] { "name", "type", "description",
@@ -97,7 +97,7 @@ public class ShieldInitializerConfig {
                 "magic_damage", "fire_damage", "lightning_damage",
                 "critical_damage", "physical_reduction", "magic_reduction",
                 "fire_reduction", "lightning_reduction", "stability" });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<ShieldBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ShieldBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

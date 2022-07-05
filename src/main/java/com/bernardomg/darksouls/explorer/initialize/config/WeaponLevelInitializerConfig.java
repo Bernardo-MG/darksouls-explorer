@@ -84,7 +84,7 @@ public class WeaponLevelInitializerConfig {
         final BeanWrapperFieldSetMapper<WeaponLevelBatchData> fieldSetMapper;
         final DefaultLineMapper<WeaponLevelBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<WeaponLevelBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(new String[] { "name", "path", "level",
@@ -92,7 +92,7 @@ public class WeaponLevelInitializerConfig {
                 "dexterity", "intelligence", "faith", "physical_reduction",
                 "magic_reduction", "fire_reduction", "lightning_reduction",
                 "critical", "stability" });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<WeaponLevelBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(WeaponLevelBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

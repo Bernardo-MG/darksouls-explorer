@@ -86,7 +86,7 @@ public class TalismanInitializerConfig {
         final BeanWrapperFieldSetMapper<TalismanBatchData> fieldSetMapper;
         final DefaultLineMapper<TalismanBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<TalismanBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(new String[] { "name", "type", "description",
@@ -97,7 +97,7 @@ public class TalismanInitializerConfig {
                 "magic_damage", "fire_damage", "lightning_damage",
                 "critical_damage", "physical_reduction", "magic_reduction",
                 "fire_reduction", "lightning_reduction", "stability" });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<TalismanBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(TalismanBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

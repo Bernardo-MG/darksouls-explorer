@@ -86,7 +86,7 @@ public class WeaponInitializerConfig {
         final BeanWrapperFieldSetMapper<WeaponBatchData> fieldSetMapper;
         final DefaultLineMapper<WeaponBatchData> lineMapper;
 
-        lineMapper = new DefaultLineMapper<WeaponBatchData>();
+        lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames(new String[] { "name", "type", "description",
@@ -97,7 +97,7 @@ public class WeaponInitializerConfig {
                 "magic_damage", "fire_damage", "lightning_damage",
                 "critical_damage", "physical_reduction", "magic_reduction",
                 "fire_reduction", "lightning_reduction", "stability" });
-        fieldSetMapper = new BeanWrapperFieldSetMapper<WeaponBatchData>();
+        fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(WeaponBatchData.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);

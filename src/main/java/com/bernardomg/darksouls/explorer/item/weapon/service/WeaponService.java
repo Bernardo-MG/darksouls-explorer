@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustment;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgression;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
@@ -17,5 +18,7 @@ public interface WeaponService {
     public Optional<? extends Weapon> getOne(final Long id);
 
     public Optional<WeaponProgression> getProgression(final Long id);
+
+    public Iterable<WeaponAdjustment> getAdjustment(final Long id);
 
 }

@@ -53,15 +53,6 @@ public final class DefaultProblemService implements ProblemService {
         return repository.findAll(pageable);
     }
 
-    @Override
-    public final void recollectAndRegister() {
-        Iterable<DataProblem> data;
-
-        data = recollect();
-
-        save(data);
-    }
-
     private final Iterable<DataProblem> recollect() {
         final Collection<DataProblem> data;
         final Collection<? extends DataProblem> itemNoDescription;
@@ -91,6 +82,15 @@ public final class DefaultProblemService implements ProblemService {
         data.addAll(itemsWithoutSource);
 
         return data;
+    }
+
+    @Override
+    public final void recollectAndRegister() {
+        Iterable<DataProblem> data;
+
+        data = recollect();
+
+        save(data);
     }
 
     private final void save(final Iterable<? extends DataProblem> data) {

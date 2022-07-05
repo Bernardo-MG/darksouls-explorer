@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: items_structure
+      id: items
       author: Bernardo
       changes:
         - createTable:
@@ -310,6 +310,30 @@ databaseChangeLog:
               - column:
                   name: strength_bonus
                   type: varchar(1)
+        - createTable:
+            tableName: weapon_adjustments
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: faith
+                  type: int
+              - column:
+                  name: intelligence
+                  type: int
+              - column:
+                  name: adjustment
+                  type: int
       modifySql:
         - append:
             dbms: mysql
