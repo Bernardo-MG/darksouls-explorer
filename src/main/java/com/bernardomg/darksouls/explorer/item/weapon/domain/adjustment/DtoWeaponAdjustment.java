@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public final class DtoWeaponAdjustment implements WeaponAdjustment {
 
-    private Long    id;
+    private Long    id = -1l;
 
-    private String  name;
+    private String  name = "";
 
     private Integer faith        = 0;
 

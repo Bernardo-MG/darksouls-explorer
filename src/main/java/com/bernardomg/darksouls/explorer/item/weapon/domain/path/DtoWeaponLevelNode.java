@@ -10,15 +10,15 @@ import lombok.NonNull;
 public final class DtoWeaponLevelNode implements WeaponLevelNode {
 
     @NonNull
-    private Integer level;
+    private Integer level=0;
 
     @NonNull
-    private String  name;
+    private String  name="";
 
     @NonNull
-    private String  path;
+    private String  path="";
 
     @NonNull
-    private Integer pathLevel;
+    private Integer pathLevel=0;
 
 }

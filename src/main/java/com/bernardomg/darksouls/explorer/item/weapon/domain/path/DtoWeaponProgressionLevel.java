@@ -10,7 +10,7 @@ import lombok.NonNull;
 public final class DtoWeaponProgressionLevel implements WeaponProgressionLevel {
 
     @NonNull
-    private Integer critical;
+    private Integer critical = 0;
 
     @NonNull
     private String  dexterityBonus;
@@ -19,48 +19,48 @@ public final class DtoWeaponProgressionLevel implements WeaponProgressionLevel {
     private String  faithBonus;
 
     @NonNull
-    private Integer fireDamage;
+    private Integer fireDamage = 0;
 
     @NonNull
-    private Float   fireReduction;
+    private Float   fireReduction = 0f;
 
     @NonNull
     private String  intelligenceBonus;
 
     @NonNull
-    private Integer level;
+    private Integer level = 0;
 
     @NonNull
-    private Integer lightningDamage;
+    private Integer lightningDamage = 0;
 
     @NonNull
-    private Float   lightningReduction;
+    private Float   lightningReduction = 0f;
 
     @NonNull
-    private Integer magicDamage;
+    private Integer magicDamage = 0;
 
     @NonNull
-    private Float   magicReduction;
+    private Float   magicReduction = 0f;
 
     @NonNull
-    private String  name;
+    private String  name="";
 
     @NonNull
-    private String  path;
+    private String  path="";
 
     @NonNull
-    private Integer pathLevel;
+    private Integer pathLevel=0;
 
     @NonNull
-    private Integer physicalDamage;
+    private Integer physicalDamage=0;
 
     @NonNull
-    private Float   physicalReduction;
+    private Float   physicalReduction=0f;
 
     @NonNull
-    private Integer stability;
+    private Integer stability=0;
 
     @NonNull
-    private String  strengthBonus;
+    private String  strengthBonus="";
 
 }
