@@ -64,9 +64,9 @@ public class ITAmmunitionServiceGetOneSingle {
 
     private final Long getId() {
         return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
+                .iterator()
+                .next()
+                .getId();
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ITAmmunitionServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Ammunition", data.getName());
         Assertions.assertEquals("Description", data.getDescription());

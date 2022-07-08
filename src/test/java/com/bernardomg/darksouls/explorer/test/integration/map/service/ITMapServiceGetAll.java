@@ -87,8 +87,8 @@ public class ITMapServiceGetAll {
         final Map data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort())
-            .iterator()
-            .next();
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Map name", data.getName());
     }

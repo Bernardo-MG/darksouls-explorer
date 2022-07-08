@@ -70,21 +70,21 @@ public class TestResponseAdvice {
 
         body = Mockito.mock(Page.class);
         Mockito.when(body.getContent())
-            .thenReturn(Collections.emptyList());
+        .thenReturn(Collections.emptyList());
         Mockito.when(body.getNumberOfElements())
-            .thenReturn(1);
+        .thenReturn(1);
         Mockito.when(body.getNumber())
-            .thenReturn(2);
+        .thenReturn(2);
         Mockito.when(body.getSize())
-            .thenReturn(3);
+        .thenReturn(3);
         Mockito.when(body.getTotalElements())
-            .thenReturn(4l);
+        .thenReturn(4l);
         Mockito.when(body.getTotalPages())
-            .thenReturn(5);
+        .thenReturn(5);
         Mockito.when(body.isFirst())
-            .thenReturn(true);
+        .thenReturn(true);
         Mockito.when(body.isLast())
-            .thenReturn(false);
+        .thenReturn(false);
 
         response = (PaginatedResponse<?>) handleResponse(body);
 
@@ -119,21 +119,21 @@ public class TestResponseAdvice {
 
         body = Mockito.mock(PageIterable.class);
         Mockito.when(body.getContent())
-            .thenReturn(Collections.emptyList());
+        .thenReturn(Collections.emptyList());
         Mockito.when(body.getElementsInPage())
-            .thenReturn(1);
+        .thenReturn(1);
         Mockito.when(body.getPageNumber())
-            .thenReturn(2);
+        .thenReturn(2);
         Mockito.when(body.getSize())
-            .thenReturn(3);
+        .thenReturn(3);
         Mockito.when(body.getTotalElements())
-            .thenReturn(4l);
+        .thenReturn(4l);
         Mockito.when(body.getTotalPages())
-            .thenReturn(5);
+        .thenReturn(5);
         Mockito.when(body.isFirst())
-            .thenReturn(true);
+        .thenReturn(true);
         Mockito.when(body.isLast())
-            .thenReturn(false);
+        .thenReturn(false);
 
         response = (PaginatedResponse<?>) handleResponse(body);
 

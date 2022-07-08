@@ -94,7 +94,7 @@ public class ITTextQueryExecutorSort {
         sort = new DefaultSort("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
-            .iterator();
+                .iterator();
 
         Assertions.assertEquals("Item1", data.next()
             .getName());
@@ -119,7 +119,7 @@ public class ITTextQueryExecutorSort {
         sort = new DefaultSort("name", Direction.DESC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
-            .iterator();
+                .iterator();
 
         Assertions.assertEquals("Item5", data.next()
             .getName());

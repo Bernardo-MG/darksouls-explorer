@@ -7,7 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.testcontainers.containers.Neo4jContainer;
 
 public final class Neo4jApplicationContextInitializer
-        implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     private final Neo4jContainer<?> dbContainer;
 
@@ -22,9 +22,9 @@ public final class Neo4jApplicationContextInitializer
 
         dbContainer.addExposedPorts(7687);
         TestPropertyValues
-            .of("spring.neo4j.uri=" + dbContainer.getBoltUrl(), "spring.neo4j.authentication.username=neo4j",
-                "spring.neo4j.authentication.password=" + dbContainer.getAdminPassword())
-            .applyTo(configurableApplicationContext.getEnvironment());
+        .of("spring.neo4j.uri=" + dbContainer.getBoltUrl(), "spring.neo4j.authentication.username=neo4j",
+            "spring.neo4j.authentication.password=" + dbContainer.getAdminPassword())
+        .applyTo(configurableApplicationContext.getEnvironment());
     }
 
 }

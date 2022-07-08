@@ -87,7 +87,7 @@ public class ITTextQueryExecutor {
         final Iterator<Item> data;
 
         data = queryExecutor.fetch(getQuery(), this::toItem)
-            .iterator();
+                .iterator();
 
         Assertions.assertEquals("Item1", data.next()
             .getName());

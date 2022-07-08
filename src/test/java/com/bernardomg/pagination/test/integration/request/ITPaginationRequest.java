@@ -84,18 +84,18 @@ public class ITPaginationRequest {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/weapons")
-            .param("page", "0")
-            .param("size", "10");
+                .param("page", "0")
+                .param("size", "10");
 
         mockMvc.perform(request)
-            .andExpect(MockMvcResultMatchers.content()
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status()
-                .isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 1")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(10)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage", Matchers.is(5)));
+        .andExpect(MockMvcResultMatchers.content()
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status()
+            .isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 1")))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(10)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage", Matchers.is(5)));
     }
 
     @Test
@@ -104,17 +104,17 @@ public class ITPaginationRequest {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/weapons")
-            .param("page", "1")
-            .param("size", "10");
+                .param("page", "1")
+                .param("size", "10");
 
         mockMvc.perform(request)
-            .andExpect(MockMvcResultMatchers.content()
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status()
-                .isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(10)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage", Matchers.is(0)));
+        .andExpect(MockMvcResultMatchers.content()
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status()
+            .isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(10)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage", Matchers.is(0)));
     }
 
 }

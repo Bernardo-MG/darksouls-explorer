@@ -64,9 +64,9 @@ public class ITDefaultWeaponServiceGetOneSingle {
 
     private final Long getId() {
         return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
+                .iterator()
+                .next()
+                .getId();
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ITDefaultWeaponServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(7, data.getDamage()
             .getPhysical());
@@ -101,7 +101,7 @@ public class ITDefaultWeaponServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(12, data.getDamageReduction()
             .getPhysical());
@@ -122,7 +122,7 @@ public class ITDefaultWeaponServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
@@ -149,7 +149,7 @@ public class ITDefaultWeaponServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(3, data.getRequirements()
             .getDexterity());
@@ -170,7 +170,7 @@ public class ITDefaultWeaponServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(1, data.getDurability());
         Assertions.assertEquals(2, data.getWeight());

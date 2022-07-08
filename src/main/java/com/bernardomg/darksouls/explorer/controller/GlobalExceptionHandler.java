@@ -84,10 +84,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         final Response<Iterable<String>> response;
 
         errors = ex.getBindingResult()
-            .getFieldErrors()
-            .stream()
-            .map(x -> x.getDefaultMessage())
-            .collect(Collectors.toList());
+                .getFieldErrors()
+                .stream()
+                .map(x -> x.getDefaultMessage())
+                .collect(Collectors.toList());
 
         response = new DefaultResponse<>(errors);
 

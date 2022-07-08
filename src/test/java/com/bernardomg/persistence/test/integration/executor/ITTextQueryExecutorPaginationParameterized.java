@@ -100,7 +100,7 @@ public class ITTextQueryExecutorPaginationParameterized {
         sort = new DefaultSort("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, parameters, pagination, Arrays.asList(sort))
-            .iterator();
+                .iterator();
 
         Assertions.assertEquals("Item1", data.next()
             .getName());

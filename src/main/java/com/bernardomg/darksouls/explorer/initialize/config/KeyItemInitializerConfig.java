@@ -50,23 +50,23 @@ public class KeyItemInitializerConfig {
 
     @Bean("keyItemItemReader")
     public ItemReader<ItemBatchData>
-            getKeyItemItemReader(@Qualifier("keyItemLineMapper") final LineMapper<ItemBatchData> lineMapper) {
+    getKeyItemItemReader(@Qualifier("keyItemLineMapper") final LineMapper<ItemBatchData> lineMapper) {
         return new FlatFileItemReaderBuilder<ItemBatchData>().name("keyItemItemReader")
-            .resource(data)
-            .delimited()
-            .names("name", "description")
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+                .resource(data)
+                .delimited()
+                .names("name", "description")
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("keyItemItemWriter")
     public ItemWriter<ItemBatchData> getKeyItemItemWriter() {
         return new JdbcBatchItemWriterBuilder<ItemBatchData>()
-            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
-            .sql("INSERT INTO items (name, description, type) VALUES (:name, :description, 'Key')")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
+                .sql("INSERT INTO items (name, description, type) VALUES (:name, :description, 'Key')")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("keyItemLineMapper")
@@ -91,20 +91,20 @@ public class KeyItemInitializerConfig {
     @Bean("keyItemLoaderJob")
     public Job getKeyItemLoaderJob(@Qualifier("keyItemLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("keyItemLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("keyItemLoaderStep")
     public Step getKeyItemLoaderStep(@Qualifier("keyItemItemReader") final ItemReader<ItemBatchData> reader,
             @Qualifier("keyItemItemWriter") final ItemWriter<ItemBatchData> writer) {
         return stepBuilderFactory.get("keyItemLoaderStep")
-            .<ItemBatchData, ItemBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<ItemBatchData, ItemBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

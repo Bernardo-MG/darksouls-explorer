@@ -32,7 +32,7 @@ public final class MissingFieldQuery implements Query<DataProblem> {
         final String template;
 
         template =
-        // @formatter:off
+                // @formatter:off
                 "MATCH" + System.lineSeparator()
                 + "  (n) " + System.lineSeparator()
                 + "WHERE" + System.lineSeparator()

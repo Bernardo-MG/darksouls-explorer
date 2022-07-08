@@ -75,8 +75,8 @@ public class ITDefaultWeaponServiceGetAll {
         final WeaponSummary data;
 
         data = service.getAll("Weapon", new DisabledPagination(), new DisabledSort())
-            .iterator()
-            .next();
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals("Description", data.getDescription());

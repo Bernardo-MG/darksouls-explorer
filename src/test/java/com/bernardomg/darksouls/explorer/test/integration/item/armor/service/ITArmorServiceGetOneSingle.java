@@ -64,9 +64,9 @@ public class ITArmorServiceGetOneSingle {
 
     private final Long getId() {
         return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
+                .iterator()
+                .next()
+                .getId();
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ITArmorServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Chain Armor", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
@@ -103,7 +103,7 @@ public class ITArmorServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-            .get();
+                .get();
 
         Assertions.assertEquals(5, data.getDurability());
         Assertions.assertEquals(6, data.getWeight());

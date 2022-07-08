@@ -32,10 +32,10 @@ public final class DtoWeaponProgressionLevel implements WeaponProgressionLevel {
     private String                name            = "";
 
     @NonNull
-    private Integer               pathLevel       = 0;
+    private String                path            = "";
 
     @NonNull
-    private String                path            = "";
+    private Integer               pathLevel       = 0;
 
     @NonNull
     private Integer               stability       = 0;

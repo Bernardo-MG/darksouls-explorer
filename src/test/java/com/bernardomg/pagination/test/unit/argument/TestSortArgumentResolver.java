@@ -39,7 +39,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field,");
+        .thenReturn("field,");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -62,7 +62,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field,");
+        .thenReturn("field,");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -84,7 +84,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn(",asc");
+        .thenReturn(",asc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -106,7 +106,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn(",abc");
+        .thenReturn(",abc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -129,7 +129,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn(",");
+        .thenReturn(",");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -151,7 +151,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field,asc");
+        .thenReturn("field,asc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -173,7 +173,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field,asc");
+        .thenReturn("field,asc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -196,7 +196,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field,desc");
+        .thenReturn("field,desc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -218,7 +218,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field,desc");
+        .thenReturn("field,desc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -241,7 +241,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field,abc");
+        .thenReturn("field,abc");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -264,7 +264,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field");
+        .thenReturn("field");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -287,7 +287,7 @@ public class TestSortArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("sort"))
-            .thenReturn("field");
+        .thenReturn("field");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 

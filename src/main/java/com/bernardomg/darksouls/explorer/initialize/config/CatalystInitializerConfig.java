@@ -51,26 +51,26 @@ public class CatalystInitializerConfig {
     @Bean("catalystItemReader")
     public ItemReader<CatalystBatchData> getCatalystItemReader(final LineMapper<CatalystBatchData> lineMapper) {
         return new FlatFileItemReaderBuilder<CatalystBatchData>().name("catalystItemReader")
-            .resource(data)
-            .delimited()
-            .names("name", "type", "description", "weight", "durability", "attacks", "strength_requirement",
-                "dexterity_requirement", "intelligence_requirement", "faith_requirement", "strength_bonus",
-                "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_damage", "magic_damage",
-                "fire_damage", "lightning_damage", "critical_damage", "physical_reduction", "magic_reduction",
-                "fire_reduction", "lightning_reduction", "stability")
-            .linesToSkip(1)
-            .lineMapper(lineMapper)
-            .build();
+                .resource(data)
+                .delimited()
+                .names("name", "type", "description", "weight", "durability", "attacks", "strength_requirement",
+                    "dexterity_requirement", "intelligence_requirement", "faith_requirement", "strength_bonus",
+                    "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_damage", "magic_damage",
+                    "fire_damage", "lightning_damage", "critical_damage", "physical_reduction", "magic_reduction",
+                    "fire_reduction", "lightning_reduction", "stability")
+                .linesToSkip(1)
+                .lineMapper(lineMapper)
+                .build();
     }
 
     @Bean("catalystItemWriter")
     public ItemWriter<CatalystBatchData> getCatalystItemWriter() {
         return new JdbcBatchItemWriterBuilder<CatalystBatchData>()
-            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<CatalystBatchData>())
-            .sql(
-                "INSERT INTO weapons (name, description, type, subtype, weight, durability, strength_requirement, dexterity_requirement, intelligence_requirement, faith_requirement, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, 'Catalyst', '', :weight, :durability, :strength_requirement, :dexterity_requirement, :intelligence_requirement, :faith_requirement, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :critical_damage, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
-            .dataSource(datasource)
-            .build();
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<CatalystBatchData>())
+                .sql(
+                        "INSERT INTO weapons (name, description, type, subtype, weight, durability, strength_requirement, dexterity_requirement, intelligence_requirement, faith_requirement, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, stability) VALUES (:name, :description, 'Catalyst', '', :weight, :durability, :strength_requirement, :dexterity_requirement, :intelligence_requirement, :faith_requirement, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :critical_damage, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :stability)")
+                .dataSource(datasource)
+                .build();
     }
 
     @Bean("catalystLineMapper")
@@ -99,20 +99,20 @@ public class CatalystInitializerConfig {
     @Bean("catalystLoaderJob")
     public Job getCatalystLoaderJob(@Qualifier("catalystLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("catalystLoaderJob")
-            .incrementer(new RunIdIncrementer())
-            .start(armorLoaderStep)
-            .build();
+                .incrementer(new RunIdIncrementer())
+                .start(armorLoaderStep)
+                .build();
     }
 
     @Bean("catalystLoaderStep")
     public Step getCatalystLoaderStep(final ItemReader<CatalystBatchData> reader,
             final ItemWriter<CatalystBatchData> writer) {
         return stepBuilderFactory.get("catalystLoaderStep")
-            .<CatalystBatchData, CatalystBatchData> chunk(5)
-            .reader(reader)
-            .processor(new DBLogProcessor<>())
-            .writer(writer)
-            .build();
+                .<CatalystBatchData, CatalystBatchData> chunk(5)
+                .reader(reader)
+                .processor(new DBLogProcessor<>())
+                .writer(writer)
+                .build();
     }
 
 }

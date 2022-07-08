@@ -44,7 +44,7 @@ public class ITWeaponLevelRepository {
         PersistentWeaponLevel                 level;
 
         levels = levelRepository.findAllByName("Sword")
-            .iterator();
+                .iterator();
 
         level = levels.next();
 

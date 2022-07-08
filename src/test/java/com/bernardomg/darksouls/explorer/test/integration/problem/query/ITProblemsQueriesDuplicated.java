@@ -85,8 +85,8 @@ public class ITProblemsQueriesDuplicated {
         final DataProblem data;
 
         data = queries.findDuplicated("Item")
-            .iterator()
-            .next();
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Item name", data.getName());
         Assertions.assertEquals("Item", data.getSource());

@@ -75,8 +75,8 @@ public class ITAmmunitionServiceGetAll {
         final Ammunition data;
 
         data = service.getAll(new DisabledPagination(), new DisabledSort())
-            .iterator()
-            .next();
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Ammunition", data.getName());
         Assertions.assertEquals("Description", data.getDescription());

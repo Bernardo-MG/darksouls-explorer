@@ -63,7 +63,7 @@ public class WeaponController {
     @GetMapping(path = "/{id}/progression", produces = MediaType.APPLICATION_JSON_VALUE)
     public WeaponProgression readProgressions(@PathVariable("id") final Long id) {
         return service.getProgression(id)
-            .orElse(new DtoWeaponProgression());
+                .orElse(new DtoWeaponProgression());
     }
 
 }

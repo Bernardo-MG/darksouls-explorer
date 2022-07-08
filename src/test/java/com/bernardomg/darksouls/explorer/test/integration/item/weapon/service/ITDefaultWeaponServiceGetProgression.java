@@ -94,9 +94,9 @@ public class ITDefaultWeaponServiceGetProgression {
 
     private final Long getId() {
         return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
+                .iterator()
+                .next()
+                .getId();
     }
 
     @Test
@@ -125,14 +125,14 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals("A", level.getBonus()
@@ -158,14 +158,14 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals(10, level.getDamage()
@@ -231,14 +231,14 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals(0, level.getLevel());
@@ -269,14 +269,14 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         itr.next();
         path = itr.next();
         levels = path.getLevels()
-            .iterator();
+                .iterator();
 
         level = levels.next();
         Assertions.assertEquals(0.1f, level.getDamageReduction()
@@ -311,18 +311,18 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
 
         path = itr.next();
 
         path = itr.next();
 
         level = path.getLevels()
-            .iterator()
-            .next();
+                .iterator()
+                .next();
         Assertions.assertEquals(0, level.getPathLevel());
     }
 
@@ -337,13 +337,13 @@ public class ITDefaultWeaponServiceGetProgression {
         id = getId();
 
         data = service.getProgression(id)
-            .get();
+                .get();
 
         Assertions.assertEquals("Sword", data.getName());
         Assertions.assertEquals(2, IterableUtils.size(data.getPaths()));
 
         itr = data.getPaths()
-            .iterator();
+                .iterator();
         path = itr.next();
 
         Assertions.assertEquals("Magic", path.getPath());

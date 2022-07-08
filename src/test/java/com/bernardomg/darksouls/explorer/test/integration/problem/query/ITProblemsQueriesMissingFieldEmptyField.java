@@ -85,8 +85,8 @@ public class ITProblemsQueriesMissingFieldEmptyField {
         final DataProblem data;
 
         data = queries.findMissingField("Item", "description")
-            .iterator()
-            .next();
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Item name", data.getName());
         Assertions.assertEquals("Item", data.getSource());

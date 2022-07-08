@@ -96,8 +96,8 @@ public class ITSearchServiceGetAllByName {
         request.setName("Item name");
 
         data = service.search(request, new DisabledPagination(), new DisabledSort())
-            .iterator()
-            .next();
+                .iterator()
+                .next();
 
         Assertions.assertEquals("Item name", data.getName());
     }

@@ -44,7 +44,7 @@ public class ITArmorLevelRepository {
         PersistentArmorLevel                 level;
 
         levels = levelRepository.findAllByName("Chain Armor")
-            .iterator();
+                .iterator();
 
         level = levels.next();
 
