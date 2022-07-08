@@ -84,14 +84,14 @@ public class ITPaginationSort {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/weapons")
-                .param("sort", "name,asc");
+            .param("sort", "name,asc");
 
         mockMvc.perform(request)
-        .andExpect(MockMvcResultMatchers.content()
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(MockMvcResultMatchers.status()
-            .isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 1")));
+            .andExpect(MockMvcResultMatchers.content()
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status()
+                .isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 1")));
     }
 
     @Test
@@ -100,14 +100,14 @@ public class ITPaginationSort {
         final RequestBuilder request;
 
         request = MockMvcRequestBuilders.get("/weapons")
-                .param("sort", "name,desc");
+            .param("sort", "name,desc");
 
         mockMvc.perform(request)
-        .andExpect(MockMvcResultMatchers.content()
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(MockMvcResultMatchers.status()
-            .isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 5")));
+            .andExpect(MockMvcResultMatchers.content()
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status()
+                .isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", Matchers.is("Weapon 5")));
     }
 
 }

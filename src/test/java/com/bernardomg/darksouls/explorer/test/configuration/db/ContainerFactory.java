@@ -11,7 +11,7 @@ public final class ContainerFactory {
         final MySQLContainer<?> container;
 
         container = new MySQLContainer<>(DockerImageName.parse("mysql")
-                .withTag("latest"));
+            .withTag("latest"));
         container.withReuse(true);
         container.withDatabaseName("test-db");
         container.withUsername("root");
@@ -24,7 +24,7 @@ public final class ContainerFactory {
         final Neo4jContainer<?> container;
 
         container = new Neo4jContainer<>(DockerImageName.parse("neo4j")
-                .withTag("4.4.3"));
+            .withTag("4.4.3"));
         container.withReuse(true);
         container.addEnv("NEO4JLABS_PLUGINS", "[\"apoc\"]");
 

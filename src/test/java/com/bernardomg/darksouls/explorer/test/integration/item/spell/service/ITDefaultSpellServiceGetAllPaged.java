@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.bernardomg.darksouls.explorer.test.integration.item.misc.service;
+package com.bernardomg.darksouls.explorer.test.integration.item.spell.service;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,8 +27,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
-import com.bernardomg.darksouls.explorer.item.misc.service.ItemService;
+import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
+import com.bernardomg.darksouls.explorer.item.spell.service.DefaultSpellService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.pagination.model.DefaultPagination;
@@ -37,9 +37,9 @@ import com.bernardomg.pagination.model.DisabledSort;
 import com.bernardomg.pagination.model.PageIterable;
 
 @IntegrationTest
-@DisplayName("Reading all the misc items paginated")
-@Sql({ "/db/queries/misc/multiple.sql" })
-public class ITMiscItemServiceGetAllPaged {
+@DisplayName("Reading all the spells paginated")
+@Sql({ "/db/queries/spell/multiple.sql" })
+public class ITDefaultSpellServiceGetAllPaged {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
@@ -52,21 +52,21 @@ public class ITMiscItemServiceGetAllPaged {
     }
 
     @Autowired
-    private ItemService service;
+    private DefaultSpellService service;
 
     /**
      * Default constructor.
      */
-    public ITMiscItemServiceGetAllPaged() {
+    public ITDefaultSpellServiceGetAllPaged() {
         super();
     }
 
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<? extends Item> data;
+        final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("Misc", new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("School", new DefaultPagination(0, 1), new DisabledSort());
 
         Assertions.assertInstanceOf(PageIterable.class, data);
     }
@@ -74,21 +74,59 @@ public class ITMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<? extends Item> data;
+        final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("Misc", new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("School", new DefaultPagination(0, 1), new DisabledSort());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
 
     @Test
-    @DisplayName("When unpaged returns all the data")
-    public void testGetAll_Unpaged() {
-        final Iterable<? extends Item> data;
+    @DisplayName("Pagination with size 0 returns default size")
+    public void testGetAll_Size0_Size() {
+        final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("Misc", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("School", new DefaultPagination(0, 0), new DisabledSort());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("Pagination with size 0 contains all the data")
+    public void testGetAll_Size0_Values() {
+        final PageIterable<? extends SpellSummary> data;
+
+        data = service.getAll("School", new DefaultPagination(0, 0), new DisabledSort());
+
+        Assertions.assertEquals(5, data.getElementsInPage());
+        Assertions.assertEquals(0, data.getPageNumber());
+        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(1, data.getTotalPages());
+    }
+
+    @Test
+    @DisplayName("When unpaged returns all the data")
+    public void testGetAll_Unpaged() {
+        final Iterable<? extends SpellSummary> data;
+
+        data = service.getAll("School", new DisabledPagination(), new DisabledSort());
+
+        Assertions.assertEquals(5, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("The returned page contains all the data")
+    public void testGetAll_Values() {
+        final PageIterable<? extends SpellSummary> data;
+
+        data = service.getAll("School", new DefaultPagination(0, 1), new DisabledSort());
+
+        Assertions.assertEquals(1, data.getElementsInPage());
+        Assertions.assertEquals(0, data.getPageNumber());
+        Assertions.assertEquals(1, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(5, data.getTotalPages());
     }
 
 }

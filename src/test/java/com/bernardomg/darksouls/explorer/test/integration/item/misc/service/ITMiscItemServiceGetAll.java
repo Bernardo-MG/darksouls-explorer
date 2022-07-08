@@ -75,8 +75,8 @@ public class ITMiscItemServiceGetAll {
         final Item data;
 
         data = service.getAll("Misc", new DisabledPagination(), new DisabledSort())
-                .iterator()
-                .next();
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Misc item", data.getName());
         Assertions.assertEquals("Description", data.getDescription());

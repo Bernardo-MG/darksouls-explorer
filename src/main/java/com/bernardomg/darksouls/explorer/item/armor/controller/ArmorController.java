@@ -38,7 +38,7 @@ public class ArmorController {
     @GetMapping(path = "/{id}/progression", produces = MediaType.APPLICATION_JSON_VALUE)
     public ArmorProgression readArmorLevels(@PathVariable("id") final Long id) {
         return service.getProgression(id)
-                .orElse(new ImmutableArmorProgression());
+            .orElse(new ImmutableArmorProgression());
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

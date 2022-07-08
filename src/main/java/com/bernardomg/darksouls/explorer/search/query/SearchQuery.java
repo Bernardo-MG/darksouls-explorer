@@ -43,7 +43,7 @@ public final class SearchQuery implements Query<SearchResult> {
         final Condition                  nameCondition;
 
         item = Cypher.node("Item")
-                .named("i");
+            .named("i");
         nodeName = item.property("name");
 
         ongoingBuilder = Cypher.match(item);
@@ -55,8 +55,8 @@ public final class SearchQuery implements Query<SearchResult> {
 
         return ongoingBuilder.returning(Functions.id(item)
             .as("id"), nodeName.as("name"))
-                .build()
-                .getCypher();
+            .build()
+            .getCypher();
     }
 
 }

@@ -85,8 +85,8 @@ public class ITProblemsQueriesMissingRelationships {
         final DataProblem data;
 
         data = queries.findMissingRelationships("Item", Arrays.asList("SELLS"))
-                .iterator()
-                .next();
+            .iterator()
+            .next();
 
         Assertions.assertEquals("Item name", data.getName());
         Assertions.assertEquals("Item", data.getSource());

@@ -12,6 +12,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.bernardomg.pagination.argument.PaginationArgumentResolver;
+import com.bernardomg.pagination.model.DefaultPagination;
 import com.bernardomg.pagination.model.Pagination;
 
 @DisplayName("Pagination argument resolver")
@@ -38,9 +39,9 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("page"))
-        .thenReturn("1");
+            .thenReturn("1");
         Mockito.when(webRequest.getParameter("size"))
-        .thenReturn("10");
+            .thenReturn("10");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -62,9 +63,9 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("page"))
-        .thenReturn("1");
+            .thenReturn("1");
         Mockito.when(webRequest.getParameter("size"))
-        .thenReturn("10");
+            .thenReturn("10");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -73,7 +74,105 @@ public class TestPaginationArgumentResolver {
     }
 
     @Test
-    @DisplayName("The pagination is not paged when receiving no parameters")
+    @DisplayName("The pagination is paged when receiving a negative page")
+    public void testResolve_NegativePage_Paged() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("page"))
+            .thenReturn("-1");
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("1");
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertTrue(pagination.getPaged());
+    }
+
+    @Test
+    @DisplayName("Returns pagination when receiving a negative page")
+    public void testResolve_NegativePage_Values() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("page"))
+            .thenReturn("-1");
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("1");
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertEquals(-1, pagination.getPage());
+        Assertions.assertEquals(1, pagination.getSize());
+    }
+
+    @Test
+    @DisplayName("Returns pagination with default size when receiving a negative size")
+    public void testResolve_NegativeSize_DefaultValues() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("page"))
+            .thenReturn("1");
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("-1");
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertEquals(1, pagination.getPage());
+        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, pagination.getSize());
+    }
+
+    @Test
+    @DisplayName("The pagination is paged when receiving a negative size")
+    public void testResolve_NegativeSize_Paged() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("page"))
+            .thenReturn("1");
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("-1");
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertTrue(pagination.getPaged());
+    }
+
+    @Test
+    @DisplayName("The pagination is not paged when receiving no pagination parameter")
     public void testResolve_NoPagination_NotPaged() throws Exception {
         final MethodParameter       parameter;
         final ModelAndViewContainer mavContainer;
@@ -85,6 +184,31 @@ public class TestPaginationArgumentResolver {
         mavContainer = Mockito.mock(ModelAndViewContainer.class);
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("0");
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertFalse(pagination.getPaged());
+    }
+
+    @Test
+    @DisplayName("The pagination is not paged when receiving no parameters")
+    public void testResolve_NoParameters_NotPaged() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("0");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -106,7 +230,7 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("page"))
-        .thenReturn("1");
+            .thenReturn("1");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
@@ -128,7 +252,56 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("page"))
-        .thenReturn("1");
+            .thenReturn("1");
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertTrue(pagination.getPaged());
+    }
+
+    @Test
+    @DisplayName("Returns pagination with default size when receiving a size value of zero")
+    public void testResolve_ZeroSize_DefaultValues() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("page"))
+            .thenReturn("1");
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("0");
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertEquals(1, pagination.getPage());
+        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, pagination.getSize());
+    }
+
+    @Test
+    @DisplayName("The pagination is paged when receiving a size value of zero")
+    public void testResolve_ZeroSize_Paged() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("page"))
+            .thenReturn("1");
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("0");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 

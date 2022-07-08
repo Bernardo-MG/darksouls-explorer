@@ -16,8 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class PaginationArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private static final Integer DEFAULT_SIZE = 20;
-
     public PaginationArgumentResolver() {
         super();
     }
@@ -25,30 +23,38 @@ public final class PaginationArgumentResolver implements HandlerMethodArgumentRe
     @Override
     public final Pagination resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
             final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
-        final String     rawPage;
+        final String     pageText;
         final String     sizeText;
         final Integer    page;
         final Integer    size;
         final Pagination pagination;
 
-        rawPage = webRequest.getParameter("page");
+        pageText = webRequest.getParameter("page");
 
-        if (rawPage == null) {
+        if (pageText == null) {
             // No pagination
             pagination = new DisabledPagination();
             log.trace("No pagination received, using disabled pagination");
         } else {
-            page = Integer.valueOf(rawPage);
+            page = Integer.valueOf(pageText);
+
+            // Parses size
             sizeText = webRequest.getParameter("size");
             if (sizeText == null) {
                 // No size
-                size = DEFAULT_SIZE;
-                log.trace("No size received, using default page size: {}", size);
+                size = -1;
+                log.trace("No size received");
             } else {
                 size = Integer.valueOf(sizeText);
             }
+
             log.trace("Building page {} with size {}", page, size);
-            pagination = new DefaultPagination(page, size);
+            // Checks size. If it is invalid then the default size is used
+            if (size > 0) {
+                pagination = new DefaultPagination(page, size);
+            } else {
+                pagination = new DefaultPagination(page);
+            }
         }
 
         return pagination;

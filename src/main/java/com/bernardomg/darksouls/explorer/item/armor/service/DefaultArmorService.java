@@ -85,9 +85,9 @@ public final class DefaultArmorService implements ArmorService {
         final String name;
 
         name = StreamSupport.stream(levels.spliterator(), false)
-                .map(ArmorLevel::getName)
-                .findAny()
-                .orElse("");
+            .map(ArmorLevel::getName)
+            .findAny()
+            .orElse("");
 
         return new ImmutableArmorProgression(name, levels);
     }

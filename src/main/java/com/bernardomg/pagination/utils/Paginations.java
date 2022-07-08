@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.bernardomg.pagination.model.DefaultPageIterable;
+import com.bernardomg.pagination.model.DefaultPagination;
 import com.bernardomg.pagination.model.Direction;
 import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
@@ -33,18 +34,29 @@ public final class Paginations {
         final Pageable                                       pageable;
         final org.springframework.data.domain.Sort.Direction direction;
         final Boolean                                        paged;
+        final Integer                                        size;
 
-        paged = (pagination.getPaged()) && (pagination.getSize() > 0) && (pagination.getPage() >= 0);
+        paged = (pagination.getPaged()) && (pagination.getPage() >= 0);
+
+        if (pagination.getSize() > 0) {
+            size = pagination.getSize();
+        } else {
+            size = DefaultPagination.DEFAULT_SIZE;
+        }
 
         if ((paged) && (sort.getSorted())) {
+            // Paged and sorted
             direction = toSpringDirection(sort.getDirection());
-            pageable = PageRequest.of(pagination.getPage(), pagination.getSize(), direction, sort.getProperty());
+            pageable = PageRequest.of(pagination.getPage(), size, direction, sort.getProperty());
         } else if (paged) {
-            pageable = PageRequest.of(pagination.getPage(), pagination.getSize());
+            // Only paged
+            pageable = PageRequest.of(pagination.getPage(), size);
         } else if (sort.getSorted()) {
+            // Only sorted
             direction = toSpringDirection(sort.getDirection());
-            pageable = PageRequest.of(0, 10, direction, sort.getProperty());
+            pageable = PageRequest.of(0, DefaultPagination.DEFAULT_SIZE, direction, sort.getProperty());
         } else {
+            // Not paged nor sorted
             pageable = Pageable.unpaged();
         }
 

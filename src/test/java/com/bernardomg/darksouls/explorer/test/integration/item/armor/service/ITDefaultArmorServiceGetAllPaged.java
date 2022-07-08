@@ -28,7 +28,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
-import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
+import com.bernardomg.darksouls.explorer.item.armor.service.DefaultArmorService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.pagination.model.DefaultPagination;
@@ -39,7 +39,7 @@ import com.bernardomg.pagination.model.PageIterable;
 @IntegrationTest
 @DisplayName("Reading all the armors paginated")
 @Sql({ "/db/queries/armor/multiple.sql" })
-public class ITArmorServiceGetAllPaged {
+public class ITDefaultArmorServiceGetAllPaged {
 
     @Container
     private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
@@ -52,12 +52,12 @@ public class ITArmorServiceGetAllPaged {
     }
 
     @Autowired
-    private ArmorService service;
+    private DefaultArmorService service;
 
     /**
      * Default constructor.
      */
-    public ITArmorServiceGetAllPaged() {
+    public ITDefaultArmorServiceGetAllPaged() {
         super();
     }
 
@@ -82,6 +82,30 @@ public class ITArmorServiceGetAllPaged {
     }
 
     @Test
+    @DisplayName("Pagination with size 0 returns default size")
+    public void testGetAll_Size0_Size() {
+        final Iterable<? extends Armor> data;
+
+        data = service.getAll(new DefaultPagination(0, 0), new DisabledSort());
+
+        Assertions.assertEquals(5, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("Pagination with size 0 contains all the data")
+    public void testGetAll_Size0_Values() {
+        final PageIterable<? extends Armor> data;
+
+        data = service.getAll(new DefaultPagination(0, 0), new DisabledSort());
+
+        Assertions.assertEquals(5, data.getElementsInPage());
+        Assertions.assertEquals(0, data.getPageNumber());
+        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(1, data.getTotalPages());
+    }
+
+    @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
         final Iterable<? extends Armor> data;
@@ -89,6 +113,20 @@ public class ITArmorServiceGetAllPaged {
         data = service.getAll(new DisabledPagination(), new DisabledSort());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
+    }
+
+    @Test
+    @DisplayName("The returned page contains all the data")
+    public void testGetAll_Values() {
+        final PageIterable<? extends Armor> data;
+
+        data = service.getAll(new DefaultPagination(0, 1), new DisabledSort());
+
+        Assertions.assertEquals(1, data.getElementsInPage());
+        Assertions.assertEquals(0, data.getPageNumber());
+        Assertions.assertEquals(1, data.getSize());
+        Assertions.assertEquals(5, data.getTotalElements());
+        Assertions.assertEquals(5, data.getTotalPages());
     }
 
 }

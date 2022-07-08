@@ -49,9 +49,9 @@ public class ITArmorServiceGetProgressionNoLevels {
 
     private final Long getId() {
         return repository.findAll()
-                .iterator()
-                .next()
-                .getId();
+            .iterator()
+            .next()
+            .getId();
     }
 
     @Test

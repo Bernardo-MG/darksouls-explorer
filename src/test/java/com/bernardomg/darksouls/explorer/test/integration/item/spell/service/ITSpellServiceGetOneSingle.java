@@ -64,9 +64,9 @@ public class ITSpellServiceGetOneSingle {
 
     private final Long getId() {
         return repository.findAll()
-                .iterator()
-                .next()
-                .getId();
+            .iterator()
+            .next()
+            .getId();
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ITSpellServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-                .get();
+            .get();
 
         Assertions.assertEquals("Spell", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
@@ -104,7 +104,7 @@ public class ITSpellServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-                .get();
+            .get();
 
         Assertions.assertEquals(1, data.getRequirements()
             .getFaith());
@@ -121,7 +121,7 @@ public class ITSpellServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-                .get();
+            .get();
 
         Assertions.assertEquals(3, data.getSlots());
         Assertions.assertEquals(4, data.getUses());

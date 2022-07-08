@@ -50,23 +50,23 @@ public class AmmunitionInitializerConfig {
 
     @Bean("ammunitionItemReader")
     public ItemReader<ItemBatchData>
-    getAmmunitionItemReader(@Qualifier("ammunitionLineMapper") final LineMapper<ItemBatchData> lineMapper) {
+            getAmmunitionItemReader(@Qualifier("ammunitionLineMapper") final LineMapper<ItemBatchData> lineMapper) {
         return new FlatFileItemReaderBuilder<ItemBatchData>().name("ammunitionItemReader")
-                .resource(data)
-                .delimited()
-                .names("name", "description")
-                .linesToSkip(1)
-                .lineMapper(lineMapper)
-                .build();
+            .resource(data)
+            .delimited()
+            .names("name", "description")
+            .linesToSkip(1)
+            .lineMapper(lineMapper)
+            .build();
     }
 
     @Bean("ammunitionItemWriter")
     public ItemWriter<ItemBatchData> getAmmunitionItemWriter() {
         return new JdbcBatchItemWriterBuilder<ItemBatchData>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
-                .sql("INSERT INTO ammunitions (type, name, description) VALUES (\"ammunition\", :name, :description)")
-                .dataSource(datasource)
-                .build();
+            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
+            .sql("INSERT INTO ammunitions (type, name, description) VALUES (\"ammunition\", :name, :description)")
+            .dataSource(datasource)
+            .build();
     }
 
     @Bean("ammunitionLineMapper")
@@ -91,20 +91,20 @@ public class AmmunitionInitializerConfig {
     @Bean("ammunitionLoaderJob")
     public Job getAmmunitionLoaderJob(@Qualifier("ammunitionLoaderStep") final Step armorLoaderStep) {
         return jobBuilderFactory.get("ammunitionLoaderJob")
-                .incrementer(new RunIdIncrementer())
-                .start(armorLoaderStep)
-                .build();
+            .incrementer(new RunIdIncrementer())
+            .start(armorLoaderStep)
+            .build();
     }
 
     @Bean("ammunitionLoaderStep")
     public Step getAmmunitionLoaderStep(@Qualifier("ammunitionItemReader") final ItemReader<ItemBatchData> reader,
             @Qualifier("ammunitionItemWriter") final ItemWriter<ItemBatchData> writer) {
         return stepBuilderFactory.get("ammunitionLoaderStep")
-                .<ItemBatchData, ItemBatchData> chunk(5)
-                .reader(reader)
-                .processor(new DBLogProcessor<>())
-                .writer(writer)
-                .build();
+            .<ItemBatchData, ItemBatchData> chunk(5)
+            .reader(reader)
+            .processor(new DBLogProcessor<>())
+            .writer(writer)
+            .build();
     }
 
 }

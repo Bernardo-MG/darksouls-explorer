@@ -84,7 +84,7 @@ public final class DefaultWeaponService implements WeaponService {
 
         if (weapon.isPresent()) {
             name = weapon.get()
-                    .getName();
+                .getName();
 
             levels = adjustmentRepository.findAllByName(name);
         } else {
@@ -92,8 +92,8 @@ public final class DefaultWeaponService implements WeaponService {
         }
 
         return levels.stream()
-                .map(this::toWeaponAdjustment)
-                .collect(Collectors.toList());
+            .map(this::toWeaponAdjustment)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -188,7 +188,7 @@ public final class DefaultWeaponService implements WeaponService {
 
         if (weapon.isPresent()) {
             name = weapon.get()
-                    .getName();
+                .getName();
 
             levels = levelRepository.findAllByName(name);
 
@@ -236,17 +236,17 @@ public final class DefaultWeaponService implements WeaponService {
         DtoWeaponProgressionPath                path;
 
         pathNames = StreamSupport.stream(levelNodes.spliterator(), false)
-                .map(WeaponLevelNode::getPath)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
+            .map(WeaponLevelNode::getPath)
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
 
         paths = new ArrayList<>();
         for (final String pathName : pathNames) {
             currentLevels = StreamSupport.stream(levels.spliterator(), false)
-                    .filter((l) -> pathName.equals(l.getPath()))
-                    .map((l) -> toWeaponProgressionLevel(l, levelNodes))
-                    .collect(Collectors.toList());
+                .filter((l) -> pathName.equals(l.getPath()))
+                .map((l) -> toWeaponProgressionLevel(l, levelNodes))
+                .collect(Collectors.toList());
 
             path = new DtoWeaponProgressionPath();
             path.setPath(pathName);
@@ -255,9 +255,9 @@ public final class DefaultWeaponService implements WeaponService {
         }
 
         name = StreamSupport.stream(levels.spliterator(), false)
-                .map(PersistentWeaponLevel::getName)
-                .findAny()
-                .orElse("");
+            .map(PersistentWeaponLevel::getName)
+            .findAny()
+            .orElse("");
 
         result = new DtoWeaponProgression();
         result.setName(name);
@@ -309,13 +309,13 @@ public final class DefaultWeaponService implements WeaponService {
         result.setDamageReduction(damageReduction);
 
         levelNodeFound = StreamSupport.stream(levelNodes.spliterator(), false)
-                .filter(n -> n.getName()
-                    .equals(level.getName())
+            .filter(n -> n.getName()
+                .equals(level.getName())
                     && n.getPath()
-                    .equals(level.getPath())
+                        .equals(level.getPath())
                     && n.getLevel()
-                    .equals(level.getLevel()))
-                .findFirst();
+                        .equals(level.getLevel()))
+            .findFirst();
         if (levelNodeFound.isPresent()) {
             levelNode = levelNodeFound.get();
             result.setPathLevel(levelNode.getPathLevel());

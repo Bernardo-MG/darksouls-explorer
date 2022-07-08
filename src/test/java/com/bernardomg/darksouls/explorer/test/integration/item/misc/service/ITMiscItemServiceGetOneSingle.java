@@ -64,9 +64,9 @@ public class ITMiscItemServiceGetOneSingle {
 
     private final Long getId() {
         return repository.findAll()
-                .iterator()
-                .next()
-                .getId();
+            .iterator()
+            .next()
+            .getId();
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ITMiscItemServiceGetOneSingle {
         id = getId();
 
         data = service.getOne(id)
-                .get();
+            .get();
 
         Assertions.assertEquals("Misc item", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
