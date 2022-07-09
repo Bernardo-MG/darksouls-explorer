@@ -40,11 +40,7 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.util.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.test.util.domain.Item;
-import com.bernardomg.pagination.model.DefaultPagination;
-import com.bernardomg.pagination.model.DefaultSort;
 import com.bernardomg.pagination.model.Direction;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
 import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
@@ -89,8 +85,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination     pagination;
         final Sort           sort;
 
-        pagination = new DefaultPagination(0, 5);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 5);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
             .iterator();
@@ -114,8 +110,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(0, 5);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 5);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -130,8 +126,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(0, 5);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 5);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -148,8 +144,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DisabledPagination();
-        sort = new DisabledSort();
+        pagination = Pagination.disabled();
+        sort = Sort.disabled();
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -166,8 +162,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(0, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -183,8 +179,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(0, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -199,8 +195,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(0, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -217,8 +213,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(4, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(4, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -234,8 +230,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(4, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(4, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -250,8 +246,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(4, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(4, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -268,8 +264,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(1, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(1, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -285,8 +281,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(1, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(1, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 
@@ -301,8 +297,8 @@ public class ITTextQueryExecutorPagination {
         final Pagination         pagination;
         final Sort               sort;
 
-        pagination = new DefaultPagination(1, 1);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(1, 1);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort));
 

@@ -32,9 +32,9 @@ import com.bernardomg.darksouls.explorer.item.spell.service.DefaultSpellService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.pagination.model.DefaultPagination;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
 import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @DisplayName("Reading all the spells paginated")
@@ -66,7 +66,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     public void testGetAll_Instance() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("School", new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("School", Pagination.of(0, 1), Sort.disabled());
 
         Assertions.assertInstanceOf(PageIterable.class, data);
     }
@@ -76,7 +76,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     public void testGetAll_SingleResult() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("School", new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("School", Pagination.of(0, 1), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -86,7 +86,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     public void testGetAll_Size0_Size() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("School", new DefaultPagination(0, 0), new DisabledSort());
+        data = service.getAll("School", Pagination.of(0, 0), Sort.disabled());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }
@@ -96,7 +96,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     public void testGetAll_Size0_Values() {
         final PageIterable<? extends SpellSummary> data;
 
-        data = service.getAll("School", new DefaultPagination(0, 0), new DisabledSort());
+        data = service.getAll("School", Pagination.of(0, 0), Sort.disabled());
 
         Assertions.assertEquals(5, data.getElementsInPage());
         Assertions.assertEquals(0, data.getPageNumber());
@@ -110,7 +110,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     public void testGetAll_Unpaged() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("School", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("School", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }
@@ -120,7 +120,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     public void testGetAll_Values() {
         final PageIterable<? extends SpellSummary> data;
 
-        data = service.getAll("School", new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("School", Pagination.of(0, 1), Sort.disabled());
 
         Assertions.assertEquals(1, data.getElementsInPage());
         Assertions.assertEquals(0, data.getPageNumber());

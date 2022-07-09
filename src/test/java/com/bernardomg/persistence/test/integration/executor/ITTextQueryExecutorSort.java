@@ -40,9 +40,7 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.util.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.test.util.domain.Item;
-import com.bernardomg.pagination.model.DefaultSort;
 import com.bernardomg.pagination.model.Direction;
-import com.bernardomg.pagination.model.DisabledPagination;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
 import com.bernardomg.persistence.executor.QueryExecutor;
@@ -83,13 +81,11 @@ public class ITTextQueryExecutorSort {
     @DisplayName("Sorts in ascending order through a query")
     public void testFetch_Ascending() {
         final Iterator<Item> data;
-        final Pagination     pagination;
         final Sort           sort;
 
-        pagination = new DisabledPagination();
-        sort = new DefaultSort("name", Direction.ASC);
+        sort = Sort.of("name", Direction.ASC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
+        data = queryExecutor.fetch(getQuery(), this::toItem, Pagination.disabled(), Arrays.asList(sort))
             .iterator();
 
         Assertions.assertEquals("Item1", data.next()
@@ -108,13 +104,11 @@ public class ITTextQueryExecutorSort {
     @DisplayName("Sorts in descending order through a query")
     public void testFetch_Descending() {
         final Iterator<Item> data;
-        final Pagination     pagination;
         final Sort           sort;
 
-        pagination = new DisabledPagination();
-        sort = new DefaultSort("name", Direction.DESC);
+        sort = Sort.of("name", Direction.DESC);
 
-        data = queryExecutor.fetch(getQuery(), this::toItem, pagination, Arrays.asList(sort))
+        data = queryExecutor.fetch(getQuery(), this::toItem, Pagination.disabled(), Arrays.asList(sort))
             .iterator();
 
         Assertions.assertEquals("Item5", data.next()

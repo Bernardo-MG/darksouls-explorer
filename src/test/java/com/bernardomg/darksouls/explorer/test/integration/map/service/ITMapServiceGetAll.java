@@ -36,8 +36,8 @@ import com.bernardomg.darksouls.explorer.test.configuration.annotation.Integrati
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @ContextConfiguration(initializers = { ITMapServiceGetAll.Initializer.class })
@@ -76,7 +76,7 @@ public class ITMapServiceGetAll {
     public void testFindAll_Count() {
         final Iterable<Map> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll(Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -86,7 +86,7 @@ public class ITMapServiceGetAll {
     public void testFindAll_Data() {
         final Map data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort())
+        data = service.getAll(Pagination.disabled(), Sort.disabled())
             .iterator()
             .next();
 

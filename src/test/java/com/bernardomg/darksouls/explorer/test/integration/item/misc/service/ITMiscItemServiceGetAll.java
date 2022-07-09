@@ -31,8 +31,8 @@ import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
 import com.bernardomg.darksouls.explorer.item.misc.service.ItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @DisplayName("Reading all the misc items")
@@ -64,7 +64,7 @@ public class ITMiscItemServiceGetAll {
     public void testGetAll_Count() {
         final Iterable<? extends Item> data;
 
-        data = service.getAll("Misc", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("Misc", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -74,7 +74,7 @@ public class ITMiscItemServiceGetAll {
     public void testGetAll_Data() {
         final Item data;
 
-        data = service.getAll("Misc", new DisabledPagination(), new DisabledSort())
+        data = service.getAll("Misc", Pagination.disabled(), Sort.disabled())
             .iterator()
             .next();
 
@@ -87,7 +87,7 @@ public class ITMiscItemServiceGetAll {
     public void testGetAll_EmptyType_Count() {
         final Iterable<? extends Item> data;
 
-        data = service.getAll("", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -97,7 +97,7 @@ public class ITMiscItemServiceGetAll {
     public void testGetAll_InvalidType_Count() {
         final Iterable<? extends Item> data;
 
-        data = service.getAll("abc", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("abc", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(0, IterableUtils.size(data));
     }

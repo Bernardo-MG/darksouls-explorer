@@ -31,8 +31,8 @@ import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
 import com.bernardomg.darksouls.explorer.item.spell.service.SpellService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @DisplayName("Reading all the spells")
@@ -64,7 +64,7 @@ public class ITSpellServiceGetAll {
     public void testGetAll_Count() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("School", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("School", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -74,7 +74,7 @@ public class ITSpellServiceGetAll {
     public void testGetAll_Data() {
         final SpellSummary data;
 
-        data = service.getAll("School", new DisabledPagination(), new DisabledSort())
+        data = service.getAll("School", Pagination.disabled(), Sort.disabled())
             .iterator()
             .next();
 
@@ -87,7 +87,7 @@ public class ITSpellServiceGetAll {
     public void testGetAll_EmptyType_Count() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -97,7 +97,7 @@ public class ITSpellServiceGetAll {
     public void testGetAll_InvalidType_Count() {
         final Iterable<? extends SpellSummary> data;
 
-        data = service.getAll("abc", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("abc", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(0, IterableUtils.size(data));
     }

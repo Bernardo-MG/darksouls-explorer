@@ -12,6 +12,48 @@ package com.bernardomg.pagination.model;
 public interface Pagination {
 
     /**
+     * Creates a {@code Pagination} which represents disabled pagination.
+     *
+     * @return a disabled {@code Pagination}
+     */
+    public static Pagination disabled() {
+        return DisabledPagination.INSTANCE;
+    }
+
+    /**
+     * Creates a {@code Pagination} which represents the first page.
+     *
+     * @return a {@code Pagination} for the first page
+     */
+    public static Pagination first() {
+        return of(0);
+    }
+
+    /**
+     * Creates a {@code Pagination} for the received page and default size.
+     *
+     * @param page
+     *            zero-based page number
+     * @return {@code Pagination} for the page and size
+     */
+    public static Pagination of(final Integer page) {
+        return new DefaultPagination(page);
+    }
+
+    /**
+     * Creates a {@code Pagination} for the received page and size.
+     *
+     * @param page
+     *            zero-based page number
+     * @param size
+     *            page size
+     * @return {@code Pagination} for the page and size
+     */
+    public static Pagination of(final Integer page, final Integer size) {
+        return new DefaultPagination(page, size);
+    }
+
+    /**
      * Page index to read.
      *
      * @return the page index

@@ -14,21 +14,26 @@ import lombok.NonNull;
 public final class DisabledPagination implements Pagination {
 
     /**
+     * Singleton for disabled pagination.
+     */
+    public static Pagination INSTANCE = new DisabledPagination();
+
+    /**
      * Default page.
      */
     @NonNull
-    private final Integer page  = -1;
+    private final Integer    page     = -1;
 
     /**
      * Disabled pagination flag.
      */
     @NonNull
-    private final Boolean paged = false;
+    private final Boolean    paged    = false;
 
     /**
      * Default size.
      */
     @NonNull
-    private final Integer size  = -1;
+    private final Integer    size     = -1;
 
 }

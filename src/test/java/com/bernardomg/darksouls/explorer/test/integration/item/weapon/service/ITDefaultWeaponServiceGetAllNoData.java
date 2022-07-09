@@ -30,8 +30,8 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.item.weapon.service.DefaultWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @DisplayName("Reading all the weapons when there is no data")
@@ -62,7 +62,7 @@ public class ITDefaultWeaponServiceGetAllNoData {
     public void testGetAll_Count() {
         final Iterable<? extends WeaponSummary> data;
 
-        data = service.getAll("Weapon", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("Weapon", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(0, IterableUtils.size(data));
     }

@@ -13,6 +13,11 @@ import lombok.Data;
 public final class DisabledSort implements Sort {
 
     /**
+     * Singleton for disabled sort.
+     */
+    public static Sort      INSTANCE  = new DisabledSort();
+
+    /**
      * Default direction.
      */
     private final Direction direction = Direction.ASC;

@@ -30,8 +30,8 @@ import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @DisplayName("Reading all the armors when there is no data")
@@ -62,7 +62,7 @@ public class ITArmorServiceGetAllNoData {
     public void testGetAll_Count() {
         final Iterable<? extends Armor> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll(Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(0, IterableUtils.size(data));
     }
