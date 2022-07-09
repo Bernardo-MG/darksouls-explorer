@@ -14,9 +14,18 @@ import com.bernardomg.pagination.model.Sort;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Argument resolver for sorting data.
+ * 
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 @Slf4j
 public final class SortArgumentResolver implements HandlerMethodArgumentResolver {
 
+    /**
+     * Default constructor.
+     */
     public SortArgumentResolver() {
         super();
     }

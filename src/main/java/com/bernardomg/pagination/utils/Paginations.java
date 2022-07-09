@@ -12,6 +12,12 @@ import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
 
+/**
+ * Pagination utility class.
+ * 
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 public final class Paginations {
 
     public static final <T> PageIterable<T> fromSpring(final Page<T> page) {

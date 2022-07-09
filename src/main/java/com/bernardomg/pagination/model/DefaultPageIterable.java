@@ -1,6 +1,7 @@
 
 package com.bernardomg.pagination.model;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 import lombok.Data;
@@ -11,29 +12,46 @@ import lombok.NonNull;
 @NoArgsConstructor
 public final class DefaultPageIterable<T> implements PageIterable<T> {
 
+    /**
+     * Actual content.
+     */
     @NonNull
-    private Iterable<T> content;
+    private Iterable<T> content        = Collections.emptyList();
 
-    @NonNull
-    private Integer     elementsInPage;
+    /**
+     * Number of elements in the page.
+     */
+    private Integer     elementsInPage = 0;
 
-    @NonNull
-    private Boolean     first;
+    /**
+     * Flags this is as the first page.
+     */
+    private Boolean     first          = false;
 
-    @NonNull
-    private Boolean     last;
+    /**
+     * Flags this is as the last page.
+     */
+    private Boolean     last           = false;
 
-    @NonNull
-    private Integer     pageNumber;
+    /**
+     * Number of this page.
+     */
+    private Integer     pageNumber     = 0;
 
-    @NonNull
-    private Integer     size;
+    /**
+     * Size of this page.
+     */
+    private Integer     size           = 0;
 
-    @NonNull
-    private Long        totalElements;
+    /**
+     * Total number of elements among all the pages.
+     */
+    private Long        totalElements  = 0l;
 
-    @NonNull
-    private Integer     totalPages;
+    /**
+     * Total number of pages.
+     */
+    private Integer     totalPages     = 0;
 
     @Override
     public Boolean isFirst() {

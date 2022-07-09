@@ -13,6 +13,12 @@ import com.bernardomg.pagination.model.Pagination;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Argument resolver for pagination data.
+ * 
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 @Slf4j
 public final class PaginationArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -22,6 +28,9 @@ public final class PaginationArgumentResolver implements HandlerMethodArgumentRe
         super();
     }
 
+    /**
+     * Default constructor.
+     */
     @Override
     public final Pagination resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
             final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
