@@ -73,15 +73,15 @@ public class ITDefaultWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(7, data.getDamage()
-            .getPhysical());
         Assertions.assertEquals(8, data.getDamage()
-            .getMagic());
+            .getPhysical());
         Assertions.assertEquals(9, data.getDamage()
-            .getFire());
+            .getMagic());
         Assertions.assertEquals(10, data.getDamage()
-            .getLightning());
+            .getFire());
         Assertions.assertEquals(11, data.getDamage()
+            .getLightning());
+        Assertions.assertEquals(12, data.getDamage()
             .getCritical());
     }
 
@@ -96,13 +96,13 @@ public class ITDefaultWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(12, data.getDamageReduction()
-            .getPhysical());
         Assertions.assertEquals(13, data.getDamageReduction()
-            .getMagic());
+            .getPhysical());
         Assertions.assertEquals(14, data.getDamageReduction()
-            .getFire());
+            .getMagic());
         Assertions.assertEquals(15, data.getDamageReduction()
+            .getFire());
+        Assertions.assertEquals(16, data.getDamageReduction()
             .getLightning());
     }
 
@@ -144,13 +144,13 @@ public class ITDefaultWeaponServiceGetOneSingle {
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals(3, data.getRequirements()
-            .getDexterity());
         Assertions.assertEquals(4, data.getRequirements()
-            .getFaith());
+            .getDexterity());
         Assertions.assertEquals(5, data.getRequirements()
-            .getStrength());
+            .getFaith());
         Assertions.assertEquals(6, data.getRequirements()
+            .getStrength());
+        Assertions.assertEquals(7, data.getRequirements()
             .getIntelligence());
     }
 
@@ -167,6 +167,7 @@ public class ITDefaultWeaponServiceGetOneSingle {
 
         Assertions.assertEquals(1, data.getDurability());
         Assertions.assertEquals(2, data.getWeight());
+        Assertions.assertEquals(3, data.getStability());
     }
 
     private final Long getId() {

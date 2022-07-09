@@ -19,6 +19,8 @@ public interface Weapon {
 
     public WeaponRequirements getRequirements();
 
+    public Integer getStability();
+
     public String getSubtype();
 
     public String getType();

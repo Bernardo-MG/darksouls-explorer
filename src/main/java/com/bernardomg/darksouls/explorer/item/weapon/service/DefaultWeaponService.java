@@ -135,6 +135,7 @@ public final class DefaultWeaponService implements WeaponService {
             weapon.setDescription(entity.getDescription());
             weapon.setDurability(entity.getDurability());
             weapon.setWeight(entity.getWeight());
+            weapon.setStability(entity.getStability());
             weapon.setType(entity.getType());
             weapon.setSubtype(entity.getSubtype());
 

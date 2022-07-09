@@ -97,6 +97,10 @@ public final class PersistentWeapon {
     private Float   physicalReduction  = 0f;
 
     @NonNull
+    @Column(name = "stability", nullable = false)
+    private Integer stability          = 0;
+
+    @NonNull
     @Column(name = "strength_requirement", nullable = false)
     private Integer strength;
 
