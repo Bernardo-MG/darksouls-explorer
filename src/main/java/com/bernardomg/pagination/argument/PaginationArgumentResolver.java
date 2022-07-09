@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class PaginationArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private static final Pagination DEFAULT_PAGE = new DefaultPagination(0);
+
     public PaginationArgumentResolver() {
         super();
     }
@@ -31,8 +33,11 @@ public final class PaginationArgumentResolver implements HandlerMethodArgumentRe
 
         pageText = webRequest.getParameter("page");
 
+        // TODO: Allow disabling pagination by parameter
+
         if (pageText == null) {
             // No pagination
+            // TODO: By default this should be a default page
             pagination = new DisabledPagination();
             log.trace("No pagination received, using disabled pagination");
         } else {
