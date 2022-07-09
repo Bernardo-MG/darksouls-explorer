@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 /**
- * Default implementation of the paginated data request.
+ * Immutable implementation of the paginated data request.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
