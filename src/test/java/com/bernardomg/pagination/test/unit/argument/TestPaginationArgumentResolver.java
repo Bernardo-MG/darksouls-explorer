@@ -172,8 +172,8 @@ public class TestPaginationArgumentResolver {
     }
 
     @Test
-    @DisplayName("The pagination is not paged when receiving no pagination parameter")
-    public void testResolve_NoPagination_NotPaged() throws Exception {
+    @DisplayName("The pagination is paged when receiving no pagination parameter")
+    public void testResolve_NoPagination_Paged() throws Exception {
         final MethodParameter       parameter;
         final ModelAndViewContainer mavContainer;
         final NativeWebRequest      webRequest;
@@ -190,12 +190,12 @@ public class TestPaginationArgumentResolver {
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
-        Assertions.assertFalse(pagination.getPaged());
+        Assertions.assertTrue(pagination.getPaged());
     }
 
     @Test
-    @DisplayName("The pagination is not paged when receiving no parameters")
-    public void testResolve_NoParameters_NotPaged() throws Exception {
+    @DisplayName("Returns pagination when receiving no pagination parameter")
+    public void testResolve_NoPagination_Values() throws Exception {
         final MethodParameter       parameter;
         final ModelAndViewContainer mavContainer;
         final NativeWebRequest      webRequest;
@@ -208,11 +208,51 @@ public class TestPaginationArgumentResolver {
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
 
         Mockito.when(webRequest.getParameter("size"))
-            .thenReturn("0");
+            .thenReturn("10");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
-        Assertions.assertFalse(pagination.getPaged());
+        Assertions.assertEquals(0, pagination.getPage());
+        Assertions.assertEquals(10, pagination.getSize());
+    }
+
+    @Test
+    @DisplayName("The pagination is paged when receiving no parameters")
+    public void testResolve_NoParameters_Paged() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertTrue(pagination.getPaged());
+    }
+
+    @Test
+    @DisplayName("Returns pagination when receiving no parameters")
+    public void testResolve_NoParameters_Values() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertEquals(0, pagination.getPage());
+        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, pagination.getSize());
     }
 
     @Test
