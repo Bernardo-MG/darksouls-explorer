@@ -11,6 +11,4 @@ public interface WeaponAdjustmentLevel {
 
     public Integer getIntelligence();
 
-    public String getName();
-
 }

@@ -121,35 +121,30 @@ public class ITDefaultWeaponServiceGetAdjustments {
 
         adjust = data.next();
 
-        Assertions.assertEquals("Sword", adjust.getName());
         Assertions.assertEquals(1, adjust.getFaith());
         Assertions.assertEquals(10, adjust.getIntelligence());
         Assertions.assertEquals(20, adjust.getAdjustment());
 
         adjust = data.next();
 
-        Assertions.assertEquals("Sword", adjust.getName());
         Assertions.assertEquals(2, adjust.getFaith());
         Assertions.assertEquals(11, adjust.getIntelligence());
         Assertions.assertEquals(21, adjust.getAdjustment());
 
         adjust = data.next();
 
-        Assertions.assertEquals("Sword", adjust.getName());
         Assertions.assertEquals(3, adjust.getFaith());
         Assertions.assertEquals(12, adjust.getIntelligence());
         Assertions.assertEquals(22, adjust.getAdjustment());
 
         adjust = data.next();
 
-        Assertions.assertEquals("Sword", adjust.getName());
         Assertions.assertEquals(4, adjust.getFaith());
         Assertions.assertEquals(13, adjust.getIntelligence());
         Assertions.assertEquals(23, adjust.getAdjustment());
 
         adjust = data.next();
 
-        Assertions.assertEquals("Sword", adjust.getName());
         Assertions.assertEquals(5, adjust.getFaith());
         Assertions.assertEquals(14, adjust.getIntelligence());
         Assertions.assertEquals(24, adjust.getAdjustment());

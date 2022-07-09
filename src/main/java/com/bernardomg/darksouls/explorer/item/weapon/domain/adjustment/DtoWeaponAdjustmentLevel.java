@@ -21,7 +21,4 @@ public final class DtoWeaponAdjustmentLevel implements WeaponAdjustmentLevel {
     @NonNull
     private Integer intelligence = 0;
 
-    @NonNull
-    private String  name         = "";
-
 }

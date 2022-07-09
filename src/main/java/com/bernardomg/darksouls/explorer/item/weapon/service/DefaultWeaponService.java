@@ -235,7 +235,6 @@ public final class DefaultWeaponService implements WeaponService {
 
         result = new DtoWeaponAdjustmentLevel();
         result.setId(entity.getId());
-        result.setName(entity.getName());
         result.setAdjustment(entity.getAdjustment());
         result.setFaith(entity.getFaith());
         result.setIntelligence(entity.getIntelligence());
@@ -293,11 +292,7 @@ public final class DefaultWeaponService implements WeaponService {
         final DtoWeaponDamageReduction  damageReduction;
 
         result = new DtoWeaponProgressionLevel();
-        // TODO: Avoid copying like this
-        BeanUtils.copyProperties(level, result);
-
-        result.setName(level.getName());
-        result.setPath(level.getPath());
+        
         result.setLevel(level.getLevel());
         result.setStability(level.getStability());
 

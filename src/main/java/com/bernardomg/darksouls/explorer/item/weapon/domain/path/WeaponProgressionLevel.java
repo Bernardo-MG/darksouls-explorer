@@ -15,10 +15,6 @@ public interface WeaponProgressionLevel {
 
     public Integer getLevel();
 
-    public String getName();
-
-    public String getPath();
-
     public Integer getPathLevel();
 
     public Integer getStability();
