@@ -112,8 +112,7 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final PageIterable<? extends WeaponSummary> getAll(final String type, final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<WeaponSummary> getAll(final String type, final Pagination pagination, final Sort sort) {
         final Pageable            pageable;
         final Page<WeaponSummary> page;
 
@@ -129,10 +128,10 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final Optional<? extends Weapon> getOne(final Long id) {
+    public final Optional<Weapon> getOne(final Long id) {
         final Optional<PersistentWeapon> read;
         final PersistentWeapon           entity;
-        final Optional<? extends Weapon> result;
+        final Optional<Weapon>           result;
         final DtoWeapon                  weapon;
         final DtoWeaponRequirements      requirements;
         final DtoWeaponDamage            damage;

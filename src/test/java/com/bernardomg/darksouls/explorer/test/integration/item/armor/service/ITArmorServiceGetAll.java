@@ -27,7 +27,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
+import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorSummary;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -62,7 +62,7 @@ public class ITArmorServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends Armor> data;
+        final Iterable<ArmorSummary> data;
 
         data = service.getAll(Pagination.disabled(), Sort.disabled());
 
@@ -72,7 +72,7 @@ public class ITArmorServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final Armor data;
+        final ArmorSummary data;
 
         data = service.getAll(Pagination.disabled(), Sort.disabled())
             .iterator()

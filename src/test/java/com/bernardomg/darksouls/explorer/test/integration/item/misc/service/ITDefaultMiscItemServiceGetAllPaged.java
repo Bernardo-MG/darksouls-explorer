@@ -63,7 +63,7 @@ public class ITDefaultMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<? extends Item> data;
+        final Iterable<Item> data;
 
         data = service.getAll("Misc", Pagination.of(0, 1), Sort.disabled());
 
@@ -73,7 +73,7 @@ public class ITDefaultMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<? extends Item> data;
+        final Iterable<Item> data;
 
         data = service.getAll("Misc", Pagination.of(0, 1), Sort.disabled());
 
@@ -83,7 +83,7 @@ public class ITDefaultMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Pagination with size 0 returns default size")
     public void testGetAll_Size0_Size() {
-        final Iterable<? extends Item> data;
+        final Iterable<Item> data;
 
         data = service.getAll("Misc", Pagination.of(0, 0), Sort.disabled());
 
@@ -93,7 +93,7 @@ public class ITDefaultMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("Pagination with size 0 contains all the data")
     public void testGetAll_Size0_Values() {
-        final PageIterable<? extends Item> data;
+        final PageIterable<Item> data;
 
         data = service.getAll("Misc", Pagination.of(0, 0), Sort.disabled());
 
@@ -107,7 +107,7 @@ public class ITDefaultMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
-        final Iterable<? extends Item> data;
+        final Iterable<Item> data;
 
         data = service.getAll("Misc", Pagination.disabled(), Sort.disabled());
 
@@ -117,7 +117,7 @@ public class ITDefaultMiscItemServiceGetAllPaged {
     @Test
     @DisplayName("The returned page contains all the data")
     public void testGetAll_Values() {
-        final PageIterable<? extends Item> data;
+        final PageIterable<Item> data;
 
         data = service.getAll("Misc", Pagination.of(0, 1), Sort.disabled());
 

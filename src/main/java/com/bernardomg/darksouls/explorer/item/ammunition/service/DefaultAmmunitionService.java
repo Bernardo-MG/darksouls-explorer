@@ -32,7 +32,7 @@ public final class DefaultAmmunitionService implements AmmunitionService {
     }
 
     @Override
-    public final PageIterable<? extends Ammunition> getAll(final Pagination pagination, final Sort sort) {
+    public final PageIterable<Ammunition> getAll(final Pagination pagination, final Sort sort) {
         final Pageable         pageable;
         final Page<Ammunition> page;
 
@@ -44,9 +44,9 @@ public final class DefaultAmmunitionService implements AmmunitionService {
     }
 
     @Override
-    public final Optional<? extends Ammunition> getOne(final Long id) {
+    public final Optional<Ammunition> getOne(final Long id) {
         final Optional<PersistentAmmunition> read;
-        final Optional<? extends Ammunition> result;
+        final Optional<Ammunition>           result;
         final DtoAmmunition                  item;
 
         read = repository.findById(id);

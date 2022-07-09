@@ -62,7 +62,7 @@ public class ITDefaultWeaponServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends WeaponSummary> data;
+        final Iterable<WeaponSummary> data;
 
         data = service.getAll("Weapon", Pagination.disabled(), Sort.disabled());
 
@@ -85,7 +85,7 @@ public class ITDefaultWeaponServiceGetAll {
     @Test
     @DisplayName("An empty type returns all data")
     public void testGetAll_EmptyType_Count() {
-        final Iterable<? extends WeaponSummary> data;
+        final Iterable<WeaponSummary> data;
 
         data = service.getAll("", Pagination.disabled(), Sort.disabled());
 
@@ -95,7 +95,7 @@ public class ITDefaultWeaponServiceGetAll {
     @Test
     @DisplayName("An invalid type returns no data")
     public void testGetAll_InvalidType_Count() {
-        final Iterable<? extends WeaponSummary> data;
+        final Iterable<WeaponSummary> data;
 
         data = service.getAll("abc", Pagination.disabled(), Sort.disabled());
 

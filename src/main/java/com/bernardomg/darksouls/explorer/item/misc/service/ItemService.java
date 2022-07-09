@@ -9,8 +9,8 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface ItemService {
 
-    public Iterable<? extends Item> getAll(final String type, final Pagination pagination, final Sort sort);
+    public Iterable<Item> getAll(final String type, final Pagination pagination, final Sort sort);
 
-    public Optional<? extends Item> getOne(final Long id);
+    public Optional<Item> getOne(final Long id);
 
 }

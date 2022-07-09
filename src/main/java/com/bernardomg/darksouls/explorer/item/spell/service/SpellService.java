@@ -10,8 +10,8 @@ import com.bernardomg.pagination.model.Sort;
 
 public interface SpellService {
 
-    public Iterable<? extends SpellSummary> getAll(final String school, final Pagination pagination, final Sort sort);
+    public Iterable<SpellSummary> getAll(final String school, final Pagination pagination, final Sort sort);
 
-    public Optional<? extends Spell> getOne(final Long id);
+    public Optional<Spell> getOne(final Long id);
 
 }

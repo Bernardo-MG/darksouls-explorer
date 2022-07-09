@@ -60,7 +60,7 @@ public class ITDefaultWeaponServiceGetAllNoData {
     @Test
     @DisplayName("Returns no data")
     public void testGetAll_Count() {
-        final Iterable<? extends WeaponSummary> data;
+        final Iterable<WeaponSummary> data;
 
         data = service.getAll("Weapon", Pagination.disabled(), Sort.disabled());
 

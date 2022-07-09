@@ -2,7 +2,6 @@
 package com.bernardomg.darksouls.explorer.item.spell.controller;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,17 +38,8 @@ public class SpellController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Spell readOne(@PathVariable("id") final Long id) {
-        final Optional<? extends Spell> read;
-        final Spell                     result;
-
-        read = service.getOne(id);
-        if (read.isPresent()) {
-            result = read.get();
-        } else {
-            result = new DtoSpell();
-        }
-
-        return result;
+        return service.getOne(id)
+            .orElse(new DtoSpell());
     }
 
 }

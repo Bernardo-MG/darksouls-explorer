@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
+import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorSummary;
+import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmorLevel;
@@ -41,20 +43,42 @@ public final class DefaultArmorService implements ArmorService {
     }
 
     @Override
-    public final PageIterable<? extends Armor> getAll(final Pagination pagination, final Sort sort) {
-        final Pageable              pageable;
-        final Page<PersistentArmor> page;
+    public final PageIterable<ArmorSummary> getAll(final Pagination pagination, final Sort sort) {
+        final Pageable           pageable;
+        final Page<ArmorSummary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
-        page = repository.findAll(pageable);
+        page = repository.findAllSummaries(pageable);
 
         return Paginations.fromSpring(page);
     }
 
     @Override
-    public final Optional<? extends Armor> getOne(final Long id) {
-        return repository.findById(id);
+    public final Optional<Armor> getOne(final Long id) {
+        final Optional<PersistentArmor> read;
+        final PersistentArmor           entity;
+        final Optional<Armor>           result;
+        final DtoArmor                  armor;
+
+        read = repository.findById(id);
+
+        if (read.isPresent()) {
+            entity = read.get();
+
+            armor = new DtoArmor();
+            armor.setId(entity.getId());
+            armor.setName(entity.getName());
+            armor.setDescription(entity.getDescription());
+            armor.setDurability(entity.getDurability());
+            armor.setWeight(entity.getWeight());
+
+            result = Optional.of(armor);
+        } else {
+            result = Optional.empty();
+        }
+
+        return result;
     }
 
     @Override

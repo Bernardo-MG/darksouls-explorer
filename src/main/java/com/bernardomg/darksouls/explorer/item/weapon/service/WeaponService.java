@@ -14,9 +14,9 @@ public interface WeaponService {
 
     public Optional<WeaponAdjustment> getAdjustment(final Long id);
 
-    public Iterable<? extends WeaponSummary> getAll(final String type, final Pagination pagination, final Sort sort);
+    public Iterable<WeaponSummary> getAll(final String type, final Pagination pagination, final Sort sort);
 
-    public Optional<? extends Weapon> getOne(final Long id);
+    public Optional<Weapon> getOne(final Long id);
 
     public Optional<WeaponProgression> getProgression(final Long id);
 

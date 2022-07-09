@@ -2,7 +2,6 @@
 package com.bernardomg.darksouls.explorer.item.weapon.controller;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,33 +42,15 @@ public class WeaponController {
 
     @GetMapping(path = "/{id}/adjustment", produces = MediaType.APPLICATION_JSON_VALUE)
     public WeaponAdjustment readAdjustments(@PathVariable("id") final Long id) {
-        final Optional<WeaponAdjustment> read;
-        final WeaponAdjustment           result;
-
-        read = service.getAdjustment(id);
-        if (read.isPresent()) {
-            result = read.get();
-        } else {
-            result = new DtoWeaponAdjustment();
-        }
-
-        return result;
+        return service.getAdjustment(id)
+            .orElse(new DtoWeaponAdjustment());
 
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Weapon readOne(@PathVariable("id") final Long id) {
-        final Optional<? extends Weapon> read;
-        final Weapon                     result;
-
-        read = service.getOne(id);
-        if (read.isPresent()) {
-            result = read.get();
-        } else {
-            result = new DtoWeapon();
-        }
-
-        return result;
+        return service.getOne(id)
+            .orElse(new DtoWeapon());
     }
 
     @GetMapping(path = "/{id}/progression", produces = MediaType.APPLICATION_JSON_VALUE)

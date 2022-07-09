@@ -2,7 +2,6 @@
 package com.bernardomg.darksouls.explorer.item.ammunition.controller;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,23 +28,14 @@ public class AmmunitionController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Ammunition> read(final Pagination pagination, final Sort sort) {
+    public Iterable<Ammunition> read(final Pagination pagination, final Sort sort) {
         return service.getAll(pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Ammunition readOne(@PathVariable("id") final Long id) {
-        final Optional<? extends Ammunition> read;
-        final Ammunition                     result;
-
-        read = service.getOne(id);
-        if (read.isPresent()) {
-            result = read.get();
-        } else {
-            result = new DtoAmmunition();
-        }
-
-        return result;
+        return service.getOne(id)
+            .orElse(new DtoAmmunition());
     }
 
 }
