@@ -26,7 +26,7 @@ public class TestPaginationArgumentResolver {
 
     @Test
     @DisplayName("The pagination can be disabled")
-    public void testResolve_FullPagination_Disabled() throws Exception {
+    public void testResolve_Disabled_NotPaged() throws Exception {
         final MethodParameter       parameter;
         final ModelAndViewContainer mavContainer;
         final NativeWebRequest      webRequest;
@@ -43,7 +43,7 @@ public class TestPaginationArgumentResolver {
         Mockito.when(webRequest.getParameter("size"))
             .thenReturn("10");
         Mockito.when(webRequest.getParameter("paged"))
-        .thenReturn("false");
+            .thenReturn("false");
 
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
