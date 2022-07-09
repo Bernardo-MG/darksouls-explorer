@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * Disabled sorted data request. This serves as a null object to disable sorting.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */

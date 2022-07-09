@@ -61,13 +61,6 @@ public class ITDefaultWeaponServiceGetAdjustmentsNoLevels {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns no level adjustments")
     public void testGetAdjustment_Data() {
@@ -79,6 +72,13 @@ public class ITDefaultWeaponServiceGetAdjustmentsNoLevels {
         data = service.getAdjustment(id);
 
         Assertions.assertEquals(0, Iterables.size(data));
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

@@ -79,13 +79,6 @@ public class ITDefaultWeaponServiceGetProgressionNoLevelNodes {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns no level progression")
     public void testgetProgression_Data() {
@@ -97,6 +90,13 @@ public class ITDefaultWeaponServiceGetProgressionNoLevelNodes {
         data = service.getProgression(id);
 
         Assertions.assertFalse(data.isPresent());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

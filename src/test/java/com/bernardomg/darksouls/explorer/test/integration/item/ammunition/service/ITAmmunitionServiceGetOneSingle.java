@@ -62,13 +62,6 @@ public class ITAmmunitionServiceGetOneSingle {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
@@ -93,6 +86,13 @@ public class ITAmmunitionServiceGetOneSingle {
         data = service.getOne(-1l);
 
         Assertions.assertTrue(data.isEmpty());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

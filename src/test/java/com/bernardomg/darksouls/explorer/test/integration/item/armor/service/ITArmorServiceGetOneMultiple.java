@@ -60,13 +60,6 @@ public class ITArmorServiceGetOneMultiple {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
@@ -95,6 +88,13 @@ public class ITArmorServiceGetOneMultiple {
 
         Assertions.assertEquals(5, data.getDurability());
         Assertions.assertEquals(6, data.getWeight());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

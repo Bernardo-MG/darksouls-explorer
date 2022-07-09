@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 /**
  * Disabled paginated data request. This serves as a null object to disable pagination.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */

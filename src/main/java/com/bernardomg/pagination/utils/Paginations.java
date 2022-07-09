@@ -14,7 +14,7 @@ import com.bernardomg.pagination.model.Sort;
 
 /**
  * Pagination utility class.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */

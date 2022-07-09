@@ -81,10 +81,6 @@ public class ITTextQueryExecutorPaginationParameterized {
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
-    private final Function<Map<String, Object>, String> getQuery() {
-        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
-    }
-
     @Test
     @DisplayName("Reads the content for a page returning a single value")
     public void testFetch_AllElementsPage_Content() {
@@ -146,6 +142,10 @@ public class ITTextQueryExecutorPaginationParameterized {
         Assertions.assertEquals(1, data.getTotalElements());
         Assertions.assertEquals(1, data.getTotalPages());
         Assertions.assertEquals(0, data.getPageNumber());
+    }
+
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")

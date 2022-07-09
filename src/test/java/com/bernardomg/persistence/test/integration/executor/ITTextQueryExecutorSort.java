@@ -79,10 +79,6 @@ public class ITTextQueryExecutorSort {
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
-    private final Function<Map<String, Object>, String> getQuery() {
-        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
-    }
-
     @Test
     @DisplayName("Sorts in ascending order through a query")
     public void testFetch_Ascending() {
@@ -131,6 +127,10 @@ public class ITTextQueryExecutorSort {
             .getName());
         Assertions.assertEquals("Item1", data.next()
             .getName());
+    }
+
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")

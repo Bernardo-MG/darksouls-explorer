@@ -50,13 +50,6 @@ public class ITArmorServiceGetProgression {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns the levels in order")
     public void testGetProgression_LevelsOrder() {
@@ -144,6 +137,13 @@ public class ITArmorServiceGetProgression {
 
         Assertions.assertEquals("Chain Armor", data.getArmor());
         Assertions.assertEquals(2, IterableUtils.size(data.getLevels()));
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

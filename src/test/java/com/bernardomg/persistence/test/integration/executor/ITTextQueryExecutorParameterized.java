@@ -77,10 +77,6 @@ public class ITTextQueryExecutorParameterized {
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
-    private final Function<Map<String, Object>, String> getQuery() {
-        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
-    }
-
     @Test
     @DisplayName("Reads the content for a page covering all the data")
     public void testFetch_Content() {
@@ -109,6 +105,10 @@ public class ITTextQueryExecutorParameterized {
         data = queryExecutor.fetch(getQuery(), this::toItem, parameters);
 
         Assertions.assertEquals(1, IterableUtils.size(data));
+    }
+
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) WHERE i.name = $name RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")

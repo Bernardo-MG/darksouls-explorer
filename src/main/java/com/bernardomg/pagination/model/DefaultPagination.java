@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 /**
  * Default implementation of the paginated data request.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -38,7 +38,7 @@ public final class DefaultPagination implements Pagination {
 
     /**
      * Builds a pagination request for the specified page and default size.
-     * 
+     *
      * @param pg
      *            page index
      */
@@ -51,7 +51,7 @@ public final class DefaultPagination implements Pagination {
 
     /**
      * Builds a pagination request with the specified data.
-     * 
+     *
      * @param pg
      *            page index
      * @param sz

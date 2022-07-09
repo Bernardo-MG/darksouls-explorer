@@ -77,10 +77,6 @@ public class ITTextQueryExecutor {
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
-    private final Function<Map<String, Object>, String> getQuery() {
-        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
-    }
-
     @Test
     @DisplayName("Reads the content for a query")
     public void testFetch_Content() {
@@ -119,6 +115,10 @@ public class ITTextQueryExecutor {
         data = queryExecutor.fetchOne(getQuery(), this::toItem);
 
         Assertions.assertTrue(data.isPresent());
+    }
+
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")

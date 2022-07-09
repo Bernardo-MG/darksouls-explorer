@@ -47,13 +47,6 @@ public class ITArmorServiceGetProgressionNoLevels {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns no level progression")
     public void testGetProgression_NotData() {
@@ -65,6 +58,13 @@ public class ITArmorServiceGetProgressionNoLevels {
         data = service.getProgression(id);
 
         Assertions.assertFalse(data.isPresent());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

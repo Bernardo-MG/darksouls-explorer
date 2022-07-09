@@ -33,22 +33,6 @@ public class TestResponseAdvice {
         super();
     }
 
-    private final Object handleResponse(final Object body) {
-        final MethodParameter                          returnType;
-        final MediaType                                selectedContentType;
-        final Class<? extends HttpMessageConverter<?>> selectedConverterType;
-        final ServerHttpRequest                        request;
-        final ServerHttpResponse                       response;
-
-        returnType = Mockito.mock(MethodParameter.class);
-        selectedContentType = Mockito.mock(MediaType.class);
-        selectedConverterType = null;
-        request = Mockito.mock(ServerHttpRequest.class);
-        response = Mockito.mock(ServerHttpResponse.class);
-
-        return advice.beforeBodyWrite(body, returnType, selectedContentType, selectedConverterType, request, response);
-    }
-
     @Test
     @DisplayName("A null is wrapped")
     public void testResponse_Null_WrappedType() {
@@ -262,6 +246,22 @@ public class TestResponseAdvice {
         response = handleResponse(body);
 
         Assertions.assertInstanceOf(Response.class, response);
+    }
+
+    private final Object handleResponse(final Object body) {
+        final MethodParameter                          returnType;
+        final MediaType                                selectedContentType;
+        final Class<? extends HttpMessageConverter<?>> selectedConverterType;
+        final ServerHttpRequest                        request;
+        final ServerHttpResponse                       response;
+
+        returnType = Mockito.mock(MethodParameter.class);
+        selectedContentType = Mockito.mock(MediaType.class);
+        selectedConverterType = null;
+        request = Mockito.mock(ServerHttpRequest.class);
+        response = Mockito.mock(ServerHttpResponse.class);
+
+        return advice.beforeBodyWrite(body, returnType, selectedContentType, selectedConverterType, request, response);
     }
 
 }

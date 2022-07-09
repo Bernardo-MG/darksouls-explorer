@@ -62,13 +62,6 @@ public class ITSpellServiceGetOneSingle {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
@@ -125,6 +118,13 @@ public class ITSpellServiceGetOneSingle {
 
         Assertions.assertEquals(3, data.getSlots());
         Assertions.assertEquals(4, data.getUses());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

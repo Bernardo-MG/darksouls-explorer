@@ -62,13 +62,6 @@ public class ITMiscItemServiceGetOneSingle {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
@@ -92,6 +85,13 @@ public class ITMiscItemServiceGetOneSingle {
         data = service.getOne(-1l);
 
         Assertions.assertTrue(data.isEmpty());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

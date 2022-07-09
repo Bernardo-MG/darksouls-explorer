@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Argument resolver for sorting data.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */

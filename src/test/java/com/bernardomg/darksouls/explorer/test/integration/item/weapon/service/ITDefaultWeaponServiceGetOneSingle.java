@@ -62,13 +62,6 @@ public class ITDefaultWeaponServiceGetOneSingle {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns the correct damage")
     public void testGetOne_Damage() {
@@ -174,6 +167,13 @@ public class ITDefaultWeaponServiceGetOneSingle {
 
         Assertions.assertEquals(1, data.getDurability());
         Assertions.assertEquals(2, data.getWeight());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

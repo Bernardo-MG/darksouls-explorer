@@ -63,13 +63,6 @@ public class ITDefaultWeaponServiceGetAdjustments {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns the level adjustments")
     public void testGetAdjustment_Data() {
@@ -139,6 +132,13 @@ public class ITDefaultWeaponServiceGetAdjustments {
         Assertions.assertEquals(5, adjust.getFaith());
         Assertions.assertEquals(14, adjust.getIntelligence());
         Assertions.assertEquals(24, adjust.getAdjustment());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

@@ -82,10 +82,6 @@ public class ITTextQueryExecutorPagination {
         queryExecutor = new TextQueryExecutor(clnt);
     }
 
-    private final Function<Map<String, Object>, String> getQuery() {
-        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
-    }
-
     @Test
     @DisplayName("Reads the content for a page covering all the data")
     public void testFetch_AllElementsPage_Content() {
@@ -314,6 +310,10 @@ public class ITTextQueryExecutorPagination {
         Assertions.assertEquals(5, data.getTotalElements());
         Assertions.assertEquals(5, data.getTotalPages());
         Assertions.assertEquals(1, data.getPageNumber());
+    }
+
+    private final Function<Map<String, Object>, String> getQuery() {
+        return (m) -> "MATCH (i:Item) RETURN i.name AS name, i.description AS description";
     }
 
     @SuppressWarnings("unchecked")

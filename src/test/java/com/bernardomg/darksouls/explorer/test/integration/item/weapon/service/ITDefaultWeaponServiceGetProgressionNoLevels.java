@@ -62,17 +62,17 @@ public class ITDefaultWeaponServiceGetProgressionNoLevels {
     @Container
     private static final Neo4jContainer<?> neo4jContainer = ContainerFactory.getNeo4jContainer();
 
-    @BeforeAll
-    private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j", neo4jContainer.getAdminPassword(),
-            neo4jContainer.getBoltUrl(), Arrays.asList("classpath:db/queries/weapon/physical_5_levels.cypher"));
-    }
-
     @DynamicPropertySource
     public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
+    }
+
+    @BeforeAll
+    private static void prepareTestdata() {
+        new Neo4jDatabaseInitalizer().initialize("neo4j", neo4jContainer.getAdminPassword(),
+            neo4jContainer.getBoltUrl(), Arrays.asList("classpath:db/queries/weapon/physical_5_levels.cypher"));
     }
 
     @Autowired
@@ -88,13 +88,6 @@ public class ITDefaultWeaponServiceGetProgressionNoLevels {
         super();
     }
 
-    private final Long getId() {
-        return repository.findAll()
-            .iterator()
-            .next()
-            .getId();
-    }
-
     @Test
     @DisplayName("Returns no level progression")
     public void testGetProgression_NotData() {
@@ -106,6 +99,13 @@ public class ITDefaultWeaponServiceGetProgressionNoLevels {
         data = service.getProgression(id);
 
         Assertions.assertFalse(data.isPresent());
+    }
+
+    private final Long getId() {
+        return repository.findAll()
+            .iterator()
+            .next()
+            .getId();
     }
 
 }

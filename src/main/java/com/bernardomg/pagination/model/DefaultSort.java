@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 /**
  * Default implementation of the sorted data request.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -32,12 +32,13 @@ public final class DefaultSort implements Sort {
 
     /**
      * Builds a sort request with the specified data.
-     * 
-     * @param prop property to sort
-     * @param dir sort direction
+     *
+     * @param prop
+     *            property to sort
+     * @param dir
+     *            sort direction
      */
-    public DefaultSort(@NonNull final String prop,
-            @NonNull final Direction dir) {
+    public DefaultSort(@NonNull final String prop, @NonNull final Direction dir) {
         super();
 
         property = prop;
