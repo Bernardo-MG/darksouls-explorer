@@ -3,7 +3,6 @@ package com.bernardomg.darksouls.explorer.item.weapon.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,8 +26,10 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustment;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustmentLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.PersistentWeaponAdjustment;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustment;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustmentLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionPath;
@@ -75,10 +76,13 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final Iterable<WeaponAdjustment> getAdjustment(final Long id) {
+    public final Optional<WeaponAdjustment> getAdjustment(final Long id) {
         final Optional<? extends Weapon>             weapon;
-        final Collection<PersistentWeaponAdjustment> levels;
+        final Collection<PersistentWeaponAdjustment> levelEntities;
+        final Collection<WeaponAdjustmentLevel>      levels;
         final String                                 name;
+        final DtoWeaponAdjustment                    adjustment;
+        final Optional<WeaponAdjustment>             result;
 
         weapon = getOne(id);
 
@@ -86,14 +90,26 @@ public final class DefaultWeaponService implements WeaponService {
             name = weapon.get()
                 .getName();
 
-            levels = adjustmentRepository.findAllByName(name);
+            levelEntities = adjustmentRepository.findAllByName(name);
+
+            if (levelEntities.isEmpty()) {
+                result = Optional.empty();
+            } else {
+                levels = levelEntities.stream()
+                    .map(this::toWeaponAdjustment)
+                    .collect(Collectors.toList());
+
+                adjustment = new DtoWeaponAdjustment();
+                adjustment.setName(name);
+                adjustment.setLevels(levels);
+
+                result = Optional.of(adjustment);
+            }
         } else {
-            levels = Collections.emptyList();
+            result = Optional.empty();
         }
 
-        return levels.stream()
-            .map(this::toWeaponAdjustment)
-            .collect(Collectors.toList());
+        return result;
     }
 
     @Override
@@ -214,10 +230,10 @@ public final class DefaultWeaponService implements WeaponService {
         return result;
     }
 
-    private final WeaponAdjustment toWeaponAdjustment(final PersistentWeaponAdjustment entity) {
-        final DtoWeaponAdjustment result;
+    private final WeaponAdjustmentLevel toWeaponAdjustment(final PersistentWeaponAdjustment entity) {
+        final DtoWeaponAdjustmentLevel result;
 
-        result = new DtoWeaponAdjustment();
+        result = new DtoWeaponAdjustmentLevel();
         result.setId(entity.getId());
         result.setName(entity.getName());
         result.setAdjustment(entity.getAdjustment());

@@ -3,13 +3,7 @@ package com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment;
 
 public interface WeaponAdjustment {
 
-    public Integer getAdjustment();
-
-    public Integer getFaith();
-
-    public Long getId();
-
-    public Integer getIntelligence();
+    public Iterable<WeaponAdjustmentLevel> getLevels();
 
     public String getName();
 

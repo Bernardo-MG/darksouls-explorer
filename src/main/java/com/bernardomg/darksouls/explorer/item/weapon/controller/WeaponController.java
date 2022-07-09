@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustment;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustment;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgression;
@@ -41,8 +42,19 @@ public class WeaponController {
     }
 
     @GetMapping(path = "/{id}/adjustment", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<WeaponAdjustment> readAdjustments(@PathVariable("id") final Long id) {
-        return service.getAdjustment(id);
+    public WeaponAdjustment readAdjustments(@PathVariable("id") final Long id) {
+        final Optional<WeaponAdjustment> read;
+        final WeaponAdjustment           result;
+
+        read = service.getAdjustment(id);
+        if (read.isPresent()) {
+            result = read.get();
+        } else {
+            result = new DtoWeaponAdjustment();
+        }
+
+        return result;
+
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -16,6 +16,8 @@
 
 package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.shaded.com.google.common.collect.Iterables;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustment;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
@@ -63,15 +64,15 @@ public class ITDefaultWeaponServiceGetAdjustmentsNoLevels {
 
     @Test
     @DisplayName("Returns no level adjustments")
-    public void testGetAdjustment_Data() {
-        final Iterable<WeaponAdjustment> data;
+    public void testGetAdjustment_NotPresent() {
+        final Optional<WeaponAdjustment> data;
         final Long                       id;
 
         id = getId();
 
         data = service.getAdjustment(id);
 
-        Assertions.assertEquals(0, Iterables.size(data));
+        Assertions.assertFalse(data.isPresent());
     }
 
     private final Long getId() {

@@ -17,6 +17,7 @@
 package com.bernardomg.darksouls.explorer.test.integration.item.weapon.service;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.shaded.com.google.common.collect.Iterables;
 
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustment;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustmentLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.service.DefaultWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
@@ -64,38 +66,57 @@ public class ITDefaultWeaponServiceGetAdjustments {
     }
 
     @Test
-    @DisplayName("Returns the level adjustments")
+    @DisplayName("Returns the level adjustment levels")
     public void testGetAdjustment_Data() {
-        final Iterable<WeaponAdjustment> data;
+        final Optional<WeaponAdjustment>      data;
+        final Long                            id;
+        final Iterable<WeaponAdjustmentLevel> levels;
+
+        id = getId();
+
+        data = service.getAdjustment(id);
+        levels = data.get()
+            .getLevels();
+
+        Assertions.assertEquals("Sword", data.get().getName());
+        Assertions.assertEquals(5, Iterables.size(levels));
+    }
+
+    @Test
+    @DisplayName("Returns no level adjustment when asking for a not existing weapon")
+    public void testGetAdjustment_NotExisting() {
+        final Optional<WeaponAdjustment> data;
+
+        data = service.getAdjustment(-1l);
+
+        Assertions.assertFalse(data.isPresent());
+    }
+
+    @Test
+    @DisplayName("Returns the level adjustment")
+    public void testGetAdjustment_Present() {
+        final Optional<WeaponAdjustment> data;
         final Long                       id;
 
         id = getId();
 
         data = service.getAdjustment(id);
 
-        Assertions.assertEquals(5, Iterables.size(data));
-    }
-
-    @Test
-    @DisplayName("Returns no level adjustment when asking for a not existing weapon")
-    public void testGetAdjustment_NotExisting() {
-        final Iterable<WeaponAdjustment> data;
-
-        data = service.getAdjustment(-1l);
-
-        Assertions.assertEquals(0, Iterables.size(data));
+        Assertions.assertTrue(data.isPresent());
     }
 
     @Test
     @DisplayName("Returns the expected values")
     public void testGetAdjustment_Values() {
-        final Iterator<WeaponAdjustment> data;
-        final Long                       id;
-        WeaponAdjustment                 adjust;
+        final Iterator<WeaponAdjustmentLevel> data;
+        final Long                            id;
+        WeaponAdjustmentLevel                 adjust;
 
         id = getId();
 
         data = service.getAdjustment(id)
+            .get()
+            .getLevels()
             .iterator();
 
         adjust = data.next();
