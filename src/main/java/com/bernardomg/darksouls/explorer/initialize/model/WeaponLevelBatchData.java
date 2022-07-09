@@ -13,31 +13,31 @@ public final class WeaponLevelBatchData {
     private Integer critical;
 
     @NonNull
-    private String  dexterity;
+    private String  dexterity_bonus;
 
     @NonNull
-    private String  faith;
+    private String  faith_bonus;
 
     @NonNull
-    private Integer fire;
+    private Integer fire_damage;
 
     @NonNull
     private Float   fire_reduction;
 
     @NonNull
-    private String  intelligence;
+    private String  intelligence_bonus;
 
     @NonNull
     private Integer level;
 
     @NonNull
-    private Integer lightning;
+    private Integer lightning_damage;
 
     @NonNull
     private Float   lightning_reduction;
 
     @NonNull
-    private Integer magic;
+    private Integer magic_damage;
 
     @NonNull
     private Float   magic_reduction;
@@ -49,7 +49,7 @@ public final class WeaponLevelBatchData {
     private String  path;
 
     @NonNull
-    private Integer physical;
+    private Integer physical_damage;
 
     @NonNull
     private Float   physical_reduction;
@@ -58,6 +58,6 @@ public final class WeaponLevelBatchData {
     private Integer stability;
 
     @NonNull
-    private String  strength;
+    private String  strength_bonus;
 
 }

@@ -54,9 +54,9 @@ public class ShieldLevelInitializerConfig {
         return new FlatFileItemReaderBuilder<ShieldLevelBatchData>().name("weaponLevelItemReader")
             .resource(data)
             .delimited()
-            .names("name", "path", "level", "physical", "magic", "fire", "lightning", "strength", "dexterity",
-                "intelligence", "faith", "physical_reduction", "magic_reduction", "fire_reduction",
-                "lightning_reduction", "critical", "stability")
+            .names("name", "path", "level", "physical_damage", "magic_damage", "fire_damage", "lightning_damage",
+                "strength_bonus", "dexterity_bonus", "intelligence_bonus", "faith_bonus", "physical_reduction",
+                "magic_reduction", "fire_reduction", "lightning_reduction", "critical", "stability")
             .distanceLimit(0)
             .linesToSkip(1)
             .lineMapper(lineMapper)
@@ -68,7 +68,7 @@ public class ShieldLevelInitializerConfig {
         return new JdbcBatchItemWriterBuilder<ShieldLevelBatchData>()
             .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ShieldLevelBatchData>())
             .sql(
-                "INSERT INTO weapon_levels (name, path, level, physical_damage, magic_damage, fire_damage, lightning_damage, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, critical_damage, stability) VALUES (:name, :path, :level, :physical, :magic, :fire, :lightning, :strength, :dexterity, :intelligence, :faith, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :critical, :stability)")
+                "INSERT INTO weapon_levels (name, path, level, physical_damage, magic_damage, fire_damage, lightning_damage, strength_bonus, dexterity_bonus, intelligence_bonus, faith_bonus, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, critical_damage, stability) VALUES (:name, :path, :level, :physical_damage, :magic_damage, :fire_damage, :lightning_damage, :strength_bonus, :dexterity_bonus, :intelligence_bonus, :faith_bonus, :physical_reduction, :magic_reduction, :fire_reduction, :lightning_reduction, :critical, :stability)")
             .dataSource(datasource)
             .build();
     }
@@ -82,9 +82,9 @@ public class ShieldLevelInitializerConfig {
         lineMapper = new DefaultLineMapper<>();
 
         lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames("name", "path", "level", "physical", "magic", "fire", "lightning", "strength",
-            "dexterity", "intelligence", "faith", "physical_reduction", "magic_reduction", "fire_reduction",
-            "lightning_reduction", "critical", "stability");
+        lineTokenizer.setNames("name", "path", "level", "physical_damage", "magic_damage", "fire_damage",
+            "lightning_damage", "strength_bonus", "dexterity_bonus", "intelligence_bonus", "faith_bonus",
+            "physical_reduction", "magic_reduction", "fire_reduction", "lightning_reduction", "critical", "stability");
         fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(ShieldLevelBatchData.class);
 
