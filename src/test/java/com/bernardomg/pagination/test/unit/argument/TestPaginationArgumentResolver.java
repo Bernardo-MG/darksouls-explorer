@@ -25,6 +25,32 @@ public class TestPaginationArgumentResolver {
     }
 
     @Test
+    @DisplayName("The pagination can be disabled")
+    public void testResolve_FullPagination_Disabled() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Pagination            pagination;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("page"))
+            .thenReturn("1");
+        Mockito.when(webRequest.getParameter("size"))
+            .thenReturn("10");
+        Mockito.when(webRequest.getParameter("paged"))
+        .thenReturn("false");
+
+        pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertFalse(pagination.getPaged());
+    }
+
+    @Test
     @DisplayName("The pagination is paged when receiving all values")
     public void testResolve_FullPagination_Paged() throws Exception {
         final MethodParameter       parameter;
