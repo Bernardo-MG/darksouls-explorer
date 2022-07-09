@@ -49,8 +49,6 @@ public final class PaginationArgumentResolver implements HandlerMethodArgumentRe
             pageText = webRequest.getParameter("page");
             sizeText = webRequest.getParameter("size");
 
-            // TODO: Allow disabling pagination by parameter
-
             if ((pageText == null) && (sizeText == null)) {
                 // No pagination parameters
                 pagination = DEFAULT_PAGE;
