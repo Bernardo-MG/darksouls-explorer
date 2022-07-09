@@ -11,30 +11,25 @@ import lombok.NonNull;
  *
  */
 @Data
-public final class DefaultPagination implements Pagination {
-
-    /**
-     * Default page size.
-     */
-    public static final Integer DEFAULT_SIZE = 20;
+public final class ImmutablePagination implements Pagination {
 
     /**
      * Page index to read.
      */
     @NonNull
-    private final Integer       page;
+    private final Integer page;
 
     /**
      * Always paged.
      */
     @NonNull
-    private final Boolean       paged        = true;
+    private final Boolean paged = true;
 
     /**
      * Number of elements to read per page.
      */
     @NonNull
-    private final Integer       size;
+    private final Integer size;
 
     /**
      * Builds a pagination request for the specified page and default size.
@@ -42,11 +37,11 @@ public final class DefaultPagination implements Pagination {
      * @param pg
      *            page index
      */
-    public DefaultPagination(@NonNull final Integer pg) {
+    public ImmutablePagination(@NonNull final Integer pg) {
         super();
 
         page = pg;
-        size = DEFAULT_SIZE;
+        size = Pagination.DEFAULT_SIZE;
     }
 
     /**
@@ -57,7 +52,7 @@ public final class DefaultPagination implements Pagination {
      * @param sz
      *            page size
      */
-    public DefaultPagination(@NonNull final Integer pg, @NonNull final Integer sz) {
+    public ImmutablePagination(@NonNull final Integer pg, @NonNull final Integer sz) {
         super();
 
         page = pg;

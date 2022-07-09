@@ -11,7 +11,7 @@ import lombok.NonNull;
  *
  */
 @Data
-public final class DefaultSort implements Sort {
+public final class ImmutableSort implements Sort {
 
     /**
      * Direction in which the data will be sorted.
@@ -38,7 +38,7 @@ public final class DefaultSort implements Sort {
      * @param dir
      *            sort direction
      */
-    public DefaultSort(@NonNull final String prop, @NonNull final Direction dir) {
+    public ImmutableSort(@NonNull final String prop, @NonNull final Direction dir) {
         super();
 
         property = prop;

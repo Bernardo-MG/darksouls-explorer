@@ -30,7 +30,7 @@ public interface Sort {
      * @return a {@code Sort} for the arguments
      */
     public static Sort of(final String property, final Direction direction) {
-        return new DefaultSort(property, direction);
+        return new ImmutableSort(property, direction);
     }
 
     /**

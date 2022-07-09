@@ -12,6 +12,11 @@ package com.bernardomg.pagination.model;
 public interface Pagination {
 
     /**
+     * Default page size.
+     */
+    Integer DEFAULT_SIZE = 20;
+
+    /**
      * Creates a {@code Pagination} which represents disabled pagination.
      *
      * @return a disabled {@code Pagination}
@@ -37,7 +42,7 @@ public interface Pagination {
      * @return {@code Pagination} for the page and size
      */
     public static Pagination of(final Integer page) {
-        return new DefaultPagination(page);
+        return new ImmutablePagination(page);
     }
 
     /**
@@ -50,7 +55,7 @@ public interface Pagination {
      * @return {@code Pagination} for the page and size
      */
     public static Pagination of(final Integer page, final Integer size) {
-        return new DefaultPagination(page, size);
+        return new ImmutablePagination(page, size);
     }
 
     /**

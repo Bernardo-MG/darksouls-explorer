@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.bernardomg.pagination.model.DefaultPageIterable;
-import com.bernardomg.pagination.model.DefaultPagination;
 import com.bernardomg.pagination.model.Direction;
 import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
@@ -47,7 +46,7 @@ public final class Paginations {
         if (pagination.getSize() > 0) {
             size = pagination.getSize();
         } else {
-            size = DefaultPagination.DEFAULT_SIZE;
+            size = Pagination.DEFAULT_SIZE;
         }
 
         if ((paged) && (sort.getSorted())) {
@@ -60,7 +59,7 @@ public final class Paginations {
         } else if (sort.getSorted()) {
             // Only sorted
             direction = toSpringDirection(sort.getDirection());
-            pageable = PageRequest.of(0, DefaultPagination.DEFAULT_SIZE, direction, sort.getProperty());
+            pageable = PageRequest.of(0, Pagination.DEFAULT_SIZE, direction, sort.getProperty());
         } else {
             // Not paged nor sorted
             pageable = Pageable.unpaged();

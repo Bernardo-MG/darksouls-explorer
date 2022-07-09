@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
-import com.bernardomg.pagination.model.DefaultPagination;
 import com.bernardomg.pagination.model.Direction;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
@@ -108,9 +107,9 @@ public class TestPaginationsToSpring {
 
         result = Paginations.toSpring(pagination, sort);
 
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE.longValue(), result.getOffset());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE.longValue(), result.getOffset());
         Assertions.assertEquals(1, result.getPageNumber());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, result.getPageSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, result.getPageSize());
     }
 
     @Test
@@ -157,9 +156,9 @@ public class TestPaginationsToSpring {
 
         result = Paginations.toSpring(pagination, sort);
 
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE.longValue(), result.getOffset());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE.longValue(), result.getOffset());
         Assertions.assertEquals(1, result.getPageNumber());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, result.getPageSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, result.getPageSize());
     }
 
     @Test
@@ -258,7 +257,7 @@ public class TestPaginationsToSpring {
 
         Assertions.assertEquals(0, result.getOffset());
         Assertions.assertEquals(0, result.getPageNumber());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, result.getPageSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, result.getPageSize());
     }
 
     @Test

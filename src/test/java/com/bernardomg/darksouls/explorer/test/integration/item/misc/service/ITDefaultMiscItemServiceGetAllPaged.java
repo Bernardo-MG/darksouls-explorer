@@ -31,7 +31,6 @@ import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
 import com.bernardomg.darksouls.explorer.item.misc.service.DefaultItemService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DefaultPagination;
 import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
@@ -100,7 +99,7 @@ public class ITDefaultMiscItemServiceGetAllPaged {
 
         Assertions.assertEquals(5, data.getElementsInPage());
         Assertions.assertEquals(0, data.getPageNumber());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, data.getSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
         Assertions.assertEquals(1, data.getTotalPages());
     }
