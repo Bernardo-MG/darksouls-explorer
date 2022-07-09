@@ -78,7 +78,8 @@ public class ITDefaultWeaponServiceGetAdjustments {
         levels = data.get()
             .getLevels();
 
-        Assertions.assertEquals("Sword", data.get().getName());
+        Assertions.assertEquals("Sword", data.get()
+            .getName());
         Assertions.assertEquals(5, Iterables.size(levels));
     }
 

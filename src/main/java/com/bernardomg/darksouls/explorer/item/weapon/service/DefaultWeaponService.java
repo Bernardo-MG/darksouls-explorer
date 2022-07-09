@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -292,7 +291,7 @@ public final class DefaultWeaponService implements WeaponService {
         final DtoWeaponDamageReduction  damageReduction;
 
         result = new DtoWeaponProgressionLevel();
-        
+
         result.setLevel(level.getLevel());
         result.setStability(level.getStability());
 
