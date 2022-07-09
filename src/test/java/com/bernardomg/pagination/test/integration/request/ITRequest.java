@@ -39,6 +39,7 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.pagination.model.DefaultPagination;
 
 @IntegrationTest
 @AutoConfigureMockMvc
@@ -103,7 +104,7 @@ public class ITRequest {
             .andExpect(MockMvcResultMatchers.status()
                 .isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(5)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(DefaultPagination.DEFAULT_SIZE)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage", Matchers.is(5)));
     }
 
