@@ -349,4 +349,4 @@ databaseChangeLog:
         - addUniqueConstraint:  
             constraintName: const_unique_weapon_levels
             tableName: weapon_levels
-            columnNames: name, level
+            columnNames: name, path, level
