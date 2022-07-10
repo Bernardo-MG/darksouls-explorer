@@ -12,7 +12,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.bernardomg.pagination.argument.PaginationArgumentResolver;
-import com.bernardomg.pagination.model.DefaultPagination;
 import com.bernardomg.pagination.model.Pagination;
 
 @DisplayName("Pagination argument resolver")
@@ -170,7 +169,7 @@ public class TestPaginationArgumentResolver {
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
         Assertions.assertEquals(1, pagination.getPage());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, pagination.getSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, pagination.getSize());
     }
 
     @Test
@@ -278,7 +277,7 @@ public class TestPaginationArgumentResolver {
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
         Assertions.assertEquals(0, pagination.getPage());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, pagination.getSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, pagination.getSize());
     }
 
     @Test
@@ -347,7 +346,7 @@ public class TestPaginationArgumentResolver {
         pagination = (Pagination) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
         Assertions.assertEquals(1, pagination.getPage());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, pagination.getSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, pagination.getSize());
     }
 
     @Test

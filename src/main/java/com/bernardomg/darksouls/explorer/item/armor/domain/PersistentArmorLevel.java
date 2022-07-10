@@ -16,7 +16,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "ArmorLevel")
 @Table(name = "armor_levels")
-public final class PersistentArmorLevel implements ArmorLevel {
+public final class PersistentArmorLevel {
 
     @NonNull
     @Column(name = "bleed_protection", nullable = false)

@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -81,7 +81,7 @@ public class ITSpellServiceGetOneSingle {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Spell> data;
+        final Optional<Spell> data;
 
         data = service.getOne(-1l);
 

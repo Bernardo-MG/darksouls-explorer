@@ -15,8 +15,6 @@ public interface ArmorLevel {
 
     public Float getMagicProtection();
 
-    public String getName();
-
     public Float getPoisonProtection();
 
     public Float getRegularProtection();

@@ -4,12 +4,12 @@ package com.bernardomg.darksouls.explorer.item.ammunition.service;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.DtoAmmunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.PersistentAmmunition;
@@ -32,9 +32,9 @@ public final class DefaultAmmunitionService implements AmmunitionService {
     }
 
     @Override
-    public final PageIterable<? extends Ammunition> getAll(final Pagination pagination, final Sort sort) {
-        final Pageable         pageable;
-        final Page<Ammunition> page;
+    public final PageIterable<Summary> getAll(final Pagination pagination, final Sort sort) {
+        final Pageable      pageable;
+        final Page<Summary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
@@ -44,9 +44,10 @@ public final class DefaultAmmunitionService implements AmmunitionService {
     }
 
     @Override
-    public final Optional<? extends Ammunition> getOne(final Long id) {
+    public final Optional<Ammunition> getOne(final Long id) {
         final Optional<PersistentAmmunition> read;
-        final Optional<? extends Ammunition> result;
+        final PersistentAmmunition           entity;
+        final Optional<Ammunition>           result;
         final DtoAmmunition                  item;
 
         read = repository.findById(id);
@@ -54,7 +55,12 @@ public final class DefaultAmmunitionService implements AmmunitionService {
         if (read.isPresent()) {
             item = new DtoAmmunition();
 
-            BeanUtils.copyProperties(read.get(), item);
+            entity = read.get();
+
+            item.setId(entity.getId());
+            item.setName(entity.getName());
+            item.setDescription(entity.getDescription());
+            item.setType(entity.getType());
 
             result = Optional.of(item);
         } else {

@@ -64,7 +64,7 @@ public class SpellInitializerConfig {
         return new JdbcBatchItemWriterBuilder<SpellBatchData>()
             .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<SpellBatchData>())
             .sql(
-                "INSERT INTO spells (name, description, intelligence, faith, slots, uses) VALUES (:name, :description, :intelligence, :faith, :slots, :uses)")
+                "INSERT INTO spells (name, description, school, intelligence, faith, slots, uses) VALUES (:name, :description, :school, :intelligence, :faith, :slots, :uses)")
             .dataSource(datasource)
             .build();
     }

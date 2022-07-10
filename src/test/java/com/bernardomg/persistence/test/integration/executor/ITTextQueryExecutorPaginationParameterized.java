@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -41,8 +41,6 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 import com.bernardomg.darksouls.explorer.test.util.domain.ImmutableItem;
 import com.bernardomg.darksouls.explorer.test.util.domain.Item;
-import com.bernardomg.pagination.model.DefaultPagination;
-import com.bernardomg.pagination.model.DefaultSort;
 import com.bernardomg.pagination.model.Direction;
 import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
@@ -92,8 +90,8 @@ public class ITTextQueryExecutorPaginationParameterized {
         parameters = new HashMap<>();
         parameters.put("name", "Item1");
 
-        pagination = new DefaultPagination(0, 5);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 5);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, parameters, pagination, Arrays.asList(sort))
             .iterator();
@@ -113,8 +111,8 @@ public class ITTextQueryExecutorPaginationParameterized {
         parameters = new HashMap<>();
         parameters.put("name", "Item1");
 
-        pagination = new DefaultPagination(0, 5);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 5);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, parameters, pagination, Arrays.asList(sort));
 
@@ -133,8 +131,8 @@ public class ITTextQueryExecutorPaginationParameterized {
         parameters = new HashMap<>();
         parameters.put("name", "Item1");
 
-        pagination = new DefaultPagination(0, 5);
-        sort = new DefaultSort("name", Direction.ASC);
+        pagination = Pagination.of(0, 5);
+        sort = Sort.of("name", Direction.ASC);
 
         data = queryExecutor.fetch(getQuery(), this::toItem, parameters, pagination, Arrays.asList(sort));
 

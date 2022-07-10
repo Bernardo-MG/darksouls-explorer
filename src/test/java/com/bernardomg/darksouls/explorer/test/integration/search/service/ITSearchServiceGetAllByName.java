@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -37,8 +37,8 @@ import com.bernardomg.darksouls.explorer.test.configuration.annotation.Integrati
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @ContextConfiguration(initializers = { ITSearchServiceGetAllByName.Initializer.class })
@@ -81,7 +81,7 @@ public class ITSearchServiceGetAllByName {
         request = new DtoSearchRequest();
         request.setName("Item name");
 
-        data = service.search(request, new DisabledPagination(), new DisabledSort());
+        data = service.search(request, Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -95,7 +95,7 @@ public class ITSearchServiceGetAllByName {
         request = new DtoSearchRequest();
         request.setName("Item name");
 
-        data = service.search(request, new DisabledPagination(), new DisabledSort())
+        data = service.search(request, Pagination.disabled(), Sort.disabled())
             .iterator()
             .next();
 
@@ -111,7 +111,7 @@ public class ITSearchServiceGetAllByName {
         request = new DtoSearchRequest();
         request.setName("name");
 
-        data = service.search(request, new DisabledPagination(), new DisabledSort());
+        data = service.search(request, Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }

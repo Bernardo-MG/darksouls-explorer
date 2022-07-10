@@ -6,11 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
-import com.bernardomg.pagination.model.DefaultPagination;
-import com.bernardomg.pagination.model.DefaultSort;
 import com.bernardomg.pagination.model.Direction;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
 import com.bernardomg.pagination.utils.Paginations;
@@ -29,8 +25,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DisabledPagination();
-        sort = new DisabledSort();
+        pagination = Pagination.disabled();
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -44,8 +40,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 10);
-        sort = new DisabledSort();
+        pagination = Pagination.of(0, 10);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -61,8 +57,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 1);
-        sort = new DisabledSort();
+        pagination = Pagination.of(0, 1);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -76,8 +72,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(-1, 1);
-        sort = new DisabledSort();
+        pagination = Pagination.of(-1, 1);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -91,8 +87,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, -1);
-        sort = new DisabledSort();
+        pagination = Pagination.of(0, -1);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -106,14 +102,14 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(1, -1);
-        sort = new DisabledSort();
+        pagination = Pagination.of(1, -1);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE.longValue(), result.getOffset());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE.longValue(), result.getOffset());
         Assertions.assertEquals(1, result.getPageNumber());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, result.getPageSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, result.getPageSize());
     }
 
     @Test
@@ -123,8 +119,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(1, 10);
-        sort = new DisabledSort();
+        pagination = Pagination.of(1, 10);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -140,8 +136,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 0);
-        sort = new DisabledSort();
+        pagination = Pagination.of(0, 0);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -155,14 +151,14 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(1, 0);
-        sort = new DisabledSort();
+        pagination = Pagination.of(1, 0);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE.longValue(), result.getOffset());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE.longValue(), result.getOffset());
         Assertions.assertEquals(1, result.getPageNumber());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, result.getPageSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, result.getPageSize());
     }
 
     @Test
@@ -172,8 +168,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 10);
-        sort = new DefaultSort("field", Direction.ASC);
+        pagination = Pagination.of(0, 10);
+        sort = Sort.of("field", Direction.ASC);
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -188,8 +184,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 10);
-        sort = new DefaultSort("field", Direction.ASC);
+        pagination = Pagination.of(0, 10);
+        sort = Sort.of("field", Direction.ASC);
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -213,8 +209,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 10);
-        sort = new DefaultSort("field", Direction.DESC);
+        pagination = Pagination.of(0, 10);
+        sort = Sort.of("field", Direction.DESC);
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -229,8 +225,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 10);
-        sort = new DefaultSort("field", Direction.DESC);
+        pagination = Pagination.of(0, 10);
+        sort = Sort.of("field", Direction.DESC);
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -254,14 +250,14 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DisabledPagination();
-        sort = new DefaultSort("field", Direction.ASC);
+        pagination = Pagination.disabled();
+        sort = Sort.of("field", Direction.ASC);
 
         result = Paginations.toSpring(pagination, sort);
 
         Assertions.assertEquals(0, result.getOffset());
         Assertions.assertEquals(0, result.getPageNumber());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, result.getPageSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, result.getPageSize());
     }
 
     @Test
@@ -271,8 +267,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DisabledPagination();
-        sort = new DefaultSort("field", Direction.ASC);
+        pagination = Pagination.disabled();
+        sort = Sort.of("field", Direction.ASC);
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -287,8 +283,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DisabledPagination();
-        sort = new DefaultSort("field", Direction.ASC);
+        pagination = Pagination.disabled();
+        sort = Sort.of("field", Direction.ASC);
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -312,8 +308,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 10);
-        sort = new DisabledSort();
+        pagination = Pagination.of(0, 10);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -329,8 +325,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 10);
-        sort = new DisabledSort();
+        pagination = Pagination.of(0, 10);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 
@@ -346,8 +342,8 @@ public class TestPaginationsToSpring {
         final Sort       sort;
         final Pageable   result;
 
-        pagination = new DefaultPagination(0, 10);
-        sort = new DisabledSort();
+        pagination = Pagination.of(0, 10);
+        sort = Sort.disabled();
 
         result = Paginations.toSpring(pagination, sort);
 

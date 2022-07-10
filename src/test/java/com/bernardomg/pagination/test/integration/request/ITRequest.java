@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -39,7 +39,7 @@ import org.testcontainers.junit.jupiter.Container;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DefaultPagination;
+import com.bernardomg.pagination.model.Pagination;
 
 @IntegrationTest
 @AutoConfigureMockMvc
@@ -104,7 +104,7 @@ public class ITRequest {
             .andExpect(MockMvcResultMatchers.status()
                 .isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.pageNumber", Matchers.is(0)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(DefaultPagination.DEFAULT_SIZE)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(Pagination.DEFAULT_SIZE)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.elementsInPage", Matchers.is(5)));
     }
 

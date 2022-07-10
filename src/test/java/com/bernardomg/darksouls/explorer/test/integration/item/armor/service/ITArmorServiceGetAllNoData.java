@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -26,12 +26,12 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @DisplayName("Reading all the armors when there is no data")
@@ -60,9 +60,9 @@ public class ITArmorServiceGetAllNoData {
     @Test
     @DisplayName("Returns no data")
     public void testGetAll_Count() {
-        final Iterable<? extends Armor> data;
+        final Iterable<Summary> data;
 
-        data = service.getAll(new DisabledPagination(), new DisabledSort());
+        data = service.getAll(Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(0, IterableUtils.size(data));
     }

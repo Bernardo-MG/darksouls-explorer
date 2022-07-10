@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.misc.domain.DtoItem;
 import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
 import com.bernardomg.darksouls.explorer.item.misc.domain.PersistentItem;
@@ -32,9 +33,9 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final PageIterable<? extends Item> getAll(final String type, final Pagination pagination, final Sort sort) {
-        final Pageable   pageable;
-        final Page<Item> page;
+    public final PageIterable<Summary> getAll(final String type, final Pagination pagination, final Sort sort) {
+        final Pageable      pageable;
+        final Page<Summary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
@@ -48,10 +49,10 @@ public final class DefaultItemService implements ItemService {
     }
 
     @Override
-    public final Optional<? extends Item> getOne(final Long id) {
+    public final Optional<Item> getOne(final Long id) {
         final Optional<PersistentItem> read;
         final PersistentItem           entity;
-        final Optional<? extends Item> result;
+        final Optional<Item>           result;
         final DtoItem                  item;
 
         read = repository.findById(id);

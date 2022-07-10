@@ -10,10 +10,10 @@ import lombok.NonNull;
 public final class ImmutableArmorProgression implements ArmorProgression {
 
     @NonNull
-    private final String                         armor;
+    private final String               armor;
 
     @NonNull
-    private final Iterable<? extends ArmorLevel> levels;
+    private final Iterable<ArmorLevel> levels;
 
     public ImmutableArmorProgression() {
         super();
@@ -22,8 +22,7 @@ public final class ImmutableArmorProgression implements ArmorProgression {
         levels = Collections.emptyList();
     }
 
-    public ImmutableArmorProgression(@NonNull final String armor,
-            @NonNull final Iterable<? extends ArmorLevel> levels) {
+    public ImmutableArmorProgression(@NonNull final String armor, @NonNull final Iterable<ArmorLevel> levels) {
         super();
 
         this.armor = armor;

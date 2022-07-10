@@ -36,7 +36,7 @@
          <AppenderRef ref="console" />
       </Logger>
 
-      <Root level="error">
+      <Root level="info">
          <AppenderRef ref="file" />
          <AppenderRef ref="console" />
       </Root>

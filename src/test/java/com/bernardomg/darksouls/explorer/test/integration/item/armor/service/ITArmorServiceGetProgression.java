@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -53,10 +53,10 @@ public class ITArmorServiceGetProgression {
     @Test
     @DisplayName("Returns the levels in order")
     public void testGetProgression_LevelsOrder() {
-        final ArmorProgression               data;
-        final Iterator<? extends ArmorLevel> levels;
-        final Long                           id;
-        ArmorLevel                           level;
+        final ArmorProgression     data;
+        final Iterator<ArmorLevel> levels;
+        final Long                 id;
+        ArmorLevel                 level;
 
         id = getId();
 
@@ -76,10 +76,10 @@ public class ITArmorServiceGetProgression {
     @Test
     @DisplayName("Returns the levels protections")
     public void testGetProgression_LevelsProtection() {
-        final ArmorProgression               data;
-        final Iterator<? extends ArmorLevel> levels;
-        final Long                           id;
-        ArmorLevel                           level;
+        final ArmorProgression     data;
+        final Iterator<ArmorLevel> levels;
+        final Long                 id;
+        ArmorLevel                 level;
 
         id = getId();
 

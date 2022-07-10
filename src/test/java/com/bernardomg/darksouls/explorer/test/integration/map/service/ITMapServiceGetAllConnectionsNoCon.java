@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -36,8 +36,8 @@ import com.bernardomg.darksouls.explorer.test.configuration.annotation.Integrati
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @ContextConfiguration(initializers = { ITMapServiceGetAllConnectionsNoCon.Initializer.class })
@@ -76,7 +76,7 @@ public class ITMapServiceGetAllConnectionsNoCon {
     public void testFindAll_Count() {
         final Iterable<MapConnection> data;
 
-        data = service.getAllConnections(new DisabledPagination(), new DisabledSort());
+        data = service.getAllConnections(Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(0, IterableUtils.size(data));
     }

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
@@ -23,7 +24,6 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduc
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustment;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustmentLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.PersistentWeaponAdjustment;
@@ -76,7 +76,7 @@ public final class DefaultWeaponService implements WeaponService {
 
     @Override
     public final Optional<WeaponAdjustment> getAdjustment(final Long id) {
-        final Optional<? extends Weapon>             weapon;
+        final Optional<Weapon>                       weapon;
         final Collection<PersistentWeaponAdjustment> levelEntities;
         final Collection<WeaponAdjustmentLevel>      levels;
         final String                                 name;
@@ -112,10 +112,9 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final PageIterable<? extends WeaponSummary> getAll(final String type, final Pagination pagination,
-            final Sort sort) {
-        final Pageable            pageable;
-        final Page<WeaponSummary> page;
+    public final PageIterable<Summary> getAll(final String type, final Pagination pagination, final Sort sort) {
+        final Pageable      pageable;
+        final Page<Summary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
@@ -129,10 +128,10 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final Optional<? extends Weapon> getOne(final Long id) {
+    public final Optional<Weapon> getOne(final Long id) {
         final Optional<PersistentWeapon> read;
         final PersistentWeapon           entity;
-        final Optional<? extends Weapon> result;
+        final Optional<Weapon>           result;
         final DtoWeapon                  weapon;
         final DtoWeaponRequirements      requirements;
         final DtoWeaponDamage            damage;
@@ -196,7 +195,7 @@ public final class DefaultWeaponService implements WeaponService {
         final Collection<WeaponLevelNode>       levelNodes;
         final Optional<WeaponProgression>       result;
         final Map<String, Object>               params;
-        final Optional<? extends Weapon>        weapon;
+        final Optional<Weapon>                  weapon;
         final Collection<PersistentWeaponLevel> levels;
         final String                            name;
 

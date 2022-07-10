@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -27,14 +27,13 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.weapon.service.DefaultWeaponService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
-import com.bernardomg.pagination.model.DefaultPagination;
-import com.bernardomg.pagination.model.DisabledPagination;
-import com.bernardomg.pagination.model.DisabledSort;
 import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
 @DisplayName("Reading all the weapons paginated")
@@ -64,9 +63,9 @@ public class ITDefaultWeaponServiceGetAllPaged {
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<? extends WeaponSummary> data;
+        final Iterable<Summary> data;
 
-        data = service.getAll("Weapon", new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("Weapon", Pagination.of(0, 1), Sort.disabled());
 
         Assertions.assertInstanceOf(PageIterable.class, data);
     }
@@ -74,9 +73,9 @@ public class ITDefaultWeaponServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<? extends WeaponSummary> data;
+        final Iterable<Summary> data;
 
-        data = service.getAll("Weapon", new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("Weapon", Pagination.of(0, 1), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -84,9 +83,9 @@ public class ITDefaultWeaponServiceGetAllPaged {
     @Test
     @DisplayName("Pagination with size 0 returns default size")
     public void testGetAll_Size0_Size() {
-        final Iterable<? extends WeaponSummary> data;
+        final Iterable<Summary> data;
 
-        data = service.getAll("Weapon", new DefaultPagination(0, 0), new DisabledSort());
+        data = service.getAll("Weapon", Pagination.of(0, 0), Sort.disabled());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }
@@ -94,13 +93,13 @@ public class ITDefaultWeaponServiceGetAllPaged {
     @Test
     @DisplayName("Pagination with size 0 contains all the data")
     public void testGetAll_Size0_Values() {
-        final PageIterable<? extends WeaponSummary> data;
+        final PageIterable<Summary> data;
 
-        data = service.getAll("Weapon", new DefaultPagination(0, 0), new DisabledSort());
+        data = service.getAll("Weapon", Pagination.of(0, 0), Sort.disabled());
 
         Assertions.assertEquals(5, data.getElementsInPage());
         Assertions.assertEquals(0, data.getPageNumber());
-        Assertions.assertEquals(DefaultPagination.DEFAULT_SIZE, data.getSize());
+        Assertions.assertEquals(Pagination.DEFAULT_SIZE, data.getSize());
         Assertions.assertEquals(5, data.getTotalElements());
         Assertions.assertEquals(1, data.getTotalPages());
     }
@@ -108,9 +107,9 @@ public class ITDefaultWeaponServiceGetAllPaged {
     @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
-        final Iterable<? extends WeaponSummary> data;
+        final Iterable<Summary> data;
 
-        data = service.getAll("Weapon", new DisabledPagination(), new DisabledSort());
+        data = service.getAll("Weapon", Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(5, IterableUtils.size(data));
     }
@@ -118,9 +117,9 @@ public class ITDefaultWeaponServiceGetAllPaged {
     @Test
     @DisplayName("The returned page contains all the data")
     public void testGetAll_Values() {
-        final PageIterable<? extends WeaponSummary> data;
+        final PageIterable<Summary> data;
 
-        data = service.getAll("Weapon", new DefaultPagination(0, 1), new DisabledSort());
+        data = service.getAll("Weapon", Pagination.of(0, 1), Sort.disabled());
 
         Assertions.assertEquals(1, data.getElementsInPage());
         Assertions.assertEquals(0, data.getPageNumber());

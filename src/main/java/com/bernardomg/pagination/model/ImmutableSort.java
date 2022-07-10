@@ -17,34 +17,47 @@
 package com.bernardomg.pagination.model;
 
 import lombok.Data;
+import lombok.NonNull;
 
 /**
- * Disabled sorted data request. This serves as a null object to disable sorting.
+ * Immutable implementation of the sorted data request.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Data
-public final class DisabledSort implements Sort {
+public final class ImmutableSort implements Sort {
 
     /**
-     * Singleton for disabled sort.
+     * Direction in which the data will be sorted.
      */
-    public static Sort      INSTANCE  = new DisabledSort();
+    @NonNull
+    private final Direction direction;
 
     /**
-     * Default direction.
+     * Property to sort.
      */
-    private final Direction direction = Direction.ASC;
+    @NonNull
+    private final String    property;
 
     /**
-     * Default property.
+     * Always sorted.
      */
-    private final String    property  = "";
+    private final Boolean   sorted = true;
 
     /**
-     * Disabled sort flag.
+     * Builds a sort request with the specified data.
+     *
+     * @param prop
+     *            property to sort
+     * @param dir
+     *            sort direction
      */
-    private final Boolean   sorted    = false;
+    public ImmutableSort(@NonNull final String prop, @NonNull final Direction dir) {
+        super();
+
+        property = prop;
+        direction = dir;
+    }
 
 }

@@ -2,7 +2,6 @@
 package com.bernardomg.darksouls.explorer.item.spell.controller;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.spell.domain.DtoSpell;
 import com.bernardomg.darksouls.explorer.item.spell.domain.Spell;
-import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
 import com.bernardomg.darksouls.explorer.item.spell.service.SpellService;
 import com.bernardomg.pagination.model.Pagination;
 import com.bernardomg.pagination.model.Sort;
@@ -31,7 +30,7 @@ public class SpellController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends SpellSummary> read(
+    public Iterable<Summary> read(
             @RequestParam(name = "school", required = false, defaultValue = "") final String school,
             final Pagination pagination, final Sort sort) {
         return service.getAll(school, pagination, sort);
@@ -39,17 +38,8 @@ public class SpellController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Spell readOne(@PathVariable("id") final Long id) {
-        final Optional<? extends Spell> read;
-        final Spell                     result;
-
-        read = service.getOne(id);
-        if (read.isPresent()) {
-            result = read.get();
-        } else {
-            result = new DtoSpell();
-        }
-
-        return result;
+        return service.getOne(id)
+            .orElse(new DtoSpell());
     }
 
 }
