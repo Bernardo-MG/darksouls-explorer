@@ -35,16 +35,16 @@ public class ArmorController {
         return service.getAll(pagination, sort);
     }
 
-    @GetMapping(path = "/{id}/progression", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ArmorProgression readArmorLevels(@PathVariable("id") final Long id) {
-        return service.getProgression(id)
-            .orElse(new ImmutableArmorProgression());
-    }
-
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Armor readOne(@PathVariable("id") final Long id) {
         return service.getOne(id)
             .orElse(new DtoArmor());
+    }
+
+    @GetMapping(path = "/{id}/progression", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ArmorProgression readProgressions(@PathVariable("id") final Long id) {
+        return service.getProgression(id)
+            .orElse(new ImmutableArmorProgression());
     }
 
 }
