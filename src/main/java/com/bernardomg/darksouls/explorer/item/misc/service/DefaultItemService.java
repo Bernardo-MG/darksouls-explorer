@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ public final class DefaultItemService implements ItemService {
 
     private final ItemRepository repository;
 
-    @Autowired
     public DefaultItemService(final ItemRepository repo) {
         super();
 
@@ -36,8 +34,15 @@ public final class DefaultItemService implements ItemService {
     public final PageIterable<Summary> getAll(final String type, final Pagination pagination, final Sort sort) {
         final Pageable      pageable;
         final Page<Summary> page;
+        final Sort          usedSort;
 
-        pageable = Paginations.toSpring(pagination, sort);
+        if (sort.getSorted()) {
+            usedSort = sort;
+        } else {
+            usedSort = Sort.asc("name");
+        }
+
+        pageable = Paginations.toSpring(pagination, usedSort);
 
         if (Strings.isBlank(type)) {
             page = repository.findAllSummaries(pageable);

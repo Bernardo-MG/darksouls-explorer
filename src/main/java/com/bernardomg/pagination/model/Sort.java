@@ -27,6 +27,28 @@ package com.bernardomg.pagination.model;
 public interface Sort {
 
     /**
+     * Creates a {@code Sort} for the property and ascending direction.
+     *
+     * @param property
+     *            property to sort
+     * @return an ascending {@code Sort} for the arguments
+     */
+    public static Sort asc(final String property) {
+        return new ImmutableSort(property, Direction.ASC);
+    }
+
+    /**
+     * Creates a {@code Sort} for the property and descending direction.
+     *
+     * @param property
+     *            property to sort
+     * @return a descending {@code Sort} for the arguments
+     */
+    public static Sort desc(final String property) {
+        return new ImmutableSort(property, Direction.DESC);
+    }
+
+    /**
      * Creates a {@code Sort} which represents disabled sorting.
      *
      * @return a disabled {@code Sort}

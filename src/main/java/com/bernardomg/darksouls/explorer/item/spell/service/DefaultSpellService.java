@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,6 @@ public final class DefaultSpellService implements SpellService {
 
     private final SpellRepository repository;
 
-    @Autowired
     public DefaultSpellService(final SpellRepository repo) {
         super();
 
@@ -37,8 +35,15 @@ public final class DefaultSpellService implements SpellService {
     public final PageIterable<Summary> getAll(final String school, final Pagination pagination, final Sort sort) {
         final Pageable      pageable;
         final Page<Summary> page;
+        final Sort          usedSort;
 
-        pageable = Paginations.toSpring(pagination, sort);
+        if (sort.getSorted()) {
+            usedSort = sort;
+        } else {
+            usedSort = Sort.asc("name");
+        }
+
+        pageable = Paginations.toSpring(pagination, usedSort);
 
         if (Strings.isBlank(school)) {
             page = repository.findAllSummaries(pageable);

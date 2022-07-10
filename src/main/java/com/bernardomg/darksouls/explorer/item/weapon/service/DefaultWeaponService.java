@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -63,7 +62,6 @@ public final class DefaultWeaponService implements WeaponService {
 
     private final WeaponRepository           repository;
 
-    @Autowired
     public DefaultWeaponService(final WeaponRepository repo, final WeaponLevelRepository levelRepo,
             final WeaponAdjustmentRepository adjustmentRepo, final QueryExecutor queryExec) {
         super();
@@ -115,8 +113,15 @@ public final class DefaultWeaponService implements WeaponService {
     public final PageIterable<Summary> getAll(final String type, final Pagination pagination, final Sort sort) {
         final Pageable      pageable;
         final Page<Summary> page;
+        final Sort          usedSort;
 
-        pageable = Paginations.toSpring(pagination, sort);
+        if (sort.getSorted()) {
+            usedSort = sort;
+        } else {
+            usedSort = Sort.asc("name");
+        }
+
+        pageable = Paginations.toSpring(pagination, usedSort);
 
         if (Strings.isBlank(type)) {
             page = repository.findAllSummaries(pageable);
