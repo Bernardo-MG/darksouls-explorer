@@ -64,7 +64,7 @@ docker-compose -f docker/docker-compose.yml up
 This requires running the database Docker image first.
 
 ```
-mvn clean spring-boot:run -Dspring-boot.run.profiles=initialize
+mvn clean spring-boot:run -P development -Dspring-boot.run.profiles=initialize
 ```
 
 ### Running the tests
@@ -74,7 +74,7 @@ The project requires a database and a server for being able to run the integrati
 Just like running the project, an embedded server with an in-memory database can be used:
 
 ```
-mvn verify -P development
+mvn verify
 ```
 
 ## Collaborate
