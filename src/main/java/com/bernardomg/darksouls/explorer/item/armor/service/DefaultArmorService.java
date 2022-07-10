@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,6 @@ public final class DefaultArmorService implements ArmorService {
 
     private final ArmorRepository      repository;
 
-    @Autowired
     public DefaultArmorService(final ArmorRepository repo, final ArmorLevelRepository levelRepo) {
         super();
 
@@ -48,8 +46,15 @@ public final class DefaultArmorService implements ArmorService {
     public final PageIterable<Summary> getAll(final Pagination pagination, final Sort sort) {
         final Pageable      pageable;
         final Page<Summary> page;
+        final Sort          usedSort;
 
-        pageable = Paginations.toSpring(pagination, sort);
+        if (sort.getSorted()) {
+            usedSort = sort;
+        } else {
+            usedSort = Sort.asc("name");
+        }
+
+        pageable = Paginations.toSpring(pagination, usedSort);
 
         page = repository.findAllSummaries(pageable);
 
