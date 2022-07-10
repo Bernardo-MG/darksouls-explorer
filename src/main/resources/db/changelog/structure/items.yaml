@@ -338,3 +338,15 @@ databaseChangeLog:
         - append:
             dbms: mysql
             value: ' ENGINE=InnoDB DEFAULT CHARSET=latin1'
+  - changeSet:
+      id: item_unique_constraints
+      author: Bernardo
+      changes:
+        - addUniqueConstraint:  
+            constraintName: const_unique_armor_levels
+            tableName: armor_levels
+            columnNames: name, level
+        - addUniqueConstraint:  
+            constraintName: const_unique_weapon_levels
+            tableName: weapon_levels
+            columnNames: name, level
