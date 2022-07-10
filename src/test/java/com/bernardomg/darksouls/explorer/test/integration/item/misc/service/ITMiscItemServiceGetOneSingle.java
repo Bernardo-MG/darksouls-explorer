@@ -80,7 +80,7 @@ public class ITMiscItemServiceGetOneSingle {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Item> data;
+        final Optional<Item> data;
 
         data = service.getOne(-1l);
 

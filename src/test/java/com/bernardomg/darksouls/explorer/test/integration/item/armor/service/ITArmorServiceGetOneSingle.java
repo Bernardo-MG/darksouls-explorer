@@ -80,7 +80,7 @@ public class ITArmorServiceGetOneSingle {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Armor> data;
+        final Optional<Armor> data;
 
         data = service.getOne(-1l);
 

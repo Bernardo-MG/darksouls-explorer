@@ -81,7 +81,7 @@ public class ITAmmunitionServiceGetOneSingle {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Ammunition> data;
+        final Optional<Ammunition> data;
 
         data = service.getOne(-1l);
 

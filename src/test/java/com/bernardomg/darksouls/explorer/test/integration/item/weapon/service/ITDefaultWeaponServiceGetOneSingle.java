@@ -126,7 +126,7 @@ public class ITDefaultWeaponServiceGetOneSingle {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Weapon> data;
+        final Optional<Weapon> data;
 
         data = service.getOne(-1l);
 

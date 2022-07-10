@@ -76,7 +76,7 @@ public final class DefaultWeaponService implements WeaponService {
 
     @Override
     public final Optional<WeaponAdjustment> getAdjustment(final Long id) {
-        final Optional<? extends Weapon>             weapon;
+        final Optional<Weapon>                       weapon;
         final Collection<PersistentWeaponAdjustment> levelEntities;
         final Collection<WeaponAdjustmentLevel>      levels;
         final String                                 name;
@@ -195,7 +195,7 @@ public final class DefaultWeaponService implements WeaponService {
         final Collection<WeaponLevelNode>       levelNodes;
         final Optional<WeaponProgression>       result;
         final Map<String, Object>               params;
-        final Optional<? extends Weapon>        weapon;
+        final Optional<Weapon>                  weapon;
         final Collection<PersistentWeaponLevel> levels;
         final String                            name;
 

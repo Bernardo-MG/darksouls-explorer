@@ -81,7 +81,7 @@ public class ITSpellServiceGetOneSingle {
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Spell> data;
+        final Optional<Spell> data;
 
         data = service.getOne(-1l);
 
