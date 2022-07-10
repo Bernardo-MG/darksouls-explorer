@@ -3,6 +3,7 @@ package com.bernardomg.darksouls.explorer.item.armor.service;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
+import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmorLevel;
@@ -85,7 +87,7 @@ public final class DefaultArmorService implements ArmorService {
     public final Optional<ArmorProgression> getProgression(final Long id) {
         final Iterable<PersistentArmorLevel> levels;
         final Optional<ArmorProgression>     result;
-        final Optional<? extends Armor>      armor;
+        final Optional<Armor>                armor;
 
         armor = getOne(id);
 
@@ -105,13 +107,37 @@ public final class DefaultArmorService implements ArmorService {
         return result;
     }
 
-    private final ArmorProgression toArmorProgression(final Iterable<? extends ArmorLevel> levels) {
-        final String name;
+    private final ArmorLevel toArmorLevel(final PersistentArmorLevel entity) {
+        final DtoArmorLevel armorLevel;
 
-        name = StreamSupport.stream(levels.spliterator(), false)
-            .map(ArmorLevel::getName)
+        armorLevel = new DtoArmorLevel();
+        armorLevel.setLevel(entity.getLevel());
+        armorLevel.setName(entity.getName());
+        armorLevel.setBleedProtection(entity.getBleedProtection());
+        armorLevel.setCurseProtection(entity.getCurseProtection());
+        armorLevel.setFireProtection(entity.getFireProtection());
+        armorLevel.setLightningProtection(entity.getLightningProtection());
+        armorLevel.setMagicProtection(entity.getMagicProtection());
+        armorLevel.setPoisonProtection(entity.getPoisonProtection());
+        armorLevel.setRegularProtection(entity.getRegularProtection());
+        armorLevel.setSlashProtection(entity.getSlashProtection());
+        armorLevel.setStrikeProtection(entity.getStrikeProtection());
+        armorLevel.setThrustProtection(entity.getThrustProtection());
+
+        return armorLevel;
+    }
+
+    private final ArmorProgression toArmorProgression(final Iterable<PersistentArmorLevel> entities) {
+        final String                         name;
+        final Iterable<? extends ArmorLevel> levels;
+
+        name = StreamSupport.stream(entities.spliterator(), false)
+            .map(PersistentArmorLevel::getName)
             .findAny()
             .orElse("");
+        levels = StreamSupport.stream(entities.spliterator(), false)
+            .map(this::toArmorLevel)
+            .collect(Collectors.toList());
 
         return new ImmutableArmorProgression(name, levels);
     }
