@@ -13,7 +13,7 @@ public final class ImmutableArmorProgression implements ArmorProgression {
     private final String                         armor;
 
     @NonNull
-    private final Iterable<? extends ArmorLevel> levels;
+    private final Iterable<ArmorLevel> levels;
 
     public ImmutableArmorProgression() {
         super();
@@ -23,7 +23,7 @@ public final class ImmutableArmorProgression implements ArmorProgression {
     }
 
     public ImmutableArmorProgression(@NonNull final String armor,
-            @NonNull final Iterable<? extends ArmorLevel> levels) {
+            @NonNull final Iterable<ArmorLevel> levels) {
         super();
 
         this.armor = armor;

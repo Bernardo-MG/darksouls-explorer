@@ -129,7 +129,7 @@ public final class DefaultArmorService implements ArmorService {
 
     private final ArmorProgression toArmorProgression(final Iterable<PersistentArmorLevel> entities) {
         final String                         name;
-        final Iterable<? extends ArmorLevel> levels;
+        final Iterable<ArmorLevel> levels;
 
         name = StreamSupport.stream(entities.spliterator(), false)
             .map(PersistentArmorLevel::getName)

@@ -54,7 +54,7 @@ public class ITArmorServiceGetProgression {
     @DisplayName("Returns the levels in order")
     public void testGetProgression_LevelsOrder() {
         final ArmorProgression               data;
-        final Iterator<? extends ArmorLevel> levels;
+        final Iterator<ArmorLevel> levels;
         final Long                           id;
         ArmorLevel                           level;
 
@@ -77,7 +77,7 @@ public class ITArmorServiceGetProgression {
     @DisplayName("Returns the levels protections")
     public void testGetProgression_LevelsProtection() {
         final ArmorProgression               data;
-        final Iterator<? extends ArmorLevel> levels;
+        final Iterator<ArmorLevel> levels;
         final Long                           id;
         ArmorLevel                           level;
 
