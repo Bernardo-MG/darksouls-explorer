@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.spell.domain.DtoSpell;
+import com.bernardomg.darksouls.explorer.item.spell.domain.DtoSpellRequirements;
 import com.bernardomg.darksouls.explorer.item.spell.domain.PersistentSpell;
 import com.bernardomg.darksouls.explorer.item.spell.domain.Spell;
 import com.bernardomg.darksouls.explorer.item.spell.repository.SpellRepository;
@@ -52,16 +52,30 @@ public final class DefaultSpellService implements SpellService {
     @Override
     public final Optional<Spell> getOne(final Long id) {
         final Optional<PersistentSpell> read;
+        final PersistentSpell           entity;
         final Optional<Spell>           result;
         final DtoSpell                  spell;
+        final DtoSpellRequirements      requirements;
 
         read = repository.findById(id);
 
         if (read.isPresent()) {
             spell = new DtoSpell();
 
-            BeanUtils.copyProperties(read.get(), spell);
-            BeanUtils.copyProperties(read.get(), spell.getRequirements());
+            entity = read.get();
+
+            requirements = new DtoSpellRequirements();
+            requirements.setFaith(entity.getFaith());
+            requirements.setIntelligence(entity.getIntelligence());
+
+            spell.setId(id);
+            spell.setName(entity.getName());
+            spell.setDescription(entity.getDescription());
+            spell.setSchool(entity.getSchool());
+            spell.setSlots(entity.getSlots());
+            spell.setUses(entity.getUses());
+
+            spell.setRequirements(requirements);
 
             result = Optional.of(spell);
         } else {

@@ -4,7 +4,6 @@ package com.bernardomg.darksouls.explorer.item.ammunition.service;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +46,7 @@ public final class DefaultAmmunitionService implements AmmunitionService {
     @Override
     public final Optional<Ammunition> getOne(final Long id) {
         final Optional<PersistentAmmunition> read;
+        final PersistentAmmunition           entity;
         final Optional<Ammunition>           result;
         final DtoAmmunition                  item;
 
@@ -55,7 +55,12 @@ public final class DefaultAmmunitionService implements AmmunitionService {
         if (read.isPresent()) {
             item = new DtoAmmunition();
 
-            BeanUtils.copyProperties(read.get(), item);
+            entity = read.get();
+
+            item.setId(entity.getId());
+            item.setName(entity.getName());
+            item.setDescription(entity.getDescription());
+            item.setType(entity.getType());
 
             result = Optional.of(item);
         } else {
