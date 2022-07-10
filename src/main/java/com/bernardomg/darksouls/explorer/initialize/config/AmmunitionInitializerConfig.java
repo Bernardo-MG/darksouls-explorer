@@ -64,7 +64,7 @@ public class AmmunitionInitializerConfig {
     public ItemWriter<ItemBatchData> getAmmunitionItemWriter() {
         return new JdbcBatchItemWriterBuilder<ItemBatchData>()
             .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<ItemBatchData>())
-            .sql("INSERT INTO ammunitions (type, name, description) VALUES (\"ammunition\", :name, :description)")
+            .sql("INSERT INTO items (type, name, description) VALUES (\"ammunition\", :name, :description)")
             .dataSource(datasource)
             .build();
     }
