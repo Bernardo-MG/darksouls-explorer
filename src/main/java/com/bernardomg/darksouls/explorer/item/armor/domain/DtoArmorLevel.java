@@ -28,9 +28,6 @@ public final class DtoArmorLevel implements ArmorLevel {
     private Float   magicProtection;
 
     @NonNull
-    private String  name;
-
-    @NonNull
     private Float   poisonProtection;
 
     @NonNull

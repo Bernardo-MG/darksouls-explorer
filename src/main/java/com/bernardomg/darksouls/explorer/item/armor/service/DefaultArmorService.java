@@ -112,7 +112,6 @@ public final class DefaultArmorService implements ArmorService {
 
         armorLevel = new DtoArmorLevel();
         armorLevel.setLevel(entity.getLevel());
-        armorLevel.setName(entity.getName());
         armorLevel.setBleedProtection(entity.getBleedProtection());
         armorLevel.setCurseProtection(entity.getCurseProtection());
         armorLevel.setFireProtection(entity.getFireProtection());
