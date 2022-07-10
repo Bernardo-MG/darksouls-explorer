@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bernardomg.darksouls.explorer.map.domain.Map;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
 import com.bernardomg.darksouls.explorer.map.service.MapService;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @RestController
 @RequestMapping("/maps")
@@ -26,15 +26,12 @@ public class MapController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public PageIterable<Map> read(final Pagination pagination,
-            final Sort sort) {
+    public PageIterable<Map> read(final Pagination pagination, final Sort sort) {
         return service.getAll(pagination, sort);
     }
 
-    @GetMapping(path = "/connections",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public PageIterable<MapConnection>
-            readConnections(final Pagination pagination, final Sort sort) {
+    @GetMapping(path = "/connections", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PageIterable<MapConnection> readConnections(final Pagination pagination, final Sort sort) {
         return service.getAllConnections(pagination, sort);
     }
 

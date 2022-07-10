@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.bernardomg.darksouls.explorer.Application;
+import com.bernardomg.Application;
 
 @SpringJUnitConfig
 @Transactional

@@ -16,28 +16,40 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity(name = "Spell")
 @Table(name = "spells")
-public final class PersistentSpell implements Spell {
+public final class PersistentSpell {
 
     @NonNull
     @Column(name = "description", nullable = false)
-    private String  description = "";
+    private String  description  = "";
 
     @NonNull
-    @Column(name = "durability", nullable = false)
-    private Integer durability  = 0;
+    @Column(name = "faith", nullable = false)
+    private Integer faith        = 0;
 
     @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Long    id          = -1l;
+    private Long    id           = -1l;
+
+    @NonNull
+    @Column(name = "intelligence", nullable = false)
+    private Integer intelligence = 0;
 
     @NonNull
     @Column(name = "name", nullable = false)
-    private String  name        = "";
+    private String  name         = "";
 
     @NonNull
-    @Column(name = "weight", nullable = false)
-    private Long    weight      = 0l;
+    @Column(name = "school", nullable = false)
+    private String  school       = "";
+
+    @NonNull
+    @Column(name = "slots", nullable = false)
+    private Integer slots        = 0;
+
+    @NonNull
+    @Column(name = "uses", nullable = false)
+    private Integer uses         = 0;
 
 }

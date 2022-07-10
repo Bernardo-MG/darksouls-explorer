@@ -1,7 +1,6 @@
 
 package com.bernardomg.darksouls.explorer.item.weapon.controller;
 
-import java.util.Collection;
 import java.util.Objects;
 
 import org.springframework.http.MediaType;
@@ -11,12 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.request.DefaultWeaponRequest;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustment;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustment;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgression;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgression;
 import com.bernardomg.darksouls.explorer.item.weapon.service.WeaponService;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @RestController
 @RequestMapping("/weapons")
@@ -31,31 +34,28 @@ public class WeaponController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<? extends Weapon> read(
-            @RequestParam(name = "name", defaultValue = "") final String name,
-            @RequestParam(name = "selectors",
-                    defaultValue = "") final Collection<String> selectors,
+    public Iterable<Summary> read(@RequestParam(name = "type", required = false, defaultValue = "") final String type,
             final Pagination pagination, final Sort sort) {
-        final DefaultWeaponRequest request;
+        return service.getAll(type, pagination, sort);
+    }
 
-        request = new DefaultWeaponRequest();
-        request.setName(name);
+    @GetMapping(path = "/{id}/adjustment", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WeaponAdjustment readAdjustments(@PathVariable("id") final Long id) {
+        return service.getAdjustment(id)
+            .orElse(new DtoWeaponAdjustment());
 
-        return service.getAll(request, pagination, sort);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Weapon readOne(@PathVariable("id") final Long id) {
         return service.getOne(id)
-            .orElse(null);
+            .orElse(new DtoWeapon());
     }
 
-    @GetMapping(path = "/{id}/progression",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public WeaponProgression
-            readWeaponLevels(@PathVariable("id") final Long id) {
+    @GetMapping(path = "/{id}/progression", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WeaponProgression readProgressions(@PathVariable("id") final Long id) {
         return service.getProgression(id)
-            .orElse(null);
+            .orElse(new DtoWeaponProgression());
     }
 
 }

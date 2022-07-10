@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -30,8 +30,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.search.domain.DtoSearchRequest;
 import com.bernardomg.darksouls.explorer.search.domain.SearchResult;
 import com.bernardomg.darksouls.explorer.search.service.SearchService;
@@ -39,32 +37,28 @@ import com.bernardomg.darksouls.explorer.test.configuration.annotation.Integrati
 import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITSearchServiceGetAllByName.Initializer.class })
+@ContextConfiguration(initializers = { ITSearchServiceGetAllByName.Initializer.class })
 @DisplayName("Search")
 public class ITSearchServiceGetAllByName {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(dbContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory.getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+        new Neo4jDatabaseInitalizer().initialize("neo4j", dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
             Arrays.asList("classpath:db/queries/item/single.cypher"));
     }
 
@@ -82,13 +76,12 @@ public class ITSearchServiceGetAllByName {
     @DisplayName("Returns the search results when searching by full name")
     public void testGetByName_FullName_Count() {
         final Iterable<SearchResult> data;
-        final DtoSearchRequest request;
+        final DtoSearchRequest       request;
 
         request = new DtoSearchRequest();
         request.setName("Item name");
 
-        data = service.search(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.search(request, Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -96,14 +89,13 @@ public class ITSearchServiceGetAllByName {
     @Test
     @DisplayName("Returns the search results when searching by full name")
     public void testGetByName_FullName_Data() {
-        final SearchResult data;
+        final SearchResult     data;
         final DtoSearchRequest request;
 
         request = new DtoSearchRequest();
         request.setName("Item name");
 
-        data = service
-            .search(request, new DisabledPagination(), new DisabledSort())
+        data = service.search(request, Pagination.disabled(), Sort.disabled())
             .iterator()
             .next();
 
@@ -114,13 +106,12 @@ public class ITSearchServiceGetAllByName {
     @DisplayName("Returns all the data when searching by partial name")
     public void testGetByName_PartialName_Count() {
         final Iterable<SearchResult> data;
-        final DtoSearchRequest request;
+        final DtoSearchRequest       request;
 
         request = new DtoSearchRequest();
         request.setName("name");
 
-        data = service.search(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.search(request, Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }

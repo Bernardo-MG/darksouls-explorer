@@ -1,2 +1,2 @@
-INSERT INTO weapons (name, description, dexterity, faith, strength, intelligence, durability, weight) VALUES
-   ('Weapon name', 'Description', 0, 1, 2, 3, 4, 5);
+INSERT INTO weapons (name, description, type, subtype, durability, weight, stability, dexterity_requirement, faith_requirement, strength_requirement, intelligence_requirement, physical_damage, magic_damage, fire_damage, lightning_damage, critical_damage, physical_reduction, magic_reduction, fire_reduction, lightning_reduction, dexterity_bonus, faith_bonus, intelligence_bonus, strength_bonus) VALUES
+   ('Sword', 'Description', 'Weapon', 'Subtype', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 'A', 'B', 'C', 'D');

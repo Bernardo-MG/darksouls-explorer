@@ -3,21 +3,27 @@ package com.bernardomg.darksouls.explorer.item.weapon.domain;
 
 public interface Weapon {
 
-    public String getDescription();
+    public WeaponBonus getBonus();
 
-    public Integer getDexterity();
+    public WeaponDamage getDamage();
+
+    public WeaponDamageReduction getDamageReduction();
+
+    public String getDescription();
 
     public Integer getDurability();
 
-    public Integer getFaith();
-
     public Long getId();
-
-    public Integer getIntelligence();
 
     public String getName();
 
-    public Integer getStrength();
+    public WeaponRequirements getRequirements();
+
+    public Integer getStability();
+
+    public String getSubtype();
+
+    public String getType();
 
     public Long getWeight();
 

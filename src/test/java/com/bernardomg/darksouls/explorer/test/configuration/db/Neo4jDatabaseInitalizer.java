@@ -20,13 +20,12 @@ public final class Neo4jDatabaseInitalizer implements DatabaseInitalizer {
     }
 
     @Override
-    public final void initialize(final String user, final String password,
-            final String url, final Iterable<String> files) {
+    public final void initialize(final String user, final String password, final String url,
+            final Iterable<String> files) {
         final AuthToken auth;
 
         auth = AuthTokens.basic(user, password);
-        try (final Driver driver = GraphDatabase.driver(url, auth);
-                final Session session = driver.session()) {
+        try (final Driver driver = GraphDatabase.driver(url, auth); final Session session = driver.session()) {
             for (final String file : files) {
                 try {
                     loadFile(session, file);
@@ -37,18 +36,15 @@ public final class Neo4jDatabaseInitalizer implements DatabaseInitalizer {
         }
     }
 
-    private final void loadFile(final Session session, final String path)
-            throws IOException {
+    private final void loadFile(final Session session, final String path) throws IOException {
         final File file;
 
         file = ResourceUtils.getFile(path);
-        try (final BufferedReader br = new BufferedReader(
-            new FileReader(file))) {
+        try (final BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 final String instruction = line;
-                session
-                    .<Object> writeTransaction(work -> work.run(instruction));
+                session.<Object> writeTransaction(work -> work.run(instruction));
             }
         }
     }

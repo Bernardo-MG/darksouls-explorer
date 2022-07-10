@@ -10,30 +10,39 @@ import lombok.NonNull;
 public final class DtoWeapon implements Weapon {
 
     @NonNull
-    private String  description;
+    private WeaponBonus           bonus           = new DtoWeaponBonus();
 
     @NonNull
-    private Integer dexterity;
+    private WeaponDamage          damage          = new DtoWeaponDamage();
 
     @NonNull
-    private Integer durability = 0;
+    private WeaponDamageReduction damageReduction = new DtoWeaponDamageReduction();
 
     @NonNull
-    private Integer faith;
+    private String                description     = "";
 
     @NonNull
-    private Long    id;
+    private Integer               durability      = 0;
 
     @NonNull
-    private Integer intelligence;
+    private Long                  id              = -1l;
 
     @NonNull
-    private String  name;
+    private String                name            = "";
 
     @NonNull
-    private Integer strength;
+    private WeaponRequirements    requirements    = new DtoWeaponRequirements();
 
     @NonNull
-    private Long    weight     = 0l;
+    private Integer               stability       = 0;
+
+    @NonNull
+    private String                subtype         = "";
+
+    @NonNull
+    private String                type            = "";
+
+    @NonNull
+    private Long                  weight          = 0l;
 
 }

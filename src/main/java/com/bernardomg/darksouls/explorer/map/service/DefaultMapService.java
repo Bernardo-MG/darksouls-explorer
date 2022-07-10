@@ -10,11 +10,11 @@ import com.bernardomg.darksouls.explorer.map.domain.Map;
 import com.bernardomg.darksouls.explorer.map.domain.MapConnection;
 import com.bernardomg.darksouls.explorer.map.query.AllIMapsQuery;
 import com.bernardomg.darksouls.explorer.map.query.AllMapConnectionsQuery;
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.persistence.executor.Query;
+import com.bernardomg.persistence.executor.QueryExecutor;
 
 @Component
 public final class DefaultMapService implements MapService {
@@ -28,25 +28,21 @@ public final class DefaultMapService implements MapService {
     }
 
     @Override
-    public final PageIterable<Map> getAll(final Pagination pagination,
-            final Sort sort) {
+    public final PageIterable<Map> getAll(final Pagination pagination, final Sort sort) {
         final Query<Map> query;
 
         query = new AllIMapsQuery();
 
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
-            pagination, Arrays.asList(sort));
+        return queryExecutor.fetch(query::getStatement, query::getOutput, pagination, Arrays.asList(sort));
     }
 
     @Override
-    public final PageIterable<MapConnection>
-            getAllConnections(final Pagination pagination, final Sort sort) {
+    public final PageIterable<MapConnection> getAllConnections(final Pagination pagination, final Sort sort) {
         final Query<MapConnection> query;
 
         query = new AllMapConnectionsQuery();
 
-        return queryExecutor.fetch(query::getStatement, query::getOutput,
-            pagination, Arrays.asList(sort));
+        return queryExecutor.fetch(query::getStatement, query::getOutput, pagination, Arrays.asList(sort));
     }
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -22,52 +22,28 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.repository.ArmorRepository;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
-import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 
 @IntegrationTest
-@ContextConfiguration(
-        initializers = { ITArmorServiceGetOneSingle.Initializer.class })
 @DisplayName("Reading single armor from id")
 @Sql({ "/db/queries/armor/single.sql" })
 public class ITArmorServiceGetOneSingle {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
-                .initialize(configurableApplicationContext);
-        }
-    }
-
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
-
-    @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -90,21 +66,21 @@ public class ITArmorServiceGetOneSingle {
     @DisplayName("Returns the correct data")
     public void testGetOne_Data() {
         final Armor data;
-        final Long id;
+        final Long  id;
 
         id = getId();
 
         data = service.getOne(id)
             .get();
 
-        Assertions.assertEquals("Armor name", data.getName());
+        Assertions.assertEquals("Chain Armor", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 
     @Test
     @DisplayName("Returns no data for a not existing id")
     public void testGetOne_NotExisting() {
-        final Optional<? extends Armor> data;
+        final Optional<Armor> data;
 
         data = service.getOne(-1l);
 
@@ -115,7 +91,7 @@ public class ITArmorServiceGetOneSingle {
     @DisplayName("Returns the correct requirements")
     public void testGetOne_Stats() {
         final Armor data;
-        final Long id;
+        final Long  id;
 
         id = getId();
 

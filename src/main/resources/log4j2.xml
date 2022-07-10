@@ -23,6 +23,10 @@
          <AppenderRef ref="file" />
          <AppenderRef ref="console" />
       </Logger>
+      <Logger name="com.bernardomg.darksouls.explorer.initialize" level="off" additivity="false">
+         <AppenderRef ref="file" />
+         <AppenderRef ref="console" />
+      </Logger>
 
       <!-- Neo4j -->
       <Logger name="org.neo4j" level="error" additivity="debug">
@@ -32,7 +36,7 @@
          <AppenderRef ref="console" />
       </Logger>
 
-      <Root level="error">
+      <Root level="info">
          <AppenderRef ref="file" />
          <AppenderRef ref="console" />
       </Root>

@@ -10,9 +10,9 @@ import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingWithoutWhere;
 
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
 import com.bernardomg.darksouls.explorer.search.domain.ImmutableSearchResult;
 import com.bernardomg.darksouls.explorer.search.domain.SearchResult;
+import com.bernardomg.persistence.executor.Query;
 
 public final class SearchQuery implements Query<SearchResult> {
 
@@ -26,7 +26,7 @@ public final class SearchQuery implements Query<SearchResult> {
 
     @Override
     public final SearchResult getOutput(final Map<String, Object> record) {
-        final Long id;
+        final Long   id;
         final String name;
 
         id = (Long) record.getOrDefault("id", Long.valueOf(-1));
@@ -37,10 +37,10 @@ public final class SearchQuery implements Query<SearchResult> {
 
     @Override
     public final String getStatement(final Map<String, Object> params) {
-        final Node item;
-        final Expression nodeName;
+        final Node                       item;
+        final Expression                 nodeName;
         final OngoingReadingWithoutWhere ongoingBuilder;
-        final Condition nameCondition;
+        final Condition                  nameCondition;
 
         item = Cypher.node("Item")
             .named("i");

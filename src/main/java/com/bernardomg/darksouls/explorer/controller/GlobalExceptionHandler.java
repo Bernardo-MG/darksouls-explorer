@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.bernardomg.darksouls.explorer.response.model.DefaultResponse;
-import com.bernardomg.darksouls.explorer.response.model.Response;
+import com.bernardomg.response.model.DefaultResponse;
+import com.bernardomg.response.model.Response;
 
 /**
  * Captures and handles exceptions for all the controllers.
@@ -43,8 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Logger for the exception handler.
      */
-    private static final Logger LOGGER = LoggerFactory
-        .getLogger(GlobalExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * Default constructor.
@@ -54,19 +53,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ RuntimeException.class })
-    public final ResponseEntity<Object> handleExceptionDefault(
-            final Exception ex, final WebRequest request) throws Exception {
+    public final ResponseEntity<Object> handleExceptionDefault(final Exception ex, final WebRequest request)
+            throws Exception {
         LOGGER.error(ex.getMessage(), ex);
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(final Exception ex,
-            final Object body, final HttpHeaders headers,
-            final HttpStatus status, final WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(final Exception ex, final Object body,
+            final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
         final Response<String> response;
-        final String message;
+        final String           message;
 
         if (ex.getMessage() == null) {
             message = "";
@@ -76,15 +74,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         response = new DefaultResponse<>(message);
 
-        return super.handleExceptionInternal(ex, response, headers, status,
-            request);
+        return super.handleExceptionInternal(ex, response, headers, status, request);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            final MethodArgumentNotValidException ex, final HttpHeaders headers,
-            final HttpStatus status, final WebRequest request) {
-        final Iterable<String> errors;
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex,
+            final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
+        final Iterable<String>           errors;
         final Response<Iterable<String>> response;
 
         errors = ex.getBindingResult()
@@ -95,8 +91,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         response = new DefaultResponse<>(errors);
 
-        return super.handleExceptionInternal(ex, response, headers, status,
-            request);
+        return super.handleExceptionInternal(ex, response, headers, status, request);
     }
 
 }

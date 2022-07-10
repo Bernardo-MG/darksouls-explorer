@@ -3,9 +3,9 @@ package com.bernardomg.darksouls.explorer.problem.query;
 
 import java.util.Map;
 
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
 import com.bernardomg.darksouls.explorer.problem.model.DataProblem;
 import com.bernardomg.darksouls.explorer.problem.model.ImmutableDataProblem;
+import com.bernardomg.persistence.executor.Query;
 
 public final class MissingFieldQuery implements Query<DataProblem> {
 
@@ -24,28 +24,23 @@ public final class MissingFieldQuery implements Query<DataProblem> {
 
     @Override
     public final DataProblem getOutput(final Map<String, Object> record) {
-        return new ImmutableDataProblem((String) record.getOrDefault("id", ""),
-            source, error);
+        return new ImmutableDataProblem((String) record.getOrDefault("id", ""), source, error);
     }
 
     @Override
     public final String getStatement(final Map<String, Object> params) {
         final String template;
-        final String query;
 
         template =
         // @formatter:off
-          "MATCH" + System.lineSeparator()
-        + "  (n) " + System.lineSeparator()
-        + "WHERE" + System.lineSeparator()
-        + "  $node IN LABELS(n) " + System.lineSeparator()
-        + "  AND (n.%1$s = '' OR n.%1$s IS NULL) " + System.lineSeparator()
-        + "RETURN" + System.lineSeparator()
-        + "  n.name AS id";
-        // @formatter:on;
-        query = String.format(template, field);
-
-        return query;
+                "MATCH" + System.lineSeparator()
+                + "  (n) " + System.lineSeparator()
+                + "WHERE" + System.lineSeparator()
+                + "  $node IN LABELS(n) " + System.lineSeparator()
+                + "  AND (n.%1$s = '' OR n.%1$s IS NULL) " + System.lineSeparator()
+                + "RETURN" + System.lineSeparator()
+                + "  n.name AS id";
+        return String.format(template, field);
     }
 
 }

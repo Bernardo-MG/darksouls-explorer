@@ -10,125 +10,252 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponProgression;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.ImmutableWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.domain.Summary;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduction;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponLevel;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgression;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponProgressionPath;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.request.WeaponRequest;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustment;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustmentLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.PersistentWeaponAdjustment;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustment;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.WeaponAdjustmentLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgression;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.DtoWeaponProgressionPath;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.PersistentWeaponLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponLevelNode;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgression;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgressionLevel;
+import com.bernardomg.darksouls.explorer.item.weapon.domain.path.WeaponProgressionPath;
 import com.bernardomg.darksouls.explorer.item.weapon.query.WeaponLevelQuery;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponAdjustmentRepository;
+import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponLevelRepository;
 import com.bernardomg.darksouls.explorer.item.weapon.repository.WeaponRepository;
-import com.bernardomg.darksouls.explorer.persistence.executor.QueryExecutor;
-import com.bernardomg.darksouls.explorer.persistence.model.Direction;
-import com.bernardomg.darksouls.explorer.persistence.model.PageIterable;
-import com.bernardomg.darksouls.explorer.persistence.model.Pagination;
-import com.bernardomg.darksouls.explorer.persistence.model.Query;
-import com.bernardomg.darksouls.explorer.persistence.model.Sort;
-import com.bernardomg.darksouls.explorer.persistence.utils.Paginations;
+import com.bernardomg.pagination.model.PageIterable;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
+import com.bernardomg.pagination.utils.Paginations;
+import com.bernardomg.persistence.executor.Query;
+import com.bernardomg.persistence.executor.QueryExecutor;
 
 import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 
 @Service
 public final class DefaultWeaponService implements WeaponService {
 
-    private final QueryExecutor      queryExecutor;
+    private final WeaponAdjustmentRepository adjustmentRepository;
 
-    private final WeaponRepository   repository;
+    private final Query<WeaponLevelNode>     levelQuery = new WeaponLevelQuery();
 
-    private final Query<WeaponLevel> weaponLevelQuery = new WeaponLevelQuery();
+    private final WeaponLevelRepository      levelRepository;
 
-    @Autowired
-    public DefaultWeaponService(final WeaponRepository repo,
-            final QueryExecutor queryExec) {
+    private final QueryExecutor              queryExecutor;
+
+    private final WeaponRepository           repository;
+
+    public DefaultWeaponService(final WeaponRepository repo, final WeaponLevelRepository levelRepo,
+            final WeaponAdjustmentRepository adjustmentRepo, final QueryExecutor queryExec) {
         super();
 
         repository = Objects.requireNonNull(repo);
+        levelRepository = Objects.requireNonNull(levelRepo);
+        adjustmentRepository = Objects.requireNonNull(adjustmentRepo);
         queryExecutor = Objects.requireNonNull(queryExec);
     }
 
     @Override
-    public final PageIterable<? extends Weapon> getAll(
-            final WeaponRequest request, final Pagination pagination,
-            final Sort sort) {
-        final Pageable pageable;
-        final Page<PersistentWeapon> page;
+    public final Optional<WeaponAdjustment> getAdjustment(final Long id) {
+        final Optional<Weapon>                       weapon;
+        final Collection<PersistentWeaponAdjustment> levelEntities;
+        final Collection<WeaponAdjustmentLevel>      levels;
+        final String                                 name;
+        final DtoWeaponAdjustment                    adjustment;
+        final Optional<WeaponAdjustment>             result;
 
-        if (pagination.getPaged()) {
-            pageable = PageRequest.of(pagination.getPage(),
-                pagination.getSize());
-        } else if (pagination.getPaged()) {
-            pageable = PageRequest.of(pagination.getPage(),
-                pagination.getSize());
-        } else if (sort.getSorted()) {
-            pageable = PageRequest.of(0, 10,
-                toSpringDirection(sort.getDirection()), sort.getProperty());
+        weapon = getOne(id);
+
+        if (weapon.isPresent()) {
+            name = weapon.get()
+                .getName();
+
+            levelEntities = adjustmentRepository.findAllByName(name);
+
+            if (levelEntities.isEmpty()) {
+                result = Optional.empty();
+            } else {
+                levels = levelEntities.stream()
+                    .map(this::toWeaponAdjustment)
+                    .collect(Collectors.toList());
+
+                adjustment = new DtoWeaponAdjustment();
+                adjustment.setName(name);
+                adjustment.setLevels(levels);
+
+                result = Optional.of(adjustment);
+            }
         } else {
-            pageable = Pageable.unpaged();
+            result = Optional.empty();
         }
 
-        page = repository.findAll(pageable);
+        return result;
+    }
+
+    @Override
+    public final PageIterable<Summary> getAll(final String type, final Pagination pagination, final Sort sort) {
+        final Pageable      pageable;
+        final Page<Summary> page;
+        final Sort          usedSort;
+
+        if (sort.getSorted()) {
+            usedSort = sort;
+        } else {
+            usedSort = Sort.asc("name");
+        }
+
+        pageable = Paginations.toSpring(pagination, usedSort);
+
+        if (Strings.isBlank(type)) {
+            page = repository.findAllSummaries(pageable);
+        } else {
+            page = repository.findAllSummaries(type, pageable);
+        }
 
         return Paginations.fromSpring(page);
     }
 
     @Override
-    public final Optional<? extends Weapon> getOne(final Long id) {
-        return repository.findById(id);
+    public final Optional<Weapon> getOne(final Long id) {
+        final Optional<PersistentWeapon> read;
+        final PersistentWeapon           entity;
+        final Optional<Weapon>           result;
+        final DtoWeapon                  weapon;
+        final DtoWeaponRequirements      requirements;
+        final DtoWeaponDamage            damage;
+        final DtoWeaponDamageReduction   damageReduction;
+        final DtoWeaponBonus             bonus;
+
+        read = repository.findById(id);
+
+        if (read.isPresent()) {
+            entity = read.get();
+
+            weapon = new DtoWeapon();
+            weapon.setId(id);
+            weapon.setName(entity.getName());
+            weapon.setDescription(entity.getDescription());
+            weapon.setDurability(entity.getDurability());
+            weapon.setWeight(entity.getWeight());
+            weapon.setStability(entity.getStability());
+            weapon.setType(entity.getType());
+            weapon.setSubtype(entity.getSubtype());
+
+            requirements = new DtoWeaponRequirements();
+            requirements.setDexterity(entity.getDexterity());
+            requirements.setFaith(entity.getFaith());
+            requirements.setIntelligence(entity.getIntelligence());
+            requirements.setStrength(entity.getStrength());
+            weapon.setRequirements(requirements);
+
+            damage = new DtoWeaponDamage();
+            damage.setFire(entity.getFireDamage());
+            damage.setLightning(entity.getLightningDamage());
+            damage.setMagic(entity.getMagicDamage());
+            damage.setPhysical(entity.getPhysicalDamage());
+            damage.setCritical(entity.getCriticalDamage());
+            weapon.setDamage(damage);
+
+            damageReduction = new DtoWeaponDamageReduction();
+            damageReduction.setFire(entity.getFireReduction());
+            damageReduction.setLightning(entity.getLightningReduction());
+            damageReduction.setMagic(entity.getMagicReduction());
+            damageReduction.setPhysical(entity.getPhysicalReduction());
+            weapon.setDamageReduction(damageReduction);
+
+            bonus = new DtoWeaponBonus();
+            bonus.setDexterity(entity.getDexterityBonus());
+            bonus.setFaith(entity.getFaithBonus());
+            bonus.setIntelligence(entity.getIntelligenceBonus());
+            bonus.setStrength(entity.getStrengthBonus());
+            weapon.setBonus(bonus);
+
+            result = Optional.of(weapon);
+        } else {
+            result = Optional.empty();
+        }
+
+        return result;
     }
 
     @Override
     public final Optional<WeaponProgression> getProgression(final Long id) {
-        final Iterable<WeaponLevel> levels;
-        final Optional<WeaponProgression> result;
+        final Collection<WeaponLevelNode>       levelNodes;
+        final Optional<WeaponProgression>       result;
+        final Map<String, Object>               params;
+        final Optional<Weapon>                  weapon;
+        final Collection<PersistentWeaponLevel> levels;
+        final String                            name;
 
-        final Map<String, Object> params;
+        weapon = getOne(id);
 
-        params = new HashMap<>();
-        params.put("id", id);
+        if (weapon.isPresent()) {
+            name = weapon.get()
+                .getName();
 
-        levels = queryExecutor.fetch(weaponLevelQuery::getStatement,
-            weaponLevelQuery::getOutput, params);
+            levels = levelRepository.findAllByName(name);
 
-        if (IterableUtils.isEmpty(levels)) {
+            if (IterableUtils.isEmpty(levels)) {
+                result = Optional.empty();
+            } else {
+                params = new HashMap<>();
+                params.put("name", name);
+
+                levelNodes = queryExecutor.fetch(levelQuery::getStatement, levelQuery::getOutput, params);
+
+                if (IterableUtils.isEmpty(levelNodes)) {
+                    result = Optional.empty();
+                } else {
+                    result = Optional.of(toWeaponProgression(levelNodes, levels));
+                }
+            }
+        } else {
             result = Optional.empty();
-        } else {
-            result = Optional.of(toWeaponProgression(levels));
         }
 
         return result;
     }
 
-    private final org.springframework.data.domain.Sort.Direction
-            toSpringDirection(final Direction direction) {
-        final org.springframework.data.domain.Sort.Direction result;
+    private final WeaponAdjustmentLevel toWeaponAdjustment(final PersistentWeaponAdjustment entity) {
+        final DtoWeaponAdjustmentLevel result;
 
-        if (Direction.ASC.equals(direction)) {
-            result = org.springframework.data.domain.Sort.Direction.ASC;
-        } else {
-            result = org.springframework.data.domain.Sort.Direction.DESC;
-        }
+        result = new DtoWeaponAdjustmentLevel();
+        result.setId(entity.getId());
+        result.setAdjustment(entity.getAdjustment());
+        result.setFaith(entity.getFaith());
+        result.setIntelligence(entity.getIntelligence());
 
         return result;
     }
 
-    private final WeaponProgression
-            toWeaponProgression(final Iterable<WeaponLevel> levels) {
-        final String name;
+    private final WeaponProgression toWeaponProgression(final Iterable<WeaponLevelNode> levelNodes,
+            final Collection<PersistentWeaponLevel> levels) {
+        final String                            name;
         final Collection<WeaponProgressionPath> paths;
-        final Collection<String> pathNames;
-        Collection<WeaponLevel> currentLevels;
-        WeaponProgressionPath path;
+        final Collection<String>                pathNames;
+        final DtoWeaponProgression              result;
+        Collection<WeaponProgressionLevel>      currentLevels;
+        DtoWeaponProgressionPath                path;
 
-        pathNames = StreamSupport.stream(levels.spliterator(), false)
-            .map(WeaponLevel::getPath)
+        pathNames = StreamSupport.stream(levelNodes.spliterator(), false)
+            .map(WeaponLevelNode::getPath)
             .distinct()
             .sorted()
             .collect(Collectors.toList());
@@ -137,18 +264,81 @@ public final class DefaultWeaponService implements WeaponService {
         for (final String pathName : pathNames) {
             currentLevels = StreamSupport.stream(levels.spliterator(), false)
                 .filter((l) -> pathName.equals(l.getPath()))
+                .map((l) -> toWeaponProgressionLevel(l, levelNodes))
                 .collect(Collectors.toList());
 
-            path = new ImmutableWeaponProgressionPath(pathName, currentLevels);
+            path = new DtoWeaponProgressionPath();
+            path.setPath(pathName);
+            path.setLevels(currentLevels);
             paths.add(path);
         }
 
         name = StreamSupport.stream(levels.spliterator(), false)
-            .map(WeaponLevel::getWeapon)
+            .map(PersistentWeaponLevel::getName)
             .findAny()
             .orElse("");
 
-        return new ImmutableWeaponProgression(name, paths);
+        result = new DtoWeaponProgression();
+        result.setName(name);
+        result.setPaths(paths);
+
+        return result;
+    }
+
+    private final WeaponProgressionLevel toWeaponProgressionLevel(final PersistentWeaponLevel level,
+            final Iterable<WeaponLevelNode> levelNodes) {
+        final Optional<WeaponLevelNode> levelNodeFound;
+        final WeaponLevelNode           levelNode;
+        final DtoWeaponProgressionLevel result;
+        final DtoWeaponBonus            bonus;
+        final DtoWeaponDamage           damage;
+        final DtoWeaponDamageReduction  damageReduction;
+
+        result = new DtoWeaponProgressionLevel();
+
+        result.setLevel(level.getLevel());
+        result.setStability(level.getStability());
+
+        bonus = new DtoWeaponBonus();
+        bonus.setDexterity(level.getDexterityBonus());
+        bonus.setFaith(level.getFaithBonus());
+        bonus.setIntelligence(level.getIntelligenceBonus());
+        bonus.setStrength(level.getStrengthBonus());
+        result.setBonus(bonus);
+
+        damage = new DtoWeaponDamage();
+        damage.setCritical(level.getCritical());
+        damage.setFire(level.getFireDamage());
+        damage.setLightning(level.getLightningDamage());
+        damage.setMagic(level.getMagicDamage());
+        damage.setPhysical(level.getPhysicalDamage());
+
+        result.setDamage(damage);
+
+        damageReduction = new DtoWeaponDamageReduction();
+        damageReduction.setFire(level.getFireReduction());
+        damageReduction.setLightning(level.getLightningReduction());
+        damageReduction.setMagic(level.getMagicReduction());
+        damageReduction.setPhysical(level.getPhysicalReduction());
+
+        result.setDamageReduction(damageReduction);
+
+        levelNodeFound = StreamSupport.stream(levelNodes.spliterator(), false)
+            .filter(n -> n.getName()
+                .equals(level.getName())
+                    && n.getPath()
+                        .equals(level.getPath())
+                    && n.getLevel()
+                        .equals(level.getLevel()))
+            .findFirst();
+        if (levelNodeFound.isPresent()) {
+            levelNode = levelNodeFound.get();
+            result.setPathLevel(levelNode.getPathLevel());
+        } else {
+            // TODO: Error
+        }
+
+        return result;
     }
 
 }

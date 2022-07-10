@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -21,54 +21,29 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.ArmorRequest;
-import com.bernardomg.darksouls.explorer.item.armor.domain.request.DefaultArmorRequest;
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledPagination;
-import com.bernardomg.darksouls.explorer.persistence.model.DisabledSort;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
-import com.bernardomg.darksouls.explorer.test.configuration.context.Neo4jApplicationContextInitializer;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
+import com.bernardomg.pagination.model.Pagination;
+import com.bernardomg.pagination.model.Sort;
 
 @IntegrationTest
-@ContextConfiguration(initializers = { ITArmorServiceGetAll.Initializer.class })
 @DisplayName("Reading all the armors")
 @Sql({ "/db/queries/armor/single.sql" })
 public class ITArmorServiceGetAll {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(neo4jContainer)
-                .initialize(configurableApplicationContext);
-        }
-    }
-
     @Container
-    private static final MySQLContainer<?> mysqlContainer = ContainerFactory
-        .getMysqlContainer();
-
-    @Container
-    private static final Neo4jContainer<?> neo4jContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final MySQLContainer<?> mysqlContainer = ContainerFactory.getMysqlContainer();
 
     @DynamicPropertySource
-    public static void
-            setDatasourceProperties(final DynamicPropertyRegistry registry) {
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
         registry.add("spring.datasource.password", mysqlContainer::getPassword);
         registry.add("spring.datasource.username", mysqlContainer::getUsername);
@@ -87,13 +62,9 @@ public class ITArmorServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends Armor> data;
-        final ArmorRequest request;
+        final Iterable<Summary> data;
 
-        request = new DefaultArmorRequest();
-
-        data = service.getAll(request, new DisabledPagination(),
-            new DisabledSort());
+        data = service.getAll(Pagination.disabled(), Sort.disabled());
 
         Assertions.assertEquals(1, IterableUtils.size(data));
     }
@@ -101,17 +72,13 @@ public class ITArmorServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final Armor data;
-        final ArmorRequest request;
+        final Summary data;
 
-        request = new DefaultArmorRequest();
-
-        data = service
-            .getAll(request, new DisabledPagination(), new DisabledSort())
+        data = service.getAll(Pagination.disabled(), Sort.disabled())
             .iterator()
             .next();
 
-        Assertions.assertEquals("Armor name", data.getName());
+        Assertions.assertEquals("Chain Armor", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
     }
 

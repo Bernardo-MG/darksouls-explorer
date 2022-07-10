@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 the original author or authors
+ * Copyright 2021-2022 the original author or authors
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -38,32 +38,25 @@ import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
 import com.bernardomg.darksouls.explorer.test.configuration.db.Neo4jDatabaseInitalizer;
 
 @IntegrationTest
-@ContextConfiguration(initializers = {
-        ITProblemsQueriesMissingRelationshipsWithRel.Initializer.class })
+@ContextConfiguration(initializers = { ITProblemsQueriesMissingRelationshipsWithRel.Initializer.class })
 @DisplayName("Query for nodes missing relationships using a node with the relationship")
 public class ITProblemsQueriesMissingRelationshipsWithRel {
 
-    public static class Initializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(
-                final ConfigurableApplicationContext configurableApplicationContext) {
-            new Neo4jApplicationContextInitializer(dbContainer)
-                .initialize(configurableApplicationContext);
+        public void initialize(final ConfigurableApplicationContext configurableApplicationContext) {
+            new Neo4jApplicationContextInitializer(dbContainer).initialize(configurableApplicationContext);
         }
     }
 
     @Container
-    private static final Neo4jContainer<?> dbContainer = ContainerFactory
-        .getNeo4jContainer();
+    private static final Neo4jContainer<?> dbContainer = ContainerFactory.getNeo4jContainer();
 
     @BeforeAll
     private static void prepareTestdata() {
-        new Neo4jDatabaseInitalizer().initialize("neo4j",
-            dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
-            Arrays.asList(
-                "classpath:db/queries/item/with_merchant_source.cypher"));
+        new Neo4jDatabaseInitalizer().initialize("neo4j", dbContainer.getAdminPassword(), dbContainer.getBoltUrl(),
+            Arrays.asList("classpath:db/queries/item/with_merchant_source.cypher"));
     }
 
     @Autowired

@@ -13,8 +13,7 @@ public final class ImmutableMapConnection implements MapConnection {
     @NonNull
     private final Long id;
 
-    public ImmutableMapConnection(@NonNull final Long id,
-            @NonNull final Long connection) {
+    public ImmutableMapConnection(@NonNull final Long id, @NonNull final Long connection) {
         super();
 
         this.id = id;

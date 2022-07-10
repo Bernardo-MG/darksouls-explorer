@@ -9,10 +9,9 @@ public interface ProblemsQueries {
 
     public Collection<? extends DataProblem> findDuplicated(final String node);
 
-    public Collection<? extends DataProblem> findMissingField(final String node,
-            final String field);
+    public Collection<? extends DataProblem> findMissingField(final String node, final String field);
 
-    public Collection<? extends DataProblem> findMissingRelationships(
-            final String node, final Iterable<String> relationships);
+    public Collection<? extends DataProblem> findMissingRelationships(final String node,
+            final Iterable<String> relationships);
 
 }

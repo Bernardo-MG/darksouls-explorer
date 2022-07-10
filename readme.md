@@ -53,7 +53,6 @@ docker-compose -f docker/docker-compose.db.yml up
 
 This will start a Neo4j database, with the dashboard available at [http://localhost:7474/](http://localhost:7474/). And the backend, available at http://localhost:8080.
 
-
 For the backend:
 
 ```
@@ -65,7 +64,7 @@ docker-compose -f docker/docker-compose.yml up
 This requires running the database Docker image first.
 
 ```
-mvn clean spring-boot:run
+mvn clean spring-boot:run -Dspring-boot.run.profiles=initialize
 ```
 
 ### Running the tests
