@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.DtoAmmunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.service.AmmunitionService;
@@ -28,7 +29,7 @@ public class AmmunitionController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Ammunition> read(final Pagination pagination, final Sort sort) {
+    public Iterable<Summary> read(final Pagination pagination, final Sort sort) {
         return service.getAll(pagination, sort);
     }
 

@@ -27,7 +27,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.spell.service.DefaultSpellService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -63,7 +63,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     @Test
     @DisplayName("Returns a page")
     public void testGetAll_Instance() {
-        final Iterable<? extends SpellSummary> data;
+        final Iterable<Summary> data;
 
         data = service.getAll("School", Pagination.of(0, 1), Sort.disabled());
 
@@ -73,7 +73,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     @Test
     @DisplayName("Applies pagination size")
     public void testGetAll_SingleResult() {
-        final Iterable<? extends SpellSummary> data;
+        final Iterable<Summary> data;
 
         data = service.getAll("School", Pagination.of(0, 1), Sort.disabled());
 
@@ -83,7 +83,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     @Test
     @DisplayName("Pagination with size 0 returns default size")
     public void testGetAll_Size0_Size() {
-        final Iterable<? extends SpellSummary> data;
+        final Iterable<Summary> data;
 
         data = service.getAll("School", Pagination.of(0, 0), Sort.disabled());
 
@@ -93,7 +93,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     @Test
     @DisplayName("Pagination with size 0 contains all the data")
     public void testGetAll_Size0_Values() {
-        final PageIterable<? extends SpellSummary> data;
+        final PageIterable<Summary> data;
 
         data = service.getAll("School", Pagination.of(0, 0), Sort.disabled());
 
@@ -107,7 +107,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     @Test
     @DisplayName("When unpaged returns all the data")
     public void testGetAll_Unpaged() {
-        final Iterable<? extends SpellSummary> data;
+        final Iterable<Summary> data;
 
         data = service.getAll("School", Pagination.disabled(), Sort.disabled());
 
@@ -117,7 +117,7 @@ public class ITDefaultSpellServiceGetAllPaged {
     @Test
     @DisplayName("The returned page contains all the data")
     public void testGetAll_Values() {
-        final PageIterable<? extends SpellSummary> data;
+        final PageIterable<Summary> data;
 
         data = service.getAll("School", Pagination.of(0, 1), Sort.disabled());
 

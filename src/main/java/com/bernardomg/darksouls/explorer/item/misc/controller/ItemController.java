@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.misc.domain.DtoItem;
 import com.bernardomg.darksouls.explorer.item.misc.domain.Item;
 import com.bernardomg.darksouls.explorer.item.misc.service.ItemService;
@@ -29,7 +30,7 @@ public class ItemController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Item> read(@RequestParam(name = "type", required = false, defaultValue = "") final String type,
+    public Iterable<Summary> read(@RequestParam(name = "type", required = false, defaultValue = "") final String type,
             final Pagination pagination, final Sort sort) {
         return service.getAll(type, pagination, sort);
     }

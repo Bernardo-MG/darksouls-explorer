@@ -1,7 +1,7 @@
 
-package com.bernardomg.darksouls.explorer.item.spell.domain;
+package com.bernardomg.darksouls.explorer.domain;
 
-public interface SpellSummary {
+public interface Summary {
 
     public String getDescription();
 

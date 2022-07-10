@@ -27,7 +27,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.spell.service.SpellService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -62,7 +62,7 @@ public class ITSpellServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<SpellSummary> data;
+        final Iterable<Summary> data;
 
         data = service.getAll("School", Pagination.disabled(), Sort.disabled());
 
@@ -72,7 +72,7 @@ public class ITSpellServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final SpellSummary data;
+        final Summary data;
 
         data = service.getAll("School", Pagination.disabled(), Sort.disabled())
             .iterator()
@@ -85,7 +85,7 @@ public class ITSpellServiceGetAll {
     @Test
     @DisplayName("An empty type returns all data")
     public void testGetAll_EmptyType_Count() {
-        final Iterable<SpellSummary> data;
+        final Iterable<Summary> data;
 
         data = service.getAll("", Pagination.disabled(), Sort.disabled());
 
@@ -95,7 +95,7 @@ public class ITSpellServiceGetAll {
     @Test
     @DisplayName("An invalid type returns no data")
     public void testGetAll_InvalidType_Count() {
-        final Iterable<SpellSummary> data;
+        final Iterable<Summary> data;
 
         data = service.getAll("abc", Pagination.disabled(), Sort.disabled());
 

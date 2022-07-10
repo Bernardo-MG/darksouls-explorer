@@ -11,10 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.spell.domain.DtoSpell;
 import com.bernardomg.darksouls.explorer.item.spell.domain.PersistentSpell;
 import com.bernardomg.darksouls.explorer.item.spell.domain.Spell;
-import com.bernardomg.darksouls.explorer.item.spell.domain.SpellSummary;
 import com.bernardomg.darksouls.explorer.item.spell.repository.SpellRepository;
 import com.bernardomg.pagination.model.PageIterable;
 import com.bernardomg.pagination.model.Pagination;
@@ -34,9 +34,9 @@ public final class DefaultSpellService implements SpellService {
     }
 
     @Override
-    public final PageIterable<SpellSummary> getAll(final String school, final Pagination pagination, final Sort sort) {
-        final Pageable           pageable;
-        final Page<SpellSummary> page;
+    public final PageIterable<Summary> getAll(final String school, final Pagination pagination, final Sort sort) {
+        final Pageable      pageable;
+        final Page<Summary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 

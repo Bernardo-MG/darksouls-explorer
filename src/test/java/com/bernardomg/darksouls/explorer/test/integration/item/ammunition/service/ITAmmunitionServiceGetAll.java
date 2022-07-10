@@ -27,7 +27,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.ammunition.service.AmmunitionService;
 import com.bernardomg.darksouls.explorer.test.configuration.annotation.IntegrationTest;
 import com.bernardomg.darksouls.explorer.test.configuration.db.ContainerFactory;
@@ -62,7 +62,7 @@ public class ITAmmunitionServiceGetAll {
     @Test
     @DisplayName("Returns all the data")
     public void testGetAll_Count() {
-        final Iterable<? extends Ammunition> data;
+        final Iterable<Summary> data;
 
         data = service.getAll(Pagination.disabled(), Sort.disabled());
 
@@ -72,7 +72,7 @@ public class ITAmmunitionServiceGetAll {
     @Test
     @DisplayName("Returns the correct data")
     public void testGetAll_Data() {
-        final Ammunition data;
+        final Summary data;
 
         data = service.getAll(Pagination.disabled(), Sort.disabled())
             .iterator()
@@ -80,7 +80,6 @@ public class ITAmmunitionServiceGetAll {
 
         Assertions.assertEquals("Ammunition", data.getName());
         Assertions.assertEquals("Description", data.getDescription());
-        Assertions.assertEquals("Type", data.getType());
     }
 
 }

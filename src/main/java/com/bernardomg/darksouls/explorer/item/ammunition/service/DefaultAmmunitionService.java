@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.Ammunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.DtoAmmunition;
 import com.bernardomg.darksouls.explorer.item.ammunition.domain.PersistentAmmunition;
@@ -32,9 +33,9 @@ public final class DefaultAmmunitionService implements AmmunitionService {
     }
 
     @Override
-    public final PageIterable<Ammunition> getAll(final Pagination pagination, final Sort sort) {
-        final Pageable         pageable;
-        final Page<Ammunition> page;
+    public final PageIterable<Summary> getAll(final Pagination pagination, final Sort sort) {
+        final Pageable      pageable;
+        final Page<Summary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 

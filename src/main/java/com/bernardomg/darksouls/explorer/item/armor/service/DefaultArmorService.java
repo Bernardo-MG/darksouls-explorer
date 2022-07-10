@@ -10,10 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorLevel;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
-import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorSummary;
 import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.domain.PersistentArmor;
@@ -43,9 +43,9 @@ public final class DefaultArmorService implements ArmorService {
     }
 
     @Override
-    public final PageIterable<ArmorSummary> getAll(final Pagination pagination, final Sort sort) {
-        final Pageable           pageable;
-        final Page<ArmorSummary> page;
+    public final PageIterable<Summary> getAll(final Pagination pagination, final Sort sort) {
+        final Pageable      pageable;
+        final Page<Summary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 

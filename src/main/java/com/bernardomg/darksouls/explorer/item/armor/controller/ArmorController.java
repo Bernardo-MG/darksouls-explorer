@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.armor.domain.Armor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorProgression;
-import com.bernardomg.darksouls.explorer.item.armor.domain.ArmorSummary;
 import com.bernardomg.darksouls.explorer.item.armor.domain.DtoArmor;
 import com.bernardomg.darksouls.explorer.item.armor.domain.ImmutableArmorProgression;
 import com.bernardomg.darksouls.explorer.item.armor.service.ArmorService;
@@ -31,7 +31,7 @@ public class ArmorController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<ArmorSummary> read(final Pagination pagination, final Sort sort) {
+    public Iterable<Summary> read(final Pagination pagination, final Sort sort) {
         return service.getAll(pagination, sort);
     }
 

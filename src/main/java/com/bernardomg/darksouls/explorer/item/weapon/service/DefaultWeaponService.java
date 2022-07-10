@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.darksouls.explorer.domain.Summary;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponBonus;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamage;
@@ -23,7 +24,6 @@ import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponDamageReduc
 import com.bernardomg.darksouls.explorer.item.weapon.domain.DtoWeaponRequirements;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.PersistentWeapon;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.Weapon;
-import com.bernardomg.darksouls.explorer.item.weapon.domain.WeaponSummary;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustment;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.DtoWeaponAdjustmentLevel;
 import com.bernardomg.darksouls.explorer.item.weapon.domain.adjustment.PersistentWeaponAdjustment;
@@ -112,9 +112,9 @@ public final class DefaultWeaponService implements WeaponService {
     }
 
     @Override
-    public final PageIterable<WeaponSummary> getAll(final String type, final Pagination pagination, final Sort sort) {
-        final Pageable            pageable;
-        final Page<WeaponSummary> page;
+    public final PageIterable<Summary> getAll(final String type, final Pagination pagination, final Sort sort) {
+        final Pageable      pageable;
+        final Page<Summary> page;
 
         pageable = Paginations.toSpring(pagination, sort);
 
