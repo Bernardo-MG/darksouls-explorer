@@ -19,12 +19,10 @@ RUN mvn clean package -DskipTests
 # -----------------------------------------------------------------------------
 FROM openjdk:14-alpine as deployment
 
-ARG WAR_NAME
-
 WORKDIR /app
 
 # Copy from build stage
-COPY --from=build ./usr/src/app/target/${WAR_NAME}*.war ./app.war
+COPY --from=build ./usr/src/app/target/*.war ./app.war
 
 # Exposed ports
 EXPOSE 8080

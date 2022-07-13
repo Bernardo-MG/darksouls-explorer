@@ -53,7 +53,7 @@ docker-compose -f docker/docker-compose.db.yml up
 
 This will start a Neo4j database, with the dashboard available at [http://localhost:7474/](http://localhost:7474/). And the backend, available at http://localhost:8080.
 
-For the backend:
+For the database and backend:
 
 ```
 docker-compose -f docker/docker-compose.yml up
