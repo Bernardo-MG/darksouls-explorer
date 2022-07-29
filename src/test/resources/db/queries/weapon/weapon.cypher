@@ -1,0 +1,1 @@
+CREATE (i:Item:Weapon {name: 'Sword'});

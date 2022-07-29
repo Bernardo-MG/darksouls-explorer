@@ -76,7 +76,10 @@ public class ITDefaultWeaponServiceGetProgression {
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j", neo4jContainer.getAdminPassword(),
-            neo4jContainer.getBoltUrl(), Arrays.asList("classpath:db/queries/weapon/physical_5_levels.cypher"));
+            neo4jContainer.getBoltUrl(),
+            Arrays.asList("classpath:db/queries/weapon/weapon.cypher",
+                "classpath:db/queries/weapon/physical_5_levels.cypher",
+                "classpath:db/queries/weapon/magic_0_levels.cypher"));
     }
 
     @Autowired
@@ -295,11 +298,12 @@ public class ITDefaultWeaponServiceGetProgression {
     @Test
     @DisplayName("Returns the path level")
     public void testGetProgression_PathLevel() {
-        final WeaponProgression               data;
-        final Long                            id;
-        final Iterator<WeaponProgressionPath> itr;
-        WeaponProgressionLevel                level;
-        WeaponProgressionPath                 path;
+        final WeaponProgression                data;
+        final Iterator<WeaponProgressionLevel> levels;
+        final Long                             id;
+        final Iterator<WeaponProgressionPath>  itr;
+        WeaponProgressionLevel                 level;
+        WeaponProgressionPath                  path;
 
         id = getId();
 
@@ -312,11 +316,23 @@ public class ITDefaultWeaponServiceGetProgression {
         path = itr.next();
 
         path = itr.next();
+        levels = path.getLevels()
+            .iterator();
 
-        level = path.getLevels()
-            .iterator()
-            .next();
+        level = levels.next();
         Assertions.assertEquals(0, level.getPathLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(1, level.getPathLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(2, level.getPathLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(3, level.getPathLevel());
+
+        level = levels.next();
+        Assertions.assertEquals(4, level.getPathLevel());
     }
 
     @Test

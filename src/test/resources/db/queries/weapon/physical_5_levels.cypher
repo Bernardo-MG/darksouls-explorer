@@ -1,6 +1,4 @@
-CREATE (i:Item:Weapon {name: 'Sword'});
 CREATE (p:UpgradePath {name: 'Physical'});
-CREATE (p:UpgradePath {name: 'Magic'});
 CREATE (l:Level {name: 'Sword Physical', target: 'Sword', path: 'Physical', level: 0, pathLevel: 0});
 CREATE (l:Level {name: 'Sword Physical 1', target: 'Sword', path: 'Physical', level: 1, pathLevel: 1});
 CREATE (l:Level {name: 'Sword Physical 2', target: 'Sword', path: 'Physical', level: 2, pathLevel: 2});
@@ -10,5 +8,4 @@ CREATE (l:Level {name: 'Sword Magic', target: 'Sword', path: 'Magic', level: 0, 
 MATCH (l:Level), (m:Level) WHERE l.path = m.path AND m.level = l.level + 1 MERGE (l)-[:NEXT]->(m);
 MATCH (l:Level {path: 'Physical', level: 4}), (m:Level {path: 'Magic', level: 0}) MERGE (l)-[:NEXT]->(m);
 MATCH (p:UpgradePath {name: 'Physical'}), (l:Level {path: 'Physical'}) MERGE (p)-[:HAS_LEVEL]->(l);
-MATCH (p:UpgradePath {name: 'Magic'}), (l:Level {path: 'Magic'}) MERGE (p)-[:HAS_LEVEL]->(l);
 MATCH (w:Weapon), (l:Level) WHERE w.name = l.target MERGE (w)-[:HAS_LEVEL]->(l);
