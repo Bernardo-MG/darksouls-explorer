@@ -72,7 +72,10 @@ public class ITDefaultWeaponServiceGetProgressionNoLevels {
     @BeforeAll
     private static void prepareTestdata() {
         new Neo4jDatabaseInitalizer().initialize("neo4j", neo4jContainer.getAdminPassword(),
-            neo4jContainer.getBoltUrl(), Arrays.asList("classpath:db/queries/weapon/physical_5_levels.cypher"));
+            neo4jContainer.getBoltUrl(),
+            Arrays.asList("classpath:db/queries/weapon/weapon.cypher",
+                "classpath:db/queries/weapon/physical_5_levels.cypher",
+                "classpath:db/queries/weapon/magic_0_levels.cypher"));
     }
 
     @Autowired
