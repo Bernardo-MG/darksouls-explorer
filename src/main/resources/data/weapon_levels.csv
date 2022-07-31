@@ -1,4 +1,16 @@
 name,path,level,physical_damage,magic_damage,fire_damage,lightning_damage,strength_bonus,dexterity_bonus,intelligence_bonus,faith_bonus,physical_reduction,magic_reduction,fire_reduction,lightning_reduction,critical,stability
+Abyss Greatsword,Standard,0,160,0,0,0,C,C,,,40,50,40,40,100,38
+Abyss Greatsword,Standard,1,176,0,0,0,C,C,,,40,50,40,40,100,38
+Abyss Greatsword,Standard,2,192,0,0,0,C,C,,,40,50,40,40,100,38
+Abyss Greatsword,Standard,3,208,0,0,0,C,C,,,40,50,40,40,100,38
+Abyss Greatsword,Standard,4,224,0,0,0,C,C,,,40,50,40,40,100,38
+Abyss Greatsword,Standard,5,240,0,0,0,C,C,,,40,50,40,40,100,38
+Astora's Straight Sword,Standard,0,80,80,0,0,C,C,,C,50,10,35,35,100,32
+Astora's Straight Sword,Standard,1,88,88,0,0,C,C,,C,50,10,35,35,100,32
+Astora's Straight Sword,Standard,2,96,96,0,0,C,C,,C,50,10,35,35,100,32
+Astora's Straight Sword,Standard,3,104,104,0,0,C,C,,C,50,10,35,35,100,32
+Astora's Straight Sword,Standard,4,112,112,0,0,C,C,,C,50,10,35,35,100,32
+Astora's Straight Sword,Standard,5,120,120,0,0,C,C,,C,50,10,35,35,100,32
 Avelyn,Crystal,0,192,0,0,0,,,,,0,0,0,0,100,0
 Avelyn,Crystal,1,203,0,0,0,,,,,0,0,0,0,100,0
 Avelyn,Crystal,2,214,0,0,0,,,,,0,0,0,0,100,0
@@ -570,6 +582,36 @@ Black Bow of Pharis,Standard,6,54,0,0,0,E,S,,,0,0,0,0,100,0
 Black Bow of Pharis,Standard,7,57,0,0,0,E,S,,,0,0,0,0,100,0
 Black Bow of Pharis,Standard,8,61,0,0,0,E,S,,,0,0,0,0,100,0
 Black Bow of Pharis,Standard,9,64,0,0,0,E,S,,,0,0,0,0,100,0
+Black Knight Greataxe,Standard,0,229,0,0,0,B,E,,,55,10,40,40,100,38
+Black Knight Greataxe,Standard,1,251,0,0,0,B,E,,,55,10,40,40,100,38
+Black Knight Greataxe,Standard,2,274,0,0,0,B,E,,,55,10,40,40,100,38
+Black Knight Greataxe,Standard,3,297,0,0,0,B,E,,,55,10,40,40,100,38
+Black Knight Greataxe,Standard,4,320,0,0,0,B,E,,,55,10,40,40,100,38
+Black Knight Greataxe,Standard,5,343,0,0,0,B,E,,,55,10,40,40,100,38
+Black Knight Greatsword,Standard,0,220,0,0,0,B,E,,,70,10,50,50,100,44
+Black Knight Greatsword,Standard,1,242,0,0,0,B,E,,,70,10,50,50,100,44
+Black Knight Greatsword,Standard,2,264,0,0,0,B,E,,,70,10,50,50,100,44
+Black Knight Greatsword,Standard,3,286,0,0,0,B,E,,,70,10,50,50,100,44
+Black Knight Greatsword,Standard,4,308,0,0,0,B,E,,,70,10,50,50,100,44
+Black Knight Greatsword,Standard,5,330,0,0,0,B,E,,,70,10,50,50,100,44
+Black Knight Halberd,Standard,0,245,0,0,0,D,E,,,40,10,30,30,100,26
+Black Knight Halberd,Standard,1,269,0,0,0,D,E,,,40,10,30,30,100,26
+Black Knight Halberd,Standard,2,294,0,0,0,D,E,,,40,10,30,30,100,26
+Black Knight Halberd,Standard,3,318,0,0,0,D,E,,,40,10,30,30,100,26
+Black Knight Halberd,Standard,4,343,0,0,0,D,E,,,40,10,30,30,100,26
+Black Knight Halberd,Standard,5,367,0,0,0,D,E,,,40,10,30,30,100,26
+Black Knight Sword,Standard,0,220,0,0,0,C,E,,,60,10,40,40,100,38
+Black Knight Sword,Standard,1,242,0,0,0,C,E,,,60,10,40,40,100,38
+Black Knight Sword,Standard,2,264,0,0,0,C,E,,,60,10,40,40,100,38
+Black Knight Sword,Standard,3,286,0,0,0,C,E,,,60,10,40,40,100,38
+Black Knight Sword,Standard,4,308,0,0,0,C,E,,,60,10,40,40,100,38
+Black Knight Sword,Standard,5,330,0,0,0,C,E,,,60,10,40,40,100,38
+Blacksmith Giant Hammer,Standard,0,120,0,0,200,D,,,,45,10,30,30,100,30
+Blacksmith Giant Hammer,Standard,1,132,0,0,220,D,,,,45,10,30,30,100,30
+Blacksmith Giant Hammer,Standard,2,144,0,0,240,D,,,,45,10,30,30,100,30
+Blacksmith Giant Hammer,Standard,3,156,0,0,260,D,,,,45,10,30,30,100,30
+Blacksmith Giant Hammer,Standard,4,168,0,0,280,D,,,,45,10,30,30,100,30
+Blacksmith Giant Hammer,Standard,5,180,0,0,300,D,,,,45,10,30,30,100,30
 Blacksmith Hammer,Chaos,0,136,0,158,0,,,,,45,10,30.0,30,100,30
 Blacksmith Hammer,Chaos,1,144,0,167,0,,,,,45,10,30.6,30,100,30
 Blacksmith Hammer,Chaos,2,152,0,176,0,,,,,45,10,31.2,30,100,30
@@ -995,6 +1037,18 @@ Caestus,Standard,6,105,0,0,0,C,C,,,0,0,0,0,100,0
 Caestus,Standard,7,112,0,0,0,C,C,,,0,0,0,0,100,0
 Caestus,Standard,8,118,0,0,0,C,C,,,0,0,0,0,100,0
 Caestus,Standard,9,125,0,0,0,C,C,,,0,0,0,0,100,0
+Channeler's Trident,Standard,0,70,115,0,0,E,C,B,,40,10,30,30,100,26
+Channeler's Trident,Standard,1,77,126,0,0,E,C,B,,40,10,30,30,100,26
+Channeler's Trident,Standard,2,84,138,0,0,E,C,B,,40,10,30,30,100,26
+Channeler's Trident,Standard,3,91,149,0,0,E,C,B,,40,10,30,30,100,26
+Channeler's Trident,Standard,4,98,161,0,0,E,C,B,,40,10,30,30,100,26
+Channeler's Trident,Standard,5,105,172,0,0,E,C,B,,40,10,30,30,100,26
+Chaos Blade,Standard,0,144,0,0,0,,B,,,45,10,30,30,100,30
+Chaos Blade,Standard,1,158,0,0,0,,B,,,45,10,30,30,100,30
+Chaos Blade,Standard,2,172,0,0,0,,B,,,45,10,30,30,100,30
+Chaos Blade,Standard,3,187,0,0,0,,B,,,45,10,30,30,100,30
+Chaos Blade,Standard,4,201,0,0,0,,B,,,45,10,30,30,100,30
+Chaos Blade,Standard,5,216,0,0,0,,B,,,45,10,30,30,100,30
 Claw,Chaos,0,113,0,129,0,,,,,0,0,0,0,100,0
 Claw,Chaos,1,119,0,136,0,,,,,0,0,0,0,100,0
 Claw,Chaos,2,126,0,144,0,,,,,0,0,0,0,100,0
@@ -1335,6 +1389,12 @@ Composite Bow,Standard,6,88,0,0,0,C,C,,,0,0,0,0,100,0
 Composite Bow,Standard,7,93,0,0,0,C,C,,,0,0,0,0,100,0
 Composite Bow,Standard,8,99,0,0,0,C,C,,,0,0,0,0,100,0
 Composite Bow,Standard,9,104,0,0,0,C,C,,,0,0,0,0,100,0
+Crescent Axe,Standard,0,115,115,0,0,D,D,,B,55,10,40,40,100,36
+Crescent Axe,Standard,1,126,126,0,0,D,D,,B,55,10,40,40,100,36
+Crescent Axe,Standard,2,138,138,0,0,D,D,,B,55,10,40,40,100,36
+Crescent Axe,Standard,3,149,149,0,0,D,D,,B,55,10,40,40,100,36
+Crescent Axe,Standard,4,161,161,0,0,D,D,,B,55,10,40,40,100,36
+Crescent Axe,Standard,5,172,172,0,0,D,D,,B,55,10,40,40,100,36
 Dagger,Chaos,0,88,0,102,0,,,,,45,10,30.0,30,131,26
 Dagger,Chaos,1,93,0,108,0,,,,,45,10,30.6,30,131,26
 Dagger,Chaos,2,98,0,114,0,,,,,45,10,31.2,30,131,26
@@ -1420,6 +1480,18 @@ Dagger,Standard,6,89,0,0,0,E,B,,,45,10,30,30,131,26
 Dagger,Standard,7,95,0,0,0,E,B,,,45,10,30,30,131,26
 Dagger,Standard,8,100,0,0,0,E,B,,,45,10,30,30,131,26
 Dagger,Standard,9,106,0,0,0,E,B,,,45,10,30,30,131,26
+Dark Silver Tracer,Standard,0,75,0,0,0,E,S,,,45,10,30,30,160,26
+Dark Silver Tracer,Standard,1,82,0,0,0,E,S,,,45,10,30,30,160,26
+Dark Silver Tracer,Standard,2,90,0,0,0,E,S,,,45,10,30,30,160,26
+Dark Silver Tracer,Standard,3,97,0,0,0,E,S,,,45,10,30,30,160,26
+Dark Silver Tracer,Standard,4,105,0,0,0,E,S,,,45,10,30,30,160,26
+Dark Silver Tracer,Standard,5,112,0,0,0,E,S,,,45,10,30,30,160,26
+Darkmoon Bow,Standard,0,85,85,0,0,E,D,,D,0,0,0,0,100,0
+Darkmoon Bow,Standard,1,93,93,0,0,E,D,,D,0,0,0,0,100,0
+Darkmoon Bow,Standard,2,102,102,0,0,E,D,,D,0,0,0,0,100,0
+Darkmoon Bow,Standard,3,110,110,0,0,E,D,,D,0,0,0,0,100,0
+Darkmoon Bow,Standard,4,119,119,0,0,E,D,,D,0,0,0,0,100,0
+Darkmoon Bow,Standard,5,127,127,0,0,E,D,,D,0,0,0,0,100,0
 Darksword,Chaos,0,129,0,147,0,,,,,50,10,35.0,35,100,32
 Darksword,Chaos,1,136,0,155,0,,,,,50,10,35.7,35,100,32
 Darksword,Chaos,2,144,0,164,0,,,,,50,10,36.4,35,100,32
@@ -1760,6 +1832,54 @@ Demon's Greataxe,Standard,6,182,0,0,0,A,,,,55,10,40,40,100,38
 Demon's Greataxe,Standard,7,193,0,0,0,A,,,,55,10,40,40,100,38
 Demon's Greataxe,Standard,8,205,0,0,0,A,,,,55,10,40,40,100,38
 Demon's Greataxe,Standard,9,216,0,0,0,A,,,,55,10,40,40,100,38
+Demon's Spear,Standard,0,100,0,0,120,C,C,,,40,10,30,30,100,26
+Demon's Spear,Standard,1,110,0,0,132,C,C,,,40,10,30,30,100,26
+Demon's Spear,Standard,2,120,0,0,144,C,C,,,40,10,30,30,100,26
+Demon's Spear,Standard,3,130,0,0,156,C,C,,,40,10,30,30,100,26
+Demon's Spear,Standard,4,140,0,0,168,C,C,,,40,10,30,30,100,26
+Demon's Spear,Standard,5,150,0,0,180,C,C,,,40,10,30,30,100,26
+Dragon Bone Fist,Standard,0,95,0,0,0,A,,,,0,0,0,0,100,0
+Dragon Bone Fist,Standard,1,104,0,0,0,A,,,,0,0,0,0,100,0
+Dragon Bone Fist,Standard,2,114,0,0,0,A,,,,0,0,0,0,100,0
+Dragon Bone Fist,Standard,3,123,0,0,0,A,,,,0,0,0,0,100,0
+Dragon Bone Fist,Standard,4,133,0,0,0,A,,,,0,0,0,0,100,0
+Dragon Bone Fist,Standard,5,142,0,0,0,S,,,,0,0,0,0,100,0
+Dragon Greatsword,Standard,0,390,0,0,0,,,,,70,10,50,50,100,44
+Dragon Greatsword,Standard,1,429,0,0,0,,,,,70,10,50,50,100,44
+Dragon Greatsword,Standard,2,468,0,0,0,,,,,70,10,50,50,100,44
+Dragon Greatsword,Standard,3,507,0,0,0,,,,,70,10,50,50,100,44
+Dragon Greatsword,Standard,4,546,0,0,0,,,,,70,10,50,50,100,44
+Dragon Greatsword,Standard,5,585,0,0,0,,,,,70,10,50,50,100,44
+Dragon King Greataxe,Standard,0,380,0,0,0,,,,,55,10,40,40,100,38
+Dragon King Greataxe,Standard,1,418,0,0,0,,,,,55,10,40,40,100,38
+Dragon King Greataxe,Standard,2,456,0,0,0,,,,,55,10,40,40,100,38
+Dragon King Greataxe,Standard,3,494,0,0,0,,,,,55,10,40,40,100,38
+Dragon King Greataxe,Standard,4,532,0,0,0,,,,,55,10,40,40,100,38
+Dragon King Greataxe,Standard,5,570,0,0,0,,,,,55,10,40,40,100,38
+Dragon Tooth,Standard,0,290,0,0,0,D,,,,50,10,35,35,100,32
+Dragon Tooth,Standard,1,319,0,0,0,D,,,,50,10,35,35,100,32
+Dragon Tooth,Standard,2,348,0,0,0,D,,,,50,10,35,35,100,32
+Dragon Tooth,Standard,3,377,0,0,0,D,,,,50,10,35,35,100,32
+Dragon Tooth,Standard,4,406,0,0,0,D,,,,50,10,35,35,100,32
+Dragon Tooth,Standard,5,435,0,0,0,D,,,,50,10,35,35,100,32
+Dragonslayer Greatbow,Standard,0,90,0,0,0,C,C,,,0,0,0,0,100,0
+Dragonslayer Greatbow,Standard,1,99,0,0,0,C,C,,,0,0,0,0,100,0
+Dragonslayer Greatbow,Standard,2,108,0,0,0,C,C,,,0,0,0,0,100,0
+Dragonslayer Greatbow,Standard,3,116,0,0,0,C,C,,,0,0,0,0,100,0
+Dragonslayer Greatbow,Standard,4,126,0,0,0,C,C,,,0,0,0,0,100,0
+Dragonslayer Greatbow,Standard,5,135,0,0,0,C,C,,,0,0,0,0,100,0
+Dragonslayer Spear,Standard,0,95,0,0,65,C,B,,B,40,10,30,30,100,26
+Dragonslayer Spear,Standard,1,104,0,0,71,C,B,,B,40,10,30,30,100,26
+Dragonslayer Spear,Standard,2,114,0,0,78,C,B,,B,40,10,30,30,100,26
+Dragonslayer Spear,Standard,3,123,0,0,84,C,B,,B,40,10,30,30,100,26
+Dragonslayer Spear,Standard,4,133,0,0,91,C,B,,B,40,10,30,30,100,26
+Dragonslayer Spear,Standard,5,142,0,0,97,C,B,,B,40,10,30,30,100,26
+Drake Sword,Standard,0,200,0,0,0,,,,,50,10,35,35,100,32
+Drake Sword,Standard,1,220,0,0,0,,,,,50,10,35,35,100,32
+Drake Sword,Standard,2,240,0,0,0,,,,,50,10,35,35,100,32
+Drake Sword,Standard,3,260,0,0,0,,,,,50,10,35,35,100,32
+Drake Sword,Standard,4,280,0,0,0,,,,,50,10,35,35,100,32
+Drake Sword,Standard,5,300,0,0,0,,,,,50,10,35,35,100,32
 Estoc,Chaos,0,117,0,135,0,,,,,45,10,30.0,30,100,22
 Estoc,Chaos,1,123,0,142,0,,,,,45,10,30.6,30,100,22
 Estoc,Chaos,2,130,0,150,0,,,,,45,10,31.2,30,100,22
@@ -2270,6 +2390,48 @@ Gargoyle's Halberd,Standard,6,184,0,0,0,D,D,,,40,10,30,30,100,26
 Gargoyle's Halberd,Standard,7,195,0,0,0,D,D,,,40,10,30,30,100,26
 Gargoyle's Halberd,Standard,8,207,0,0,0,D,D,,,40,10,30,30,100,26
 Gargoyle's Halberd,Standard,9,218,0,0,0,D,D,,,40,10,30,30,100,26
+Ghost Blade,Standard,0,110,0,0,0,E,,,,45,10,30,30,127,26
+Ghost Blade,Standard,1,121,0,0,0,E,,,,45,10,30,30,127,26
+Ghost Blade,Standard,2,132,0,0,0,E,,,,45,10,30,30,127,26
+Ghost Blade,Standard,3,143,0,0,0,E,,,,45,10,30,30,127,26
+Ghost Blade,Standard,4,154,0,0,0,E,,,,45,10,30,30,127,26
+Ghost Blade,Standard,5,165,0,0,0,E,,,,45,10,30,30,127,26
+Giant's Halberd,Standard,0,140,0,0,135,D,D,,,40,10,30,30,100,26
+Giant's Halberd,Standard,1,154,0,0,148,D,D,,,40,10,30,30,100,26
+Giant's Halberd,Standard,2,168,0,0,162,D,D,,,40,10,30,30,100,26
+Giant's Halberd,Standard,3,182,0,0,175,D,D,,,40,10,30,30,100,26
+Giant's Halberd,Standard,4,196,0,0,189,D,D,,,40,10,30,30,100,26
+Giant's Halberd,Standard,5,210,0,0,202,D,D,,,40,10,30,30,100,26
+Gold Tracer,Standard,0,130,0,0,0,E,A,,,45,10,30,30,100,30
+Gold Tracer,Standard,1,143,0,0,0,E,A,,,45,10,30,30,100,30
+Gold Tracer,Standard,2,156,0,0,0,E,A,,,45,10,30,30,100,30
+Gold Tracer,Standard,3,169,0,0,0,E,A,,,45,10,30,30,100,30
+Gold Tracer,Standard,4,182,0,0,0,E,A,,,45,10,30,30,100,30
+Gold Tracer,Standard,5,195,0,0,0,E,A,,,45,10,30,30,100,30
+Golem Axe,Standard,0,170,0,0,0,C,E,,,55,10,40,40,100,36
+Golem Axe,Standard,1,187,0,0,0,C,E,,,55,10,40,40,100,36
+Golem Axe,Standard,2,204,0,0,0,C,E,,,55,10,40,40,100,36
+Golem Axe,Standard,3,221,0,0,0,C,E,,,55,10,40,40,100,36
+Golem Axe,Standard,4,237,0,0,0,C,E,,,55,10,40,40,100,36
+Golem Axe,Standard,5,255,0,0,0,C,E,,,55,10,40,40,100,36
+Gough's Greatbow,Standard,0,85,0,0,0,B,C,,,0,0,0,0,100,0
+Gough's Greatbow,Standard,1,93,0,0,0,B,C,,,0,0,0,0,100,0
+Gough's Greatbow,Standard,2,102,0,0,0,B,C,,,0,0,0,0,100,0
+Gough's Greatbow,Standard,3,110,0,0,0,B,C,,,0,0,0,0,100,0
+Gough's Greatbow,Standard,4,119,0,0,0,B,C,,,0,0,0,0,100,0
+Gough's Greatbow,Standard,5,127,0,0,0,B,C,,,0,0,0,0,100,0
+Grant,Standard,0,130,130,0,0,B,,,A,50,10,35,35,100,32
+Grant,Standard,1,143,143,0,0,B,,,A,50,10,35,35,100,32
+Grant,Standard,2,156,156,0,0,B,,,A,50,10,35,35,100,32
+Grant,Standard,3,169,169,0,0,B,,,A,50,10,35,35,100,32
+Grant,Standard,4,182,182,0,0,B,,,A,50,10,35,35,100,32
+Grant,Standard,5,195,195,0,0,B,,,A,50,10,35,35,100,32
+Gravelord Sword,Standard,0,265,0,0,0,E,E,,,60,10,40,40,100,36
+Gravelord Sword,Standard,1,291,0,0,0,E,E,,,60,10,40,40,100,36
+Gravelord Sword,Standard,2,318,0,0,0,E,E,,,60,10,40,40,100,36
+Gravelord Sword,Standard,3,344,0,0,0,E,E,,,60,10,40,40,100,36
+Gravelord Sword,Standard,4,371,0,0,0,E,E,,,60,10,40,40,100,36
+Gravelord Sword,Standard,5,397,0,0,0,E,E,,,60,10,40,40,100,36
 Great Club,Chaos,0,212,0,244,0,,,,,50,10,35.0,35,100,32
 Great Club,Chaos,1,224,0,258,0,,,,,50,10,35.7,35,100,32
 Great Club,Chaos,2,236,0,272,0,,,,,50,10,36.4,35,100,32
@@ -2355,6 +2517,12 @@ Great Club,Standard,6,216,0,0,0,B,,,,50,10,35,35,100,32
 Great Club,Standard,7,229,0,0,0,B,,,,50,10,35,35,100,32
 Great Club,Standard,8,243,0,0,0,B,,,,50,10,35,35,100,32
 Great Club,Standard,9,256,0,0,0,B,,,,50,10,35,35,100,32
+Great Lord Greatsword,Standard,0,256,0,0,0,D,D,,,60,10,40,40,100,26
+Great Lord Greatsword,Standard,1,281,0,0,0,D,D,,,60,10,40,40,100,26
+Great Lord Greatsword,Standard,2,307,0,0,0,D,D,,,60,10,40,40,100,26
+Great Lord Greatsword,Standard,3,332,0,0,0,D,D,,,60,10,40,40,100,26
+Great Lord Greatsword,Standard,4,358,0,0,0,D,D,,,60,10,40,40,100,26
+Great Lord Greatsword,Standard,5,384,0,0,0,D,D,,,60,10,40,40,100,26
 Great Scythe,Chaos,0,156,0,181,0,,,,,40,10,30.0,30,100,22
 Great Scythe,Chaos,1,165,0,191,0,,,,,40,10,30.6,30,100,22
 Great Scythe,Chaos,2,174,0,202,0,,,,,40,10,31.2,30,100,22
@@ -2525,6 +2693,18 @@ Greataxe,Standard,6,224,0,0,0,C,E,,,55,10,40,40,100,38
 Greataxe,Standard,7,238,0,0,0,C,E,,,55,10,40,40,100,38
 Greataxe,Standard,8,252,0,0,0,C,E,,,55,10,40,40,100,38
 Greataxe,Standard,9,266,0,0,0,C,E,,,55,10,40,40,100,38
+Greatsword of Artorias (Cursed),Greatsword of Artorias,0,178,0,0,0,C,C,C,C,60,10,40,40,100,38
+Greatsword of Artorias (Cursed),Greatsword of Artorias,1,195,0,0,0,C,C,C,C,60,10,40,40,100,38
+Greatsword of Artorias (Cursed),Greatsword of Artorias,2,213,0,0,0,C,C,C,C,60,10,40,40,100,38
+Greatsword of Artorias (Cursed),Greatsword of Artorias,3,231,0,0,0,C,C,C,C,60,10,40,40,100,38
+Greatsword of Artorias (Cursed),Greatsword of Artorias,4,249,0,0,0,C,C,C,C,60,10,40,40,100,38
+Greatsword of Artorias (Cursed),Greatsword of Artorias,5,267,0,0,0,C,C,C,C,60,10,40,40,100,38
+Greatsword of Artorias,Standard,0,120,85,0,0,C,C,B,B,60,10,40,40,100,38
+Greatsword of Artorias,Standard,1,132,93,0,0,C,C,B,B,60,10,40,40,100,38
+Greatsword of Artorias,Standard,2,144,108,0,0,C,C,B,B,60,10,40,40,100,38
+Greatsword of Artorias,Standard,3,156,110,0,0,C,C,B,B,60,10,40,40,100,38
+Greatsword of Artorias,Standard,4,168,119,0,0,C,C,B,B,60,10,40,40,100,38
+Greatsword of Artorias,Standard,5,180,127,0,0,C,C,B,B,60,10,40,40,100,38
 Greatsword,Chaos,0,203,0,235,0,,,,,70,10,50,50,100,44
 Greatsword,Chaos,1,214,0,248,0,,,,,70,10,51,50,100,44
 Greatsword,Chaos,2,226,0,262,0,,,,,70,10,52,50,100,44
@@ -2780,6 +2960,12 @@ Halberd,Standard,6,176,0,0,0,D,C,,,40,10,30,30,100,26
 Halberd,Standard,7,187,0,0,0,D,C,,,40,10,30,30,100,26
 Halberd,Standard,8,198,0,0,0,D,C,,,40,10,30,30,100,26
 Halberd,Standard,9,209,0,0,0,D,C,,,40,10,30,30,100,26
+Hammer of Vamos,Standard,0,115,0,64,0,C,,,,45,10,30,30,100,30
+Hammer of Vamos,Standard,1,126,0,70,0,C,,,,45,10,30,30,100,30
+Hammer of Vamos,Standard,2,138,0,76,0,C,,,,45,10,30,30,100,30
+Hammer of Vamos,Standard,3,149,0,83,0,C,,,,45,10,30,30,100,30
+Hammer of Vamos,Standard,4,161,0,89,0,C,,,,45,10,30,30,100,30
+Hammer of Vamos,Standard,5,172,0,96,0,C,,,,45,10,30,30,100,30
 Hand Axe,Chaos,0,126,0,144,0,,,,,55,10,40.0,40,100,36
 Hand Axe,Chaos,1,133,0,152,0,,,,,55,10,40.8,40,100,36
 Hand Axe,Chaos,2,140,0,160,0,,,,,55,10,41.6,40,100,36
@@ -3011,6 +3197,12 @@ Iaito,Standard,6,140,0,0,0,,B,,,45,10,30,30,100,30
 Iaito,Standard,7,149,0,0,0,,B,,,45,10,30,30,100,30
 Iaito,Standard,8,158,0,0,0,,B,,,45,10,30,30,100,30
 Iaito,Standard,9,167,0,0,0,,B,,,45,10,30,30,100,30
+Jagged Ghost Blade,Standard,0,155,0,0,0,E,,,,45,10,30,30,100,30
+Jagged Ghost Blade,Standard,1,170,0,0,0,E,,,,45,10,30,30,100,30
+Jagged Ghost Blade,Standard,2,186,0,0,0,E,,,,45,10,30,30,100,30
+Jagged Ghost Blade,Standard,3,201,0,0,0,E,,,,45,10,30,30,100,30
+Jagged Ghost Blade,Standard,4,217,0,0,0,E,,,,45,10,30,30,100,30
+Jagged Ghost Blade,Standard,5,232,0,0,0,E,,,,45,10,30,30,100,30
 Large Club,Chaos,0,189,0,217,0,,,,,55,10,35.0,40,100,32
 Large Club,Chaos,1,199,0,229,0,,,,,55,10,35.7,40,100,32
 Large Club,Chaos,2,210,0,242,0,,,,,55,10,36.4,40,100,32
@@ -3096,6 +3288,12 @@ Large Club,Standard,6,192,0,0,0,A,,,,55,10,40,40,100,32
 Large Club,Standard,7,204,0,0,0,A,,,,55,10,40,40,100,32
 Large Club,Standard,8,216,0,0,0,A,,,,55,10,40,40,100,32
 Large Club,Standard,9,228,0,0,0,A,,,,55,10,40,40,100,32
+Lifehunt Scythe,Standard,0,180,0,0,0,E,B,,,40,10,30,30,100,22
+Lifehunt Scythe,Standard,1,198,0,0,0,E,B,,,40,10,30,30,100,22
+Lifehunt Scythe,Standard,2,216,0,0,0,E,B,,,40,10,30,30,100,22
+Lifehunt Scythe,Standard,3,233,0,0,0,E,B,,,40,10,30,30,100,22
+Lifehunt Scythe,Standard,4,252,0,0,0,E,B,,,40,10,30,30,100,22
+Lifehunt Scythe,Standard,5,270,0,0,0,E,B,,,40,10,30,30,100,22
 Light Crossbow,Crystal,0,260,0,0,0,,,,,0,0,0,0,100,0
 Light Crossbow,Crystal,1,275,0,0,0,,,,,0,0,0,0,100,0
 Light Crossbow,Crystal,2,290,0,0,0,,,,,0,0,0,0,100,0
@@ -3667,6 +3865,18 @@ Man-serpent Greatsword,Standard,6,176,0,0,0,B,,,,60,10,40,40,100,38
 Man-serpent Greatsword,Standard,7,187,0,0,0,B,,,,60,10,40,40,100,38
 Man-serpent Greatsword,Standard,8,200,0,0,0,B,,,,60,10,40,40,100,38
 Man-serpent Greatsword,Standard,9,209,0,0,0,B,,,,60,10,40,40,100,38
+Moonlight Butterfly Horn,Standard,0,0,120,0,0,,,B,,40,10,30,30,100,26
+Moonlight Butterfly Horn,Standard,1,0,132,0,0,,,B,,40,10,30,30,100,26
+Moonlight Butterfly Horn,Standard,2,0,144,0,0,,,B,,40,10,30,30,100,26
+Moonlight Butterfly Horn,Standard,3,0,156,0,0,,,B,,40,10,30,30,100,26
+Moonlight Butterfly Horn,Standard,4,0,168,0,0,,,B,,40,10,30,30,100,26
+Moonlight Butterfly Horn,Standard,5,0,180,0,0,,,B,,40,10,30,30,100,26
+Moonlight Greatsword (Dark Souls),Moonlight Greatsword,0,0,132,0,0,,,A,,60,10,40,40,100,38
+Moonlight Greatsword (Dark Souls),Moonlight Greatsword,1,0,145,0,0,,,S,,60,10,40,40,100,38
+Moonlight Greatsword (Dark Souls),Moonlight Greatsword,2,0,158,0,0,,,S,,60,10,40,40,100,38
+Moonlight Greatsword (Dark Souls),Moonlight Greatsword,3,0,171,0,0,,,S,,60,10,40,40,100,38
+Moonlight Greatsword (Dark Souls),Moonlight Greatsword,4,0,184,0,0,,,S,,60,10,40,40,100,38
+Moonlight Greatsword (Dark Souls),Moonlight Greatsword,5,0,198,0,0,,,S,,60,10,40,40,100,38
 Morning Star (Dark Souls),Chaos Morning Star,0,146,0,166,0,,,,,45,10,30.0,30,100,30
 Morning Star (Dark Souls),Chaos Morning Star,1,153,0,174,0,,,,,45,10,30.6,30,100,30
 Morning Star (Dark Souls),Chaos Morning Star,2,160,0,182,0,,,,,45,10,31.2,30,100,30
@@ -3922,6 +4132,12 @@ Notched Whip,Standard,6,121,0,0,0,,B,,,30,10,20,20,100,16
 Notched Whip,Standard,7,129,0,0,0,,B,,,30,10,20,20,100,16
 Notched Whip,Standard,8,136,0,0,0,,B,,,30,10,20,20,100,16
 Notched Whip,Standard,9,144,0,0,0,,B,,,30,10,20,20,100,16
+Obsidian Greatsword,Standard,0,320,0,0,0,,,,,60,10,40,40,100,38
+Obsidian Greatsword,Standard,1,352,0,0,0,,,,,60,10,40,40,100,38
+Obsidian Greatsword,Standard,2,384,0,0,0,,,,,60,10,40,40,100,38
+Obsidian Greatsword,Standard,3,416,0,0,0,,,,,60,10,40,40,100,38
+Obsidian Greatsword,Standard,4,448,0,0,0,,,,,60,10,40,40,100,38
+Obsidian Greatsword,Standard,5,480,0,0,0,,,,,60,10,40,40,100,38
 Painting Guardian Sword,Chaos,0,118,0,136,0,,,,,45,10,30.0,30,100,30
 Painting Guardian Sword,Chaos,1,125,0,144,0,,,,,45,10,30.6,30,100,30
 Painting Guardian Sword,Chaos,2,132,0,152,0,,,,,45,10,31.2,30,100,30
@@ -4347,6 +4563,18 @@ Pike,Standard,6,137,0,0,0,D,C,,,40,10,30,30,100,26
 Pike,Standard,7,146,0,0,0,D,C,,,40,10,30,30,100,26
 Pike,Standard,8,154,0,0,0,D,C,,,40,10,30,30,100,26
 Pike,Standard,9,163,0,0,0,D,C,,,40,10,30,30,100,26
+Priscilla's Dagger,Standard,0,80,0,0,0,,A,,,45,10,30,30,100,26
+Priscilla's Dagger,Standard,1,88,0,0,0,,A,,,45,10,30,30,100,26
+Priscilla's Dagger,Standard,2,96,0,0,0,,A,,,45,10,30,30,100,26
+Priscilla's Dagger,Standard,3,104,0,0,0,,A,,,45,10,30,30,100,26
+Priscilla's Dagger,Standard,4,112,0,0,0,,A,,,45,10,30,30,100,26
+Priscilla's Dagger,Standard,5,120,0,0,0,,S,,,45,10,30,30,100,26
+Quelaag's Furysword,Standard,0,60,0,170,0,E,B,,,45,10,30,30,100,30
+Quelaag's Furysword,Standard,1,66,0,187,0,E,B,,,45,10,30,30,100,30
+Quelaag's Furysword,Standard,2,72,0,204,0,E,B,,,45,10,30,30,100,30
+Quelaag's Furysword,Standard,3,78,0,220,0,E,B,,,45,10,30,30,100,30
+Quelaag's Furysword,Standard,4,84,0,238,0,E,B,,,45,10,30,30,100,30
+Quelaag's Furysword,Standard,5,90,0,255,0,E,B,,,45,10,30,30,100,30
 Rapier,Chaos,0,113,0,131,0,,,,,45,10,30.0,30,110,22
 Rapier,Chaos,1,119,0,138,0,,,,,45,10,30.6,30,110,22
 Rapier,Chaos,2,126,0,146,0,,,,,45,10,31.2,30,110,22
@@ -5112,6 +5340,24 @@ Shotel,Standard,6,131,0,0,0,E,C,,,45,10,30,30,100,30
 Shotel,Standard,7,139,0,0,0,E,C,,,45,10,30,30,100,30
 Shotel,Standard,8,147,0,0,0,E,C,,,45,10,30,30,100,30
 Shotel,Standard,9,155,0,0,0,E,C,,,45,10,30,30,100,30
+Silver Knight Spear,Standard,0,163,0,0,0,E,C,,,40,10,30,30,100,26
+Silver Knight Spear,Standard,1,179,0,0,0,E,C,,,40,10,30,30,100,26
+Silver Knight Spear,Standard,2,195,0,0,0,E,C,,,40,10,30,30,100,26
+Silver Knight Spear,Standard,3,211,0,0,0,E,C,,,40,10,30,30,100,26
+Silver Knight Spear,Standard,4,228,0,0,0,E,C,,,40,10,30,30,100,26
+Silver Knight Spear,Standard,5,244,0,0,0,E,C,,,40,10,30,30,100,26
+Silver Knight Straight Sword,Standard,0,175,0,0,0,E,C,,,50,10,35,35,100,32
+Silver Knight Straight Sword,Standard,1,192,0,0,0,E,C,,,50,10,35,35,100,32
+Silver Knight Straight Sword,Standard,2,210,0,0,0,E,C,,,50,10,35,35,100,32
+Silver Knight Straight Sword,Standard,3,227,0,0,0,E,C,,,50,10,35,35,100,32
+Silver Knight Straight Sword,Standard,4,245,0,0,0,E,C,,,50,10,35,35,100,32
+Silver Knight Straight Sword,Standard,5,262,0,0,0,E,C,,,50,10,35,35,100,32
+Smough's Hammer,Standard,0,300,0,0,0,D,,,,50,10,35,35,100,32
+Smough's Hammer,Standard,1,330,0,0,0,D,,,,50,10,35,35,100,32
+Smough's Hammer,Standard,2,360,0,0,0,D,,,,50,10,35,35,100,32
+Smough's Hammer,Standard,3,390,0,0,0,D,,,,50,10,35,35,100,32
+Smough's Hammer,Standard,4,420,0,0,0,D,,,,50,10,35,35,100,32
+Smough's Hammer,Standard,5,450,0,0,0,D,,,,50,10,35,35,100,32
 Sniper Crossbow,Crystal,0,270,0,0,0,,,,,0,0,0,0,100,0
 Sniper Crossbow,Crystal,1,286,0,0,0,,,,,0,0,0,0,100,0
 Sniper Crossbow,Crystal,2,301,0,0,0,,,,,0,0,0,0,100,0
@@ -5258,6 +5504,18 @@ Spear,Standard,6,128,0,0,0,D,C,,,40,10,30,30,100,26
 Spear,Standard,7,136,0,0,0,D,C,,,40,10,30,30,100,26
 Spear,Standard,8,144,0,0,0,D,C,,,40,10,30,30,100,26
 Spear,Standard,9,152,0,0,0,D,C,,,40,10,30,30,100,26
+Stone Greataxe,Standard,0,190,0,0,0,B,E,,,55,10,40,40,100,38
+Stone Greataxe,Standard,1,209,0,0,0,B,E,,,55,10,40,40,100,38
+Stone Greataxe,Standard,2,228,0,0,0,B,E,,,55,10,40,40,100,38
+Stone Greataxe,Standard,3,246,0,0,0,B,E,,,55,10,40,40,100,38
+Stone Greataxe,Standard,4,266,0,0,0,B,E,,,55,10,40,40,100,38
+Stone Greataxe,Standard,5,285,0,0,0,B,E,,,55,10,40,40,100,38
+Stone Greatsword,Standard,0,148,100,0,0,C,C,E,,60,10,40,40,100,38
+Stone Greatsword,Standard,1,162,110,0,0,C,C,E,,60,10,40,40,100,38
+Stone Greatsword,Standard,2,177,120,0,0,C,C,E,,60,10,40,40,100,38
+Stone Greatsword,Standard,3,192,130,0,0,C,C,E,,60,10,40,40,100,38
+Stone Greatsword,Standard,4,207,140,0,0,C,C,E,,60,10,40,40,100,38
+Stone Greatsword,Standard,5,222,150,0,0,C,C,E,,60,10,40,40,100,38
 Straight Sword Hilt,Chaos,0,32,0,36,0,,,,,20,5,15.0,15,100,10
 Straight Sword Hilt,Chaos,1,34,0,38,0,,,,,20,5,15.3,15,100,10
 Straight Sword Hilt,Chaos,2,36,0,40,0,,,,,20,5,15.6,15,100,10
@@ -5428,6 +5686,12 @@ Sunlight Straight Sword,Standard,6,131,0,0,0,C,C,,,50,10,35,35,100,32
 Sunlight Straight Sword,Standard,7,139,0,0,0,C,C,,,50,10,35,35,100,32
 Sunlight Straight Sword,Standard,8,147,0,0,0,C,C,,,50,10,35,35,100,32
 Sunlight Straight Sword,Standard,9,155,0,0,0,C,C,,,50,10,35,35,100,32
+Titanite Catch Pole,Standard,0,125,145,0,0,D,D,D,,40,10,30,30,100,26
+Titanite Catch Pole,Standard,1,137,159,0,0,D,D,D,,40,10,30,30,100,26
+Titanite Catch Pole,Standard,2,150,174,0,0,D,D,D,,40,10,30,30,100,26
+Titanite Catch Pole,Standard,3,162,188,0,0,D,D,D,,40,10,30,30,100,26
+Titanite Catch Pole,Standard,4,175,203,0,0,D,D,D,,40,10,30,30,100,26
+Titanite Catch Pole,Standard,5,187,217,0,0,D,D,D,,40,10,30,30,100,26
 Uchigatana,Chaos,0,140,0,162,0,,,,,45,10,30.0,30,100,30
 Uchigatana,Chaos,1,148,0,171,0,,,,,45,10,30.6,30,100,30
 Uchigatana,Chaos,2,156,0,180,0,,,,,45,10,31.2,30,100,30
@@ -5513,6 +5777,12 @@ Uchigatana,Standard,6,144,0,0,0,,B,,,45,10,30,30,100,30
 Uchigatana,Standard,7,153,0,0,0,,B,,,45,10,30,30,100,30
 Uchigatana,Standard,8,162,0,0,0,,B,,,45,10,30,30,100,30
 Uchigatana,Standard,9,171,0,0,0,,B,,,45,10,30,30,100,30
+Velka's Rapier,Standard,0,62,104,0,0,E,C,B,,45,10,30,30,100,22
+Velka's Rapier,Standard,1,68,114,0,0,E,C,B,,45,10,30,30,100,22
+Velka's Rapier,Standard,2,74,124,0,0,E,C,B,,45,10,30,30,100,22
+Velka's Rapier,Standard,3,80,135,0,0,E,C,B,,45,10,30,30,100,22
+Velka's Rapier,Standard,4,86,145,0,0,E,C,B,,45,10,30,30,100,22
+Velka's Rapier,Standard,5,93,155,0,0,E,C,B,,45,10,30,30,100,22
 Warpick,Chaos,0,136,0,158,0,,,,,45,10,30.0,30,100,30
 Warpick,Chaos,1,150,0,172,0,,,,,45,10,30.6,30,100,30
 Warpick,Chaos,2,158,0,180,0,,,,,45,10,31.2,30,100,30
