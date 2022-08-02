@@ -30,7 +30,7 @@ public final class DisabledSort implements Sort {
     /**
      * Singleton for disabled sort.
      */
-    public static Sort      INSTANCE  = new DisabledSort();
+    public static final Sort      INSTANCE  = new DisabledSort();
 
     /**
      * Default direction.

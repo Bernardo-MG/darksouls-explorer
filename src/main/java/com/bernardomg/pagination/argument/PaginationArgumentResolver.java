@@ -35,13 +35,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class PaginationArgumentResolver implements HandlerMethodArgumentResolver {
 
+    /**
+     * Default constructor.
+     */
     public PaginationArgumentResolver() {
         super();
     }
 
-    /**
-     * Default constructor.
-     */
     @Override
     public final Pagination resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
             final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {

@@ -14,7 +14,7 @@
  * the License.
  */
 /**
- * Response classes.
+ * Response model.
  */
 
 package com.bernardomg.response.model;

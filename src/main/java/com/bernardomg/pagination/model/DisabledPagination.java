@@ -31,7 +31,7 @@ public final class DisabledPagination implements Pagination {
     /**
      * Singleton for disabled pagination.
      */
-    public static Pagination INSTANCE = new DisabledPagination();
+    public static final Pagination INSTANCE = new DisabledPagination();
 
     /**
      * Default page.
