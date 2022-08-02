@@ -19,10 +19,22 @@ import com.bernardomg.response.model.Response;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Advice to wrap all the responses into the response object.
+ * <p>
+ * Unless the response is already an instance of {@link Response}, or the Spring {@link ResponseEntity}, it will be
+ * wrapped into a {@code Response}. Paginated data will be wrapped into a {@link PaginatedResponse}.
+ * 
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 @ControllerAdvice("com.bernardomg.darksouls.explorer")
 @Slf4j
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
+    /**
+     * Default constructor.
+     */
     public ResponseAdvice() {
         super();
     }
@@ -60,6 +72,12 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         return true;
     }
 
+    /**
+     * Wraps the page into a paginated response.
+     * 
+     * @param page page to wrap
+     * @return paginated response
+     */
     private final PaginatedResponse<?> toPaginatedResponse(final Page<?> page) {
         final DefaultPaginatedResponse<?> paginatedResponse;
 
@@ -75,6 +93,12 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         return paginatedResponse;
     }
 
+    /**
+     * Wraps the page iterable into a paginated response.
+     * 
+     * @param page page to wrap
+     * @return paginated response
+     */
     private final PaginatedResponse<?> toPaginatedResponse(final PageIterable<?> page) {
         final DefaultPaginatedResponse<?> paginatedResponse;
 

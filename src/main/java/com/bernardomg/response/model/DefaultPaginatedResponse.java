@@ -4,6 +4,14 @@ package com.bernardomg.response.model;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * Default implementation of the paginated response.
+ * 
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ * @param <T>
+ *            response content type
+ */
 @Data
 public final class DefaultPaginatedResponse<T> implements PaginatedResponse<T> {
 
@@ -13,19 +21,40 @@ public final class DefaultPaginatedResponse<T> implements PaginatedResponse<T> {
     @NonNull
     private T       content;
 
-    private Integer elementsInPage;
+    /**
+     * Number of elements in the page.
+     */
+    private Integer elementsInPage = -1;
 
-    private Boolean first;
+    /**
+     * Flags this is as the first page.
+     */
+    private Boolean first          = false;
 
-    private Boolean last;
+    /**
+     * Flags this is as the last page.
+     */
+    private Boolean last           = false;
 
-    private Integer pageNumber;
+    /**
+     * Number of this page.
+     */
+    private Integer pageNumber     = -1;
 
-    private Integer size;
+    /**
+     * Size of this page.
+     */
+    private Integer size           = -1;
 
-    private Long    totalElements;
+    /**
+     * Total number of elements among all the pages.
+     */
+    private Long    totalElements  = -1L;
 
-    private Integer totalPages;
+    /**
+     * Total number of pages.
+     */
+    private Integer totalPages     = -1;
 
     /**
      * Default constructor.

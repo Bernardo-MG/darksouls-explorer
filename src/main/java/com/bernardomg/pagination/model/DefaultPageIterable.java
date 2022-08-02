@@ -61,7 +61,7 @@ public final class DefaultPageIterable<T> implements PageIterable<T> {
     /**
      * Total number of elements among all the pages.
      */
-    private Long        totalElements  = 0l;
+    private Long        totalElements  = 0L;
 
     /**
      * Total number of pages.

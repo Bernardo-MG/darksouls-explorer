@@ -26,18 +26,53 @@ package com.bernardomg.response.model;
  */
 public interface PaginatedResponse<T> extends Response<T> {
 
+    /**
+     * Number of elements in the page.
+     *
+     * @return number of elements
+     */
     public Integer getElementsInPage();
 
+    /**
+     * Flags this is as the first page.
+     *
+     * @return {@code true} if this is the first page, {@code false} otherwise
+     */
     public Boolean getFirst();
 
+    /**
+     * Flags this is as the last page.
+     *
+     * @return {@code true} if this is the last page, {@code false} otherwise
+     */
     public Boolean getLast();
 
+    /**
+     * Number of this page.
+     *
+     * @return the number of this page
+     */
     public Integer getPageNumber();
 
+    /**
+     * Size of this page.
+     *
+     * @return the size of this page.
+     */
     public Integer getSize();
 
+    /**
+     * Total number of elements among all the pages.
+     *
+     * @return the total number of elements
+     */
     public Long getTotalElements();
 
+    /**
+     * Total number of pages.
+     *
+     * @return the total number of pages
+     */
     public Integer getTotalPages();
 
 }
