@@ -56,7 +56,7 @@ This will start a Neo4j database, with the dashboard available at [http://localh
 For the database and backend:
 
 ```
-docker-compose -f docker/docker-compose.yml up
+docker-compose -f docker/docker-compose.yml --project-name darksouls-explorer up
 ```
 
 ### Running with Spring Boot
