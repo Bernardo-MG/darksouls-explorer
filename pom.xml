@@ -175,7 +175,6 @@
       <commons.collections.version>4.4</commons.collections.version>
       <commons.lang.version>3.12.0</commons.lang.version>
       <glassfish.el.version>2.2</glassfish.el.version>
-      <h2.version>1.4.200</h2.version>
       <hamcrest.version>2.2</hamcrest.version>
       <jackson.version>2.13.1</jackson.version>
       <javassist.version>3.28.0-GA</javassist.version>
@@ -649,13 +648,6 @@
          <groupId>io.projectreactor</groupId>
          <artifactId>reactor-core</artifactId>
          <version>${reactor.version}</version>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <!-- H2 database -->
-         <groupId>com.h2database</groupId>
-         <artifactId>h2</artifactId>
-         <version>${h2.version}</version>
          <scope>test</scope>
       </dependency>
    </dependencies>
