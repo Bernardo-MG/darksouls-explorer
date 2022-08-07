@@ -1,7 +1,6 @@
 version: '3'
 services:
-    db:
-        container_name: darksouls-db
+    darksouls-db:
         image: mysql:8
         environment:
             MYSQL_DATABASE: 'data'
@@ -15,8 +14,7 @@ services:
             interval: 30s
             timeout: 10s
             retries: 5
-    graph-db:
-        container_name: darksouls-graph-db
+    darksouls-graph-db:
         build:
             context: ../
             dockerfile: ./docker/Dockerfile.database
@@ -30,21 +28,19 @@ services:
             - NEO4J_dbms.memory.heap.initial_size=1G
             - NEO4J_dbms_memory_heap_max__size=1G
             - NEO4JLABS_PLUGINS=["apoc"]
-    graph-db-seeder:
-        container_name: darksouls-graph-db-seeder
+    darksouls-graph-db-seeder:
         build:
             context: ../
             dockerfile: ./docker/Dockerfile.seeder
         depends_on:
-            graph-db:
+            darksouls-graph-db:
                 condition: service_healthy
         links:
-            - "graph-db"
+            - "darksouls-graph-db"
         environment: 
             - NEO4J_USERNAME=neo4j
             - NEO4J_PASSWORD=secret
-    backend:
-        container_name: darksouls-backend
+    darksouls-backend:
         build:
             context: ../
             dockerfile: ./docker/Dockerfile
@@ -52,13 +48,13 @@ services:
             - "8080:8080"
             - "8000:8000"
         depends_on:
-            graph-db:
+            darksouls-db:
                 condition: service_healthy
-            db:
+            darksouls-graph-db:
                 condition: service_healthy
         links:
-            - "db"
-            - "graph-db"
+            - "darksouls-db"
+            - "darksouls-graph-db"
         environment:
             # JDBC
             - spring.datasource.url=jdbc:mysql://db:3306/data
