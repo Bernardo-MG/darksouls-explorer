@@ -30,21 +30,21 @@ public final class DisabledSort implements Sort {
     /**
      * Singleton for disabled sort.
      */
-    public static final Sort      INSTANCE  = new DisabledSort();
+    public static final Sort INSTANCE  = new DisabledSort();
 
     /**
      * Default direction.
      */
-    private final Direction direction = Direction.ASC;
+    private final Direction  direction = Direction.ASC;
 
     /**
      * Default property.
      */
-    private final String    property  = "";
+    private final String     property  = "";
 
     /**
      * Disabled sort flag.
      */
-    private final Boolean   sorted    = false;
+    private final Boolean    sorted    = false;
 
 }

@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 /**
  * Default implementation of the paginated response.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  * @param <T>

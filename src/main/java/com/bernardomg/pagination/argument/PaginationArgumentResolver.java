@@ -54,7 +54,7 @@ public final class PaginationArgumentResolver implements HandlerMethodArgumentRe
         final Pagination pagination;
 
         pagedText = webRequest.getParameter("paged");
-        paged = parsePaged(pagedText);
+        paged = parseBoolean(pagedText);
 
         if (paged) {
             pageText = webRequest.getParameter("page");
@@ -65,7 +65,7 @@ public final class PaginationArgumentResolver implements HandlerMethodArgumentRe
                 pagination = Pagination.first();
                 log.trace("No pagination received, using disabled pagination");
             } else {
-                page = parsePage(pageText);
+                page = parseInteger(pageText);
                 size = parseSize(sizeText);
 
                 log.trace("Building page {} with size {}", page, size);
@@ -90,41 +90,41 @@ public final class PaginationArgumentResolver implements HandlerMethodArgumentRe
     }
 
     /**
-     * Transforms the page text into its numeric value.
-     *
-     * @param pageText
-     *            text with the pagination page
-     * @return page as integer
-     */
-    private final Integer parsePage(final String pageText) {
-        final Integer page;
-
-        if (pageText == null) {
-            page = 0;
-        } else {
-            page = Integer.valueOf(pageText);
-        }
-
-        return page;
-    }
-
-    /**
-     * Transforms the paged text into its boolean value.
+     * Transforms the text into its boolean value.
      *
      * @param pagedText
      *            text with the pagination paged flag
      * @return paged as boolean
      */
-    private final Boolean parsePaged(final String pagedText) {
-        final Boolean paged;
+    private final Boolean parseBoolean(final String pagedText) {
+        final Boolean value;
 
         if (pagedText == null) {
-            paged = true;
+            value = true;
         } else {
-            paged = Boolean.valueOf(pagedText);
+            value = Boolean.valueOf(pagedText);
         }
 
-        return paged;
+        return value;
+    }
+
+    /**
+     * Transforms the text into its numeric value.
+     *
+     * @param pageText
+     *            text with the pagination page
+     * @return page as integer
+     */
+    private final Integer parseInteger(final String pageText) {
+        final Integer value;
+
+        if (pageText == null) {
+            value = 0;
+        } else {
+            value = Integer.valueOf(pageText);
+        }
+
+        return value;
     }
 
     /**

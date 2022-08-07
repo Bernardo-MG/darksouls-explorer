@@ -25,6 +25,30 @@ public class TestSortArgumentResolver {
     }
 
     @Test
+    @DisplayName("The sort can be disabled")
+    public void testResolve_Disabled_NotSorted() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Sort                  sort;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("sort"))
+            .thenReturn("field,asc");
+        Mockito.when(webRequest.getParameter("sorted"))
+            .thenReturn("false");
+
+        sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertFalse(sort.getSorted());
+    }
+
+    @Test
     @DisplayName("Returns the default direction when receiving an empty direction")
     public void testResolve_EmptySortDirection_DefaultDirection() throws Exception {
         final MethodParameter       parameter;
@@ -295,6 +319,25 @@ public class TestSortArgumentResolver {
     }
 
     @Test
+    @DisplayName("The sort is disabled when receiving no parameters")
+    public void testResolve_NoParameters_NotSorted() throws Exception {
+        final MethodParameter       parameter;
+        final ModelAndViewContainer mavContainer;
+        final NativeWebRequest      webRequest;
+        final WebDataBinderFactory  binderFactory;
+        final Sort                  sort;
+
+        parameter = Mockito.mock(MethodParameter.class);
+        mavContainer = Mockito.mock(ModelAndViewContainer.class);
+        webRequest = Mockito.mock(NativeWebRequest.class);
+        binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+
+        Assertions.assertFalse(sort.getSorted());
+    }
+
+    @Test
     @DisplayName("The sort is not sorted when receiving no parameters")
     public void testResolve_NoSort_NotSorted() throws Exception {
         final MethodParameter       parameter;
@@ -307,6 +350,9 @@ public class TestSortArgumentResolver {
         mavContainer = Mockito.mock(ModelAndViewContainer.class);
         webRequest = Mockito.mock(NativeWebRequest.class);
         binderFactory = Mockito.mock(WebDataBinderFactory.class);
+
+        Mockito.when(webRequest.getParameter("sorted"))
+            .thenReturn("true");
 
         sort = (Sort) resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 

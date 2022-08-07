@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>
  * Unless the response is already an instance of {@link Response}, or the Spring {@link ResponseEntity}, it will be
  * wrapped into a {@code Response}. Paginated data will be wrapped into a {@link PaginatedResponse}.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -74,8 +74,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
     /**
      * Wraps the page into a paginated response.
-     * 
-     * @param page page to wrap
+     *
+     * @param page
+     *            page to wrap
      * @return paginated response
      */
     private final PaginatedResponse<?> toPaginatedResponse(final Page<?> page) {
@@ -95,8 +96,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
     /**
      * Wraps the page iterable into a paginated response.
-     * 
-     * @param page page to wrap
+     *
+     * @param page
+     *            page to wrap
      * @return paginated response
      */
     private final PaginatedResponse<?> toPaginatedResponse(final PageIterable<?> page) {
